@@ -5,6 +5,7 @@ module.exports = function (app) {
     "/api", // 기존 host 대신 사용할 경로
     createProxyMiddleware({
       target: "https://www.smartfarmkorea.net/", // 기존 host
+
       changeOrigin: true,
       pathRewrite: {
         "^/api": "",
