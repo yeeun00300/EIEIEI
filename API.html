@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <button class="btn">dㅇ</button>
+    </div>
+  </body>
+  <script>
+    // http://www.smartfarmkorea.net/Agree_WS/webservices/StockRestService/getInspctDataList/{serviceKey}/{startDate}/{endDate}
+    const button = document.querySelector(".btn");
+    button.addEventListener("click", function () {
+      start();
+    });
+    const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
+
+    const startDate = "20240821";
+    const endDate = "20241003";
+    const start = () =>
+      fetch(
+        `http://www.smartfarmkorea.net/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
+      ).then((data) => {
+        console.log(data);
+
+        return data;
+      });
+  </script>
+</html>
