@@ -20,13 +20,24 @@
 
     const startDate = "20240821";
     const endDate = "20241003";
-    const start = () =>
-      fetch(
-        `http://www.smartfarmkorea.net/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
+
+    const start = async () =>
+      await fetch(
+        `/api/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
       ).then((data) => {
+        // `https://www.smartfarmkorea.net/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`;
         console.log(data);
 
         return data;
       });
+
+    // const start = () =>
+    //   fetch(
+    //     `http://www.smartfarmkorea.net/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
+    //   ).then((data) => {
+    //     console.log(data);
+
+    //     return data;
+    //   });
   </script>
 </html>

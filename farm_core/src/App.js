@@ -10,6 +10,20 @@ import DashBoard from "./pages/DashBoard/DashBoard";
 import MyPage from "./pages/MyPage/MyPage";
 
 function App() {
+  const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
+
+  const startDate = "20200821";
+  const endDate = "20201003";
+
+  fetch(
+    `/api/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
+  )
+    .then((data) => {
+      return data.json();
+    })
+    .then((result) => {
+      console.log(result);
+    });
   return (
     // <div className="App">
     // Final Project!
@@ -17,7 +31,7 @@ function App() {
       <Routes>
         <Route path="/">
           {/* 첫화면 */}
-          <Route index element={<Main />}>
+          <Route path="Main" element={<Main />}>
             <Route path="Login" element={<Login />}>
               <Route path="SignIn" element={<SignIn />}></Route>
               <Route path="SignUp" element={<SignUp />}></Route>
