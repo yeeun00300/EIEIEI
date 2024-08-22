@@ -27,8 +27,8 @@ function App() {
     .then((result) => {
       console.log(result);
     });
-  // const notLogin = true;
-  const notLogin = false;
+  const notLogin = true;
+  // const notLogin = flase;
   return (
     // <div className="App">
     // Final Project!
