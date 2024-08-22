@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./DashBoard.module.scss";
-import * as React from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
