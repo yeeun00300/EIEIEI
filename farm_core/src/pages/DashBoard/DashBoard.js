@@ -2,28 +2,26 @@ import React from "react";
 import styles from "./DashBoard.module.scss";
 import { LineChart } from "@mui/x-charts/LineChart";
 
-const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
-const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
-const xLabels = [
-  "Page A",
-  "Page B",
-  "Page C",
-  "Page D",
-  "Page E",
-  "Page F",
-  "Page G",
+const dataset = [
+  { x: 1, y: 2 },
+  { x: 2, y: 5.5 },
+  { x: 3, y: 2 },
+  { x: 5, y: 8.5 },
+  { x: 8, y: 1.5 },
+  { x: 10, y: 5 },
+  { x: 12, y: 7 },
 ];
 
 function DashBoard() {
   return (
     <LineChart
-      width={500}
+      dataset={dataset}
+      xAxis={[{ dataKey: "x" }, { colors: ["#ededed"] }]}
+      series={[{ dataKey: "y" }]}
       height={300}
-      series={[
-        { data: pData, label: "pv" },
-        { data: uData, label: "uv" },
-      ]}
-      xAxis={[{ scaleType: "point", data: xLabels }]}
+      margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
+      grid={{ horizontal: true }}
+      // grid={{ vertical: true, horizontal: true }}
     />
   );
 }
