@@ -2,20 +2,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  padding-right: 16px;
   background-color: var(--second-color);
   height: 70px;
 }
 .logo {
   display: flex;
-  justify-content: space-between;
+  margin-left: 6px;
+  justify-content: space-around;
   align-items: center;
-  width: 150px;
+  width: 192px;
   height: 60px;
 }
 .logoImg {
   width: 60px;
   height: 60px;
+}
+.logoText {
+  font-weight: 800;
+  font-size: 24px;
 }
 
 .userInfo {
