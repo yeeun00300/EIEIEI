@@ -13,20 +13,20 @@ import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
 
 function App() {
-  const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
+  // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
 
-  const startDate = "20200821";
-  const endDate = "20201003";
+  // const startDate = "20200821";
+  // const endDate = "20201003";
 
-  fetch(
-    `/api/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
-  )
-    .then((data) => {
-      return data.json();
-    })
-    .then((result) => {
-      console.log(result);
-    });
+  // fetch(
+  //   `/api/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
+  // )
+  //   .then((data) => {
+  //     return data.json();
+  //   })
+  //   .then((result) => {
+  //     console.log(result);
+  //   });
   // const notLogin = true;
   const notLogin = false;
   return (

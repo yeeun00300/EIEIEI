@@ -82,7 +82,7 @@ function DashBoard() {
         series={[{ dataKey: "y", color: "#78909c" }]}
         height={200}
         width={800}
-        margin={{ left: 250, right: 30, top: 30, bottom: 30 }}
+        margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
         grid={{ horizontal: true }}
         // loading={true}
         // grid={{ vertical: true, horizontal: true }}
