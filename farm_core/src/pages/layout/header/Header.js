@@ -7,7 +7,7 @@ function Header(props) {
     <div className={styles.header}>
       <div className={styles.logo}>
         <img className={styles.logoImg} src={logoImg} alt="" />
-        <div>FarmCore</div>
+        <div className={styles.logoText}>FarmCore</div>
       </div>
       <div className={styles.userInfo}>
         <div>종 아이콘</div>
