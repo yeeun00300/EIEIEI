@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./Nav.module.scss";
 import Footer from "../footer/Footer";
 import Box from "@mui/material/Box";
-
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 
 const MUI_X_PRODUCTS = [
