@@ -26,7 +26,7 @@ function App() {
     .then((result) => {
       console.log(result);
     });
-  const notLogin = false;
+  const notLogin = true;
   return (
     // <div className="App">
     // Final Project!
@@ -34,8 +34,9 @@ function App() {
       <Routes>
         {notLogin ? (
           // 비로그인시
-          <Route path="/" element={<Intro />}>
-            <Route path="signup" element={<SignUp />} />
+          <Route path="/">
+            <Route index element={<Intro />} />
+            <Route path="SignUp" element={<SignUp />} />
           </Route>
         ) : (
           // 로그인시
