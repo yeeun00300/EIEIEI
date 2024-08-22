@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: red;
+  height: 70px;
+}
+.userInfo {
+  display: flex;
+  width: 140px;
+  justify-content: space-between;
+}

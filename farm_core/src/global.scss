@@ -1,0 +1,45 @@
+:root {
+  --background-color: #e0f2f1;
+  --main-color: #b2dfdb;
+  --second-color: #80cbc4;
+  --point-color: #4db6ac;
+}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+* {
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style-type: none;
+}
+
+// 각 페이지 컴포넌트를 위한 wrapper
+.page {
+  flex: 1 1 auto;
+  //   margin-top: 56px;
+  text-align: center;
+}
+// page 안에 있는 wrapper
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5px;
+
+  @media (min-width: 576px) {
+    padding: 15px;
+  }
+  @media (min-width: 990px) {
+    padding: 5px;
+  }
+}
