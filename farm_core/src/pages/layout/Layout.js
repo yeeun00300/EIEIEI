@@ -9,9 +9,11 @@ function Layout(props) {
   return (
     <div className={styles.layout}>
       <Header />
-      <Nav />
-      <Outlet />
-      <Footer />
+      <div className={styles.wrapper}>
+        <Nav />
+        <Outlet />
+        <Footer />
+      </div>
     </div>
   );
 }

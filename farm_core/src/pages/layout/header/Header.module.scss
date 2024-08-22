@@ -6,6 +6,18 @@
   background-color: red;
   height: 70px;
 }
+.logo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 150px;
+  height: 60px;
+}
+.logoImg {
+  width: 60px;
+  height: 60px;
+}
+
 .userInfo {
   display: flex;
   width: 140px;
