@@ -34,10 +34,13 @@ function App() {
       <Routes>
         {notLogin ? (
           // 비로그인시
-          <Route path="intro" element={<Intro />} />
+          <Route path="/" element={<Intro />}>
+            <Route path="signup" element={<SignUp />} />
+          </Route>
         ) : (
           // 로그인시
           <Route path="/" element={<Layout />}>
+            <Route index element={<Main />} />
             <Route path="DashBoard" element={<DashBoard />} />
             <Route path="Customer" element={<Customer />} />
             <Route path="MyPage" element={<MyPage />} />
