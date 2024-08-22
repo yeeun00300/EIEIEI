@@ -29,21 +29,20 @@ function App() {
     // Final Project!
     <BrowserRouter>
       <Routes>
-        <Route path="/">
-          {/* 첫화면 */}
-          <Route path="Main" element={<Main />}>
-            <Route path="Login" element={<Login />}>
-              <Route path="SignIn" element={<SignIn />}></Route>
-              <Route path="SignUp" element={<SignUp />}></Route>
-            </Route>
-          </Route>
-          {/* 메인화면 */}
-          <Route path="DashBoard" element={<DashBoard />}>
-            <Route path="Customer" element={<Customer />}></Route>
-            <Route path="Admin" element={<Admin />}></Route>
-            <Route path="MyPage" element={<MyPage />}></Route>
+        {/* 첫화면 */}
+        <Route path="/" element={<Main />}>
+          {/* <Route path="Introduction" element={<Introduction />}></Route> */}
+          <Route path="Login" element={<Login />}>
+            {/* <Route path="SignIn" element={<SignIn />}></Route> */}
+            <Route path="SignUp" element={<SignUp />}></Route>
           </Route>
         </Route>
+        {/* 메인화면 */}
+        <Route path="DashBoard" element={<DashBoard />}>
+          <Route path="Customer" element={<Customer />}></Route>
+          <Route path="MyPage" element={<MyPage />}></Route>
+        </Route>
+        <Route path="Admin" element={<Admin />}></Route>
       </Routes>
     </BrowserRouter>
     // </div>
