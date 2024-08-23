@@ -3,7 +3,7 @@ import styles from "./MyPage.module.scss";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { Link, Outlet } from "react-router-dom";
 import Card from "./Card/Card";
-
+import ListItem from "@mui/material/ListItem";
 const dataObj = {
   UserInfo: { label: "회원정보수정", path: "UserInfo" },
   myCommunity: { label: "내 게시글", path: "my-community" },
