@@ -1,6 +1,7 @@
 import React from "react";
 import ListPage from "./ListPage";
 import styles from "./Community.module.scss";
+import searchImg from "../../img/돋보기.png";
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};
@@ -15,10 +16,11 @@ function Community() {
             onChange={handleKeywordChange}
           />
           <button>
-            <img />
+            <img src={searchImg} />
           </button>
         </form>
         <p>총 0개 게시물</p>
+        <div className={styles.boardList}></div>
       </ListPage>
     </div>
   );

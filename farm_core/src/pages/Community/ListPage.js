@@ -26,7 +26,7 @@ function ListPage({ variant, children }) {
           <p className={styles.description}>{description}</p>
         </div>
       </div>
-      <div>{children}</div>
+      <div className={styles.wrapper}>{children}</div>
     </>
   );
 }
