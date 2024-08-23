@@ -1,0 +1,39 @@
+.container {
+  padding: 38px 0 58px;
+  display: flex;
+  background-color: #ebebeb;
+  justify-content: center;
+  align-items: center;
+  .container.freeBoard {
+    background-color: #ebebeb;
+  }
+  .container.livestockBoard {
+    background-color: #73bfad;
+  }
+  img {
+    height: 44px;
+    margin-right: 30px;
+  }
+  .texts {
+    .heading {
+      margin: 0 0 5px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .description {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .freeBoard .heading {
+      color: #545454;
+    }
+    .freeBoard .description {
+      color: #878787;
+    }
+    .livestock .heading,
+    .livestock .description {
+      color: #fff;
+    }
+  }
+}
