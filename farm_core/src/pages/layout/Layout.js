@@ -12,7 +12,6 @@ function Layout(props) {
       <div className={styles.wrapper}>
         <Nav />
         <Outlet />
-        {/* <Footer /> */}
       </div>
     </div>
   );
