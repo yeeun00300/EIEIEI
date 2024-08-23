@@ -40,7 +40,7 @@ function DashBoard() {
         return response.json();
       })
       .then((json) => {
-        console.log(json);
+        // console.log(json);
         // const { name, rain, weather, wind } = json;
         // console.log(name, rain, weather, wind);
         setWeatherData(json);
@@ -54,9 +54,61 @@ function DashBoard() {
   } = weatherData;
   const { description } = weather[0];
 
+  const newTime = new Date();
+  const yyyymmdd = newTime.toISOString().split("T")[0].replaceAll("-", "");
+  const getTime1 = newTime.toISOString().split("T")[1].split(":")[0];
+  const getTime2 = newTime.toISOString().split("T")[1].split(":")[1];
+  const finalTime = yyyymmdd + getTime1 + getTime2;
+  const BeforeHour = String(getTime1 - 1);
+  const finalTimeB =
+    yyyymmdd +
+    (BeforeHour.length <= 1 ? 0 + BeforeHour : BeforeHour) +
+    getTime2;
+  const openUrl = `https://apihub.kma.go.kr/api/typ01/url/wrn_inf_rpt.php?tmfc1=${finalTimeB}&tmfc2=${finalTime}&disp=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`;
+  const openWindow = () => {
+    window.open(openUrl, "_blank", "width=600, height=600");
+  };
+  // console.log(finalTime, finalTimeB);
+
+  // 기상 특보
+  function callJsonApi(url, saveFilePath) {
+    // Text API 호출 함수
+    fetch(url) // fetch를 통해 API 호출
+      .then((response) => response.text()) // 응답을 JSON으로 변환
+      .then((data) => {
+        // console.log(data); // 데이터 출력
+        // saveFilePath를 사용하여 데이터를 저장하거나 추가적인 처리를 수행할 수 있습니다.
+        // saveFilePath;
+      })
+      .catch((error) => {
+        console.error("API 호출 중 오류가 발생했습니다:", error);
+        // 오류 처리를 수행할 수 있습니다.
+      });
+  }
+
+  // 사용 예시
+  const apiUrl = `/api1/api/typ01/url/wrn_inf_rpt.php?tmfc1=${finalTimeB}&tmfc2=${finalTime}&disp=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`;
+  // "https://apihub.kma.go.kr/api/json?authKey=i9aTpajSSUyWk6Wo0hlMnw";
+  const savePath = "/path/to/save/file.json";
+  callJsonApi(apiUrl, savePath);
+
+  // openUrl 내용 가져오기
+  function callOpenUrl() {
+    // openUrl의 내용을 fetch API로 호출
+    fetch(openUrl)
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data); // openUrl의 내용을 console.log로 출력
+      })
+      .catch((error) => {
+        console.error("openUrl 호출 중 오류가 발생했습니다:", error);
+        // 오류 처리를 수행할 수 있습니다.
+      });
+  }
+
   useEffect(() => {
-    // getWeather();
     success();
+    callJsonApi();
   }, []);
 
   return (
@@ -69,12 +121,15 @@ function DashBoard() {
       <p>최대 : {temp_max}℃ </p> */}
       <h1>습도</h1>
       <p>최대 : {humidity}% </p>
+      <button onClick={openWindow()}>특보 정보</button>
       <h1>체중</h1>
       <LineChart01
         dataset={dataset}
         color={"#78909c"}
         xInterval={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
         yInterval={[1, 3, 5, 7, 9, 11]}
+        height={200}
+        width={800}
       />
       {/* <LineChart
         dataset={dataset}

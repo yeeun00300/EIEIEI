@@ -1,7 +1,7 @@
 import React from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
 
-function LineChart01({ dataset, color, xInterval, yInterval }) {
+function LineChart01({ dataset, color, xInterval, yInterval, height, width }) {
   // -- dataset 예시--
   // ----> 그래프 그리는 값
   // const dataset = [
@@ -37,8 +37,8 @@ function LineChart01({ dataset, color, xInterval, yInterval }) {
         // yAxis={[{ tickInterval: [1, 3, 5, 7, 9, 11] }]}
         yAxis={[{ tickInterval: [...yInterval] }]}
         series={[{ dataKey: "y", color: `${color} ` }]}
-        height={200}
-        width={800}
+        height={height}
+        width={width}
         margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
         grid={{ horizontal: true }}
         // loading={true}
