@@ -1,30 +1,57 @@
 import React, { useState } from "react";
 import styles from "./SignUp.module.scss";
+import { useForm } from "react-hook-form";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { getUserAuth } from "../../../firebase";
 import Address from "./../../../api/address/Address";
 import logoImg from "./../../../img/TitleLogo.png";
 import { FaRegUser } from "react-icons/fa";
+import { doc, setDoc } from "firebase/firestore";
 
-function SignUp() {
-  // const auth = getUserAuth();
-  // const signup = async () => {
-  //   const user = await createUserWithEmailAndPassword(
-  //     auth,
-  //     "dadaw@vads.com",
-  //     "231421"
-  //   );
-  //   console.log(user);
-  // };
+// const [popup, setPopup] = useState(false);
+// const [enroll_company, setEnroll_company] = useState({
+//   address: "",
+// });
+function SignUp({ auth, db }) {
+  //   const { handleSubmit, register } = useForm();
 
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   const {
-  //     email: { value: email },
-  //     password: { value: password },
-  //   } = e.target;
-  //   register(email, password);
-  // };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        name: data.name,
+        id: data.id,
+        address: data.address,
+        email: data.email,
+      });
+    } catch (error) {
+      console.error("Error registering user: ", error);
+    }
+  };
+
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  //   reset,
+  // } = useForm({
+  //   mode: "onChange",
+  // });
+
+  // console.log(errors);
 
   // 주소찾기
   const [enroll_company, setEnroll_company] = useState({
@@ -49,12 +76,12 @@ function SignUp() {
       <img className={styles.logo} src={logoImg} />
       <h2>Farm Core</h2>
       <h3>회원가입</h3>
-      <form>
+      <form onClick={handleSubmit(onSubmit)}>
         <div className={styles.name}>
           <div className={styles.img}>
             <FaRegUser />
           </div>
-          <input placeholder="이름을 입력해주세요." type="name" />
+          <input placeholder="이름을 입력해주세요." type="text" />
         </div>
         <div>
           아이디

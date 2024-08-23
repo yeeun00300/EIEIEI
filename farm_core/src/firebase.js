@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { collection, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSerjiLaZai0AzNmCU-b9WkursHA-1DXo",
@@ -15,17 +15,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
+
+function getCollection(collectionName) {
+  return collection(db, collectionName);
+}
 
 export function getUserAuth() {
   return auth;
 }
 
+// export { auth, db };
 export default app;
-
-// const docRef = await addDoc(collection(db, "users"), {
-//   Name: "name",
-//   Id: "Id",
-//   Password: "password",
-//   Email: "email",
-// });
-// console.log(docRef.id);

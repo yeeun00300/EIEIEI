@@ -1,0 +1,46 @@
+.AdminPage {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.AdminTitle {
+  height: 80px;
+  border: 1px solid black;
+  padding-left: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h1 {
+    text-align: center;
+  }
+  button {
+    padding: 12px;
+    border: 1px solid black;
+    border-radius: 24px;
+    background-color: transparent;
+    &:hover {
+      background-color: lightgray;
+    }
+  }
+}
+.AdminContainer {
+  flex: 1;
+  display: flex;
+  border: 1px solid black;
+}
+.AdminNav {
+  width: 300px;
+  padding-left: 30px;
+  border: 1px solid black;
+  li {
+    margin-bottom: 12px;
+  }
+}
+.AdminNavList {
+  list-style-type: none;
+  padding: 0;
+}
+.AdminWrapper {
+  flex: 1;
+}
