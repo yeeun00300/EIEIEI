@@ -1,8 +1,16 @@
 import React from "react";
 import styles from "./UserInfo.module.scss";
 import img from "../../../img/person.png";
-import { Outlet } from "react-router-dom";
+import DaumPostcode from "react-daum-postcode";
+import { Button } from "@mui/material";
+
 function UserInfo(props) {
+  const onCompletePost = (data) => {
+    console.log(data);
+  };
+
+  const editAdress = () => {};
+
   return (
     <div className="page">
       <div className="container">
@@ -22,7 +30,9 @@ function UserInfo(props) {
             <div>
               전화번호 : <input />
             </div>
-            <div>주소 : </div>
+            <div>
+              주소 : <button onClick={onCompletePost}>아아아</button>
+            </div>
             <div className={styles.buttons}>
               <button className={styles.google}>Google로그인하기</button>
               <button className={styles.naver}>Naver로그인하기</button>
