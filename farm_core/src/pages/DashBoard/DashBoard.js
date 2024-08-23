@@ -64,7 +64,7 @@ function DashBoard() {
     yyyymmdd +
     (BeforeHour.length <= 1 ? 0 + BeforeHour : BeforeHour) +
     getTime2;
-  const openUrl = `/api1/api/typ01/url/wrn_inf_rpt.php?tmfc1=${finalTimeB}&tmfc2=${finalTime}&disp=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`;
+  const openUrl = `https://apihub.kma.go.kr/api/typ01/url/wrn_inf_rpt.php?tmfc1=${finalTimeB}&tmfc2=${finalTime}&disp=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`;
   const openWindow = () => {
     window.open(openUrl, "_blank", "width=600, height=600");
   };
@@ -121,7 +121,7 @@ function DashBoard() {
       <p>최대 : {temp_max}℃ </p> */}
       <h1>습도</h1>
       <p>최대 : {humidity}% </p>
-      <button onClick={openWindow}>특보 정보</button>
+      <button onClick={openWindow()}>특보 정보</button>
       <h1>체중</h1>
       <LineChart01
         dataset={dataset}
