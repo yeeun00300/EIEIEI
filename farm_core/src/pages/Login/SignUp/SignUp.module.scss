@@ -1,0 +1,50 @@
+.main {
+  padding: 20px;
+  margin: 0 auto;
+  width: 400px;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+  }
+
+  img {
+    width: 152px;
+    height: 100px;
+  }
+
+  div {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 100%;
+    padding: 20px 0;
+  }
+}
+
+.name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+
+  input {
+    border: none;
+  }
+}
+.img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-bottom: none;
+}
+.button {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  border: none;
+}
