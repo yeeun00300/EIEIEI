@@ -14,10 +14,11 @@
   width: 60%;
   padding: 3rem 2rem;
   border-radius: 1rem;
-  div {
-    display: flex;
-    align-items: flex-start;
-    align-items: center;
+  align-items: flex-start;
+
+  input {
+    padding: 5px 15px;
+    margin-left: 20px;
   }
   .profile {
     display: flex;
@@ -52,13 +53,15 @@
   }
   .addr {
     display: flex;
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    // gap: 0.5rem;
   }
   .buttons {
     display: flex;
     gap: 1rem;
     justify-content: center;
     align-items: center;
+    margin: 0 auto;
 
     button {
       border: none;
