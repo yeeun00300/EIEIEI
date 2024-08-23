@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Customer from "./../Customer/Customer";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
+import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -112,6 +113,8 @@ function Admin() {
         <button>홈페이지로 돌아가기</button>
       </div>
       <div className={styles.AdminContainer}>
+        <TreeViewComp contents={MUI_X_PRODUCTS} renderContent={renderContent} />
+        {/* <div className={styles.AdminContainer}>
         <div className={styles.AdminNav}>
           <ul className={styles.AdminNavList}>
             <Box sx={{ minHeight: 352, minWidth: 250 }}>
@@ -124,10 +127,10 @@ function Admin() {
             </Box>
           </ul>
         </div>
-        <div className={styles.AdminWrapper}>
+        <div>
           Wrapper
           {renderContent()}
-        </div>
+        </div> */}
       </div>
     </div>
   );
