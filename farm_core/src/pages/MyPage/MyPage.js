@@ -1,40 +1,62 @@
 import React from "react";
 import styles from "./MyPage.module.scss";
-import img from "../../img/person.png";
 import { FaAngleDoubleRight } from "react-icons/fa";
-import { FaBars } from "react-icons/fa";
+import { Link, Outlet } from "react-router-dom";
+import Card from "./Card/Card";
+
+const dataObj = {
+  UserInfo: { label: "회원정보수정", path: "UserInfo" },
+  myCommunity: { label: "내 게시글", path: "my-community" },
+  question: { label: "1:1 문의하기", path: "question" },
+  payment: { label: "결제내역", path: "payment" },
+};
+
 function MyPage() {
   return (
     <div className="page">
       <div className="container">
         <div className={styles.wrapper}>
-          <h1 className={styles.title}>회원정보</h1>
-          <div className={styles.profile}>
+          <div className={styles.user}>
+            <h3>ID님 환영합니다.</h3>
             <div>
-              <img src={img} />
-              <p>홍길동</p>
+              <button>로그아웃</button>
             </div>
           </div>
-          <div className={styles.info}>
-            <FaBars />
-            <span>내정보 수정하기</span>
-            <FaAngleDoubleRight />
+          <div className={styles.lists}>
+            <Link to="/UserInfo">
+              <Card>
+                회원정보 수정
+                <span>
+                  <FaAngleDoubleRight className={styles.click} />
+                </span>
+              </Card>
+            </Link>
+            <Link to="/MyPage/my-community">
+              <Card>
+                내 게시글
+                <span>
+                  <FaAngleDoubleRight className={styles.click} />
+                </span>
+              </Card>
+            </Link>
+            <Link to="/MyPage/question">
+              <Card>
+                1:1 문의하기
+                <span>
+                  <FaAngleDoubleRight className={styles.click} />
+                </span>
+              </Card>
+            </Link>
+            <Link to="/MyPage/payment">
+              <Card>
+                결제 내역
+                <span>
+                  <FaAngleDoubleRight className={styles.click} />
+                </span>
+              </Card>
+            </Link>
           </div>
-          <div className={styles.info}>
-            <FaBars />
-            <span>1:1 문의하기</span>
-            <FaAngleDoubleRight />
-          </div>
-          <div className={styles.info}>
-            <FaBars />
-            <span>결제 하러가기</span>
-            <FaAngleDoubleRight />
-          </div>
-          <div className={styles.info}>
-            <FaBars />
-            <span>결제 내역 보기</span>
-            <FaAngleDoubleRight />
-          </div>
+          <Outlet />
         </div>
       </div>
     </div>
