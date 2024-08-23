@@ -54,9 +54,9 @@ function UserInfo(props) {
         <div className={styles.wrapper}>
           <div className={styles.userInfo}>
             <div className={styles.profile}>
-              <p>프로필 사진:</p>
               <img src={img} className={styles.personImg} />
               <input type="file" className={styles.hidden} />
+              <p>프로필 사진:</p>
             </div>
             <div>
               이름 : <input />

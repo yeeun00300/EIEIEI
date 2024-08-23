@@ -58,7 +58,7 @@ function App() {
             </Route>
             <Route path="MyPage" element={<MyPage />} />
             <Route path="UserInfo" element={<UserInfo />} />
-            <Route path="my-community" element={<MyCommunity />} />
+            <Route path="MyCommunity" element={<MyCommunity />} />
             <Route path="question" element={<Question />} />
             <Route path="payment" element={<Payment />} />
           </Route>

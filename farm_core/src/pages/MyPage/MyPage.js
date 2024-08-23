@@ -6,7 +6,7 @@ import Card from "./Card/Card";
 import ListItem from "@mui/material/ListItem";
 const dataObj = {
   UserInfo: { label: "회원정보수정", path: "UserInfo" },
-  myCommunity: { label: "내 게시글", path: "my-community" },
+  myCommunity: { label: "내 게시글", path: "MyCommunity" },
   question: { label: "1:1 문의하기", path: "question" },
   payment: { label: "결제내역", path: "payment" },
 };
@@ -31,7 +31,7 @@ function MyPage() {
                 </span>
               </Card>
             </Link>
-            <Link to="/MyPage/my-community">
+            <Link to="/MyCommunity">
               <Card>
                 내 게시글
                 <span>
@@ -39,7 +39,7 @@ function MyPage() {
                 </span>
               </Card>
             </Link>
-            <Link to="/MyPage/question">
+            <Link to="/question">
               <Card>
                 1:1 문의하기
                 <span>
@@ -47,7 +47,7 @@ function MyPage() {
                 </span>
               </Card>
             </Link>
-            <Link to="/MyPage/payment">
+            <Link to="/payment">
               <Card>
                 결제 내역
                 <span>
