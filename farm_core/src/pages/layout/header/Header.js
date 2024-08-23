@@ -1,6 +1,8 @@
 import React from "react";
 import styles from "./Header.module.scss";
 import logoImg from "../../../img/TitleLogo.png";
+import { FaRegBell } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
 
 function Header(props) {
   return (
@@ -10,8 +12,8 @@ function Header(props) {
         <div className={styles.logoText}>FarmCore</div>
       </div>
       <div className={styles.userInfo}>
-        <div>종 아이콘</div>
-        <div>프로필</div>
+        <FaRegBell size={25} />
+        <FaRegUser size={25} />
       </div>
     </div>
   );

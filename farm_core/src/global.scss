@@ -58,6 +58,22 @@ body {
   overflow-y: auto;
   height: calc(100vh - 70px);
 }
+
+.page::-webkit-scrollbar {
+  width: 8px; /* 스크롤바의 너비 */
+}
+
+.page::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: gray; /* 스크롤바의 색상 */
+
+  border-radius: 10px;
+}
+
+.page::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
+}
+
 // page 안에 있는 wrapper
 .container {
   max-width: 1200px;

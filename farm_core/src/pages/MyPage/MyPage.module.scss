@@ -1,24 +1,46 @@
 .wrapper {
-  width: 30%;
-  margin: 3rem auto;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  border-radius: 5px;
-  div {
-    font-size: 1.2rem;
-  }
-  .profile {
-    background-color: beige;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+  // background-color: slategray;
+  margin-top: 4rem;
+  //   padding: 3rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid black;
+}
+.user {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid black;
+  button {
+    border: none;
+    padding: 0.6rem 1rem;
 
-    p {
-      margin: 0;
+    border-radius: 1rem;
+    background-color: var(--second-color);
+    cursor: pointer;
+  }
+}
+.lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  div {
+    padding: 3rem 0.5rem;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+    .click {
+      color: red;
     }
   }
-  .info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    opacity: 0.5;
-    margin-top: 1rem;
-  }
+
+  //   padding: 2rem;
+  //   background-color: ;
 }
