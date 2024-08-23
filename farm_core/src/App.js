@@ -11,6 +11,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import Layout from "./pages/layout/Layout";
 import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
+import FreeboardPage from "./pages/Community/FreeboardPage";
 
 function App() {
   // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
@@ -46,6 +47,7 @@ function App() {
             <Route index element={<Main />} />
             <Route path="DashBoard" element={<DashBoard />} />
             <Route path="Customer" element={<Customer />} />
+            <Route path="Admin" element={<Admin />} />
             <Route path="Community" element={<Community />} />
             <Route path="MyPage" element={<MyPage />} />
           </Route>
