@@ -13,6 +13,9 @@ import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
 import FreeboardPage from "./pages/Community/FreeboardPage";
 import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
+import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
+import Question from "./pages/MyPage/Question/Question";
+import Payment from "./pages/MyPage/Payment/Payment";
 
 function App() {
   // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
