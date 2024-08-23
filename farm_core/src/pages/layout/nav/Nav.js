@@ -41,7 +41,7 @@ function Nav(props) {
         <RichTreeView items={MUI_X_PRODUCTS} />
       </Box>
 
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
