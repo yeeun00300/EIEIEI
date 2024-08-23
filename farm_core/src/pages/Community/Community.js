@@ -24,7 +24,7 @@ function Community() {
           </button>
         </form>
 
-        <p>총 0개 게시물</p>
+        <p>총 n개 게시물</p>
         <div className={styles.boardList}>
           <FreeboardItem />
           <FreeboardItem />
