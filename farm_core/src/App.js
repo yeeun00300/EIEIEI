@@ -46,11 +46,11 @@ function App() {
             <Route index element={<Main />} />
             <Route path="DashBoard" element={<DashBoard />} />
             <Route path="Customer" element={<Customer />} />
-            <Route path="Admin" element={<Admin />} />
             <Route path="Community" element={<Community />} />
             <Route path="MyPage" element={<MyPage />} />
           </Route>
         )}
+        <Route path="Admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
     // </div>
