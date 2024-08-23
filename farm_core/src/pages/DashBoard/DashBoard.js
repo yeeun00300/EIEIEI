@@ -76,9 +76,7 @@ function DashBoard() {
     fetch(url) // fetch를 통해 API 호출
       .then((response) => response.text()) // 응답을 JSON으로 변환
       .then((data) => {
-        console.log(data); // 데이터 출력
-        // saveFilePath를 사용하여 데이터를 저장하거나 추가적인 처리를 수행할 수 있습니다.
-        // saveFilePath;
+        // console.log(data); // 데이터 출력
       })
       .catch((error) => {
         console.error("API 호출 중 오류가 발생했습니다:", error);
@@ -98,20 +96,16 @@ function DashBoard() {
     fetch(openUrl)
       .then((response) => response.text())
       .then((data) => {
-        const newEncoder = new TextEncoder();
-        const bytes = newEncoder.encode("한");
-        console.log(bytes);
-
-        const binaryArray = Array.from(bytes, (byte) => {
-          return byte.toString(2);
-        });
-        const binaryString = binaryArray.join(" ");
-
-        const textDecoder = new TextDecoder("euc-kr");
-
+        // const newEncoder = new TextEncoder();
+        // const bytes = newEncoder.encode("한");
+        // console.log(bytes);
+        // const binaryArray = Array.from(bytes, (byte) => {
+        //   return byte.toString(2);
+        // });
+        // const binaryString = binaryArray.join(" ");
+        // const textDecoder = new TextDecoder("euc-kr");
         // console.log(binaryString);
-
-        console.log(textDecoder.decode(data)); // openUrl의 내용을 console.log로 출력
+        // console.log(textDecoder.decode(data)); // openUrl의 내용을 console.log로 출력
       })
       .catch((error) => {
         console.error("openUrl 호출 중 오류가 발생했습니다:", error);

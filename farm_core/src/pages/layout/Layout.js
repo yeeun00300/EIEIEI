@@ -55,8 +55,8 @@ function Layout(props) {
       ],
     },
   ];
-  // const admin = true;
-  const admin = false;
+  const admin = true;
+  // const admin = false;
 
   // 선택된 리스트(컴포넌트)의 id와 label 을 가져온다-----------------------
   const apiRef = useTreeViewApiRef();
@@ -110,10 +110,11 @@ function Layout(props) {
     <>
       {admin ? (
         <div className={styles.layout}>
-          <div className={styles.AdminTitle}>
+          <Header title={"AdminPage"} />
+          {/* <div >
             <h1>관리자페이지</h1>
             <button>홈페이지로 돌아가기</button>
-          </div>
+          </div> */}
           <div className={styles.wrapper}>
             <TreeViewComp
               contents={MUI_X_PRODUCTS}
@@ -123,7 +124,7 @@ function Layout(props) {
         </div>
       ) : (
         <div className={styles.layout}>
-          <Header />
+          <Header title={"FarmCore"} />
           <div className={styles.wrapper}>
             <Nav />
             <Outlet />
