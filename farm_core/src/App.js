@@ -34,36 +34,44 @@ function App() {
   //   });
   // const notLogin = true;
   const notLogin = false;
+
+  const admin = true;
+  // const admin = false;
   return (
     // <div className="App">
     // Final Project!
     <BrowserRouter>
       <Routes>
-        {notLogin ? (
-          // 비로그인시
-          <Route path="/">
-            <Route index element={<Intro />} />
-            <Route path="SignUp" element={<SignUp />} />
-          </Route>
-        ) : (
-          // 로그인시
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Main />} />
-            <Route path="DashBoard" element={<DashBoard />} />
-            <Route path="Customer" element={<Customer />} />
-            <Route path="Admin" element={<Admin />} />
-            <Route path="Community">
-              <Route index element={<Community />} />
-              <Route path="freeboard" element={<FreeboardPage />} />
+        {
+          //관리자 계정일 경우 렌더링
+          admin ? (
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Admin />} />
             </Route>
-            <Route path="MyPage" element={<MyPage />} />
-            <Route path="UserInfo" element={<UserInfo />} />
-            <Route path="my-community" element={<MyCommunity />} />
-            <Route path="question" element={<Question />} />
-            <Route path="payment" element={<Payment />} />
-          </Route>
-        )}
-        <Route path="Admin" element={<Admin />} />
+          ) : notLogin ? (
+            // 비로그인시
+            <Route path="/">
+              <Route index element={<Intro />} />
+              <Route path="SignUp" element={<SignUp />} />
+            </Route>
+          ) : (
+            // 로그인시
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Main />} />
+              <Route path="DashBoard" element={<DashBoard />} />
+              <Route path="Customer" element={<Customer />} />
+              <Route path="Community">
+                <Route index element={<Community />} />
+                <Route path="freeboard" element={<FreeboardPage />} />
+              </Route>
+              <Route path="MyPage" element={<MyPage />} />
+              <Route path="UserInfo" element={<UserInfo />} />
+              <Route path="my-community" element={<MyCommunity />} />
+              <Route path="question" element={<Question />} />
+              <Route path="payment" element={<Payment />} />
+            </Route>
+          )
+        }
       </Routes>
     </BrowserRouter>
     // </div>
