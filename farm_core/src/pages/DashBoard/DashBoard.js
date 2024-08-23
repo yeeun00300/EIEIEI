@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./DashBoard.module.scss";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { json } from "react-router";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import LineChart01 from "../../components/Chart/LineChart01";
 
 const dataset = [
   { x: 1, y: 0.8 },
@@ -70,7 +70,13 @@ function DashBoard() {
       <h1>습도</h1>
       <p>최대 : {humidity}% </p>
       <h1>체중</h1>
-      <LineChart
+      <LineChart01
+        dataset={dataset}
+        color={"#78909c"}
+        xInterval={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
+        yInterval={[1, 3, 5, 7, 9, 11]}
+      />
+      {/* <LineChart
         dataset={dataset}
         xAxis={[
           {
@@ -86,7 +92,7 @@ function DashBoard() {
         grid={{ horizontal: true }}
         // loading={true}
         // grid={{ vertical: true, horizontal: true }}
-      />
+      /> */}
     </>
   );
 }
