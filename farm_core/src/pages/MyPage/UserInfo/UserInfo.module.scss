@@ -1,0 +1,43 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  margin-top: 3rem;
+  width: 40%;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  div {
+    display: flex;
+    align-items: flex-start;
+  }
+  .profile {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+  }
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      border: none;
+      padding: 1rem;
+      border-radius: 1rem;
+      cursor: pointer;
+    }
+    .naver {
+      background-color: var(--main-color);
+    }
+  }
+}

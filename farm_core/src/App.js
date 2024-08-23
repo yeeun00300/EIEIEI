@@ -11,7 +11,6 @@ import MyPage from "./pages/MyPage/MyPage";
 import Layout from "./pages/layout/Layout";
 import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
-import FreeboardPage from "./pages/Community/FreeboardPage";
 
 function App() {
   // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
@@ -50,6 +49,10 @@ function App() {
             <Route path="Admin" element={<Admin />} />
             <Route path="Community" element={<Community />} />
             <Route path="MyPage" element={<MyPage />} />
+            <Route path="UserInfo" element={<UserInfo />} />
+            <Route path="my-community" element={<MyCommunity />} />
+            <Route path="question" element={<Question />} />
+            <Route path="payment" element={<Payment />} />
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />
