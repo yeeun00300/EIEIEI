@@ -12,6 +12,7 @@ import Layout from "./pages/layout/Layout";
 import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
 import FreeboardPage from "./pages/Community/FreeboardPage";
+import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
 
 function App() {
   // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
