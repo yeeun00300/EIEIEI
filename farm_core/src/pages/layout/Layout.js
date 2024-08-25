@@ -6,8 +6,14 @@ import Footer from "./footer/Footer";
 import Nav from "./nav/Nav";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
 import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setAdminLogin } from "../../store/loginSlice/loginSlice";
 
 function Layout(props) {
+  const dispatch = useDispatch();
+  const { adminLogin } = useSelector((state) => state.loginSlice);
+
   const MUI_X_PRODUCTS = [
     {
       id: "user",
@@ -55,8 +61,17 @@ function Layout(props) {
       ],
     },
   ];
-  const admin = true;
-  // const admin = false;
+  // const adminLogin = true;
+  // const adminLogin = false;
+
+  //  관리자 페이지 로그인 유뮤 - loginSlice => adminLogin
+  const transAdminLogin = () => {
+    if (adminLogin) {
+      dispatch(setAdminLogin({ adminLogin: true }));
+    } else {
+      dispatch(setAdminLogin({ adminLogin: false }));
+    }
+  };
 
   // 선택된 리스트(컴포넌트)의 id와 label 을 가져온다-----------------------
   const apiRef = useTreeViewApiRef();
@@ -108,7 +123,7 @@ function Layout(props) {
 
   return (
     <>
-      {admin ? (
+      {adminLogin ? (
         <div className={styles.layout}>
           <Header title={"AdminPage"} />
           {/* <div >

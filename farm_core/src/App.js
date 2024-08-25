@@ -11,8 +11,14 @@ import MyPage from "./pages/MyPage/MyPage";
 import Layout from "./pages/layout/Layout";
 import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setNotLogin } from "./store/loginSlice/loginSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  const { notLogin } = useSelector((state) => state.loginSlice);
+
   // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
 
   // const startDate = "20200821";
@@ -28,7 +34,17 @@ function App() {
   //     console.log(result);
   //   });
   // const notLogin = true;
-  const notLogin = false;
+  // const notLogin = false;
+
+  //  관리자 페이지 로그인 유뮤 - loginSlice => notLogin
+  const logInOX = () => {
+    if (notLogin) {
+      dispatch(setNotLogin({ notLogin: false }));
+    } else {
+      dispatch(setNotLogin({ notLogin: true }));
+    }
+  };
+
   return (
     // <div className="App">
     // Final Project!
