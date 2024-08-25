@@ -36,10 +36,7 @@ function TreeViewComp({ contents, renderContent }) {
           </Box>
         </ul>
       </div>
-      <div>
-        Wrapper
-        {renderContent()}
-      </div>
+      <div>{renderContent()}</div>
     </>
   );
 }

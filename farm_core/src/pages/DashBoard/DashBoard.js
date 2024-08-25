@@ -3,6 +3,8 @@ import styles from "./DashBoard.module.scss";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { json } from "react-router";
 import LineChart01 from "../../components/Chart/LineChart01";
+import Gauge01 from "../../components/Gauge/Gauge01";
+import CirculerGauge01 from "../../components/Gauge/CirculerGauge01";
 
 const dataset = [
   { x: 1, y: 0.8 },
@@ -155,6 +157,8 @@ function DashBoard() {
         // loading={true}
         // grid={{ vertical: true, horizontal: true }}
       /> */}
+      <Gauge01 />
+      <CirculerGauge01 />
     </>
   );
 }

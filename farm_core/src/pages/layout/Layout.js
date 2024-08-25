@@ -65,13 +65,13 @@ function Layout(props) {
   // const adminLogin = false;
 
   //  관리자 페이지 로그인 유뮤 - loginSlice => adminLogin
-  const transAdminLogin = () => {
-    if (adminLogin) {
-      dispatch(setAdminLogin({ adminLogin: true }));
-    } else {
-      dispatch(setAdminLogin({ adminLogin: false }));
-    }
-  };
+  // const transAdminLogin = () => {
+  //   if (adminLogin) {
+  //     dispatch(setAdminLogin({ adminLogin: true }));
+  //   } else {
+  //     dispatch(setAdminLogin({ adminLogin: false }));
+  //   }
+  // };
 
   // 선택된 리스트(컴포넌트)의 id와 label 을 가져온다-----------------------
   const apiRef = useTreeViewApiRef();
@@ -131,10 +131,13 @@ function Layout(props) {
             <button>홈페이지로 돌아가기</button>
           </div> */}
           <div className={styles.wrapper}>
-            <TreeViewComp
-              contents={MUI_X_PRODUCTS}
-              renderContent={renderContent}
-            />
+            <div className={styles.nav}>
+              <TreeViewComp
+                contents={MUI_X_PRODUCTS}
+                renderContent={renderContent}
+              />
+              <Footer />
+            </div>
           </div>
         </div>
       ) : (
