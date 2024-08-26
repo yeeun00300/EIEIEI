@@ -25,7 +25,7 @@ function Question(props) {
               <input type="text" id="name" name="name" />
             </div>
             <div className={styles.box}>
-              <label for="message">문의 내용</label>
+              <label htmlFor="message">문의 내용</label>
               <textarea id="message" name="message"></textarea>
             </div>
             <button type="submit">보내기</button>

@@ -12,6 +12,15 @@ const dataObj = {
 };
 
 function MyPage() {
+  const API_KEY = "6NBSX27F-6NBS-6NBS-6NBS-6NBSX27F4W";
+
+  const ASF = fetch(
+    `/api2/sm/apis.do?apiKey=${API_KEY}&layer=A2SM_LvstckIctsd7&style=A2SM_LvstckIctsd7`
+  ).then((response) => {
+    console.log(response.json());
+    return response;
+  });
+
   return (
     <div className="page">
       <div>

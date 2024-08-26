@@ -11,24 +11,24 @@ function AdminUser() {
         <div>
           회원별 회원/탈퇴회원 :
           <input type="radio" id="user" name="member" value="회원" />
-          <label for="user">회원</label>
+          <label htmlFor="user">회원</label>
           <input type="radio" id="deleteUser" name="member" value="탈퇴회원" />
-          <label for="deleteUser">탈퇴회원</label>
+          <label htmlFor="deleteUser">탈퇴회원</label>
         </div>
         <div>
           목장별 소/돼지/닭 :{" "}
           <div>
             회원별 회원/탈퇴회원
             <input type="radio" id="k-beef" name="stock" value="한우" />
-            <label for="k-beef">한우</label>
+            <label htmlFor="k-beef">한우</label>
             <input type="radio" id="dairy" name="stock" value="낙농" />
-            <label for="dairy">낙농</label>
+            <label htmlFor="dairy">낙농</label>
             <input type="radio" id="pork" name="stock" value="양돈" />
-            <label for="pork">양돈</label>
+            <label htmlFor="pork">양돈</label>
             <input type="radio" id="chicken" name="stock" value="육계" />
-            <label for="chicken">육계</label>
+            <label htmlFor="chicken">육계</label>
             <input type="radio" id="layer" name="stock" value="산란계" />
-            <label for="layer">산란계</label>
+            <label htmlFor="layer">산란계</label>
           </div>
         </div>
       </div>
