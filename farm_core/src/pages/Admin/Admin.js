@@ -12,6 +12,7 @@ import AdminUser from "../../components/Admin-User/AdminUser";
 import AdminStock from "../../components/Admin-Stock/AdminStock";
 import AdminBlackList from "../../components/Admin-BlackList/AdminBlackList";
 import Weather from "../../api/Weather/Weather";
+import Alarm from "../../components/Alarm/Alarm";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -103,8 +104,8 @@ function Admin() {
       "disease-issue": <h1>질병 특보</h1>,
       "disease-consult": <h1>문진표 목록</h1>,
       "disease-notice": <h1>알림 목록</h1>,
-      "alarm-weather": <h1>날씨 알림</h1>,
-      "alarm-disease": <h1>질병 알림</h1>,
+      "alarm-weather": <Alarm title={"날씨 알림"} />,
+      "alarm-disease": <Alarm title={"질병 알림"} />,
     };
 
     return componentsMap[itemId] || <h1>Default Content</h1>;

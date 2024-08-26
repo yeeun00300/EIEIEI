@@ -108,7 +108,16 @@ function DashBoard() {
       });
   }
 
+  // $0#159#202408261340#163#202408261339#2#김태희#syn22#99#오늘 저녁까지 부울경 소나기 곳, 천둥.번개 동반 강한 소나기 유의#
+  // $1#
+  // < 특보 현황 >
+  // ○ 폭염경보: 부산, 경상남도(양산, 창원, 김해, 밀양, 의령, 함안, 창녕, 진주, 하동, 합천, 산청, 함양)
+  // ○ 폭염주의보: 울산, 경상남도(거창, 통영, 거제, 고성, 남해, 사천)
+
+  // <예비특보 현황>
+  // ○ 풍랑 예비특보(27일 오전(06~12시)): 남해동부바깥먼바다
   // 사용 예시
+
   const apiUrl = `/api1/api/typ01/url/wrn_inf_rpt.php?tmfc1=${finalTimeB}&tmfc2=${finalTime}&disp=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`;
   // "https://apihub.kma.go.kr/api/json?authKey=i9aTpajSSUyWk6Wo0hlMnw";
   const savePath = "/path/to/save/file.json";
