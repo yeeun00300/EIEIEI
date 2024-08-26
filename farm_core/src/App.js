@@ -14,6 +14,10 @@ import Community from "./pages/Community/Community";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setNotLogin } from "./store/loginSlice/loginSlice";
+import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
+import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
+import ListPage from "./pages/Community/ListPage";
+import Question from "./pages/MyPage/Question/Question";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +68,9 @@ function App() {
             <Route path="Customer" element={<Customer />} />
             <Route path="Community" element={<Community />} />
             <Route path="MyPage" element={<MyPage />} />
+            <Route path="UserInfo" element={<UserInfo />} />
+            <Route path="MyCommunity" element={<MyCommunity />} />
+            <Route path="Question" element={<Question />} />
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />

@@ -56,7 +56,7 @@ function UserInfo(props) {
             <div className={styles.profile}>
               <img src={img} className={styles.personImg} />
               <input type="file" className={styles.hidden} />
-              <p>프로필 사진:</p>
+              <p>프로필 사진 변경하기</p>
             </div>
             <div>
               이름 : <input />
