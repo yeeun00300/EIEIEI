@@ -12,6 +12,8 @@ import { setAdminLogin } from "../../store/loginSlice/loginSlice";
 import { Box } from "@mui/material";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import MyPage from "../MyPage/MyPage";
+import Community from "../Community/Community";
+import FreeboardPage from "../Community/FreeboardPage";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -173,7 +175,7 @@ function Layout(props) {
       "": <Outlet />,
       My_Farm: " ",
       My_Farm_Details: " ",
-      My_Farm_Board: " ",
+      My_Farm_Board: <Community />,
       My_Farm_MyPage: <MyPage />,
       My_Farm01: <h1>나의 목장 01</h1>,
       My_Farm02: <h1>나의 목장 02</h1>,
@@ -183,7 +185,7 @@ function Layout(props) {
       My_Farm_Details_Disease: <h1>질병 현황</h1>,
       My_Farm_Details_Info: <h1>상세정보</h1>,
       My_Farm_Board_Total: <h1>전체 보기</h1>,
-      My_Farm_Board_FreeBoard: <h1>자유게시판</h1>,
+      My_Farm_Board_FreeBoard: <FreeboardPage />,
       My_Farm_Board_Community: <h1>커뮤니티</h1>,
       // My_Farm_MyPage_InfoEdit: <h1>회원정보/수정</h1>,
       // My_Farm_MyPage_MyBoard: <h1>내 게시글</h1>,
