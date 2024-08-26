@@ -9,6 +9,8 @@ import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
 import Header from "../layout/header/Header";
 import Footer from "../layout/footer/Footer";
 import AdminUser from "../../components/Admin-User/AdminUser";
+import AdminStock from "../../components/Admin-Stock/AdminStock";
+import AdminBlackList from "../../components/Admin-BlackList/AdminBlackList";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -88,8 +90,8 @@ function Admin() {
       disease: " ",
       alarm: " ",
       "user-info": <AdminUser />,
-      "user-stock-info": <h1>가축 이력</h1>,
-      "user-blackList": <h1>블랙 리스트</h1>,
+      "user-stock-info": <AdminStock />,
+      "user-blackList": <AdminBlackList />,
       "customer-management": <h1>게시판 관리</h1>,
       "customer-QnA": <h1>문의 사항</h1>,
       "customer-declare": <h1>신고 게시물</h1>,

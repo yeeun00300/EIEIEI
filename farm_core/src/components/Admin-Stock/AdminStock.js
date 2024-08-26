@@ -1,21 +1,20 @@
 import React from "react";
-import styles from "./AdminUser.module.scss";
-
-function AdminUser() {
+import styles from "./AdminStock.module.scss";
+function AdminStock() {
   return (
-    <div className={styles.AdminUser}>
-      <div>회원 정보 리스트</div>
+    <div className={styles.AdminStock}>
+      <div>가축 정보 리스트</div>
       <div>
-        <div>등록 기간 : </div>
-        <div>
+        <div>등록기간 : </div>
+        {/* <div>
           회원별 회원/탈퇴회원 :
           <input type="radio" id="user" name="member" value="회원" />
           <label for="user">회원</label>
           <input type="radio" id="deleteUser" name="member" value="탈퇴회원" />
           <label for="deleteUser">탈퇴회원</label>
-        </div>
+        </div> */}
         <div>
-          농장 종류별 :
+          가축별 :
           <input type="radio" id="k-beef" name="stock" value="한우" />
           <label for="k-beef">한우</label>
           <input type="radio" id="dairy" name="stock" value="낙농" />
@@ -29,7 +28,7 @@ function AdminUser() {
         </div>
       </div>
       <div>
-        회원 리스트
+        가축 리스트
         <ul>
           <li></li>
         </ul>
@@ -38,4 +37,4 @@ function AdminUser() {
   );
 }
 
-export default AdminUser;
+export default AdminStock;
