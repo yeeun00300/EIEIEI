@@ -11,5 +11,7 @@ const store = configureStore({
     communitySlice,
     userInfoEditSlice,
   },
+  middleware: (getDefaultMiddleWare) =>
+    getDefaultMiddleWare({ serializableCheck: false }),
 });
 export default store;

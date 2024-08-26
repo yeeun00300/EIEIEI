@@ -40,3 +40,4 @@ const fetchUser = createAsyncThunk(
 );
 
 export default userInfoEditSlice.reducer;
+export { fetchUser };

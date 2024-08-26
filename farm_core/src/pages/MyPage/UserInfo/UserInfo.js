@@ -9,15 +9,22 @@ import {
   setZoneCode,
   toggleOpen,
 } from "../../../store/myPageSlice/addressSlice";
-import userInfoEditSlice from "./../../../store/userInfoEditSlice/UserInfoEditSlice";
+import userInfoEditSlice, {
+  fetchUser,
+} from "./../../../store/userInfoEditSlice/UserInfoEditSlice";
+import { useParams } from "react-router-dom";
 
 function UserInfo(props) {
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const userId = Number(id);
   const { address, zoneCode, isOpen } = useSelector(
     (state) => state.addressSlice
   );
 
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+  console.log(userInfo);
+
   const themeObj = {
     bgColor: "#FFFFFF",
     pageBgColor: "#FFFFFF",
@@ -50,7 +57,12 @@ function UserInfo(props) {
   };
 
   console.log(userInfo);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const queryOptions = {
+      conditions: [{ filed: "id", operator: "==", value: userId }],
+    };
+    dispatch(fetchUser({ collectionName: "users", queryOptions }));
+  }, []);
 
   return (
     <div>

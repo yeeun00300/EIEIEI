@@ -18,11 +18,16 @@ import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
 import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
 import ListPage from "./pages/Community/ListPage";
 import Question from "./pages/MyPage/Question/Question";
+<<<<<<< Updated upstream
 // <<<<<<< Updated upstream
 import Payment from "./pages/MyPage/Payment/Payment";
 // =======
 import FreeboardPage from "./pages/Community/FreeboardPage";
 // >>>>>>> Stashed changes
+=======
+import Payment from "./pages/MyPage/Payment/Payment";
+import FreeboardPage from "./pages/Community/FreeboardPage";
+>>>>>>> Stashed changes
 
 function App() {
   const dispatch = useDispatch();
@@ -76,9 +81,9 @@ function App() {
             <Route path="freeboard" element={<FreeboardPage />} />
             <Route path="MyPage" element={<MyPage />} />
             <Route path="UserInfo" element={<UserInfo />} />
-            <Route path="MyCommunity" element={<MyCommunity />} />
-            <Route path="Question" element={<Question />} />
-            <Route path="payment" element={<Payment />} />
+            <Route path="MyCommunity/:id" element={<MyCommunity />} />
+            <Route path="Question/:id" element={<Question />} />
+            <Route path="payment/:id" element={<Payment />} />
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />
