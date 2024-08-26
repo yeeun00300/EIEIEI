@@ -9,12 +9,15 @@ import {
   setZoneCode,
   toggleOpen,
 } from "../../../store/myPageSlice/addressSlice";
+import userInfoEditSlice from "./../../../store/userInfoEditSlice/UserInfoEditSlice";
 
 function UserInfo(props) {
   const dispatch = useDispatch();
   const { address, zoneCode, isOpen } = useSelector(
     (state) => state.addressSlice
   );
+
+  const { userInfo } = useSelector((state) => state.userInfoEditSlice);
   const themeObj = {
     bgColor: "#FFFFFF",
     pageBgColor: "#FFFFFF",
@@ -46,17 +49,23 @@ function UserInfo(props) {
     dispatch(setAddress(e.target.value));
   };
 
+  console.log(userInfo);
+  useEffect(() => {}, []);
+
   return (
-    <div className="page">
-      <div className="container">
+    <div>
+      <div className="wrapper">
         <h1>My Page</h1>
         <hr />
         <div className={styles.wrapper}>
           <div className={styles.userInfo}>
             <div className={styles.profile}>
               <img src={img} className={styles.personImg} />
+
               <input type="file" className={styles.hidden} />
-              <p>프로필 사진 변경하기</p>
+            </div>
+            <div className={styles.profileBtn}>
+              <button>프로필사진변경하기</button>
             </div>
             <div>
               이름 : <input />

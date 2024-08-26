@@ -14,7 +14,7 @@ const dataObj = {
 function MyPage() {
   return (
     <div className="page">
-      <div className="container">
+      <div>
         <div className={styles.wrapper}>
           <div className={styles.user}>
             <h3>ID님 환영합니다.</h3>
