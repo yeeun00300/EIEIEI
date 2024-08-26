@@ -18,7 +18,7 @@ function MyCommunity({ variant, children }) {
   console.log(communityContents);
   return (
     <div className="page">
-      <div className="container">
+      <div>
         {communityContents.map((content, idx) => {
           return <CommunityConents {...content} key={idx} />;
         })}

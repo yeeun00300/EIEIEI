@@ -1,0 +1,38 @@
+.wrapper {
+}
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../../../img/credit-card-3186085_1280.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.gap {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+
+  h3 {
+    font-size: 2rem;
+  }
+  .user {
+    color: var(--main-color);
+    span {
+      color: black;
+    }
+  }
+}
+.test {
+  display: flex;
+  padding: 20px;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: flex-start;
+    list-style-type: none;
+  }
+}

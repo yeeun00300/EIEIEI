@@ -18,6 +18,7 @@ import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
 import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
 import ListPage from "./pages/Community/ListPage";
 import Question from "./pages/MyPage/Question/Question";
+import Payment from "./pages/MyPage/Payment/Payment";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ function App() {
             <Route path="UserInfo" element={<UserInfo />} />
             <Route path="MyCommunity" element={<MyCommunity />} />
             <Route path="Question" element={<Question />} />
+            <Route path="payment" element={<Payment />} />
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />
