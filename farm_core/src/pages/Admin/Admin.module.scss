@@ -1,43 +1,33 @@
-.AdminPage {
-  height: 100vh;
+.layout {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  // overflow: hidden;
 }
 
-.AdminTitle {
-  height: 80px;
-  border: 1px solid black;
-  padding-left: 24px;
+.wrapper {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  h1 {
-    text-align: center;
-  }
-  button {
-    padding: 12px;
-    border: 1px solid black;
-    border-radius: 24px;
-    background-color: transparent;
-    &:hover {
-      background-color: lightgray;
-    }
-  }
-}
-.AdminContainer {
   flex: 1;
-  display: flex;
-  border: 1px solid black;
-}
-.AdminNav {
-  width: 300px;
-  padding-left: 30px;
-  border: 1px solid black;
-  li {
-    margin-bottom: 12px;
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 200px;
+    height: 100%;
+    background-color: var(--background-color);
+    // z-index: -1;
+    word-break: keep-all;
+  }
+  .container {
+    flex: 1;
+    padding-left: 30px;
+    padding-top: 30px;
   }
 }
-.AdminNavList {
-  list-style-type: none;
-  padding: 0;
-}
+
+// .content {
+//   flex: 1;
+//   overflow-y: auto;
+// }

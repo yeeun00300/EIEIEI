@@ -6,6 +6,9 @@ import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Customer from "./../Customer/Customer";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
 import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
+import Header from "../layout/header/Header";
+import Footer from "../layout/footer/Footer";
+import AdminUser from "../../components/Admin-User/AdminUser";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -84,7 +87,7 @@ function Admin() {
       weather: " ",
       disease: " ",
       alarm: " ",
-      "user-info": <h1>회원정보</h1>,
+      "user-info": <AdminUser />,
       "user-stock-info": <h1>가축 이력</h1>,
       "user-blackList": <h1>블랙 리스트</h1>,
       "customer-management": <h1>게시판 관리</h1>,
@@ -107,31 +110,39 @@ function Admin() {
 
   useEffect(() => {}, [itemId]);
   return (
-    <div className={styles.AdminPage}>
-      <div className={styles.AdminTitle}>
-        <h1>관리자페이지</h1>
-        <button>홈페이지로 돌아가기</button>
-      </div>
-      <div className={styles.AdminContainer}>
-        <TreeViewComp contents={MUI_X_PRODUCTS} renderContent={renderContent} />
-        {/* <div className={styles.AdminContainer}>
-        <div className={styles.AdminNav}>
-          <ul className={styles.AdminNavList}>
-            <Box sx={{ minHeight: 352, minWidth: 250 }}>
-              <RichTreeView
-                items={MUI_X_PRODUCTS}
-                apiRef={apiRef}
-                selectedItems={selectedItem?.id ?? null}
-                onSelectedItemsChange={handleSelectedItemsChange}
-              />
-            </Box>
-          </ul>
+    <div className={styles.layout}>
+      <Header title={"AdminPage test Server"} />
+      <div className={styles.wrapper}>
+        <div className={styles.nav}>
+          <Box sx={{ minHeight: 352, minWidth: 200 }}>
+            <RichTreeView
+              items={MUI_X_PRODUCTS}
+              apiRef={apiRef}
+              selectedItems={selectedItem?.id ?? null}
+              onSelectedItemsChange={handleSelectedItemsChange}
+            />
+          </Box>
+          <Footer />
         </div>
-        <div>
-          Wrapper
-          {renderContent()}
-        </div> */}
+        <div className={styles.container}>{renderContent()}</div>
       </div>
+      {/* <div className={styles.AdminContainer}>
+          <div className={styles.AdminNav}>
+            <ul className={styles.AdminNavList}>
+              <Box sx={{ minHeight: 352, minWidth: 250 }}>
+                <RichTreeView
+                  items={MUI_X_PRODUCTS}  
+                  apiRef={apiRef}
+                  selectedItems={selectedItem?.id ?? null}
+                  onSelectedItemsChange={handleSelectedItemsChange}
+                />
+              </Box>
+            </ul>
+          </div>
+          <div>
+            Wrapper
+            {renderContent()}
+          </div> */}
     </div>
   );
 }
