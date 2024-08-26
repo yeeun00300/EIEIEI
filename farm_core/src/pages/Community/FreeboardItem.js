@@ -10,7 +10,7 @@ function freeBoardItem() {
       <div className={styles.freeboardItem}>
         <img src={hiImg} />
         <div className={styles.content}>
-          <Link to="/Community/freeboard">
+          <Link to="/freeboard">
             <h2 className={styles.title}>안녕하세요</h2>
           </Link>
           <p>처음왔는데...</p>
