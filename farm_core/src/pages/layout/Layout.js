@@ -9,11 +9,15 @@ import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setAdminLogin } from "../../store/loginSlice/loginSlice";
+import { Box } from "@mui/material";
+import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
+import MyPage from "../MyPage/MyPage";
 
 function Layout(props) {
   const dispatch = useDispatch();
   const { adminLogin } = useSelector((state) => state.loginSlice);
 
+  // amin nav list
   const MUI_X_PRODUCTS = [
     {
       id: "user",
@@ -61,6 +65,48 @@ function Layout(props) {
       ],
     },
   ];
+
+  // user nav list
+  const USER_PRODUCTS = [
+    {
+      id: "My_Farm",
+      label: "나의 목장",
+      children: [
+        { id: "My_Farm01", label: "나의 목장 1" },
+        { id: "My_Farm02", label: "나의 목장 2" },
+        { id: "My_Farm03", label: "나의 목장 3" },
+      ],
+    },
+    {
+      id: "My_Farm_Details",
+      label: "목장 상세 관리",
+      children: [
+        { id: "My_Farm_Details_Farm", label: "목장 현황" },
+        { id: "My_Farm_Details_CCTV", label: "CCTV" },
+        { id: "My_Farm_Details_Disease", label: "질병 현황" },
+        { id: "My_Farm_Details_Info", label: "상세정보" },
+      ],
+    },
+    {
+      id: "My_Farm_Board",
+      label: "게시판",
+      children: [
+        { id: "My_Farm_Board_Total", label: "전체보기" },
+        { id: "My_Farm_Board_FreeBoard", label: "자유게시판" },
+        { id: "My_Farm_Board_Community", label: "커뮤니티" },
+      ],
+    },
+    {
+      id: "My_Farm_MyPage",
+      label: "마이페이지",
+      children: [
+        { id: "My_Farm_MyPage_InfoEdit", label: "회원정보/수정" },
+        { id: "My_Farm_MyPage_MyBoard", label: "내 게시글" },
+        { id: "My_Farm_MyPage_Inquire", label: "1:1문의하기" },
+        { id: "My_Farm_MyPage_Payment", label: "결제내역" },
+      ],
+    },
+  ];
   // const adminLogin = true;
   // const adminLogin = false;
 
@@ -92,6 +138,7 @@ function Layout(props) {
   // ---------------------------------------------------------------------
 
   // 선택 리스트의 정보를 화면에 나타낸다 ----------------------------------
+  // admin nav component
   const renderContent = () => {
     const componentsMap = {
       "": " ",
@@ -120,32 +167,76 @@ function Layout(props) {
     return componentsMap[itemId] || <h1>Default Content</h1>;
   };
   // --------------------------------------------------------------------
+  // user nav component
+  const renderUserContent = () => {
+    const componentsMap = {
+      "": <Outlet />,
+      My_Farm: " ",
+      My_Farm_Details: " ",
+      My_Farm_Board: " ",
+      My_Farm_MyPage: <MyPage />,
+      My_Farm01: <h1>나의 목장 01</h1>,
+      My_Farm02: <h1>나의 목장 02</h1>,
+      My_Farm03: <h1>나의 목장 03</h1>,
+      My_Farm_Details_Farm: <h1>목장 현황</h1>,
+      My_Farm_Details_CCTV: <h1>CCTV</h1>,
+      My_Farm_Details_Disease: <h1>질병 현황</h1>,
+      My_Farm_Details_Info: <h1>상세정보</h1>,
+      My_Farm_Board_Total: <h1>전체 보기</h1>,
+      My_Farm_Board_FreeBoard: <h1>자유게시판</h1>,
+      My_Farm_Board_Community: <h1>커뮤니티</h1>,
+      My_Farm_MyPage_InfoEdit: <h1>회원정보/수정</h1>,
+      My_Farm_MyPage_MyBoard: <h1>내 게시글</h1>,
+      My_Farm_MyPage_Inquire: <h1>1:1문의하기</h1>,
+      My_Farm_MyPage_Payment: <h1>결제 내역</h1>,
+    };
+
+    return componentsMap[itemId] || <h1>Default Content</h1>;
+  };
+  // --------------------------------------------------------------------
 
   return (
     <>
       {adminLogin ? (
         <div className={styles.layout}>
           <Header title={"AdminPage"} />
-          {/* <div >
-            <h1>관리자페이지</h1>
-            <button>홈페이지로 돌아가기</button>
-          </div> */}
           <div className={styles.wrapper}>
             <div className={styles.nav}>
-              <TreeViewComp
+              {/* <TreeViewComp
                 contents={MUI_X_PRODUCTS}
                 renderContent={renderContent}
-              />
+              /> */}
+              <Box sx={{ minHeight: 352, minWidth: 250 }}>
+                <RichTreeView
+                  items={MUI_X_PRODUCTS}
+                  apiRef={apiRef}
+                  selectedItems={selectedItem?.id ?? null}
+                  onSelectedItemsChange={handleSelectedItemsChange}
+                />
+              </Box>
               <Footer />
             </div>
+            {renderContent()}
           </div>
         </div>
       ) : (
         <div className={styles.layout}>
           <Header title={"FarmCore"} />
           <div className={styles.wrapper}>
-            <Nav />
-            <Outlet />
+            {/* <Nav contents={USER_PRODUCTS} renderContent={renderUserContent} /> */}
+            <div className={styles.nav}>
+              <Box sx={{ minHeight: 352, minWidth: 250 }}>
+                <RichTreeView
+                  items={USER_PRODUCTS}
+                  apiRef={apiRef}
+                  selectedItems={selectedItem?.id ?? null}
+                  onSelectedItemsChange={handleSelectedItemsChange}
+                />
+              </Box>
+              <Footer />
+            </div>
+            {renderUserContent()}
+            {/* <Outlet /> */}
           </div>
         </div>
       )}
