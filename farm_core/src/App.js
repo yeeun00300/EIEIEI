@@ -18,16 +18,8 @@ import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
 import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
 import ListPage from "./pages/Community/ListPage";
 import Question from "./pages/MyPage/Question/Question";
-<<<<<<< Updated upstream
-// <<<<<<< Updated upstream
-import Payment from "./pages/MyPage/Payment/Payment";
-// =======
-import FreeboardPage from "./pages/Community/FreeboardPage";
-// >>>>>>> Stashed changes
-=======
 import Payment from "./pages/MyPage/Payment/Payment";
 import FreeboardPage from "./pages/Community/FreeboardPage";
->>>>>>> Stashed changes
 
 function App() {
   const dispatch = useDispatch();
