@@ -99,12 +99,12 @@ function Layout(props) {
     {
       id: "My_Farm_MyPage",
       label: "마이페이지",
-      children: [
-        { id: "My_Farm_MyPage_InfoEdit", label: "회원정보/수정" },
-        { id: "My_Farm_MyPage_MyBoard", label: "내 게시글" },
-        { id: "My_Farm_MyPage_Inquire", label: "1:1문의하기" },
-        { id: "My_Farm_MyPage_Payment", label: "결제내역" },
-      ],
+      // children: [
+      //   { id: "My_Farm_MyPage_InfoEdit", label: "회원정보/수정" },
+      //   { id: "My_Farm_MyPage_MyBoard", label: "내 게시글" },
+      //   { id: "My_Farm_MyPage_Inquire", label: "1:1문의하기" },
+      //   { id: "My_Farm_MyPage_Payment", label: "결제내역" },
+      // ],
     },
   ];
   // const adminLogin = true;
@@ -185,10 +185,10 @@ function Layout(props) {
       My_Farm_Board_Total: <h1>전체 보기</h1>,
       My_Farm_Board_FreeBoard: <h1>자유게시판</h1>,
       My_Farm_Board_Community: <h1>커뮤니티</h1>,
-      My_Farm_MyPage_InfoEdit: <h1>회원정보/수정</h1>,
-      My_Farm_MyPage_MyBoard: <h1>내 게시글</h1>,
-      My_Farm_MyPage_Inquire: <h1>1:1문의하기</h1>,
-      My_Farm_MyPage_Payment: <h1>결제 내역</h1>,
+      // My_Farm_MyPage_InfoEdit: <h1>회원정보/수정</h1>,
+      // My_Farm_MyPage_MyBoard: <h1>내 게시글</h1>,
+      // My_Farm_MyPage_Inquire: <h1>1:1문의하기</h1>,
+      // My_Farm_MyPage_Payment: <h1>결제 내역</h1>,
     };
 
     return componentsMap[itemId] || <h1>Default Content</h1>;
