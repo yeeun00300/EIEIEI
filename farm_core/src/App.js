@@ -18,7 +18,11 @@ import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
 import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
 import ListPage from "./pages/Community/ListPage";
 import Question from "./pages/MyPage/Question/Question";
+<<<<<<< Updated upstream
 import Payment from "./pages/MyPage/Payment/Payment";
+=======
+import FreeboardPage from "./pages/Community/FreeboardPage";
+>>>>>>> Stashed changes
 
 function App() {
   const dispatch = useDispatch();
@@ -60,6 +64,7 @@ function App() {
           <Route path="/">
             <Route index element={<Intro />} />
             <Route path="SignUp" element={<SignUp />} />
+            <Route path="SignIn" element={<SignIn />} />
           </Route>
         ) : (
           // 로그인시
@@ -68,6 +73,7 @@ function App() {
             <Route path="DashBoard" element={<DashBoard />} />
             <Route path="Customer" element={<Customer />} />
             <Route path="Community" element={<Community />} />
+            <Route path="freeboard" element={<FreeboardPage />} />
             <Route path="MyPage" element={<MyPage />} />
             <Route path="UserInfo" element={<UserInfo />} />
             <Route path="MyCommunity" element={<MyCommunity />} />
