@@ -40,35 +40,36 @@ function DashBoard() {
   const getWeather = async (lat, lon) => {
     await fetch(
       // `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=1586468027&appid=${APIkey}`
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+      // `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+      `https://api.openweathermap.org/data/2.5/weather?q=Incheon&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
     )
       .then((response) => {
         return response.json();
       })
       .then((json) => {
-        // console.log("open-weather", json);
+        console.log("open-weather", json);
 
         setWeatherData(json);
       });
   };
   // -----------------------------------------------------------------------------------------------------------------------------------
   // 기상청
-  // const getWeather1 = async () => {
-  //   await fetch(
-  //     `api1/api/typ01/url/kma_sfcdd.php?&stn=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`
-  //     // `https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd.php?&stn=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`
-  //   )
-  //     .then((response) => {
-  //       return response.text();
-  //     })
-  //     .then((json) => {
-  //       console.log("기상청", json);
-  //       const xhttp = new XMLHttpRequest();
-  //       xhttp.open("GET", json);
-  //       xhttp.send();
-  //       setWeatherData1(json);
-  //     });
-  // };
+  const getWeather1 = async () => {
+    await fetch(
+      // `api1/api/typ01/url/kma_sfcdd.php?&stn=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`
+      `https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd.php?&stn=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`
+    )
+      .then((response) => {
+        return response.text();
+      })
+      .then((json) => {
+        console.log("기상청", json);
+        // const xhttp = new XMLHttpRequest();
+        // xhttp.open("GET", json);
+        // xhttp.send();
+        setWeatherData1(json);
+      });
+  };
   // -----------------------------------------------------------------------------------------------------------------------------------
   // const { humidity, temp_max, temp_min } = main;
   const {

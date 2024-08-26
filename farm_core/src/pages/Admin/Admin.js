@@ -11,6 +11,7 @@ import Footer from "../layout/footer/Footer";
 import AdminUser from "../../components/Admin-User/AdminUser";
 import AdminStock from "../../components/Admin-Stock/AdminStock";
 import AdminBlackList from "../../components/Admin-BlackList/AdminBlackList";
+import Weather from "../../api/Weather/Weather";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -95,7 +96,7 @@ function Admin() {
       "customer-management": <h1>게시판 관리</h1>,
       "customer-QnA": <h1>문의 사항</h1>,
       "customer-declare": <h1>신고 게시물</h1>,
-      "weather-condition": <h1>날씨 현황</h1>,
+      "weather-condition": <Weather />,
       "weather-issue": <h1>기상 특보</h1>,
       "weather-notice": <h1>알림 목록</h1>,
       "disease-state": <h1>질병 현황</h1>,
