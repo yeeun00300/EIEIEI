@@ -64,6 +64,7 @@ function App() {
           <Route path="/">
             <Route index element={<Intro />} />
             <Route path="SignUp" element={<SignUp />} />
+            <Route path="SignIn" element={<SignIn />} />
           </Route>
         ) : (
           // 로그인시
