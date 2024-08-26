@@ -23,8 +23,10 @@ const initializeData = {
 function DashBoard() {
   // 날씨 state
   const [weatherData, setWeatherData] = useState(initializeData);
+  const [weatherData1, setWeatherData1] = useState();
   const APIkey = "6e3669d9ce0d4e84eddd41c90c38ab37";
 
+  // -----------------------------------------------------------------------------------------------------------------------------------
   const success = (position) => {
     const latitude = 36.328799;
     const longitude = 127.4230707;
@@ -32,23 +34,42 @@ function DashBoard() {
     // const longitude = position.coords.longitude;
 
     const weatherResult = getWeather(latitude, longitude);
+    // getWeather1();
   };
-
+  // open the weather
   const getWeather = async (lat, lon) => {
     await fetch(
+      // `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=1586468027&appid=${APIkey}`
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
     )
       .then((response) => {
         return response.json();
       })
       .then((json) => {
-        // console.log(json);
-        // const { name, rain, weather, wind } = json;
-        // console.log(name, rain, weather, wind);
+        // console.log("open-weather", json);
+
         setWeatherData(json);
       });
   };
-
+  // -----------------------------------------------------------------------------------------------------------------------------------
+  // 기상청
+  // const getWeather1 = async () => {
+  //   await fetch(
+  //     `api1/api/typ01/url/kma_sfcdd.php?&stn=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`
+  //     // `https://apihub.kma.go.kr/api/typ01/url/kma_sfcdd.php?&stn=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`
+  //   )
+  //     .then((response) => {
+  //       return response.text();
+  //     })
+  //     .then((json) => {
+  //       console.log("기상청", json);
+  //       const xhttp = new XMLHttpRequest();
+  //       xhttp.open("GET", json);
+  //       xhttp.send();
+  //       setWeatherData1(json);
+  //     });
+  // };
+  // -----------------------------------------------------------------------------------------------------------------------------------
   // const { humidity, temp_max, temp_min } = main;
   const {
     main: { humidity, temp_max, temp_min, temp },
@@ -68,7 +89,7 @@ function DashBoard() {
     getTime2;
   const openUrl = `https://apihub.kma.go.kr/api/typ01/url/wrn_inf_rpt.php?tmfc1=${finalTimeB}&tmfc2=${finalTime}&disp=0&help=1&authKey=i9aTpajSSUyWk6Wo0hlMnw`;
   const openWindow = () => {
-    window.open(openUrl, "_blank", "width=600, height=600");
+    // window.open(openUrl, "_blank", "width=600, height=600");
   };
   // console.log(finalTime, finalTimeB);
 
@@ -157,8 +178,8 @@ function DashBoard() {
         // loading={true}
         // grid={{ vertical: true, horizontal: true }}
       /> */}
-      <Gauge01 />
-      <CirculerGauge01 />
+      <Gauge01 humidity={humidity} />
+      <CirculerGauge01 humidity={humidity} />
     </>
   );
 }

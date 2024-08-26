@@ -1,11 +1,11 @@
 import React from "react";
 import { Gauge, gaugeClasses } from "@mui/x-charts";
 
-function CirculerGauge01() {
+function CirculerGauge01({ humidity }) {
   const settings = {
-    width: 200,
-    height: 200,
-    value: 60,
+    width: 400,
+    height: 400,
+    value: humidity,
   };
   return (
     <Gauge
@@ -16,7 +16,7 @@ function CirculerGauge01() {
           fontSize: 40,
         },
         [`& .${gaugeClasses.valueArc}`]: {
-          fill: "#52b202",
+          fill: "#4db6ac",
         },
         [`& .${gaugeClasses.referenceArc}`]: {
           fill: theme.palette.text.disabled,
