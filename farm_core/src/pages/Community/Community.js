@@ -78,11 +78,7 @@ function Community() {
         </form>
 
         <p>총 n개 게시물</p>
-        <BoardList
-          items={dummyItems}
-          notices={noticeItems}
-          renderItem={(item) => <FreeBoardItem key={item.id} item={item} />}
-        />
+        <BoardList items={dummyItems} notices={noticeItems} />
       </ListPage>
     </div>
   );

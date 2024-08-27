@@ -3,7 +3,7 @@ import styles from "./BoardList.module.scss";
 import NoticeItem from "./NoticeItem";
 import FreeBoardItem from "./FreeboardItem";
 
-function BoardList({ items, renderItem, notices }) {
+function BoardList({ items, notices }) {
   return (
     <div className={styles.boardList}>
       {/* notices 배열을 통해 NoticeItem 컴포넌트 렌더링 */}
