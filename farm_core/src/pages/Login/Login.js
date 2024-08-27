@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import {
   setError,
   setIsLoading,
@@ -79,6 +80,11 @@ function Login() {
           success: function (response) {
             console.log("사용자 정보:", response);
             // 카카오 로그인 성공 시 처리할 로직 추가
+            const userInfo = {
+              id: response.id,
+              emaail: response.kakao_account.email,
+            };
+
             // navigator("/");
           },
           fail: function (error) {
@@ -104,17 +110,22 @@ function Login() {
 
   // 구글
 
-  const handleGoogleLogin = async () => {
+  const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("구글 로그인 성공:", user);
-      // 로그인 성공 시 처리할 로직 추가
-    } catch (error) {
-      console.error("구글 로그인 실패:", error);
-    }
+    signInWithPopup(auth, provider);
   };
+
+  // const handleGoogleLogin = async () => {
+  //   const provider = new GoogleAuthProvider();
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
+  //     console.log("구글 로그인 성공:", user);
+  //     // 로그인 성공 시 처리할 로직 추가
+  //   } catch (error) {
+  //     console.error("구글 로그인 실패:", error);
+  //   }
+  // };
 
   return (
     <div className={styles.container}>
@@ -137,7 +148,7 @@ function Login() {
           <button onClick={handleLogin}>로그인 하기</button>
         </div>
         <div>
-          <button className={styles.google} onClick={handleGoogleLogin}>
+          <button className={styles.google} onClick={signInWithGoogle}>
             구글로 로그인
           </button>
         </div>
