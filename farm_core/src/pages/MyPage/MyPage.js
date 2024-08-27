@@ -40,6 +40,9 @@ function MyPage() {
         console.error("유저 정보 불러오기 에러:", error); // 에러 로그
       });
   }, [dispatch, userId]);
+
+  
+
   return (
     <div className="page">
       <div>

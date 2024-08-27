@@ -23,7 +23,7 @@ function Weather() {
   const getWeather = async (lat, lon) => {
     await fetch(
       //   `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
-      `https://api.openweathermap.org/data/2.5/weather?q=Jeollanam-do&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
+      `https://api.openweathermap.org/data/2.5/weather?q=Daejeon&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
     )
       .then((response) => {
         return response.json();

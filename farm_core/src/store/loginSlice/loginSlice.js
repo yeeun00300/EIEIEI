@@ -1,13 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getDatas } from "../../firebase";
 
 const loginSlice = createSlice({
   name: "login",
   initialState: {
     username: "",
     password: "",
+
     notLogin: true,
     adminLogin: false,
     // 비회원 로그인
+
+    notLogin: false,
+    adminLogin: true,
 
     isLoading: false,
     error: null,
@@ -40,8 +45,35 @@ const loginSlice = createSlice({
       state.error = null;
     },
   },
-  //   extraReducers: {},
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchLogin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchLogin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = action.payload;
+      })
+      .addCase(fetchLogin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+  },
 });
+
+const fetchLogin = createAsyncThunk(
+  "Login/fetchLogin",
+  // 첫번째 파라미터는 payload--> state변경 , 두번째 파라미터는 dispatch 가능
+  async ({ collectionName, queryOptions }) => {
+    try {
+      const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
+    } catch (error) {
+      return null;
+    }
+  }
+);
 
 export const {
   setUsername,

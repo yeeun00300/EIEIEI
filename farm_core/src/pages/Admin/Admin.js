@@ -9,10 +9,13 @@ import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
 import Header from "../layout/header/Header";
 import Footer from "../layout/footer/Footer";
 import AdminUser from "../../components/Admin-User/AdminUser";
-import AdminStock from "../../components/Admin-Stock/AdminStock";
-import AdminBlackList from "../../components/Admin-BlackList/AdminBlackList";
 import Weather from "../../api/Weather/Weather";
 import Alarm from "../../components/Alarm/Alarm";
+import AdminStock from "../../components/Admin-User/AdminStock";
+import AdminBlackList from "../../components/Admin-User/AdminBlackList";
+import CustomerManagement from "../../components/Admin-Customer/CustomerManagement";
+import CustomerQnA from "../../components/Admin-Customer/CustomerQnA";
+import CustomerDeclare from "../../components/Admin-Customer/CustomerDeclare";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -84,6 +87,16 @@ function Admin() {
 
   // 선택 리스트의 정보를 화면에 나타낸다 ----------------------------------
   const renderContent = () => {
+    const weatherDescription = `< 특보 현황 >
+   ○ 폭염경보: 부산, 경상남도(양산, 창원, 김해, 밀양, 의령, 함안, 창녕, 진주, 하동, 합천, 산청, 함양)
+   ○ 폭염주의보: 울산, 경상남도(거창, 통영, 거제, 고성, 남해, 사천)
+  
+   <예비특보 현황>
+   ○ 풍랑 예비특보(27일 오전(06~12시)): 남해동부바깥먼바다
+   사용 예시`;
+    const diseaseDescription = `
+    [경기도청] 도민께서는 아프리카돼지열병 확산방지 및 조기 종식을 위하여 발생지역의 방문을 자제하여 주시기 바랍니다.
+    `;
     const componentsMap = {
       "": " ",
       user: " ",
@@ -94,9 +107,9 @@ function Admin() {
       "user-info": <AdminUser />,
       "user-stock-info": <AdminStock />,
       "user-blackList": <AdminBlackList />,
-      "customer-management": <h1>게시판 관리</h1>,
-      "customer-QnA": <h1>문의 사항</h1>,
-      "customer-declare": <h1>신고 게시물</h1>,
+      "customer-management": <CustomerManagement />,
+      "customer-QnA": <CustomerQnA />,
+      "customer-declare": <CustomerDeclare />,
       "weather-condition": <Weather />,
       "weather-issue": <h1>기상 특보</h1>,
       "weather-notice": <h1>알림 목록</h1>,
@@ -104,8 +117,12 @@ function Admin() {
       "disease-issue": <h1>질병 특보</h1>,
       "disease-consult": <h1>문진표 목록</h1>,
       "disease-notice": <h1>알림 목록</h1>,
-      "alarm-weather": <Alarm title={"날씨 알림"} />,
-      "alarm-disease": <Alarm title={"질병 알림"} />,
+      "alarm-weather": (
+        <Alarm title={"날씨 알림"} description={weatherDescription} />
+      ),
+      "alarm-disease": (
+        <Alarm title={"질병 알림"} description={diseaseDescription} />
+      ),
     };
 
     return componentsMap[itemId] || <h1>Default Content</h1>;
