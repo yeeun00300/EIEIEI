@@ -56,19 +56,6 @@ function Community() {
     return <NewBoardPage onCancel={handleBackToList} />;
   }
 
-  // const goNewBoard = () => {
-  //   <NewBoardPage />;
-  // };
-=======
-  //   const goNewBoard = () => {
-  // <<<<<<< Updated upstream
-  //     <NewBoardPage />;
-  // =======
-  //     navigate("/newBoard", { replace: true });
-  // >>>>>>> Stashed changes
-  //   };
->>>>>>> Stashed changes
-
   return (
     <div className="page">
       <ListPage variant="freeBoard">
