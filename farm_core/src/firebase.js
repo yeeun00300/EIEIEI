@@ -3,11 +3,14 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   limit,
   orderBy,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 
