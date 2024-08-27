@@ -18,11 +18,8 @@ import Admin from "../Admin/Admin";
 import Weather from "../../api/Weather/Weather";
 import MyLiveStock from "../../components/MyLiveStock/MyLiveStock";
 import Livestock from "../Community/Livestock";
-<<<<<<< Updated upstream
 import AddLiveStock from "../../components/addLiveStock/AddLiveStock";
-=======
 import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
->>>>>>> Stashed changes
 
 function Layout(props) {
   const dispatch = useDispatch();
