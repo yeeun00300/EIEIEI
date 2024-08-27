@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 import { setNotLogin } from "./store/loginSlice/loginSlice";
 import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
 import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
-import ListPage from "./pages/Community/ListPage";
 import Question from "./pages/MyPage/Question/Question";
 import Payment from "./pages/MyPage/Payment/Payment";
 import FreeboardPage from "./pages/Community/FreeboardPage";

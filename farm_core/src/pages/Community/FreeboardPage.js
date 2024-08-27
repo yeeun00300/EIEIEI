@@ -3,8 +3,8 @@ import styles from "./FreeboardPage.module.scss";
 import hiImg from "../../img/인사.jpeg";
 import { FaRegThumbsUp } from "react-icons/fa6";
 import { FaRegThumbsDown } from "react-icons/fa6";
-import CommentSection from "./CommentSection";
 import sirenImg from "../../img/신고하기.png";
+import CommentSection from "./components/CommentSection";
 
 function FreeboardPage() {
   const postData = {
@@ -35,12 +35,10 @@ function FreeboardPage() {
             <span>신고하기</span>
           </div>
           <div className={styles.reactions}>
-            <div>
-              <FaRegThumbsUp />
-              <span>4</span>
-              <FaRegThumbsDown />
-              <span>0</span>
-            </div>
+            <FaRegThumbsUp />
+            <span>4</span>
+            <FaRegThumbsDown />
+            <span>0</span>
           </div>
         </div>
         <CommentSection />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CommentList from "./CommentList";
 import styles from "./CommentSection.module.scss";
+import CommentList from "./CommentList";
 
 function CommentSection() {
   const [comments, setComments] = useState([
