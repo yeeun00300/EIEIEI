@@ -1,0 +1,27 @@
+.WeatherIssue {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  ul {
+    // list-style-type: none;
+    // padding: 18px;
+    margin: 0;
+    border: 1px solid black;
+    border-radius: 12px;
+    li {
+      margin-bottom: 8px;
+    }
+  }
+  h2 {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: bold;
+    span {
+      color: darkgrey;
+      font-size: 12px;
+    }
+  }
+  h4 {
+    padding-left: 12px;
+  }
+}

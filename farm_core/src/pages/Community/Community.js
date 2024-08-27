@@ -59,6 +59,7 @@ function Community() {
   // const goNewBoard = () => {
   //   <NewBoardPage />;
   // };
+=======
   //   const goNewBoard = () => {
   // <<<<<<< Updated upstream
   //     <NewBoardPage />;
@@ -66,6 +67,7 @@ function Community() {
   //     navigate("/newBoard", { replace: true });
   // >>>>>>> Stashed changes
   //   };
+>>>>>>> Stashed changes
 
   return (
     <div className="page">
