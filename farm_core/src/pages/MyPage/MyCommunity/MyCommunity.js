@@ -7,6 +7,7 @@ import communitySlice, {
 } from "./../../../store/communitySlice/communitySlice";
 import FreeboardPage from "../../Community/FreeboardPage";
 import CommunityConents from "./communityContent/CommunityConents";
+import Selected from "../../../components/MyLiveStock/Selected/Selected";
 
 function MyCommunity({ variant, children }) {
   const dispatch = useDispatch();

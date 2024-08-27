@@ -181,7 +181,7 @@ function Layout(props) {
       My_Farm_Details: " ",
       My_Farm_Board: <Community />,
       My_Farm_MyPage: <MyPage />,
-      My_Farm01: <h1>나의 목장 01</h1>,
+      My_Farm01: <MyLiveStock />,
       My_Farm02: <h1>나의 목장 02</h1>,
       My_Farm03: <h1>나의 목장 03</h1>,
       My_Farm_Details_Farm: <h1>목장 현황</h1>,

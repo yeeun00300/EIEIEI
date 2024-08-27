@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./MyPage.module.scss";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { Link, Outlet, useParams } from "react-router-dom";
@@ -8,6 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import userInfoEditSlice, {
   fetchUser,
 } from "./../../store/userInfoEditSlice/UserInfoEditSlice";
+import { startEditingUser } from "../../store/myPageSlice/userEditSlice";
+import UserInfo from "./UserInfo/UserInfo";
+import Question from "./Question/Question";
+import MyCommunity from "./MyCommunity/MyCommunity";
+import Payment from "./Payment/Payment";
 const dataObj = {
   UserInfo: { label: "회원정보수정", path: "UserInfo" },
   myCommunity: { label: "내 게시글", path: "MyCommunity" },
@@ -18,17 +23,12 @@ const dataObj = {
 function MyPage() {
   const { id } = useParams();
   const userId = Number(id);
-  // const API_KEY = "6NBSX27F-6NBS-6NBS-6NBS-6NBSX27F4W";
-
-  // const ASF = fetch(
-  //   `/api2/sm/apis.do?apiKey=${API_KEY}&layer=A2SM_LvstckIctsd7&style=A2SM_LvstckIctsd7`
-  // ).then((response) => {
-  //   console.log(response.json());
-  //   return response;
-  // });
+  const [user, setUser] = useState(false);
+  const [activeComponent, setActiveComponent] = useState(null);
 
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+  const isEditingUser = useSelector((state) => state.user.isEditingUser);
   useEffect(() => {
     const queryOptions = [{ condition: "id", operator: "==", value: userId }];
     dispatch(fetchUser({ collectionName: "users", queryOptions }))
@@ -41,7 +41,13 @@ function MyPage() {
       });
   }, [dispatch, userId]);
 
-  
+  const handleComponentChange = (componentName) => {
+    if (activeComponent === componentName) {
+      setActiveComponent(null);
+    } else {
+      setActiveComponent(componentName);
+    }
+  };
 
   return (
     <div className="page">
@@ -54,41 +60,47 @@ function MyPage() {
             </div>
           </div>
           <div className={styles.lists}>
-            <Link to={`/UserInfo${id}`}>
-              <Card>
-                회원정보 수정
+            <Card>
+              회원정보 수정
+              <button onClick={() => handleComponentChange("UserInfo")}>
                 <span>
                   <FaAngleDoubleRight className={styles.click} />
                 </span>
-              </Card>
-            </Link>
-            <Link to="/MyCommunity">
-              <Card>
-                내 게시글
+              </button>
+            </Card>
+
+            <Card>
+              내 게시글
+              <button onClick={() => handleComponentChange("MyCommunity")}>
                 <span>
                   <FaAngleDoubleRight className={styles.click} />
                 </span>
-              </Card>
-            </Link>
-            <Link to="/question">
-              <Card>
-                1:1 문의하기
+              </button>
+            </Card>
+
+            <Card>
+              1:1 문의하기
+              <button onClick={() => handleComponentChange("Question")}>
                 <span>
                   <FaAngleDoubleRight className={styles.click} />
                 </span>
-              </Card>
-            </Link>
-            <Link to="/payment">
-              <Card>
-                결제 내역
+              </button>
+            </Card>
+
+            <Card>
+              결제 내역
+              <button onClick={() => handleComponentChange("Payment")}>
                 <span>
                   <FaAngleDoubleRight className={styles.click} />
                 </span>
-              </Card>
-            </Link>
+              </button>
+            </Card>
           </div>
-          <Outlet />
         </div>
+        {activeComponent === "UserInfo" && <UserInfo />}
+        {activeComponent === "MyCommunity" && <MyCommunity />}
+        {activeComponent === "Question" && <Question />}
+        {activeComponent === "Payment" && <Payment />}
       </div>
     </div>
   );

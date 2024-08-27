@@ -10,7 +10,6 @@
   //   padding: 3rem 1rem;
   border-radius: 1rem;
   border: 1px solid black;
-
 }
 .user {
   display: flex;
@@ -42,6 +41,12 @@
     }
   }
 
+  button {
+    border: none;
+    background-color: transparent;
+    color: red;
+    font-size: 1.5rem;
+  }
   //   padding: 2rem;
   //   background-color: ;
 }

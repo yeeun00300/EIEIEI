@@ -76,10 +76,10 @@ function App() {
             <Route path="newBoard" element={<NewBoardPage />} />
             <Route path="livestockBoard" element={<Livestock />} />
             <Route path="MyPage" element={<MyPage />} />
-            <Route path="UserInfo" element={<UserInfo />} />
+            {/* <Route path="UserInfo" element={<UserInfo />} />
             <Route path="MyCommunity" element={<MyCommunity />} />
             <Route path="Question" element={<Question />} />
-            <Route path="payment" element={<Payment />} />
+            <Route path="payment" element={<Payment />} /> */}
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />
