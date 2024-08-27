@@ -5,6 +5,8 @@ import { json } from "react-router";
 import LineChart01 from "../../components/Chart/LineChart01";
 import Gauge01 from "../../components/Gauge/Gauge01";
 import CirculerGauge01 from "../../components/Gauge/CirculerGauge01";
+import Selected from "../../components/MyLiveStock/Selected/Selected";
+import MyLiveStock from "../../components/MyLiveStock/MyLiveStock";
 
 const dataset = [
   { x: 1, y: 0.8 },

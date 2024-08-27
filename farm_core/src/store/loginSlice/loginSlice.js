@@ -8,8 +8,6 @@ const loginSlice = createSlice({
     password: "",
     notLogin: true,
     adminLogin: false,
-    // 비회원 로그인
-
     isLoading: false,
     error: null,
   },
