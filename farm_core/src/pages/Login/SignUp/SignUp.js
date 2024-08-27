@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
@@ -29,10 +29,19 @@ function SignUp() {
   // 프로필 이미지
   const [imgFile, setImgFile] = useState("");
   const imgRef = useRef();
+  const [popup, setPopup] = useState(false);
   // 비밀번호 유효성 검사
   const checkPassword = () => {
     // const numPassword
   };
+
+  // 카카오 소셜 로그인
+  useEffect(() => {
+    const kakaoKey = "cb502fd50b617f7bae9c2c04c8d5bf24"; // 카카오 JavaScript 키
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(kakaoKey);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,8 +114,6 @@ function SignUp() {
   //   address: "",
   // });
 
-  const [popup, setPopup] = useState(false);
-
   // const handleInput = (e) => {
   //   setEnroll_company({
   //     ...address,
@@ -121,6 +128,29 @@ function SignUp() {
       // ...enroll_company,
     });
     setPopup(!popup);
+  };
+
+  // 카카오 로그인
+  const handleKakaoLogin = () => {
+    window.Kakao.Auth.login({
+      success: function (authObj) {
+        console.log("카카오 로그인 성공:", authObj);
+        window.Kakao.API.request({
+          url: "/v2/user/me",
+          success: function (response) {
+            console.log("사용자 정보:", response);
+            // 카카오 로그인 성공 시 처리할 로직 추가
+            // navigator("/");
+          },
+          fail: function (error) {
+            console.error("사용자 정보 요청 실패:", error);
+          },
+        });
+      },
+      fail: function (err) {
+        console.error("카카오 로그인 실패:", err);
+      },
+    });
   };
 
   return (
@@ -219,7 +249,9 @@ function SignUp() {
           )}
         </div>
         <div className={styles.button}>
-          <button>카카오 로그인</button>
+          <button type="button" onClick={handleKakaoLogin}>
+            카카오 로그인
+          </button>
           <button>구글 로그인</button>
         </div>
         <div className={styles.button}>
