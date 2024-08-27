@@ -17,6 +17,7 @@ import FreeboardPage from "../Community/FreeboardPage";
 import Admin from "../Admin/Admin";
 import Weather from "../../api/Weather/Weather";
 import MyLiveStock from "../../components/MyLiveStock/MyLiveStock";
+import Livestock from "../Community/Livestock";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -97,9 +98,8 @@ function Layout(props) {
       id: "My_Farm_Board",
       label: "게시판",
       children: [
-        { id: "My_Farm_Board_Total", label: "전체보기" },
         { id: "My_Farm_Board_FreeBoard", label: "자유게시판" },
-        { id: "My_Farm_Board_Community", label: "커뮤니티" },
+        { id: "My_Farm_Board_Community", label: "축산 관리 커뮤니티" },
       ],
     },
     {
@@ -189,9 +189,17 @@ function Layout(props) {
       My_Farm_Details_Disease: <h1>질병 현황</h1>,
       My_Farm_Details_Info: <h1>상세정보</h1>,
       My_Farm_Add: <MyLiveStock />,
-      My_Farm_Board_Total: <h1>전체 보기</h1>,
-      My_Farm_Board_FreeBoard: <FreeboardPage />,
-      My_Farm_Board_Community: <h1>커뮤니티</h1>,
+      My_Farm_Board_Total: (
+        <h1>
+          <Community />
+        </h1>
+      ),
+      My_Farm_Board_FreeBoard: <Community />,
+      My_Farm_Board_Community: (
+        <h1>
+          <Livestock />
+        </h1>
+      ),
       // My_Farm_MyPage_InfoEdit: <h1>회원정보/수정</h1>,
       // My_Farm_MyPage_MyBoard: <h1>내 게시글</h1>,
       // My_Farm_MyPage_Inquire: <h1>1:1문의하기</h1>,
