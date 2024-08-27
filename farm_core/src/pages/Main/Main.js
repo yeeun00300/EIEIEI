@@ -4,6 +4,7 @@ import { Line } from "react-chartjs-2";
 import { Box } from "@mui/material";
 import styles from "./Main.module.scss";
 
+import Weather from "./../../api/Weather/Weather";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -78,6 +79,18 @@ function Main() {
             <LineChart dataset={sampleData} />
           </div>
         ))}
+        <div
+          key={"5"}
+          data-grid={{
+            x: 0,
+            y: 0,
+            w: 0.4,
+            h: 3,
+            isResizable: false,
+          }}
+        >
+          <Weather />
+        </div>
       </ResponsiveGridLayout>
     </div>
   );
