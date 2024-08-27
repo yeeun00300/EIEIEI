@@ -4,6 +4,7 @@ import searchImg from "../../img/돋보기.png";
 import BoardList from "./components/BoardList";
 import ListPage from "./components/ListPage";
 import { Link, useNavigate } from "react-router-dom";
+import NewBoardPage from "./NewBoardPage";
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};
@@ -16,9 +17,9 @@ const noticeItems = [{ id: 1, title: "첫번째 공지" }];
 function Community() {
   const navigate = useNavigate();
 
-  const goNewBoard = () => {
-    navigate("/newBoard", { replace: true });
-  };
+  // const goNewBoard = () => {
+  //   navigate("/newBoard", { replace: true });
+  // };
 
   return (
     <div className="page">
@@ -31,8 +32,9 @@ function Community() {
           <button className={styles.search}>
             <img src={searchImg} />
           </button>
-          <button className={styles.new} onClick={goNewBoard}>
+          <button className={styles.new}>
             새 글 쓰기
+            <NewBoardPage />
           </button>
 
           <select>
