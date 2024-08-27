@@ -7,14 +7,14 @@ import { FaRegThumbsDown } from "react-icons/fa6";
 import FreeboardPage from "../FreeboardPage";
 
 function FreeBoardItem({ item }) {
-  const navigate = useNavigate();
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
         <img src={item.image} />
         <div className={styles.content}>
-          <a className={styles.title}>{item.title}</a>
+          <Link className={styles.title} to="/freeBoard">
+            {item.title}
+          </Link>
           <p>{item.content}</p>
           <div>
             <ul className={styles.tags}>
