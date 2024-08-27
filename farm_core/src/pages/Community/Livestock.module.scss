@@ -1,0 +1,43 @@
+.form {
+  height: 40px;
+  display: flex;
+  margin-top: 20px;
+
+  input {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1 1;
+    padding: 12px 20px;
+    border: none;
+    outline: none;
+    border-radius: 5px 0 0 5px;
+    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.05);
+
+    &::placeholder {
+      color: #878787;
+    }
+  }
+  .search {
+    flex: none;
+    padding: 8px 10px;
+    color: #fff;
+    cursor: pointer;
+    background-color: #ebebeb;
+    border: none;
+    outline: none;
+    border-radius: 0 5px 5px 0;
+    margin-right: 50px;
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  .new {
+    background-color: #fff;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 9999px;
+
+    cursor: pointer;
+  }
+}
