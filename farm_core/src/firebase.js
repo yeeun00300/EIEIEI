@@ -29,7 +29,7 @@ const db = getFirestore(app);
 function getUserAuth() {
   return auth;
 }
-console.log(auth);
+// console.log(auth);
 
 function getCollection(collectionName) {
   return collection(db, collectionName);

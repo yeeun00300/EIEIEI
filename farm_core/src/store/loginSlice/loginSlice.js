@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getDatas } from "../../firebase";
 
 const loginSlice = createSlice({
   name: "login",
@@ -38,8 +39,23 @@ const loginSlice = createSlice({
       state.error = null;
     },
   },
-  //   extraReducers: {},
+  // extraReducers: {
+
+  //   },
 });
+
+const fetchLogin = createAsyncThunk(
+  "Login/fetchLogin",
+  // 첫번째 파라미터는 payload--> state변경 , 두번째 파라미터는 dispatch 가능
+  async ({ collectionName, queryOptions }) => {
+    try {
+      const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
+    } catch (error) {
+      return null;
+    }
+  }
+);
 
 export const {
   setUsername,

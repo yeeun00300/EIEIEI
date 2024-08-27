@@ -92,6 +92,10 @@ function Layout(props) {
       ],
     },
     {
+      id: "My_Farm_AddStock",
+      label: "목장 추가",
+    },
+    {
       id: "My_Farm_Board",
       label: "게시판",
       children: [
@@ -186,6 +190,7 @@ function Layout(props) {
       My_Farm_Details_CCTV: <h1>CCTV</h1>,
       My_Farm_Details_Disease: <h1>질병 현황</h1>,
       My_Farm_Details_Info: <h1>상세정보</h1>,
+      My_Farm_AddStock: <h1>목장추가</h1>,
       My_Farm_Board_Total: <h1>전체 보기</h1>,
       My_Farm_Board_FreeBoard: <FreeboardPage />,
       My_Farm_Board_Community: <h1>커뮤니티</h1>,
