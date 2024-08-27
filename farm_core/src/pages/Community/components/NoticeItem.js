@@ -11,8 +11,8 @@ function NoticeItem({ notice }) {
         <img src={notice.image} />
         <div className={styles.content}>
           <h2 className={styles.title}>{notice.title}</h2>
-          <p>서버 점검 안내.</p>
-          <div></div>
+          <p>{notice.content}</p>
+          <p>{notice.admin}</p>
           <p>{`작성일 : ${notice.date}`}</p>
         </div>
       </div>

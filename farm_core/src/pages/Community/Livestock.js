@@ -3,13 +3,30 @@ import ListPage from "./components/ListPage";
 import styles from "./Livestock.module.scss";
 import searchImg from "../../img/돋보기.png";
 import BoardList from "./components/BoardList";
-
+import logoImg from "../../img/TitleLogo.png";
+import cowImg from "../../img/한우축사.jpg";
 const dummyItems = [
-  { id: 1, title: "첫번째 글" },
-  { id: 2, title: "두번째 글" },
-  { id: 3, title: "세번째 글" },
+  {
+    id: 1,
+    title: "사료 배합 질문",
+    content: "비육기에 접어들어...",
+    image: cowImg,
+    date: "2024-08-23",
+    tag1: "#스마트팜",
+    tag2: "#한우",
+    user: "userId",
+  },
 ];
-const noticeItems = [{ id: 1, title: "첫번째 공지" }];
+const noticeItems = [
+  {
+    id: 1,
+    title: "커뮤니티 이용안내📢",
+    content: "신고 및 제재 기준",
+    image: logoImg,
+    date: "2024-01-25",
+    admin: "admin",
+  },
+];
 
 function Livestock() {
   const handleSubmit = () => {};

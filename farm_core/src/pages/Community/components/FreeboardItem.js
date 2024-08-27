@@ -22,6 +22,7 @@ function FreeBoardItem({ item }) {
               <li>{item.tag2}</li>
             </ul>
           </div>
+          <p>{item.user}</p>
           <p>{`작성일 : ${item.date}`}</p>
           <div className={styles.reactions}>
             <FaRegThumbsUp />
