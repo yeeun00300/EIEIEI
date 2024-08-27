@@ -1,4 +1,4 @@
-const cattle_diagnosis = [
+export const cattle_diagnosis = [
   {
     diseaseName: "소 바이러스성 설사증 (Bovine Viral Diarrhea, BVD)",
     symptoms:
@@ -24,7 +24,7 @@ const cattle_diagnosis = [
       "소 결핵은 치료보다는 감염 동물의 도태가 중요,농장의 위생 및 방역 관리",
   },
 ];
-const swine_diagnosis = [
+export const swine_diagnosis = [
   {
     diseaseName: "돼지 유행성 설사 (Porcine Epidemic Diarrhea, PED)",
     symptoms:
@@ -46,7 +46,7 @@ const swine_diagnosis = [
     therapy: "백신과 치료제의 부제로 감염 시 살처분이 원칙",
   },
 ];
-const poultry_diagnosis = [
+export const poultry_diagnosis = [
   {
     diseaseName: "뉴캐슬병 (Newcastle Disease, ND)",
     symptoms:
