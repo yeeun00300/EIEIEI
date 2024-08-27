@@ -2,7 +2,12 @@ import React, { useCallback, useRef, useState } from "react";
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { addDatas, db, getUserAuth } from "../../../firebase";
+import {
+  addDatas,
+  checkUserIdExists,
+  db,
+  getUserAuth,
+} from "../../../firebase";
 import Address from "./../../../api/address/Address";
 import logoImg from "./../../../img/TitleLogo.png";
 import { FaRegUser, FaImage } from "react-icons/fa";
@@ -17,14 +22,25 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [userid, setUserid] = useState("");
+  const [idCheck, setIdCheck] = useState(false); // 아이디 중복 확인 여부 상태
+  const [idCheckMessage, setIdCheckMessage] = useState("");
   // 주소
   const [address, setAddress] = useState({ address: "" });
   // 프로필 이미지
   const [imgFile, setImgFile] = useState("");
   const imgRef = useRef();
+  // 비밀번호 유효성 검사
+  const checkPassword = () => {
+    // const numPassword
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!idCheck) {
+      alert("아이디 중복 확인을 해주세요.");
+      return;
+    }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -66,24 +82,23 @@ function SignUp() {
     };
   };
 
-  // 아이디 중복 확인
-  // const onSubmitForm = useCallback(
-  //   async (e) => {
-  //     // 전화번호 중복 확인
-  //     // if(){ //중복이라면
-  //     //     setRegistered(true);
-  //     // }
+  // 아이디 중복확인
+  const handleIdCheck = async () => {
+    if (!userid) {
+      setIdCheckMessage("아이디를 입력해주세요.");
+      return;
+    }
 
-  //     // 중복이라면 경고 메세지 띄우고,
-  //     if (registered) {
-  //       setUserid("");
-  //       return alert("이미 등록된 사용자입니다.");
-  //     }
-  //     const nickname = await makeNickname();
-  //     await dispatch(registerAction({ role, userid, nickname }));
-  //   },
-  //   [role, userid]
-  // );
+    const exists = await checkUserIdExists(userid);
+
+    if (exists) {
+      setIdCheck(false);
+      setIdCheckMessage("이미 사용 중인 아이디입니다.");
+    } else {
+      setIdCheck(true);
+      setIdCheckMessage("사용 가능한 아이디입니다.");
+    }
+  };
 
   // 주소찾기
   // const [enroll_company, setEnroll_company] = useState({
@@ -142,10 +157,19 @@ function SignUp() {
           <input
             placeholder="ID를 입력해주세요."
             type="text"
-            onChange={(e) => setUserid(e.target.value)}
+            // onChange={(e) => setUserid(e.target.value)}
+            value={userid}
+            onChange={(e) => {
+              setUserid(e.target.value);
+              setIdCheck(false);
+              setIdCheckMessage("");
+            }}
             required
           />
-          <button>중복확인</button>
+          <button type="button" onClick={handleIdCheck}>
+            중복확인
+          </button>
+          {idCheckMessage && <p>{idCheckMessage}</p>}
         </div>
         <div>
           비밀번호
@@ -154,6 +178,7 @@ function SignUp() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -161,6 +186,7 @@ function SignUp() {
           <input
             placeholder="위 비밀번호와 동일하게 입력해주세요."
             type="password"
+            required
           />
         </div>
         <div>
@@ -193,7 +219,10 @@ function SignUp() {
           )}
         </div>
         <div className={styles.button}>
-          <button></button>
+          <button>카카오 로그인</button>
+          <button>구글 로그인</button>
+        </div>
+        <div className={styles.button}>
           <button type="submit">회원가입</button>
           <button>취소</button>
         </div>
