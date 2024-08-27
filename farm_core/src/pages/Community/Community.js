@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Community.module.scss";
 import searchImg from "../../img/돋보기.png";
 import BoardList from "./components/BoardList";
 import ListPage from "./components/ListPage";
 import { Link, useNavigate } from "react-router-dom";
 import hiImg from "../../img/인사.jpeg";
+import logoImg from "../../img/TitleLogo.png";
 import FreeBoardItem from "./components/FreeboardItem";
 import NewBoardPage from "./NewBoardPage";
+import NoticeItem from "./components/NoticeItem";
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};
@@ -36,13 +38,27 @@ const dummyItems = [
     tag2: "#양돈",
   },
 ];
-const noticeItems = [{ id: 1, title: "첫번째 공지" }];
+const noticeItems = [
+  { id: 1, title: "첫번째 공지📢", image: logoImg, date: "2024-01-25" },
+];
 function Community() {
-  const navigate = useNavigate();
+  const [isWriting, setIsWriting] = useState(false);
 
-  const goNewBoard = () => {
-    <NewBoardPage />;
+  const handleNewBoardClick = () => {
+    setIsWriting(true);
   };
+  const handleBackToList = () => {
+    setIsWriting(false);
+  };
+
+  if (isWriting) {
+    // 새 글 작성 페이지 렌더링
+    return <NewBoardPage onCancel={handleBackToList} />;
+  }
+
+  // const goNewBoard = () => {
+  //   <NewBoardPage />;
+  // };
 
   return (
     <div className="page">
@@ -55,7 +71,7 @@ function Community() {
           <button className={styles.search}>
             <img src={searchImg} />
           </button>
-          <button className={styles.new} onClick={goNewBoard}>
+          <button className={styles.new} onClick={handleNewBoardClick}>
             새 글 쓰기
           </button>
 

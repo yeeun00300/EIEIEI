@@ -1,24 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./FreeboardItem.module.scss";
 import hiImg from "../../../img/인사.jpeg";
 import { Link, replace, useNavigate } from "react-router-dom";
 import { FaRegThumbsUp } from "react-icons/fa6";
 import { FaRegThumbsDown } from "react-icons/fa6";
+import FreeboardPage from "../FreeboardPage";
 
 function FreeBoardItem({ item }) {
   const navigate = useNavigate();
 
-  const goBoardPage = () => {
-    navigate("/freeBoard", { replace: true });
-  };
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
         <img src={item.image} />
         <div className={styles.content}>
-          <a className={styles.title} onClick={goBoardPage}>
-            {item.title}
-          </a>
+          <a className={styles.title}>{item.title}</a>
           <p>{item.content}</p>
           <div>
             <ul className={styles.tags}>
