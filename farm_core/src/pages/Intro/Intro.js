@@ -36,7 +36,7 @@ function Intro(props) {
       </div>
       <div className={styles.buttons}>
         <button className={styles.button}>
-          <Link to={"/SignIn"}>로그인</Link>
+          <Link to={"/Login"}>로그인</Link>
         </button>
         <button className={styles.button}>
           <Link to={"/SignUp"}>회원가입</Link>

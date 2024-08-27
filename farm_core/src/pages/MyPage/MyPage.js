@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./MyPage.module.scss";
 import { FaAngleDoubleRight } from "react-icons/fa";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import Card from "./Card/Card";
 import ListItem from "@mui/material/ListItem";
+import { useDispatch, useSelector } from "react-redux";
+import userInfoEditSlice, {
+  fetchUser,
+} from "./../../store/userInfoEditSlice/UserInfoEditSlice";
 const dataObj = {
   UserInfo: { label: "회원정보수정", path: "UserInfo" },
   myCommunity: { label: "내 게시글", path: "MyCommunity" },
@@ -12,6 +16,8 @@ const dataObj = {
 };
 
 function MyPage() {
+  const { id } = useParams();
+  const userId = Number(id);
   // const API_KEY = "6NBSX27F-6NBS-6NBS-6NBS-6NBSX27F4W";
 
   // const ASF = fetch(
@@ -21,6 +27,19 @@ function MyPage() {
   //   return response;
   // });
 
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+  useEffect(() => {
+    const queryOptions = [{ condition: "id", operator: "==", value: userId }];
+    dispatch(fetchUser({ collectionName: "users", queryOptions }))
+      .unwrap()
+      .then((result) => {
+        console.log("불러온 유저 정보:", result); // 불러온 유저 정보 로그
+      })
+      .catch((error) => {
+        console.error("유저 정보 불러오기 에러:", error); // 에러 로그
+      });
+  }, [dispatch, userId]);
   return (
     <div className="page">
       <div>
@@ -32,7 +51,7 @@ function MyPage() {
             </div>
           </div>
           <div className={styles.lists}>
-            <Link to="/UserInfo">
+            <Link to={`/UserInfo${id}`}>
               <Card>
                 회원정보 수정
                 <span>

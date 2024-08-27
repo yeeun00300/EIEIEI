@@ -4,7 +4,6 @@ import Main from "./pages/Main/Main";
 import Login from "./pages/Login/Login";
 import Customer from "./pages/Customer/Customer";
 import Admin from "./pages/Admin/Admin";
-import SignIn from "./pages/Login/SignIn/SignIn";
 import SignUp from "./pages/Login/SignUp/SignUp";
 import DashBoard from "./pages/DashBoard/DashBoard";
 import MyPage from "./pages/MyPage/MyPage";
@@ -61,7 +60,7 @@ function App() {
           <Route path="/">
             <Route index element={<Intro />} />
             <Route path="SignUp" element={<SignUp />} />
-            <Route path="SignIn" element={<SignIn />} />
+            <Route path="Login" element={<Login />} />
           </Route>
         ) : (
           // 로그인시
@@ -72,7 +71,7 @@ function App() {
             <Route path="Community" element={<Community />} />
             <Route path="freeboard" element={<FreeboardPage />} />
             <Route path="MyPage" element={<MyPage />} />
-            <Route path="UserInfo" element={<UserInfo />} />
+            <Route path="UserInfo:/id" element={<UserInfo />} />
             <Route path="MyCommunity/:id" element={<MyCommunity />} />
             <Route path="Question/:id" element={<Question />} />
             <Route path="payment/:id" element={<Payment />} />
