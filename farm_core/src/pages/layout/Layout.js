@@ -195,11 +195,7 @@ function Layout(props) {
         </h1>
       ),
       My_Farm_Board_FreeBoard: <Community />,
-      My_Farm_Board_Community: (
-        <h1>
-          <Livestock />
-        </h1>
-      ),
+      My_Farm_Board_Community: <Livestock />,
       // My_Farm_MyPage_InfoEdit: <h1>회원정보/수정</h1>,
       // My_Farm_MyPage_MyBoard: <h1>내 게시글</h1>,
       // My_Farm_MyPage_Inquire: <h1>1:1문의하기</h1>,
