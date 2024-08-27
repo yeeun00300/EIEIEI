@@ -16,6 +16,9 @@ function Login() {
       </label>
       <div>
         <div>
+          <button>로그인 하기</button>
+        </div>
+        <div>
           <button className={styles.google}>구글로 로그인</button>
         </div>
         <div>
