@@ -12,7 +12,7 @@ function Login() {
       </label>
       <label>
         비밀번호
-        <input />
+        <input type="password" />
       </label>
       <div>
         <div>
