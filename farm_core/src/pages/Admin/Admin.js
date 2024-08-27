@@ -17,6 +17,8 @@ import CustomerManagement from "../../components/Admin-Customer/CustomerManageme
 import CustomerQnA from "../../components/Admin-Customer/CustomerQnA";
 import CustomerDeclare from "../../components/Admin-Customer/CustomerDeclare";
 import WeatherIssue from "../../components/Admin-Weather/WeatherIssue";
+import DiseaseIssue from "../../components/Admin-Disease/DiseaseIssue";
+import DiseaseState from "../../components/Admin-Disease/DiseaseState";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -114,8 +116,8 @@ function Admin() {
       "weather-condition": <Weather />,
       "weather-issue": <WeatherIssue />,
       "weather-notice": <h1>알림 목록</h1>,
-      "disease-state": <h1>질병 현황</h1>,
-      "disease-issue": <h1>질병 특보</h1>,
+      "disease-state": <DiseaseIssue />,
+      "disease-issue": <DiseaseState />,
       "disease-consult": <h1>문진표 목록</h1>,
       "disease-notice": <h1>알림 목록</h1>,
       "alarm-weather": (

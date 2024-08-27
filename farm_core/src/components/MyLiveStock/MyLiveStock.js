@@ -37,6 +37,19 @@ function MyLiveStock(props) {
       <br />
       <br />
       <button>축사 추가 하기</button>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <button>축사 삭제 하기</button>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   );
 }
