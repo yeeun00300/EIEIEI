@@ -9,10 +9,13 @@ import {
   setPassword,
   setUsername,
 } from "../../store/loginSlice/loginSlice";
+import { getAuth } from "firebase/auth";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const auth = getAuth();
+
   const [userId, setUserId] = useState("");
 
   const { username, password, isLoading, notLogin } = useSelector(

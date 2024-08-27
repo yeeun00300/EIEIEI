@@ -41,6 +41,13 @@ function getCollection(collectionName) {
 async function addDatas(collectionName, userObj) {
   await addDoc(getCollection(collectionName), userObj);
 }
+const checkUserIdExists = async (userid) => {
+  const usersRef = collection(db, "users");
+  const q = query(usersRef, where("id", "==", userid));
+
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
+};
 
 async function getLastNum(collectionName, field) {
   const q = query(
@@ -107,5 +114,5 @@ async function getDisease(animalType, diseaseId) {
   }
 }
 
-export { db, addDatas, getDatas, addDisease, getDisease };
+export { db, addDatas, getDatas, addDisease, getDisease, checkUserIdExists };
 export default app;
