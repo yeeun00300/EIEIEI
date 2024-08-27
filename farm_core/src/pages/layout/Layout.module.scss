@@ -18,6 +18,13 @@
     background-color: var(--background-color);
     // z-index: -1;
     word-break: keep-all;
+    div {
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+    }
   }
 }
 
