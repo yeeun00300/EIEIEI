@@ -55,7 +55,7 @@ function Nav({ contents, renderContent }) {
   return (
     <>
       <div className={styles.nav}>
-        <Box sx={{ minHeight: 352, minWidth: 250 }}>
+        <Box sx={{ minHeight: 352, minWidth: 180 }}>
           <RichTreeView
             items={contents}
             apiRef={apiRef}

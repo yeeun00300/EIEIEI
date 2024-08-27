@@ -79,5 +79,30 @@ async function getDatas(collectionName, queryOptions) {
   return resultData;
 }
 
-export { db, addDatas, getDatas };
+async function addDisease(animalType, diseaseId, diseaseData) {
+  try {
+    const diseaseRef = collection(db, "disease", animalType, "disease");
+    await setDoc(doc(diseaseRef, diseaseId), diseaseData);
+    console.log("데이터가 성공적으로 추가되었습니다.");
+  } catch (error) {
+    console.error("데이터 추가 중 오류 발생:", error);
+  }
+}
+
+async function getDisease(animalType, diseaseId) {
+  try {
+    const diseaseRef = doc(db, "disease", animalType, "disease");
+    const docSnap = await getDoc(diseaseRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return;
+    }
+  } catch (error) {
+    console.log("불러 올수 없습니다.", error);
+  }
+}
+
+export { db, addDatas, getDatas, addDisease };
 export default app;

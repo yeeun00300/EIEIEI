@@ -57,10 +57,10 @@ function Main() {
   };
   const LAYOUTS = {
     lg: [
-      { i: "1", x: 0, y: 0, w: 2, h: 2, minW: 1, maxH: 3 },
-      { i: "2", x: 1, y: 0, w: 2, h: 2, minW: 1, maxH: 3 },
-      { i: "3", x: 2, y: 0, w: 2, h: 2, minW: 1, maxH: 3 },
-      { i: "4", x: 2, y: 0, w: 2, h: 2, minW: 1, maxH: 3 },
+      { i: "1", x: 0, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
+      { i: "2", x: 1, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
+      { i: "3", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
+      { i: "4", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
     ],
   };
   return (
