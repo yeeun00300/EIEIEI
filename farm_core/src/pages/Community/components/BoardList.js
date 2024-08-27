@@ -1,7 +1,7 @@
 import React from "react";
-import FreeboardItem from "./FreeboardItem";
 import styles from "./BoardList.module.scss";
 import NoticeItem from "./NoticeItem";
+import FreeBoardItem from "./FreeboardItem";
 
 function BoardList({ items, notices }) {
   return (
@@ -10,7 +10,7 @@ function BoardList({ items, notices }) {
         <NoticeItem key={notices.id} data={notice} />
       ))}
       {items.map((item) => (
-        <FreeboardItem key={item.id} data={item} />
+        <FreeBoardItem key={item.id} data={item} />
       ))}
     </div>
   );
