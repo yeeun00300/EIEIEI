@@ -7,7 +7,7 @@ import {
   setZoneCode,
   toggleOpen,
 } from "../../store/myPageSlice/addressSlice";
-function LiveStock(props) {
+function AddLiveStock(props) {
   const dispatch = useDispatch();
   const { zoneCode, address, isOpen } = useSelector(
     (state) => state.addressSlice
@@ -93,8 +93,9 @@ function LiveStock(props) {
           <textarea type="text" name="note" />
         </div>
       </form>
+      <button>저장하기</button>
     </div>
   );
 }
 
-export default LiveStock;
+export default AddLiveStock;
