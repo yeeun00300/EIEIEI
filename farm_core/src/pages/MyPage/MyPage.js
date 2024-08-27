@@ -68,7 +68,6 @@ function MyPage() {
                 </span>
               </button>
             </Card>
-
             <Card>
               내 게시글
               <button onClick={() => handleComponentChange("MyCommunity")}>
