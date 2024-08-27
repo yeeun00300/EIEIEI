@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>축산 문진표</title>
+    
+</head>
+<style>
+    body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 10px;
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid black;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-section h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.field-group {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.field-group label {
+    width: 30%;
+    font-weight: bold;
+}
+.field-group span {
+    width: 30%;
+    font-weight: bold;
+}
+
+.field_span {
+    text-align: left;
+    border: 1px solid gray;
+}
+
+.field_span input {
+    margin: 5px;
+}
+
+.field-group input[type="text"],
+.field-group textarea {
+    width: 65%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+    height: 60px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+</style>
+<body>
+    <div class="form-container">
+        <h2>축산 문진표</h2>
+
+        <div class="form-section">
+            <h3>의뢰인 정보</h3>
+            <div class="field-group">
+                <label for="name">성명:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="field-group">
+                <label for="phone">전화번호:</label>
+                <input type="text" id="phone" name="phone">
+            </div>
+            <div class="field-group">
+                <label for="address">주소:</label>
+                <input type="text" id="address" name="address">
+            </div>
+        </div>
+
+        <div class="form-section">
+             <h3>가축 정보</h3>
+             <div class="field-group">
+                 <span>가축 종류:</span>
+                 <span class="field_span">
+                    <input type="checkbox" >
+                    소
+                    <input type="checkbox" >
+                    닭
+                    <input type="checkbox" >
+                    젖소
+                    <input type="checkbox" >
+                    돼지
+                 </span>
+             </div>
+             <div class="field-group">
+                 <span >나이:</span>
+                 <input type="text">
+                </div>
+                <div class="field-group">
+                    <span>성별:</span>
+                    <span class="field_span" >
+                        <input type="checkbox" />
+                        수컷
+                        <input type="checkbox" />
+                        암컷
+                    </span>
+                </div>
+                <div class="field-group">
+                     <span>개체번호:</span>
+                     <input type="text">
+                </div>
+            </div>
+
+        <div class="form-section">
+            <h3>상태 체크 리스트</h3>
+            <div class="field-group">
+          <span> 1.체온은 정상에 있습니까?</span> 
+            </div>
+            <div class="field-group">
+                <span>
+                    <input type="checkbox">
+                    예
+                    <input type="checkbox">
+                    아니요
+                </span>
+            </div>
+            <div class="field-group">
+                <span>체온:</span>
+                <input type="text" class="answer">
+            </div>
+
+            <div class="field-group">
+             <span>2.호흡 상태는 규칙적인가요?</span>
+            </div>
+            <div class="field-group">
+                <span>
+                    <input type="checkbox">
+                    예
+                    <input type="checkbox">
+                    아니요
+                </span>
+            </div>
+            <div class="field-group">
+               <span>호흡수:</span>
+               <input type="text">
+            </div>
+
+            <div class="field-group">
+             <span>3.배설 활동에 이상이 있으니까?</span>
+            </div>
+            <div class="field-group">
+                <span>
+                    <input type="checkbox">
+                    예
+                    <input type="checkbox">
+                    아니요
+                </span>
+            </div>
+            <div class="field-group">
+               <span>변의상태:</span>
+               <input type="text">
+            </div>
+            
+            <div class="field-group">
+             <span>4.기침을 하나요?</span>
+            </div>
+            <div class="field-group">
+                <span>
+                    <input type="checkbox">
+                    예
+                    <input type="checkbox">
+                    아니요
+                </span>
+            </div>
+            <div class="field-group">
+               <span>기침 빈도:</span>
+               <input type="text">
+            </div>
+
+            <div class="field-group">
+             <span>5.설사 증상이 있습니까?</span>
+            </div>
+            <div class="field-group">
+                <span>
+                    <input type="checkbox">
+                    예
+                    <input type="checkbox">
+                    아니요
+                </span>
+            </div>
+            <div class="field-group">
+               <span>설사 횟수:</span>
+               <input type="text">
+            </div>
+
+            <div class="field-group">
+             <span>6.최근 식욕부진을 겪고 있나요?</span>
+            </div>
+            <div class="field-group">
+                <span>
+                    <input type="checkbox">
+                    예
+                    <input type="checkbox">
+                    아니요
+                </span>
+            </div>
+            <div class="field-group">
+               <span>부진 기간:</span>
+               <input type="text">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>임시증상 작성</h3>
+            <div class="field-group">               
+                    <input type="checkbox">
+                    소화기계
+                    <input type="checkbox">
+                    호흡기계
+                    <input type="checkbox">
+                    신경계         
+            </div>
+            <div class="field-group">
+                    <input type="checkbox">
+                    급사
+                    <input type="checkbox">
+                    중독
+                    <input type="checkbox">
+                    기타( )
+            </div>
+            <div>
+              <input type="text" placeholder="기타">           
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>사육 단계별 질병 발생 상황</h3>
+            <div class="field-group">
+                <label for="sick-stage">질병 단계:</label>
+                <input type="text" id="sick-stage" name="sick-stage">
+            </div>
+            <div class="field-group">
+                <label for="symptoms">증상:</label>
+                <textarea id="symptoms" name="symptoms"></textarea>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>사육 환경</h3>
+            <div class="field-group">
+              <span>1. 크기는 적절한가요?<span>
+            </div>
+            <div class="field-group">
+                <span>
+                    <input type="checkbox">
+                    예
+                    <input type="checkbox">
+                    아니요
+                </span>
+                </div>
+                <div class="field-group">
+                    <span>사육 공간 크기:</span>
+                    <input type="text">
+                </div>
+                <div class="field-group">
+                    <span>가축수:</span>
+                    <input type="text">
+                </div>
+
+                <div class="field-group">
+                    <span> 2.환기 상태는 양호한가요? <span>
+                  </div>
+                  <div class="field-group">
+                      <span>
+                          <input type="checkbox">
+                          예
+                          <input type="checkbox">
+                          아니요
+                      </span>
+                      </div>
+                      <div class="field-group">
+                          <span>환기 방법:</span>
+                          <input type="text">
+                      </div>
+                      <div class="field-group">
+                          <span>빈도:</span>
+                          <input type="text">
+                      </div>
+
+                      <div class="field-group">
+                        <span> 3.조명 상태는 적절한가요?  <span>
+                      </div>
+                      <div class="field-group">
+                          <span>
+                              <input type="checkbox">
+                              예
+                              <input type="checkbox">
+                              아니요
+                          </span>
+                          </div>
+                          <div class="field-group">
+                              <span>조명 관리 방법:</span>
+                              <input type="text">
+                          </div>
+                      
+                          <div class="field-group">
+                            <span> 4.가축에게 충분한 사료와 깨끗한 물이 공급되고 있습니까? <span>
+                          </div>
+                          <div class="field-group">
+                              <span>
+                                  <input type="checkbox">
+                                  예
+                                  <input type="checkbox">
+                                  아니요
+                              </span>
+                              </div>
+                              <div class="field-group">
+                                  <span>사료 종류:</span>
+                                  <input type="text">
+                              </div>
+                              <div class="field-group">
+                                  <span>공급 횟수:</span>
+                                  <input type="text">
+                              </div>
+                              <div class="field-group">
+                                  <span>물 상태:</span>
+                                  <input type="text">
+                              </div>
+
+                              
+                                <div class="field-group">
+                                    <span>5.사육 환경에 가축에게 스트레스를 줄 수 있는 요인이 있습니까?<span>
+                                  </div>
+                                  <div class="field-group">
+                                      <span>
+                                          <input type="checkbox">
+                                          예
+                                          <input type="checkbox">
+                                          아니요
+                                      </span>
+                                      </div>
+                                      <div class="field-group">
+                                          <span>스트레스 요인:</span>
+                                          <input type="text">
+                                      </div>
+
+                                <div class="field-group">
+                                    <span>6.사육 환경과 관련하여 추가로 기재할 사항이 있습니까?<span>
+                                  </div>
+                                  <div class="field-group">
+                                      <span>
+                                          <input type="checkbox">
+                                          예
+                                          <input type="checkbox">
+                                          아니요
+                                      </span>
+                                      </div>
+                                      <div class="field-group">
+                                          <span>추가 사항:</span>
+                                          <input type="text">
+                                      </div>
+                              </div>
+                              
+                              <div class="form-section">
+                                  <h3>예방 접종 기록 </h3>
+                                  <div class="field-group">
+                                      <label for="vaccination-record">백신 접종 기록:</label>
+                                      <textarea id="vaccination-record" name="vaccination-record"></textarea>
+                                    </div>
+                                    <div class="field-group">
+                                        <label for="treatment-details">접종 일자:</label>
+                                        <textarea id="treatment-details" name="treatment-details"></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit">제출</button>
+                            </div>
+    </div>
+</body>
+</html>
