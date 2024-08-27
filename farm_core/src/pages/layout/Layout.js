@@ -81,7 +81,7 @@ function Layout(props) {
         { id: "My_Farm01", label: "나의 목장 1" },
         { id: "My_Farm02", label: "나의 목장 2" },
         { id: "My_Farm03", label: "나의 목장 3" },
-        { id: "My_Farm_Add", label: "+ 목장추가" },
+        { id: "My_Farm_Add", label: "+ 축사 추가" },
       ],
     },
     {

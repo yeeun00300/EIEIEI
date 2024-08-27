@@ -2,21 +2,27 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  margin: 0 50px;
+  margin: 0 auto;
 }
 
 .container {
   width: 100%;
-  height: 80%;
+  height: 100%;
   display: flex;
-
-  margin: 20px;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
 .serve {
   display: flex;
   flex-direction: column;
-  width: 50%;
-  height: 100%;
+  // justify-content: center;
+  // width: 50%;
+  // height: 100%;
+  h1 {
+    text-align: center;
+  }
 }
 .bg {
   width: 50%;
@@ -24,17 +30,12 @@
   object-fit: cover;
   position: relative;
   opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .buttons {
   display: flex;
   justify-content: center;
   gap: 50px;
-}
-.button {
-  margin: 0 10px;
-  padding: 30px 40px;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }

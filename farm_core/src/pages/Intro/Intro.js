@@ -23,6 +23,7 @@ function Intro(props) {
             자동·원격환경관리(냉·난방기 구동, 창문 개폐, CO2,영양분·사료 공급
             등)
           </p>
+          <Login />
         </div>
         <video
           className={styles.bg}
@@ -34,15 +35,6 @@ function Intro(props) {
         >
           <source src={video} type="video/mp4" />
         </video>
-      </div>
-      <div className={styles.buttons}>
-        <button className={styles.button}>
-          {/* <Link to={"/Login"}>로그인</Link> */}
-          <Login />
-        </button>
-        <button className={styles.button}>
-          <Link to={"/SignUp"}>회원가입</Link>
-        </button>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Selected.module.scss";
 
-function Selected(props) {
+function Selected({ className }) {
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedFarm, setSelectedFarm] = useState();
 
@@ -14,9 +14,13 @@ function Selected(props) {
     setSelectedFarm(e.target.value);
   };
   return (
-    <div>
+    <div className={styles.selectBox}>
       <div className={styles.box}>
-        <select value={selectedCategory} onChange={handleCategoryChange}>
+        <select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          className={styles.category}
+        >
           <option value={""}>축종을 선택하세요</option>
           <option value="poultry">양계</option>
           <option value="koreanBeef">한우</option>
@@ -24,28 +28,44 @@ function Selected(props) {
           <option value="swine">양돈</option>
         </select>
         {selectedCategory === "poultry" && (
-          <select value={selectedFarm} onChange={handleFarmChange}>
+          <select
+            value={selectedFarm}
+            onChange={handleFarmChange}
+            className={styles.Farm}
+          >
             <option value="">농장을 선택하세요</option>
             <option value="farm1">농장1</option>
             <option value="farm2">농장2</option>
           </select>
         )}
         {selectedCategory === "koreanBeef" && (
-          <select value={selectedFarm} onChange={handleFarmChange}>
+          <select
+            value={selectedFarm}
+            onChange={handleFarmChange}
+            className={styles.Farm}
+          >
             <option value="">농장을 선택하세요</option>
             <option value="farm1">농장1</option>
             <option value="farm2">농장2</option>
           </select>
         )}
         {selectedCategory === "dairy" && (
-          <select value={selectedFarm} onChange={handleFarmChange}>
+          <select
+            value={selectedFarm}
+            onChange={handleFarmChange}
+            className={styles.Farm}
+          >
             <option value="">농장을 선택하세요</option>
             <option value="farm1">농장1</option>
             <option value="farm2">농장2</option>
           </select>
         )}
         {selectedCategory === "swine" && (
-          <select value={selectedFarm} onChange={handleFarmChange}>
+          <select
+            value={selectedFarm}
+            onChange={handleFarmChange}
+            className={styles.Farm}
+          >
             <option value="">농장을 선택하세요</option>
             <option value="farm1">농장1</option>
             <option value="farm2">농장2</option>
