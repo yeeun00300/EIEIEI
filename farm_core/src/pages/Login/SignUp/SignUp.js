@@ -8,9 +8,11 @@ import logoImg from "./../../../img/TitleLogo.png";
 import { FaRegUser, FaImage } from "react-icons/fa";
 // import { FaImage } from "react-icons/fa6";
 import { collection, doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const auth = getAuth();
+  const navigator = useNavigate("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -44,9 +46,10 @@ function SignUp() {
       await setDoc(doc(db, "users", user.uid), userObj);
       // await addDatas(("users", user.uid), userObj);
       console.log("데이터 추가 성공");
+      alert("회원가입에 성공했습니다.");
 
       // 회원가입 성공시 이동할 페이지
-      // navigator(성공했을때 이동할 페이지)
+      navigator("/LogIn");
       // window.location.
     } catch (error) {
       console.error(error);
@@ -190,6 +193,7 @@ function SignUp() {
           )}
         </div>
         <div className={styles.button}>
+          <button></button>
           <button type="submit">회원가입</button>
           <button>취소</button>
         </div>

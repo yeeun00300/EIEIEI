@@ -3,6 +3,7 @@ import SignUp from "../Login/SignUp/SignUp";
 import styles from "./Intro.module.scss";
 import { Link } from "react-router-dom";
 import video from "../../video/video.mp4";
+import Login from "../Login/Login";
 
 function Intro(props) {
   const videoRef = useRef();
@@ -36,7 +37,8 @@ function Intro(props) {
       </div>
       <div className={styles.buttons}>
         <button className={styles.button}>
-          <Link to={"/Login"}>로그인</Link>
+          {/* <Link to={"/Login"}>로그인</Link> */}
+          <Login />
         </button>
         <button className={styles.button}>
           <Link to={"/SignUp"}>회원가입</Link>

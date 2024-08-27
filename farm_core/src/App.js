@@ -49,6 +49,7 @@ function App() {
       dispatch(setNotLogin({ notLogin: true }));
     }
   };
+  // const localStorageUserId = localStorage.getItem("id");
 
   return (
     // <div className="App">
@@ -60,7 +61,7 @@ function App() {
           <Route path="/">
             <Route index element={<Intro />} />
             <Route path="SignUp" element={<SignUp />} />
-            <Route path="Login" element={<Login />} />
+            {/* <Route path="Login" element={<Login />} /> */}
           </Route>
         ) : (
           // 로그인시
