@@ -16,30 +16,43 @@ const dummyItems = [
   {
     id: 1,
     title: "안녕하세요.",
+    content: "요즘 날씨가...",
     image: hiImg,
     date: "2024-08-23",
     tag1: "#스마트팜",
     tag2: "#낙농",
+    user: "userId",
   },
   {
     id: 2,
     title: "처음왔어요.",
+    content: "행복한 하루...",
     image: hiImg,
     date: "2024-07-16",
     tag1: "#축사",
     tag2: "#양계",
+    user: "userId",
   },
   {
     id: 3,
     title: "이런것도 있었네요.",
+    content: "많이 신경써주시는...",
     image: hiImg,
     date: "2024-05-06",
     tag1: "#팜코어",
     tag2: "#양돈",
+    user: "userId",
   },
 ];
 const noticeItems = [
-  { id: 1, title: "첫번째 공지📢", image: logoImg, date: "2024-01-25" },
+  {
+    id: 1,
+    title: "첫번째 공지📢",
+    content: "자유롭게...",
+    image: logoImg,
+    date: "2024-01-25",
+    admin: "admin",
+  },
 ];
 function Community() {
   const [isWriting, setIsWriting] = useState(false);
