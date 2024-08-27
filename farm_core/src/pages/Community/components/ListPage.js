@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ListPage.module.scss";
-import freeImg from "../../img/게시판.png";
-import liveImg from "../../img/농장.png";
+import freeImg from "../../../img/게시판.png";
+import liveImg from "../../../img/농장.png";
 
 const dataDict = {
   freeBoard: {
