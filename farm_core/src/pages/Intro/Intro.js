@@ -28,8 +28,8 @@ function Intro(props) {
         <video
           className={styles.bg}
           muted
-          autoPlay
-          loop
+          // autoPlay
+          // loop
           ref={videoRef}
           onCanPlay={() => setPlayBackRate()}
         >

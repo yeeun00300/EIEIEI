@@ -21,6 +21,7 @@ import Livestock from "../Community/Livestock";
 import AddLiveStock from "../../components/addLiveStock/AddLiveStock";
 import DiseaseIssueItem from "../../components/Admin-Disease/DiseaseIssueItem/DiseaseIssueItem";
 import DiseaseState from "../../components/Admin-Disease/DiseaseState";
+import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
 
 function Layout(props) {
   const dispatch = useDispatch();
