@@ -18,7 +18,11 @@ import Admin from "../Admin/Admin";
 import Weather from "../../api/Weather/Weather";
 import MyLiveStock from "../../components/MyLiveStock/MyLiveStock";
 import Livestock from "../Community/Livestock";
+<<<<<<< Updated upstream
 import AddLiveStock from "../../components/addLiveStock/AddLiveStock";
+=======
+import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
+>>>>>>> Stashed changes
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -188,7 +192,11 @@ function Layout(props) {
 
       My_Farm_Details_Farm: <h1>목장 현황</h1>,
       My_Farm_Details_CCTV: <h1>CCTV</h1>,
-      My_Farm_Details_Disease: <h1>질병 현황</h1>,
+      My_Farm_Details_Disease: (
+        <h1>
+          <DiseaseMap />
+        </h1>
+      ),
       My_Farm_Details_Info: <h1>상세정보</h1>,
       My_Farm_Add: <AddLiveStock />,
       My_Farm_Board_Total: (
