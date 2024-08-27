@@ -107,5 +107,5 @@ async function getDisease(animalType, diseaseId) {
   }
 }
 
-export { db, addDatas, getDatas, addDisease };
+export { db, addDatas, getDatas, addDisease, getDisease };
 export default app;

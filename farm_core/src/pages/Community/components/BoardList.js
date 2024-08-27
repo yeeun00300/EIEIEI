@@ -1,18 +1,21 @@
 import React from "react";
-import FreeboardItem from "./FreeboardItem";
 import styles from "./BoardList.module.scss";
 import NoticeItem from "./NoticeItem";
+import FreeBoardItem from "./FreeboardItem";
 
-function BoardList({ items, notices }) {
+function BoardList({ items, renderItem }) {
   return (
     <div className={styles.boardList}>
-      {notices.map((notice) => (
-        <NoticeItem key={notices.id} data={notice} />
-      ))}
-      {items.map((item) => (
-        <FreeboardItem key={item.id} data={item} />
-      ))}
+      {items.map((item) => renderItem(item))}
     </div>
+    // <div className={styles.boardList}>
+    //   {notices.map((notice) => (
+    //     <NoticeItem key={notices.id} data={notice} />
+    //   ))}
+    //   {items.map((item) => (
+    //     <FreeBoardItem key={item.id} data={item} />
+    //   ))}
+    // </div>
   );
 }
 

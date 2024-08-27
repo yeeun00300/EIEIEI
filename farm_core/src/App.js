@@ -18,7 +18,8 @@ import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
 import Question from "./pages/MyPage/Question/Question";
 import Payment from "./pages/MyPage/Payment/Payment";
 import FreeboardPage from "./pages/Community/FreeboardPage";
-import LiveStock from "./pages/addLiveStock/LiveStock";
+import NewBoardPage from "./pages/Community/NewBoardPage";
+import Livestock from "./pages/Community/Livestock";
 
 function App() {
   const dispatch = useDispatch();
@@ -70,7 +71,9 @@ function App() {
             {/* <Route path="LiveStock" element={<LiveStock />} /> */}
             <Route path="Customer" element={<Customer />} />
             <Route path="Community" element={<Community />} />
-            <Route path="freeboard" element={<FreeboardPage />} />
+            <Route path="freeBoard" element={<FreeboardPage />} />
+            <Route path="newBoard" element={<NewBoardPage />} />
+            <Route path="livestockBoard" element={<Livestock />} />
             <Route path="MyPage" element={<MyPage />} />
             <Route path="UserInfo:/id" element={<UserInfo />} />
             <Route path="MyCommunity/:id" element={<MyCommunity />} />
