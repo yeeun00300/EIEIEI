@@ -6,15 +6,21 @@ import { FaRegThumbsUp } from "react-icons/fa6";
 import { FaRegThumbsDown } from "react-icons/fa6";
 import FreeboardPage from "../FreeboardPage";
 
-function FreeBoardItem({ item }) {
+function FreeBoardItem({ item, onItemClick }) {
+  const handleClick = () => {
+    if (onItemClick) {
+      onItemClick(item);
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
         <img src={item.image} />
         <div className={styles.content}>
-          <Link className={styles.title} to="/freeBoard">
+          <a className={styles.title} onClick={handleClick}>
             {item.title}
-          </Link>
+          </a>
           <p>{item.content}</p>
           <div>
             <ul className={styles.tags}>

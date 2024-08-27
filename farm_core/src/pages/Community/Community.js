@@ -6,9 +6,8 @@ import ListPage from "./components/ListPage";
 import { Link, useNavigate } from "react-router-dom";
 import hiImg from "../../img/인사.jpeg";
 import logoImg from "../../img/TitleLogo.png";
-import FreeBoardItem from "./components/FreeboardItem";
 import NewBoardPage from "./NewBoardPage";
-import NoticeItem from "./components/NoticeItem";
+import FreeboardPage from "./FreeboardPage";
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};
@@ -56,17 +55,29 @@ const noticeItems = [
 ];
 function Community() {
   const [isWriting, setIsWriting] = useState(false);
+  const [openBoard, setOpenBoard] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const navigate = useNavigate();
 
   const handleNewBoardClick = () => {
     setIsWriting(true);
   };
   const handleBackToList = () => {
     setIsWriting(false);
+    setOpenBoard(false);
   };
 
+  const handleOpenBoard = (item) => {
+    setSelectedItem(item);
+    setOpenBoard(true);
+  };
   if (isWriting) {
     // 새 글 작성 페이지 렌더링
     return <NewBoardPage onCancel={handleBackToList} />;
+  }
+  if (openBoard && selectedItem) {
+    // 특정 게시글이 선택되었을 경우 게시글 상세 페이지로 전환
+    return <FreeboardPage />;
   }
 
   return (
@@ -91,7 +102,11 @@ function Community() {
         </form>
 
         <p>총 n개 게시물</p>
-        <BoardList items={dummyItems} notices={noticeItems} />
+        <BoardList
+          items={dummyItems}
+          notices={noticeItems}
+          onItemClick={handleOpenBoard}
+        />
       </ListPage>
     </div>
   );
