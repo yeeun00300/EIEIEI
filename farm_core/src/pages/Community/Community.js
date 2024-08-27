@@ -7,11 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import hiImg from "../../img/인사.jpeg";
 import logoImg from "../../img/TitleLogo.png";
 import FreeBoardItem from "./components/FreeboardItem";
-<<<<<<< Updated upstream
 import NewBoardPage from "./NewBoardPage";
 import NoticeItem from "./components/NoticeItem";
-=======
->>>>>>> Stashed changes
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};
@@ -47,7 +44,6 @@ const noticeItems = [
 function Community() {
   const [isWriting, setIsWriting] = useState(false);
 
-<<<<<<< Updated upstream
   const handleNewBoardClick = () => {
     setIsWriting(true);
   };
@@ -63,15 +59,6 @@ function Community() {
   // const goNewBoard = () => {
   //   <NewBoardPage />;
   // };
-=======
-  //   const goNewBoard = () => {
-  // <<<<<<< Updated upstream
-  //     <NewBoardPage />;
-  // =======
-  //     navigate("/newBoard", { replace: true });
-  // >>>>>>> Stashed changes
-  //   };
->>>>>>> Stashed changes
 
   return (
     <div className="page">
