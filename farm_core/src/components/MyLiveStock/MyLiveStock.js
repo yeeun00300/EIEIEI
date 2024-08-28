@@ -7,7 +7,7 @@ function MyLiveStock(props) {
     <div className={styles.container}>
       <Selected />
       <CCTVandAnimalInfo />
-      <div className={styles.boarder}>
+      {/* <div className={styles.boarder}>
         <div>
           <p>현재 온도 : 28.5</p>
           <p>추천 세팅 : 31.5</p>
@@ -28,8 +28,8 @@ function MyLiveStock(props) {
           <p>추천 세팅 : on</p>
           <button>적용</button>
         </div>
-      </div>
-      <br />
+      </div> */}
+      {/* <br />
       <br />
       <br />
       <br />
@@ -49,7 +49,7 @@ function MyLiveStock(props) {
       <br />
       <br />
       <br />
-      <br />
+      <br /> */}
     </div>
   );
 }

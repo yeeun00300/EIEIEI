@@ -28,7 +28,8 @@ function Question(props) {
               <label htmlFor="message">문의 내용</label>
               <textarea id="message" name="message"></textarea>
             </div>
-            <button type="submit">보내기</button>
+            <button type="submit">저장하기</button>
+            <button type="submit">삭제하기</button>
           </form>
         </div>
       </div>
