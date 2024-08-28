@@ -61,7 +61,7 @@ function Admin() {
     },
     {
       id: "alarm",
-      label: "알림",
+      label: "알림 전송",
       children: [
         { id: "alarm-weather", label: "날씨 알림" },
         { id: "alarm-disease", label: "질병 알림" },

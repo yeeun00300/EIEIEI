@@ -12,7 +12,7 @@ function Search({ setSearch }) {
       <span>
         <img src={searchImg} />
       </span>
-      <input placeholder={"검색하시오"} onChange={handleChange} />
+      <input placeholder={`검색어를 입력해 주세요!`} onChange={handleChange} />
     </div>
   );
 }
