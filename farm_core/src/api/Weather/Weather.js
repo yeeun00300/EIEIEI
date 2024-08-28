@@ -22,8 +22,9 @@ function Weather() {
   // open the weather
   const getWeather = async (lat, lon) => {
     await fetch(
+      // `https://api.openweathermap.org/data/2.5/weather?q=Daejeon&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
       //   `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
-      `https://api.openweathermap.org/data/2.5/weather?q=Daejeon&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
+      `/api4/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr&mode=json`
     )
       .then((response) => {
         return response.json();
@@ -33,12 +34,12 @@ function Weather() {
         setWeatherData(json);
       });
   };
-  const {
-    main: { humidity, temp_max, temp_min, temp },
-    weather,
-    wind: { speed, deg, gust },
-  } = weatherData;
-  const { description, main, icon } = weather[0];
+  // const {
+  //   main: { humidity, temp_max, temp_min, temp },
+  //   weather,
+  //   wind: { speed, deg, gust },
+  // } = weatherData;
+  // const { description, main, icon } = weather[0];
 
   useEffect(() => {
     success();
@@ -46,7 +47,7 @@ function Weather() {
 
   return (
     <div className={styles.Weather}>
-      {adminLogin ? (
+      {/* {adminLogin ? (
         <>
           <h1>오늘의 날씨</h1>
           <h3>
@@ -74,7 +75,7 @@ function Weather() {
           <h3>현재 온도 : {temp}℃</h3>
           <h3>습도 : {humidity}%</h3>
         </>
-      )}
+      )} */}
     </div>
   );
 }

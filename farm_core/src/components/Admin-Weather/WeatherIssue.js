@@ -11,8 +11,10 @@ function WeatherIssue() {
     "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA%3D%3D";
   const apiKey1 =
     "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA==";
+  const apiKey2 = "i9aTpajSSUyWk6Wo0hlMnw"; //기상청
   const getWeatherList = async (lat, lon) => {
     await fetch(
+      // `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnList?serviceKey=${apiKey}&numOfRows=10&pageNo=1&dataType=JSON&stnId=108&fromTmFc=20240822&toTmFc=20240826`
       `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnList?serviceKey=${apiKey}&numOfRows=10&pageNo=1&dataType=JSON&stnId=108&fromTmFc=20240822&toTmFc=20240826`
     )
       .then((response) => {
