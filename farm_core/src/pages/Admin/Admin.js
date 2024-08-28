@@ -19,6 +19,7 @@ import CustomerDeclare from "../../components/Admin-Customer/CustomerDeclare";
 import WeatherIssue from "../../components/Admin-Weather/WeatherIssue";
 import DiseaseIssue from "../../components/Admin-Disease/DiseaseIssue";
 import DiseaseState from "../../components/Admin-Disease/DiseaseState";
+import DiseaseUser from "../../components/Admin-Disease/DiseaseUser";
 
 function Admin() {
   const MUI_X_PRODUCTS = [
@@ -61,7 +62,7 @@ function Admin() {
     },
     {
       id: "alarm",
-      label: "알림",
+      label: "알림 전송",
       children: [
         { id: "alarm-weather", label: "날씨 알림" },
         { id: "alarm-disease", label: "질병 알림" },
@@ -124,10 +125,10 @@ function Admin() {
       "weather-condition": <Weather />,
       "weather-issue": <WeatherIssue />,
       "weather-notice": <h1>알림 목록</h1>,
-      "disease-state": <DiseaseIssue />,
+      "disease-state": <DiseaseUser />,
       "disease-issue": <DiseaseState />,
       "disease-consult": <h1>문진표 목록</h1>,
-      "disease-notice": <h1>알림 목록</h1>,
+      "disease-notice": <DiseaseIssue />,
       "alarm-weather": (
         <Alarm title={"날씨 알림"} description={weatherDescription} />
       ),
