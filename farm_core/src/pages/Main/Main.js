@@ -58,8 +58,34 @@ function Main() {
   };
   const LAYOUTS = {
     lg: [
-      { i: "1", x: 0, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
-      { i: "2", x: 1, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
+      {
+        i: "1",
+        x: 0,
+        y: 0,
+        w: 0.5,
+        h: 3,
+        minw: 0.5,
+        maxh: 3,
+        children: (
+          <Box width="98%" height="98%">
+            <Weather
+              options={{
+                responsive: true,
+                maintainAspectRatio: false, // 부모 요소 크기에 맞추기 위해 필요
+              }}
+            />
+          </Box>
+        ),
+      },
+      {
+        i: "2",
+        x: 1,
+        y: 0,
+        w: 2,
+        h: 2,
+        minw: 1,
+        maxh: 3,
+      },
       { i: "3", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
       { i: "4", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
     ],
@@ -76,10 +102,10 @@ function Main() {
       >
         {LAYOUTS.lg.map((el) => (
           <div key={el.i} {...el}>
-            <LineChart dataset={sampleData} />
+            {/* <LineChart dataset={sampleData} /> */}
           </div>
         ))}
-        <div
+        {/* <div
           key={"5"}
           data-grid={{
             x: 0,
@@ -90,7 +116,7 @@ function Main() {
           }}
         >
           <Weather />
-        </div>
+        </div> */}
       </ResponsiveGridLayout>
     </div>
   );
