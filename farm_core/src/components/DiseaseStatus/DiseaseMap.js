@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import sidoData from "../../api/mapPolygon/sido.json";
 const { kakao } = window;
 
 function DiseaseMap() {
   const [map, setMap] = useState(null);
   const [polygons, setPolygons] = useState([]);
+  const [activeOverlay, setActiveOverlay] = useState(null);
+  const [activePolygon, setActivePolygon] = useState(null);
+
+  // 디바운스 타이머
+  let debounceTimer = null;
 
   useEffect(() => {
     const container = document.getElementById("map");
@@ -63,28 +67,36 @@ function DiseaseMap() {
     });
 
     const customOverlay = new kakao.maps.CustomOverlay({
-      content: `<div class="area" style="position: absolute; background: white; padding: 5px; border: 1px solid black;">${area.name}</div>`,
+      content: `<div class="area" style="position: absolute; background: white; padding: 5px; border: 1px solid black; z-index: 1;">${area.name}</div>`,
       position: new kakao.maps.LatLng(0, 0),
+      zIndex: 1,
     });
 
     kakao.maps.event.addListener(polygon, "mouseover", function (mouseEvent) {
-      polygon.setOptions({ fillColor: "#09f" });
-      customOverlay.setPosition(mouseEvent.latLng);
-      customOverlay.setMap(kakaoMap);
-    });
+      if (debounceTimer) clearTimeout(debounceTimer);
 
-    // kakao.maps.event.addListener(polygon, "mousemove", function (mouseEvent) {
-    //   customOverlay.setPosition(mouseEvent.latLng);
-    // });
+      debounceTimer = setTimeout(() => {
+        if (activePolygon !== polygon) {
+          if (activePolygon) activePolygon.setOptions({ fillColor: "#fff" });
+          if (activeOverlay) activeOverlay.setMap(null);
+
+          polygon.setOptions({ fillColor: "#09f" });
+          customOverlay.setPosition(mouseEvent.latLng);
+          customOverlay.setMap(kakaoMap);
+
+          setActiveOverlay(customOverlay);
+          setActivePolygon(polygon);
+        }
+      }, 50); // 디바운스 시간
+    });
 
     kakao.maps.event.addListener(polygon, "mouseout", function () {
-      polygon.setOptions({ fillColor: "#fff" });
-      customOverlay.setMap(null);
-    });
+      if (debounceTimer) clearTimeout(debounceTimer);
 
-    kakao.maps.event.addListener(polygon, "click", function (mouseEvent) {
-      kakaoMap.setLevel(10);
-      kakaoMap.panTo(mouseEvent.latLng);
+      if (activePolygon !== polygon) {
+        polygon.setOptions({ fillColor: "#fff" });
+        customOverlay.setMap(null);
+      }
     });
 
     setPolygons((prevPolygons) => [...prevPolygons, polygon]);
