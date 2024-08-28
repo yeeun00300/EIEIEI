@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./WeatherIssue.module.scss";
+import Search from "../../pages/Admin/components/Search";
 
 function WeatherIssue() {
   const [weatherIssueList, setWeatherIssueList] = useState([]);
   const [weatherIssueContent, setWeatherIssueContent] = useState([]);
+  const [search, setSearch] = useState("");
+  useEffect(() => {}, [search]);
   const apiKey =
     "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA%3D%3D";
   const apiKey1 =
@@ -43,6 +46,7 @@ function WeatherIssue() {
 
   return (
     <div className={styles.WeatherIssue}>
+      <Search setSearch={setSearch} />
       {weatherIssueContent.map((item, idx) => {
         // console.log(item);
         const { t1, t2, t6, tmFc } = item;

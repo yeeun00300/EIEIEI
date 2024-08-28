@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AdminBlackList.module.scss";
+import Search from "../../pages/Admin/components/Search";
 
 function AdminBlackList() {
+  const [search, setSearch] = useState("");
+  useEffect(() => {}, [search]);
   return (
     <div className={styles.AdminBlackList}>
       <div>차단된 회원</div>
       <div>
+        <Search setSearch={setSearch} />
         <div>등록기간 : </div>
         {/* <div>
           회원별 회원/탈퇴회원 :
