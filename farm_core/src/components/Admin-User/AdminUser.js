@@ -29,7 +29,7 @@ function AdminUser() {
           <input type="radio" id="deleteUser" name="member" value="탈퇴회원" />
           <label htmlFor="deleteUser">탈퇴회원</label>
         </div> */}
-        <Sort
+        {/* <Sort
           title="농장 종류별 :"
           name="stock"
           setSort={setSort}
@@ -40,7 +40,7 @@ function AdminUser() {
             { id: "chicken", value: "육계", htmlFor: "chicken" },
             { id: "layer", value: "산란계", htmlFor: "layer" },
           ]}
-        />
+        /> */}
       </div>
       <div>
         회원 리스트
