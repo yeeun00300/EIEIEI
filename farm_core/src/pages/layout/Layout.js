@@ -191,7 +191,12 @@ function Layout(props) {
 
       My_Farm_Details_Farm: <h1>목장 현황</h1>,
       My_Farm_Details_CCTV: <h1>CCTV</h1>,
-      My_Farm_Details_Disease: <DiseaseState />,
+      My_Farm_Details_Disease: (
+        <>
+          <DiseaseState />
+          <DiseaseMap />
+        </>
+      ),
       My_Farm_Details_Info: <h1>상세정보</h1>,
       My_Farm_Add: <AddLiveStock />,
       My_Farm_Board_Total: (
