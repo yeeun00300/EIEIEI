@@ -67,6 +67,14 @@ function Admin() {
         { id: "alarm-disease", label: "질병 알림" },
       ],
     },
+    {
+      id: "chatting",
+      label: "채팅기록",
+      // children: [
+      //   { id: "alarm-weather", label: "날씨 알림" },
+      //   { id: "alarm-disease", label: "질병 알림" },
+      // ],
+    },
   ];
   // tabindex =0 ,-1, aria-selected="true"
 
@@ -126,6 +134,7 @@ function Admin() {
       "alarm-disease": (
         <Alarm title={"질병 알림"} description={diseaseDescription} />
       ),
+      chatting: <h1>채팅기록</h1>,
     };
 
     return componentsMap[itemId] || <h1>Default Content</h1>;

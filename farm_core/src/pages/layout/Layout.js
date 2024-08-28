@@ -93,9 +93,9 @@ function Layout(props) {
       label: "목장 상세 관리",
       children: [
         { id: "My_Farm_Details_Farm", label: "목장 현황" },
-        { id: "My_Farm_Details_CCTV", label: "CCTV" },
+        // { id: "My_Farm_Details_CCTV", label: "CCTV" },
         { id: "My_Farm_Details_Disease", label: "질병 현황" },
-        { id: "My_Farm_Details_Info", label: "상세정보" },
+        // { id: "My_Farm_Details_Info", label: "상세정보" },
       ],
     },
     {
@@ -190,14 +190,14 @@ function Layout(props) {
       My_Farm03: <h1>나의 목장 03</h1>,
 
       My_Farm_Details_Farm: <h1>목장 현황</h1>,
-      My_Farm_Details_CCTV: <h1>CCTV</h1>,
+      // My_Farm_Details_CCTV: <h1>CCTV</h1>,
       My_Farm_Details_Disease: (
         <>
           <DiseaseState />
           <DiseaseMap />
         </>
       ),
-      My_Farm_Details_Info: <h1>상세정보</h1>,
+      // My_Farm_Details_Info: <h1>상세정보</h1>,
       My_Farm_Add: <AddLiveStock />,
       My_Farm_Board_Total: (
         <h1>

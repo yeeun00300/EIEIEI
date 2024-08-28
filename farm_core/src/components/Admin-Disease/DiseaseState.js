@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./DiseaseState.module.scss";
+import Search from "../../pages/Admin/components/Search";
 
 function DiseaseState() {
+  const [search, setSearch] = useState("");
   const apiKey =
     "ef47786d3eabcb9f87d0c7d3b301f869312d4cf9af878855b06ed3c153a53290";
   const getDiseaseInfo = async (lat, lon) => {
@@ -19,7 +21,7 @@ function DiseaseState() {
   };
   useEffect(() => {
     getDiseaseInfo();
-  }, []);
+  }, [search]);
 
   const diseaseInfo = [
     {
@@ -341,6 +343,7 @@ function DiseaseState() {
 
   return (
     <div className={styles.DiseaseState}>
+      <Search setSearch={setSearch} />
       {diseaseInfo.map((item, idx) => {
         return (
           <div key={idx} className={styles.diseaseState}>
