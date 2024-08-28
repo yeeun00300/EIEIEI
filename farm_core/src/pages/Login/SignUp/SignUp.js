@@ -18,10 +18,25 @@ import { useNavigate } from "react-router-dom";
 function SignUp() {
   const auth = getAuth();
   const navigator = useNavigate("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [userid, setUserid] = useState("");
+  const [values, setValues] = useState({
+    id: "",
+    email: "",
+    password: "",
+    // address: "",
+    farm: "",
+  });
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [userid, setUserid] = useState("");
+
   const [idCheck, setIdCheck] = useState(false); // 아이디 중복 확인 여부 상태
   const [idCheckMessage, setIdCheckMessage] = useState("");
   // 주소
@@ -31,9 +46,9 @@ function SignUp() {
   const imgRef = useRef();
   const [popup, setPopup] = useState(false);
   // 비밀번호 유효성 검사
-  const checkPassword = () => {
-    // const numPassword
-  };
+  // const checkPassword = () => {
+  // const numPassword
+  // };
 
   // 카카오 소셜 로그인
   useEffect(() => {
@@ -54,17 +69,18 @@ function SignUp() {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        email,
-        password
+        values.email,
+        values.password
       );
       const { user } = userCredential;
 
       const userObj = {
-        id: userid,
-        name: username,
-        password: password,
-        email: email,
-        address: address,
+        id: values.userid,
+        name: values.username,
+        password: values.password,
+        email: values.email,
+        address: values.address,
+        farm: values.farm,
         createdAt: new Date(),
         uid: user.uid,
       };
@@ -78,6 +94,7 @@ function SignUp() {
       // window.location.
     } catch (error) {
       console.error(error);
+      alert(`회원가입 실패: ${error.message}`);
     }
   };
 
@@ -93,12 +110,12 @@ function SignUp() {
 
   // 아이디 중복확인
   const handleIdCheck = async () => {
-    if (!userid) {
+    if (!values.id) {
       setIdCheckMessage("아이디를 입력해주세요.");
       return;
     }
 
-    const exists = await checkUserIdExists(userid);
+    const exists = await checkUserIdExists(values.id);
 
     if (exists) {
       setIdCheck(false);
@@ -147,8 +164,8 @@ function SignUp() {
           },
         });
       },
-      fail: function (err) {
-        console.error("카카오 로그인 실패:", err);
+      fail: function (error) {
+        console.error("카카오 로그인 실패:", error);
       },
     });
   };
@@ -172,6 +189,7 @@ function SignUp() {
           ref={imgRef}
           // value={imgRef}
         />
+
         <div className={styles.name}>
           <div className={styles.img}>
             <FaRegUser />
@@ -179,7 +197,8 @@ function SignUp() {
           <input
             placeholder="이름을 입력해주세요."
             type="text"
-            onChange={(e) => setUsername(e.target.value)}
+            // onChange={(e) => setUsername(e.target.value)}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -187,13 +206,15 @@ function SignUp() {
           <input
             placeholder="ID를 입력해주세요."
             type="text"
+            name="id"
             // onChange={(e) => setUserid(e.target.value)}
-            value={userid}
-            onChange={(e) => {
-              setUserid(e.target.value);
-              setIdCheck(false);
-              setIdCheckMessage("");
-            }}
+            value={values.id}
+            // onChange={(e) => {
+            //   setUserid(e.target.value);
+            //   setIdCheck(false);
+            //   setIdCheckMessage("");
+            // }}
+            onChange={handleChange}
             required
           />
           <button type="button" onClick={handleIdCheck}>
@@ -206,8 +227,9 @@ function SignUp() {
           <input
             placeholder="대소문자,숫자 조합 8~16자 이내"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            // value={password}
+            // onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChange}
             required
           />
         </div>
@@ -216,6 +238,8 @@ function SignUp() {
           <input
             placeholder="위 비밀번호와 동일하게 입력해주세요."
             type="password"
+            // value={password}
+            onChange={handleChange}
             required
           />
         </div>
@@ -224,8 +248,10 @@ function SignUp() {
           <input
             placeholder="Email을 입력해주세요"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={values.email}
+            // onChange={(e) => setEmail(e.target.value)}
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -248,12 +274,17 @@ function SignUp() {
             <Address company={address} setcompany={setAddress}></Address>
           )}
         </div>
-        <div className={styles.button}>
-          <button type="button" onClick={handleKakaoLogin}>
-            카카오 로그인
-          </button>
-          <button>구글 로그인</button>
+        <div>
+          농장 번호
+          <input
+            placeholder="축사 번호를 입력해주세요"
+            type="number"
+            name="farm"
+            value={values.farm}
+            onChange={handleChange}
+          />
         </div>
+
         <div className={styles.button}>
           <button type="submit">회원가입</button>
           <button>취소</button>

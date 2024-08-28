@@ -11,38 +11,85 @@ import {
   setUsername,
 } from "../../store/loginSlice/loginSlice";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-const { Kakao } = window;
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = getAuth();
+  const db = getFirestore();
+  const [userData, setUserData] = useState(null);
 
   const [userId, setUserId] = useState("");
 
-  const { username, password, isLoading, notLogin } = useSelector(
+  const { userid, password, isLoading, notLogin } = useSelector(
     (state) => state.loginSlice
   );
   console.log(notLogin);
 
-  const localStorageUserId = localStorage.getItem("id");
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  const handleLogin = (e) => {
-    // console.log(e.target.value);
+    dispatch(setIsLoading(true));
 
-    localStorage.setItem("id", userId);
-    dispatch(setNotLogin(false));
-    if (localStorageUserId) {
-      alert("로그인 성공");
+    try {
+      // Firebase Authentication을 사용해 로그인
+      const userCredential = await auth.signInWithEmailAndPassword(
+        auth,
+        userid,
+        password
+      );
+      const user = userCredential.user;
 
-      dispatch(setNotLogin(false));
+      // Firestore에서 사용자 데이터 가져오기
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
 
-      navigate("/");
-    } else {
-      dispatch(setError("아이디 또는 비밀번호가 틀렸습니다"));
-      return false;
+      if (userDoc.exists()) {
+        const firestoreUserId = userDoc.data().id; // Firestore에서 가져온 ID
+
+        const localStorageUserId = localStorage.getItem("id");
+
+        // Firestore ID와 로컬 스토리지 ID 비교
+        if (firestoreUserId === localStorageUserId) {
+          console.log("로그인 성공");
+          dispatch(setNotLogin(false));
+          navigate("/");
+        } else {
+          dispatch(setError("ID가 일치하지 않습니다."));
+          dispatch(setNotLogin(true));
+        }
+      } else {
+        dispatch(setError("사용자 정보가 없습니다."));
+        dispatch(setNotLogin(true));
+      }
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      dispatch(setError("로그인 실패: " + error.message));
+      dispatch(setNotLogin(true));
+    } finally {
+      dispatch(setIsLoading(false));
     }
   };
+
+  // const localStorageUserId = localStorage.getItem("id");
+
+  // const handleLogin = (e) => {
+  //   console.log(e.target.value);
+
+  //   localStorage.setItem("id", userId);
+  //   dispatch(setNotLogin(false));
+  //   if (localStorageUserId) {
+  //     alert("로그인 성공");
+
+  //     dispatch(setNotLogin(false));
+
+  //     navigate("/");
+  //   } else {
+  //     dispatch(setError("아이디 또는 비밀번호가 틀렸습니다"));
+  //     return false;
+  //   }
+  // };
 
   const handleChange = (e) => {
     dispatch(setUsername(e.target.value));
@@ -51,12 +98,12 @@ function Login() {
 
   // setTimeout(() => {});
 
-  useEffect(() => {
-    // const storeUserId = lacalStorage.getItem("id");
-    // if (storeUserId) {
-    // dispatch({  });
-    // }
-  }, [localStorageUserId]);
+  // useEffect(() => {
+  // const storeUserId = localStorage.getItem("id");
+  // if (storeUserId) {
+  //   dispatch({});
+  // }
+  // }, [localStorageUserId]);
   // localStorage.getItem("id");
 
   // const userId = () => {
@@ -64,31 +111,22 @@ function Login() {
   // };
 
   // 카카오 소셜 로그인
-  // useEffect(() => {
-  //   const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
-  //   if (window.Kakao && !window.Kakao.isInitialized()) {
-  //     window.Kakao.init(kakaoKey);
-  //   }
-  // }, []);
+  const [userInfo, setUserInfo] = useState(() => {
+    // 페이지 로드 시 로컬 스토리지에서 사용자 정보 불러오기
+    const savedUserInfo = localStorage.getItem("userInfo");
+    return savedUserInfo ? JSON.parse(savedUserInfo) : null;
+  });
 
-  const SocialKakao = () => {
-    const Rest_api_key = "6d4fbd00bc61fb974013babde4a96588"; //REST API KEY
-    const redirect_uri = "http://localhost:3000/oauth"; //Redirect URI
-    // oauth 요청 URL
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-    const handleLogin = () => {
-      window.location.href = kakaoURL;
-    };
-    return (
-      <>
-        <button onClick={handleLogin}>카카오 로그인</button>
-      </>
-    );
-  };
+  useEffect(() => {
+    const kakaoKey = "cb502fd50b617f7bae9c2c04c8d5bf24"; // 카카오 JavaScript 키
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(kakaoKey);
+    }
+  }, []);
 
   // 카카오 로그인
   const handleKakaoLogin = () => {
-    Kakao.Auth.login({
+    window.Kakao.Auth.login({
       success: function (authObj) {
         console.log("카카오 로그인 성공:", authObj);
         window.Kakao.API.request({
@@ -100,6 +138,8 @@ function Login() {
               id: response.id,
               emaail: response.kakao_account.email,
             };
+            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            setUserInfo(userInfo);
 
             // navigator("/");
           },
@@ -118,6 +158,8 @@ function Login() {
       window.Kakao.Auth.logout(() => {
         console.log("카카오 로그아웃 성공");
         // 로그아웃 후 처리할 로직 추가
+        // localStorage.removeItem("userInfo");
+        // setUserId("");
       });
     } else {
       console.log("로그인 상태가 아닙니다.");
@@ -126,22 +168,18 @@ function Login() {
 
   // 구글
 
-  const signInWithGoogle = async () => {
+  function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
-  };
-
-  // const handleGoogleLogin = async () => {
-  //   const provider = new GoogleAuthProvider();
-  //   try {
-  //     const result = await signInWithPopup(auth, provider);
-  //     const user = result.user;
-  //     console.log("구글 로그인 성공:", user);
-  //     // 로그인 성공 시 처리할 로직 추가
-  //   } catch (error) {
-  //     console.error("구글 로그인 실패:", error);
-  //   }
-  // };
+    signInWithPopup(auth, provider)
+      .then((data) => {
+        setUserData(data.user);
+        console.log(data);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <div className={styles.container}>
@@ -164,7 +202,7 @@ function Login() {
           <button onClick={handleLogin}>로그인 하기</button>
         </div>
         <div>
-          <button className={styles.google} onClick={signInWithGoogle}>
+          <button className={styles.google} onClick={handleGoogleLogin}>
             구글로 로그인
           </button>
         </div>
@@ -176,7 +214,6 @@ function Login() {
           >
             카카오로 로그인
           </button>
-          <SocialKakao />
           <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
         </div>
         <Link to={"/SignUp"}>
