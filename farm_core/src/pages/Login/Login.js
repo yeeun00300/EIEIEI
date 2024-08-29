@@ -118,12 +118,12 @@ function Login() {
     return savedUserInfo ? JSON.parse(savedUserInfo) : null;
   });
 
-  useEffect(() => {
-    const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(kakaoKey);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
+  //   if (window.Kakao && !window.Kakao.isInitialized()) {
+  //     window.Kakao.init(kakaoKey);
+  //   }
+  // }, []);
 
   const SocialKakao = () => {
     const Rest_api_key = "6d4fbd00bc61fb974013babde4a96588"; //REST API KEY
