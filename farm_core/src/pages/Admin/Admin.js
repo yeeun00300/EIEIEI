@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Admin.module.scss";
 import { Divider } from "@mui/material/Divider";
 import Box from "@mui/material/Box";
@@ -20,8 +20,10 @@ import WeatherIssue from "../../components/Admin-Weather/WeatherIssue";
 import DiseaseIssue from "../../components/Admin-Disease/DiseaseIssue";
 import DiseaseState from "../../components/Admin-Disease/DiseaseState";
 import DiseaseUser from "../../components/Admin-Disease/DiseaseUser";
+import AlarmManagement from "../../components/Alarm/AlarmManagement";
 
 function Admin() {
+  // const [selectedDW, setSelectedDW] = useState("All");
   const MUI_X_PRODUCTS = [
     {
       id: "user",
@@ -43,7 +45,7 @@ function Admin() {
     },
     {
       id: "weather",
-      label: "기상 현황",
+      label: "기상 관리",
       children: [
         { id: "weather-condition", label: "날씨 현황" },
         { id: "weather-issue", label: "기상 특보" },
@@ -52,7 +54,7 @@ function Admin() {
     },
     {
       id: "disease",
-      label: "질병 현황",
+      label: "질병 관리",
       children: [
         { id: "disease-state", label: "질병 현황" },
         { id: "disease-issue", label: "질병 특보" },
@@ -62,22 +64,19 @@ function Admin() {
     },
     {
       id: "alarm",
-      label: "알림 전송",
+      label: "알림 관리",
       children: [
-        { id: "alarm-weather", label: "날씨 알림" },
-        { id: "alarm-disease", label: "질병 알림" },
+        { id: "alarm-management", label: "알림 통합 관리" },
+        { id: "alarm-send", label: "알림 전송" },
+        // { id: "alarm-weather", label: "날씨 정보" },
+        // { id: "alarm-disease", label: "질병 정보" },
       ],
     },
     {
       id: "chatting",
       label: "채팅기록",
-      // children: [
-      //   { id: "alarm-weather", label: "날씨 알림" },
-      //   { id: "alarm-disease", label: "질병 알림" },
-      // ],
     },
   ];
-  // tabindex =0 ,-1, aria-selected="true"
 
   // 선택된 리스트(컴포넌트)의 id와 label 을 가져온다-----------------------
   const apiRef = useTreeViewApiRef();
@@ -99,16 +98,6 @@ function Admin() {
 
   // 선택 리스트의 정보를 화면에 나타낸다 ----------------------------------
   const renderContent = () => {
-    const weatherDescription = `< 특보 현황 >
-   ○ 폭염경보: 부산, 경상남도(양산, 창원, 김해, 밀양, 의령, 함안, 창녕, 진주, 하동, 합천, 산청, 함양)
-   ○ 폭염주의보: 울산, 경상남도(거창, 통영, 거제, 고성, 남해, 사천)
-  
-   <예비특보 현황>
-   ○ 풍랑 예비특보(27일 오전(06~12시)): 남해동부바깥먼바다
-   사용 예시`;
-    const diseaseDescription = `
-    [경기도청] 도민께서는 아프리카돼지열병 확산방지 및 조기 종식을 위하여 발생지역의 방문을 자제하여 주시기 바랍니다.
-    `;
     const componentsMap = {
       "": " ",
       user: " ",
@@ -129,18 +118,68 @@ function Admin() {
       "disease-issue": <DiseaseState />,
       "disease-consult": <h1>문진표 목록</h1>,
       "disease-notice": <DiseaseIssue />,
-      "alarm-weather": (
-        <Alarm title={"날씨 알림"} description={weatherDescription} />
-      ),
-      "alarm-disease": (
-        <Alarm title={"질병 알림"} description={diseaseDescription} />
-      ),
+      "alarm-management": <AlarmManagement />,
+      // "alarm-management": (
+      //   <Alarm title={"날씨 알림"} description={weatherDescription} />
+      // ),
+      "alarm-send": <h1>알람 전송</h1>,
+      // "alarm-weather": (
+      //   <Alarm title={"날씨 알림"} description={weatherDescription} />
+      // ),
+      // "alarm-disease": (
+      //   <Alarm title={"질병 알림"} description={diseaseDescription} />
+      // ),
       chatting: <h1>채팅기록</h1>,
     };
 
     return componentsMap[itemId] || <h1>Default Content</h1>;
   };
   // --------------------------------------------------------------------
+
+  // const SelectedDiseaseWeather = () => {
+  //   const weatherDescription = `< 특보 현황 >
+  //  ○ 폭염경보: 부산, 경상남도(양산, 창원, 김해, 밀양, 의령, 함안, 창녕, 진주, 하동, 합천, 산청, 함양)
+  //  ○ 폭염주의보: 울산, 경상남도(거창, 통영, 거제, 고성, 남해, 사천)
+
+  //  <예비특보 현황>
+  //  ○ 풍랑 예비특보(27일 오전(06~12시)): 남해동부바깥먼바다
+  //  사용 예시`;
+  //   const diseaseDescription = `
+  //   [경기도청] 도민께서는 아프리카돼지열병 확산방지 및 조기 종식을 위하여 발생지역의 방문을 자제하여 주시기 바랍니다.
+  //   `;
+  //   if (selectedDW === "All") {
+  //     return (
+  //       <>
+  //         <Alarm
+  //           title={"날씨 알림"}
+  //           description={weatherDescription}
+  //           setSelectedDW={setSelectedDW}
+  //         />
+  //         <Alarm
+  //           title={"질병 알림"}
+  //           description={diseaseDescription}
+  //           setSelectedDW={setSelectedDW}
+  //         />
+  //       </>
+  //     );
+  //   } else if (selectedDW === "Weather") {
+  //     return (
+  //       <Alarm
+  //         title={"날씨 알림"}
+  //         description={weatherDescription}
+  //         setSelectedDW={setSelectedDW}
+  //       />
+  //     );
+  //   } else if (selectedDW === "Disease") {
+  //     return (
+  //       <Alarm
+  //         title={"질병 알림"}
+  //         description={diseaseDescription}
+  //         setSelectedDW={setSelectedDW}
+  //       />
+  //     );
+  //   }
+  // };
 
   useEffect(() => {}, [itemId]);
   return (

@@ -94,7 +94,7 @@ function Layout(props) {
         { id: "My_Farm_Details_Farm", label: "목장 상세 현황" },
         { id: "My_Farm_Add", label: "+ 축사 추가" },
         { id: "My_Farm_Details_stock", label: "가축 상세 현황" },
-        { id: "My_Farm_Add", label: "+ 가축 추가" },
+        { id: "My_Farm_Add1", label: "+ 가축 추가" },
 
         // { id: "My_Farm_Details_CCTV", label: "CCTV" },
         { id: "My_Farm_Details_Disease", label: "질병 현황" },
