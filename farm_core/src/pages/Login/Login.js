@@ -120,19 +120,15 @@ function Login() {
   });
 
   useEffect(() => {
-    const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
+    const kakaoKey = process.env.KAKAO_APP_KEY; // 카카오 JavaScript 키
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoKey);
     }
   }, []);
 
   const SocialKakao = () => {
-    const Rest_api_key = "6d4fbd00bc61fb974013babde4a96588"; //REST API KEY
-    const redirect_uri = "http://localhost:3000/oauth"; //Redirect URI
-    // oauth 요청 URL
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
     const handleLogin = () => {
-      window.location.href = kakaoURL;
+      window.location.href = process.env.KAKAO_APP_KEY;
     };
     return (
       <>
@@ -140,6 +136,7 @@ function Login() {
       </>
     );
   };
+  const code = new URL(document.URL).searchParams.get("code");
 
   // 카카오 로그인
   const handleKakaoLogin = () => {
