@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./Weather.module.scss";
+import WeatherItem from "./WeatherItem";
 
 const initializeData = {
-  main: { humidity: 0, temp_max: 0, temp_min: 0 },
-  wind: { speed: 0, deg: 0, gust: 0 },
-  weather: [{ description: "", main: "Clear", icon: "" }],
+  city: { name: "" },
+  list: [
+    { main: { humidity: 0, temp: 0, temp_max: 0, temp_min: 0 } },
+    { wind: { speed: 0, deg: 0, gust: 0 } },
+    { dt_txt: "" },
+    { weather: [{ description: "", main: "Clear", icon: "01n" }] },
+  ],
 };
 
 function Weather() {
@@ -34,12 +39,7 @@ function Weather() {
         setWeatherData(json);
       });
   };
-  // const {
-  //   main: { humidity, temp_max, temp_min, temp },
-  //   weather,
-  //   wind: { speed, deg, gust },
-  // } = weatherData;
-  // const { description, main, icon } = weather[0];
+  const weatherCity = weatherData.city.name;
 
   useEffect(() => {
     success();
@@ -47,6 +47,8 @@ function Weather() {
 
   return (
     <div className={styles.Weather}>
+      <h1>{weatherCity}의 날씨</h1>
+      <WeatherItem weatherData={weatherData} />
       {/* {adminLogin ? (
         <>
           <h1>오늘의 날씨</h1>
