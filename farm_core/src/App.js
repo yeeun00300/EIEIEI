@@ -20,6 +20,7 @@ import Payment from "./pages/MyPage/Payment/Payment";
 import FreeboardPage from "./pages/Community/FreeboardPage";
 import NewBoardPage from "./pages/Community/NewBoardPage";
 import Livestock from "./pages/Community/Livestock";
+import KakaoCallBack from "./pages/Login/SignUp/KakaoCallBack";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ function App() {
           <Route path="/">
             <Route index element={<Intro />} />
             <Route path="SignUp" element={<SignUp />} />
-            <Route path="oauth" element={<SignUp />} />
+            <Route path="oauth" element={<KakaoCallBack />} />
             {/* <Route path="Login" element={<Login />} /> */}
           </Route>
         ) : (

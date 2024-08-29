@@ -127,8 +127,11 @@ function Login() {
   }, []);
 
   const SocialKakao = () => {
+    const kakaoAPIKey = `${process.env.REACT_APP_REST_API_KEY}`;
+    const redirectURI = `${process.env.REACT_APP_REDIRECT_URI}`;
+    const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoAPIKey}&redirect_uri=${redirectURI}&response_type=code`;
     const handleLogin = () => {
-      window.location.href = process.env.KAKAO_APP_KEY;
+      window.location.href = kakaoAuthURL;
     };
     return (
       <>
@@ -136,7 +139,7 @@ function Login() {
       </>
     );
   };
-  const code = new URL(document.URL).searchParams.get("code");
+  // const code = new URL(document.URL).searchParams.get("code");
 
   // 카카오 로그인
   const handleKakaoLogin = () => {
