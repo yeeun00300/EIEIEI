@@ -1,13 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  validatePassword,
+} from "firebase/auth";
 import {
   addDatas,
   checkUserIdExists,
   db,
   getUserAuth,
   joinUser,
+  saveUserData,
 } from "../../../firebase";
 import Address from "./../../../api/address/Address";
 import logoImg from "./../../../img/TitleLogo.png";
@@ -28,22 +33,18 @@ function SignUp() {
     address: "",
     farm: "",
   });
-  const handleChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   // const [username, setUsername] = useState("");
   // const [userid, setUserid] = useState("");
-
+  const [passwordError, setPasswordError] = useState(""); // 비밀번호 유효성
+  const [passwordMatchError, setPasswordMatchError] = useState("");
+  const [passwordMatchSuccess, setPasswordMatchSuccess] = useState("");
   const [idCheck, setIdCheck] = useState(false); // 아이디 중복 확인 여부 상태
   const [idCheckMessage, setIdCheckMessage] = useState("");
   // 주소
-  const [address, setAddress] = useState({ address: "" });
+  const [address, setAddress] = useState({ address: "", detailedAddress: "" });
   // 프로필 이미지
   const [imgFile, setImgFile] = useState("");
   const imgRef = useRef();
@@ -61,6 +62,55 @@ function SignUp() {
     }
   }, []);
 
+  const validatePassword = (password) => {
+    if (password.length < 6 || password.length > 15) {
+      return "비밀번호는 6자 이상 15자 이하이어야 합니다.";
+    }
+    if (!/[a-zA-Z]/.test(password)) {
+      return "비밀번호는 영어를 포함해야 합니다.";
+    }
+    if (!/\d/.test(password)) {
+      return "비밀번호는 숫자를 포함해야 합니다.";
+    }
+    return "";
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+
+    if (e.target.name === "password") {
+      const error = validatePassword(value);
+      setPasswordError(error);
+    }
+
+    if (name === "passwordConfirm") {
+      if (value !== values.password) {
+        setPasswordMatchError("비밀번호가 일치하지 않습니다.");
+        setPasswordMatchSuccess("");
+      } else {
+        setPasswordMatchError("");
+        setPasswordMatchSuccess("비밀번호가 일치합니다.");
+      }
+    }
+    if (name === "address") {
+      setAddress((prev) => ({
+        ...prev,
+        address: value,
+      }));
+    }
+
+    if (name === "detailedAddress") {
+      setAddress((prev) => ({
+        ...prev,
+        detailedAddress: value,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,19 +118,34 @@ function SignUp() {
       alert("아이디 중복 확인을 해주세요.");
       return;
     }
+    if (passwordError) {
+      alert(`비밀번호 오류: ${passwordError}`);
+      return;
+    }
+
+    // 비밀번호 확인 검증
+    if (passwordMatchError) {
+      alert(`비밀번호 불일치: ${passwordMatchError}`);
+      return;
+    }
 
     try {
-      const userUid = `${values.id}_${new Date().getTime()}`;
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      const { user } = userCredential;
+
       const userData = {
         username: values.username,
         email: values.email,
         id: values.id,
-        password: values.password,
-        address: address.address,
+        address: { ...address },
         farm: values.farm,
         createdAt: new Date().toISOString(),
       };
-      await joinUser(userUid, userData);
+      await saveUserData(user.uid, userData);
       // const userCredential = await createUserWithEmailAndPassword(
       //   auth,
       //   values.email,
@@ -105,7 +170,7 @@ function SignUp() {
       alert("회원가입에 성공했습니다.");
 
       // 회원가입 성공시 이동할 페이지
-      navigator("/LogIn");
+      // navigator("/LogIn");
       // window.location.
     } catch (error) {
       console.error(error);
@@ -250,16 +315,24 @@ function SignUp() {
             onChange={handleChange}
             required
           />
+          {passwordError && <p className={styles.error}>{passwordError}</p>}
         </div>
         <div>
           비밀번호 확인
           <input
             placeholder="위 비밀번호와 동일하게 입력해주세요."
             type="password"
+            name="passwordConfirm"
             // value={password}
             onChange={handleChange}
             required
           />
+          {passwordMatchError && (
+            <p className={styles.error}>{passwordMatchError}</p>
+          )}
+          {passwordMatchSuccess && (
+            <p className={styles.success}>{passwordMatchSuccess}</p>
+          )}
         </div>
         <div>
           이메일
@@ -286,7 +359,13 @@ function SignUp() {
           />
           <button onClick={handleComplete}>우편번호 찾기</button>
           <div>
-            <input placeholder="상세주소를 입력해주세요." />
+            <input
+              placeholder="상세주소를 입력해주세요."
+              type="text"
+              name="detailedAddress"
+              onChange={handleChange}
+              value={address.detailedAddress}
+            />
           </div>
           {popup && (
             <Address company={address} setcompany={setAddress}></Address>
