@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
+import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
+import { useDispatch } from "react-redux";
 const { kakao } = window;
 
 function MapMarker({ map }) {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (!map) return;
 
@@ -37,6 +41,10 @@ function MapMarker({ map }) {
             if (status === kakao.maps.services.Status.OK) {
               const address = result[0].address.address_name;
               console.log(address);
+
+              // Redux 상태 업데이트
+              dispatch(setMapAddr(address));
+
               // 인포윈도우에 주소 표시
               const message = `
                     <div style="padding:5px; font-size:14px; display:inline-block; 
@@ -65,7 +73,7 @@ function MapMarker({ map }) {
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-  }, [map]);
+  }, [map, dispatch]);
 
   return null;
 }

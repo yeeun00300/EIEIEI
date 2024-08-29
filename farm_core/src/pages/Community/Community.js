@@ -8,6 +8,7 @@ import hiImg from "../../img/인사.jpeg";
 import logoImg from "../../img/TitleLogo.png";
 import NewBoardPage from "./NewBoardPage";
 import FreeboardPage from "./FreeboardPage";
+import { useSelector } from "react-redux";
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};

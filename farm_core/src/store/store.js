@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import addrSlice from "./myPageSlice/addressSlice";
 import addressSlice from "./myPageSlice/addressSlice";
 import loginSlice from "./loginSlice/loginSlice";
 import communitySlice from "./communitySlice/communitySlice";
 import userInfoEditSlice from "./userInfoEditSlice/UserInfoEditSlice";
 import userEditSlice from "./myPageSlice/userEditSlice";
+import mapAddrSlice from "./addressSlice/mapAddrSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -12,6 +12,7 @@ const store = configureStore({
     communitySlice,
     userInfoEditSlice,
     user: userEditSlice,
+    address: mapAddrSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

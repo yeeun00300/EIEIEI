@@ -22,6 +22,7 @@ import AddLiveStock from "../../components/addLiveStock/AddLiveStock";
 import DiseaseIssueItem from "../../components/Admin-Disease/DiseaseIssueItem/DiseaseIssueItem";
 import DiseaseState from "../../components/Admin-Disease/DiseaseState";
 import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
+import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -197,7 +198,8 @@ function Layout(props) {
       My_Farm_Details_Disease: (
         <>
           <DiseaseState />
-          <DiseaseMap />
+          {/* <DiseaseMap /> */}
+          <CurrentMarker />
         </>
       ),
       // My_Farm_Details_Info: <h1>상세정보</h1>,

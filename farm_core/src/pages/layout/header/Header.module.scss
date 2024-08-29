@@ -5,6 +5,7 @@
   padding-right: 16px;
   background-color: var(--second-color);
   height: 70px;
+  position: relative;
 }
 .logo {
   display: flex;
@@ -27,4 +28,8 @@
   display: flex;
   width: 100px;
   justify-content: space-around;
+}
+.address {
+  position: absolute;
+  right: 120px;
 }
