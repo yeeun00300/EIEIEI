@@ -13,6 +13,7 @@ import {
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 
+const { Kakao } = window;
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -118,15 +119,30 @@ function Login() {
   });
 
   useEffect(() => {
-    const kakaoKey = "cb502fd50b617f7bae9c2c04c8d5bf24"; // 카카오 JavaScript 키
+    const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoKey);
     }
   }, []);
 
+  const SocialKakao = () => {
+    const Rest_api_key = "6d4fbd00bc61fb974013babde4a96588"; //REST API KEY
+    const redirect_uri = "http://localhost:3000/oauth"; //Redirect URI
+    // oauth 요청 URL
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+    const handleLogin = () => {
+      window.location.href = kakaoURL;
+    };
+    return (
+      <>
+        <button onClick={handleLogin}>카카오 로그인</button>
+      </>
+    );
+  };
+
   // 카카오 로그인
   const handleKakaoLogin = () => {
-    window.Kakao.Auth.login({
+    Kakao.Auth.login({
       success: function (authObj) {
         console.log("카카오 로그인 성공:", authObj);
         window.Kakao.API.request({
@@ -136,7 +152,7 @@ function Login() {
             // 카카오 로그인 성공 시 처리할 로직 추가
             const userInfo = {
               id: response.id,
-              emaail: response.kakao_account.email,
+              email: response.kakao_account.email,
             };
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
             setUserInfo(userInfo);
@@ -214,6 +230,7 @@ function Login() {
           >
             카카오로 로그인
           </button>
+          <SocialKakao />
           <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
         </div>
         <Link to={"/SignUp"}>
