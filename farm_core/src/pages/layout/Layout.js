@@ -85,14 +85,17 @@ function Layout(props) {
         { id: "My_Farm01", label: "나의 목장 1" },
         { id: "My_Farm02", label: "나의 목장 2" },
         { id: "My_Farm03", label: "나의 목장 3" },
-        { id: "My_Farm_Add", label: "+ 축사 추가" },
       ],
     },
     {
       id: "My_Farm_Details",
       label: "목장 상세 관리",
       children: [
-        { id: "My_Farm_Details_Farm", label: "목장 현황" },
+        { id: "My_Farm_Details_Farm", label: "목장 상세 현황" },
+        { id: "My_Farm_Add", label: "+ 축사 추가" },
+        { id: "My_Farm_Details_stock", label: "가축 상세 현황" },
+        { id: "My_Farm_Add", label: "+ 가축 추가" },
+
         // { id: "My_Farm_Details_CCTV", label: "CCTV" },
         { id: "My_Farm_Details_Disease", label: "질병 현황" },
         // { id: "My_Farm_Details_Info", label: "상세정보" },
