@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 const { kakao } = window;
 
-function MapSearch() {
-  const [map, setMap] = useState(null);
-
+function MapSearch({ setMap }) {
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -11,8 +9,9 @@ function MapSearch() {
       level: 13,
     };
     const kakaoMap = new kakao.maps.Map(container, options);
-    setMap(kakaoMap);
-  }, []);
+    setMap(kakaoMap); // 부모 컴포넌트로 지도 객체 전달
+  }, [setMap]);
+
   return (
     <div
       style={{
