@@ -115,14 +115,12 @@ async function getDisease(animalType, diseaseId) {
   }
 }
 
-export const joinUser = async (uid, userData) => {
-  const db = getDatabase();
+export const saveUserData = async (userId, userData) => {
   try {
-    await set(ref(db, `users/${uid}`), userData);
+    await setDoc(doc(db, "users", userId), userData);
     console.log("User data saved successfully");
   } catch (error) {
     console.error("Error saving user data:", error);
-    throw error;
   }
 };
 
