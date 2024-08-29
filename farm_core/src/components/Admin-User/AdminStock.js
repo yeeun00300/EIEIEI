@@ -16,6 +16,7 @@ function AdminStock() {
           title="농장 종류별 :"
           name="stock"
           setSort={setSort}
+          sort={sort}
           sortArr={[
             { id: "k-beef", value: "한우", htmlFor: "k-beef" },
             { id: "dairy", value: "낙농", htmlFor: "dairy" },
