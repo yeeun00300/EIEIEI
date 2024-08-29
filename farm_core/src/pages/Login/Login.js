@@ -12,6 +12,7 @@ import {
 } from "../../store/loginSlice/loginSlice";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
+import Form from "./Form/Form";
 
 const { Kakao } = window;
 function Login() {
@@ -23,21 +24,21 @@ function Login() {
 
   const [userId, setUserId] = useState("");
 
-  const { userid, password, isLoading, notLogin } = useSelector(
+  const { userid, password, isLoading, notLogin, email } = useSelector(
     (state) => state.loginSlice
   );
   console.log(notLogin);
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
-    dispatch(setIsLoading(true));
+    // dispatch(setIsLoading(true));
 
     try {
       // Firebase Authentication을 사용해 로그인
       const userCredential = await auth.signInWithEmailAndPassword(
         auth,
-        userid,
+        email,
         password
       );
       const user = userCredential.user;
@@ -118,12 +119,12 @@ function Login() {
     return savedUserInfo ? JSON.parse(savedUserInfo) : null;
   });
 
-  // useEffect(() => {
-  //   const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
-  //   if (window.Kakao && !window.Kakao.isInitialized()) {
-  //     window.Kakao.init(kakaoKey);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(kakaoKey);
+    }
+  }, []);
 
   const SocialKakao = () => {
     const Rest_api_key = "6d4fbd00bc61fb974013babde4a96588"; //REST API KEY
@@ -199,12 +200,13 @@ function Login() {
 
   return (
     <div className={styles.container}>
-      <h1>로그인</h1>
+      <Form title={"로그인"} getDataForm={handleLogin} />
+      {/* <h1>로그인</h1>
       <label>
         아이디
-        {/* <input value={userId} onChange={handleChange} /> */}
+    
         <input onChange={handleChange} />
-        {/* <input onClick={handleClick} /> */}
+   
       </label>
       <label>
         비밀번호
@@ -212,7 +214,7 @@ function Login() {
           type="password"
           onClick={(e) => dispatch(setPassword(e.target.value))}
         />
-      </label>
+      </label> */}
       <div>
         <div>
           <button onClick={handleLogin}>로그인 하기</button>

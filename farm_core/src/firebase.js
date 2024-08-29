@@ -13,6 +13,7 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { getDatabase, ref, set } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSerjiLaZai0AzNmCU-b9WkursHA-1DXo",
@@ -113,6 +114,17 @@ async function getDisease(animalType, diseaseId) {
     console.log("불러 올수 없습니다.", error);
   }
 }
+
+export const joinUser = async (uid, userData) => {
+  const db = getDatabase();
+  try {
+    await set(ref(db, `users/${uid}`), userData);
+    console.log("User data saved successfully");
+  } catch (error) {
+    console.error("Error saving user data:", error);
+    throw error;
+  }
+};
 
 export { db, addDatas, getDatas, addDisease, getDisease, checkUserIdExists };
 export default app;

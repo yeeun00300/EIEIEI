@@ -7,6 +7,7 @@ import {
   checkUserIdExists,
   db,
   getUserAuth,
+  joinUser,
 } from "../../../firebase";
 import Address from "./../../../api/address/Address";
 import logoImg from "./../../../img/TitleLogo.png";
@@ -14,15 +15,17 @@ import { FaRegUser, FaImage } from "react-icons/fa";
 // import { FaImage } from "react-icons/fa6";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { getDatabase } from "firebase/database";
 
 function SignUp() {
   const auth = getAuth();
   const navigator = useNavigate("");
   const [values, setValues] = useState({
-    id: "",
+    username: "",
     email: "",
+    id: "",
     password: "",
-    // address: "",
+    address: "",
     farm: "",
   });
   const handleChange = (e) => {
@@ -52,7 +55,7 @@ function SignUp() {
 
   // 카카오 소셜 로그인
   useEffect(() => {
-    const kakaoKey = "cb502fd50b617f7bae9c2c04c8d5bf24"; // 카카오 JavaScript 키
+    const kakaoKey = "6d4fbd00bc61fb974013babde4a96588"; // 카카오 JavaScript 키
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoKey);
     }
@@ -67,25 +70,37 @@ function SignUp() {
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      );
-      const { user } = userCredential;
-
-      const userObj = {
-        id: values.userid,
-        name: values.username,
-        password: values.password,
+      const userUid = `${values.id}_${new Date().getTime()}`;
+      const userData = {
+        username: values.username,
         email: values.email,
-        address: values.address,
+        id: values.id,
+        password: values.password,
+        address: address.address,
         farm: values.farm,
-        createdAt: new Date(),
-        uid: user.uid,
+        createdAt: new Date().toISOString(),
       };
-      await setDoc(doc(db, "users", user.uid), userObj);
-      // await addDatas(("users", user.uid), userObj);
+      await joinUser(userUid, userData);
+      // const userCredential = await createUserWithEmailAndPassword(
+      //   auth,
+      //   values.email,
+      //   values.password
+      // );
+      // const { user } = userCredential;
+      // const
+
+      // const userObj = {
+      //   id: values.userid,
+      //   name: values.username,
+      //   password: values.password,
+      //   email: values.email,
+      //   address: values.address,
+      //   farm: values.farm,
+      //   createdAt: new Date(),
+      //   uid: user.uid,
+      // };
+      // await setDoc(doc(db, "users", user.uid), values);
+      // await joinUser(("users", user.uid), values);
       console.log("데이터 추가 성공");
       alert("회원가입에 성공했습니다.");
 
@@ -197,6 +212,8 @@ function SignUp() {
           <input
             placeholder="이름을 입력해주세요."
             type="text"
+            name="username"
+            value={values.username}
             // onChange={(e) => setUsername(e.target.value)}
             onChange={handleChange}
           />
@@ -227,7 +244,8 @@ function SignUp() {
           <input
             placeholder="대소문자,숫자 조합 8~16자 이내"
             type="password"
-            // value={password}
+            name="password"
+            value={values.password}
             // onChange={(e) => setPassword(e.target.value)}
             onChange={handleChange}
             required
