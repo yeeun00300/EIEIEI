@@ -40,7 +40,8 @@
     "react-scripts": "5.0.1",
     "sass": "^1.77.8",
     "styled-components": "^6.1.12",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "env-cmd -f .env react-scripts start",

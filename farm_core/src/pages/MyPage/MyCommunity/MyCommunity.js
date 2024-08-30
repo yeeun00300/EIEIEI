@@ -8,6 +8,7 @@ import communitySlice, {
 import FreeboardPage from "../../Community/FreeboardPage";
 import CommunityConents from "./communityContent/CommunityConents";
 import Selected from "../../../components/MyLiveStock/Selected/Selected";
+import StockMedicalExcel from "../../../components/medicalList/StockMedicalExcel";
 
 function MyCommunity({ variant, children }) {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function MyCommunity({ variant, children }) {
           return <CommunityConents {...content} key={idx} />;
         })}
       </div>
+      <StockMedicalExcel />
     </div>
   );
 }

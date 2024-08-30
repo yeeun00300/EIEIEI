@@ -1,84 +1,8 @@
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>축사 문진표</title>
-  </head>
-  <style>
-    body {
-      font-family: "Arial", sans-serif;
-      background-color: #f7f7f7;
-      margin: 0;
-      padding: 10px;
-    }
+import React from "react";
 
-    .form-container {
-      max-width: 800px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      border: 2px solid black;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .form-section {
-      margin-bottom: 20px;
-    }
-
-    .form-section h3 {
-      font-size: 1.2em;
-      margin-bottom: 10px;
-    }
-
-    .field-group {
-      display: flex;
-      justify-content: left;
-      margin-bottom: 10px;
-      font-size: 15px;
-    }
-
-    .field-group label {
-      width: 30%;
-      font-weight: bold;
-    }
-
-    .field-group input[type="text"],
-    .field-group textarea {
-      width: 65%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-
-    textarea {
-      resize: vertical;
-      height: 60px;
-    }
-
-    button[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-
-    button[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-  </style>
-  <body>
-    <div class="form-container">
+function MedicalList(props) {
+  return (
+    <div>
       <h2>축사 문진표</h2>
 
       <div class="form-section">
@@ -239,5 +163,7 @@
 
       <button type="submit">제출</button>
     </div>
-  </body>
-</html>
+  );
+}
+
+export default MedicalList;

@@ -14,6 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { getDatabase, ref, set } from "firebase/database";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSerjiLaZai0AzNmCU-b9WkursHA-1DXo",
