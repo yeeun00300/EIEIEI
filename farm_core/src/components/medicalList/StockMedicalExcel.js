@@ -8,27 +8,10 @@ function StockMedicalExcel(props) {
     (state) => state.PRexcelSlice
   );
 
-  const handleFileUpload = (e) => {
-    const file = e.target.file[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-
-      const Sheet1 = workbook.Sheets[0];
-      const worksheet = workbook.Sheets[Sheet1];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-      setFileData(jsonData);
-    };
-    reader.readAsArrayBuffer(file);
-  };
-
   return (
     <div>
-      <h2>가축 정보 Excel 업로드</h2>
-      <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
-
+      <h2>가축 정보 Excel 업로드</h2>``
+      <input type="file" accept=".xlsx, .xls" />
       {fileData.length > 0 && (
         <div>
           <h3>업로드된 데이터</h3>
