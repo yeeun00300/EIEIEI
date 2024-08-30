@@ -7,7 +7,7 @@ function CurrentMarker() {
   const [map, setMap] = useState(null);
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <MapSearch setMap={setMap} />
       {map && (
         <>
