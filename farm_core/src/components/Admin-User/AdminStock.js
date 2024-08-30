@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import styles from "./AdminStock.module.scss";
 import Sort from "../../pages/Admin/components/Sort";
 import Search from "../../pages/Admin/components/Search";
+import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
 function AdminStock() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   useEffect(() => {}, [search, sort]);
   return (
     <div className={styles.AdminStock}>
-      <div>가축 정보 리스트</div>
-      <div>
+      <div className={styles.AdminUtil}>
+        <div>가축 정보 리스트</div>
         <Search setSearch={setSearch} />
-        <div>등록기간 : </div>
+        <DateRangePickerValue />
         <Sort
           title="농장 종류별 :"
           name="stock"
@@ -26,7 +27,7 @@ function AdminStock() {
           ]}
         />
       </div>
-      <div>
+      <div className={styles.AdminList}>
         가축 리스트
         <ul>
           <li></li>

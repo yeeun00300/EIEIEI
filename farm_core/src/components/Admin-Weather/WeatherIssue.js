@@ -6,7 +6,8 @@ function WeatherIssue() {
   const [weatherIssueList, setWeatherIssueList] = useState([]);
   const [weatherIssueContent, setWeatherIssueContent] = useState([]);
   const [search, setSearch] = useState("");
-  useEffect(() => {}, [search]);
+  const now = new Date();
+  // const today = now.toISOString;
   const apiKey =
     "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA%3D%3D";
   const apiKey1 =
@@ -15,7 +16,7 @@ function WeatherIssue() {
   const getWeatherList = async (lat, lon) => {
     await fetch(
       // `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnList?serviceKey=${apiKey}&numOfRows=10&pageNo=1&dataType=JSON&stnId=108&fromTmFc=20240822&toTmFc=20240826`
-      `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnList?serviceKey=${apiKey}&numOfRows=10&pageNo=1&dataType=JSON&stnId=108&fromTmFc=20240822&toTmFc=20240826`
+      `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnList?serviceKey=${apiKey}&numOfRows=10&pageNo=1&dataType=JSON&stnId=108&fromTmFc=20240828&toTmFc=20240830`
     )
       .then((response) => {
         // console.log(response);
@@ -28,7 +29,7 @@ function WeatherIssue() {
   };
   const getWeatherContent = async (lat, lon) => {
     await fetch(
-      `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnMsg?serviceKey=${apiKey}&numOfRows=100&pageNo=1&dataType=JSON&stnId=108&fromTmFc=20240822&toTmFc=20240826`
+      `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnMsg?serviceKey=${apiKey}&numOfRows=100&pageNo=1&dataType=JSON&stnId=108&fromTmFc=20240828&toTmFc=20240830`
     )
       .then((response) => {
         // console.log(response);
@@ -44,7 +45,7 @@ function WeatherIssue() {
     getWeatherContent();
   }, []);
   //   console.log(weatherIssueList);
-  //   console.log(weatherIssueContent);
+  console.log(weatherIssueContent);
 
   return (
     <div className={styles.WeatherIssue}>
