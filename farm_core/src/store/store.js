@@ -12,7 +12,7 @@ const store = configureStore({
     communitySlice,
     userInfoEditSlice,
     user: userEditSlice,
-    address: mapAddrSlice,
+    mapAddrSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

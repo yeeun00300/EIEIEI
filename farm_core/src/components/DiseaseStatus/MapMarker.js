@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
-import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
-import { useDispatch } from "react-redux";
 const { kakao } = window;
 
 function MapMarker({ map }) {
-  const dispatch = useDispatch();
-
   useEffect(() => {
     if (!map) return;
 
@@ -18,9 +14,9 @@ function MapMarker({ map }) {
 
           // 마커 이미지 설정
           const imageSrc =
-            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerRed.png";
-          const imageSize = new kakao.maps.Size(64, 69);
-          const imageOption = { offset: new kakao.maps.Point(27, 69) };
+            "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
+          const imageSize = new kakao.maps.Size(20, 30);
+          const imageOption = { offset: new kakao.maps.Point(20, 30) };
 
           const markerImage = new kakao.maps.MarkerImage(
             imageSrc,
@@ -34,32 +30,8 @@ function MapMarker({ map }) {
             image: markerImage,
           });
 
-          // Geocoder를 사용해 좌표를 주소로 변환
-          const geocoder = new kakao.maps.services.Geocoder();
-
-          geocoder.coord2Address(lon, lat, (result, status) => {
-            if (status === kakao.maps.services.Status.OK) {
-              const address = result[0].address.address_name;
-              console.log(address);
-
-              // Redux 상태 업데이트
-              dispatch(setMapAddr(address));
-
-              // 인포윈도우에 주소 표시
-              const message = `
-                    <div style="padding:5px; font-size:14px; display:inline-block; 
-                                background-color:white; border-radius:5px; 
-                                box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);">
-                      ${address} (내위치)
-                    </div>`;
-              const infowindow = new kakao.maps.InfoWindow({
-                content: message,
-              });
-
-              infowindow.open(map, marker);
-              map.setCenter(locPosition);
-            }
-          });
+          // 지도 중심을 현재 위치로 설정
+          map.setCenter(locPosition);
         },
         (error) => {
           console.error("Geolocation error: ", error);
@@ -73,7 +45,7 @@ function MapMarker({ map }) {
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-  }, [map, dispatch]);
+  }, [map]);
 
   return null;
 }

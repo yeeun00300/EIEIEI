@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Layout.module.scss";
 import Header from "./header/Header";
 import { Outlet } from "react-router-dom";
@@ -23,10 +23,16 @@ import DiseaseIssueItem from "../../components/Admin-Disease/DiseaseIssueItem/Di
 import DiseaseState from "../../components/Admin-Disease/DiseaseState";
 import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
 import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
+import { fetchLocationAndAddress } from "../../components/DiseaseStatus/locationService";
+import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
+const { kakao } = window;
 
 function Layout(props) {
   const dispatch = useDispatch();
   const { adminLogin } = useSelector((state) => state.loginSlice);
+  useEffect(() => {
+    fetchLocationAndAddress(kakao, dispatch, setMapAddr);
+  }, [dispatch]);
 
   // amin nav list
   // const MUI_X_PRODUCTS = [

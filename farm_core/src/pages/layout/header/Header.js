@@ -6,7 +6,7 @@ import { FaRegUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 function Header({ title }) {
-  const address = useSelector((state) => state.address.address);
+  const address = useSelector((state) => state.mapAddrSlice.address);
 
   return (
     <div className={styles.header}>
