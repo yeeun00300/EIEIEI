@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Payment.module.scss";
+import AddServerData from "../../../components/medicalList/Practice";
 
 function Payment(props) {
   return (
@@ -31,6 +32,7 @@ function Payment(props) {
           </div>
         </div>
       </div>
+      <AddServerData />
     </div>
   );
 }
