@@ -1,0 +1,16 @@
+.container {
+  display: flex; /* Flexbox를 사용하여 가로로 배치 */
+  height: 700px; /* 화면 전체 높이 사용 */
+}
+
+.placeSearchContainer {
+  width: 30%; /* 목록이 차지하는 너비 */
+  overflow-y: auto; /* 스크롤 생성 */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.mapContainer {
+  width: 70%; /* 지도가 차지하는 너비 */
+  position: relative;
+}
