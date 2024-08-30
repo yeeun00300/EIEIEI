@@ -14,7 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import { getDatabase, ref, set } from "firebase/database";
-import { getStorage } from "firebase/storage";
+import { getStorage, uploadBytesResumable } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSerjiLaZai0AzNmCU-b9WkursHA-1DXo",
@@ -125,5 +125,40 @@ export const saveUserData = async (userId, userData) => {
   }
 };
 
-export { db, addDatas, getDatas, addDisease, getDisease, checkUserIdExists };
+async function uploadFile(file) {
+  try {
+    const storage = getStorage();
+    console.log(storage); // 이 부분에서 Storage 인스턴스가 출력됩니다.
+
+    // 파일 업로드 로직 구현
+    const storageRef = ref(storage, "some-path/" + file.name);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // 업로드 진행 상태를 처리합니다.
+      },
+      (error) => {
+        // 업로드 실패 시 처리합니다.
+        console.error("업로드 실패:", error);
+      },
+      () => {
+        // 업로드 성공 시 처리합니다.
+        console.log("업로드 성공");
+      }
+    );
+  } catch (error) {
+    console.error("Storage 초기화 중 오류:", error);
+  }
+}
+export {
+  db,
+  addDatas,
+  getDatas,
+  addDisease,
+  getDisease,
+  checkUserIdExists,
+  uploadFile,
+};
 export default app;
