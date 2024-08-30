@@ -26,24 +26,31 @@ function Weather() {
 
   // open the weather
   const getWeather = async (lat, lon) => {
-    await fetch(
-      // `https://api.openweathermap.org/data/2.5/weather?q=Daejeon&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
+    try {
       //   `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
-      `/api4/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr&mode=json`
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        // console.log(json);
-        setWeatherData(json);
-      });
+      // `https://api.openweathermap.org/data/2.5/weather?q=Daejeon&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
+      // `https://api.openweathermap.org//data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr&mode=json`
+      // `/api4/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+
+      await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+      )
+        .then(async (response) => {
+          return await response.json();
+        })
+        .then((json) => {
+          setWeatherData(json);
+        });
+    } catch (error) {
+      console.log(`weather error: ${error}`);
+    }
   };
   const weatherCity = weatherData.city.name;
 
   useEffect(() => {
     success();
-  }, []);
+  }, [weatherData]);
+  // console.log(weatherData);
 
   return (
     <div className={styles.Weather}>

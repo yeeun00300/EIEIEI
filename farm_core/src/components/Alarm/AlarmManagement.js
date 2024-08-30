@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Alarm from "./Alarm";
 import Sort from "../../pages/Admin/components/Sort";
 
-function AlarmManagement({}) {
+function AlarmManagement({ reSend }) {
   const [sort, setSort] = useState("전부");
   const SelectedDiseaseWeather = () => {
     const weatherDescription = `< 특보 현황 >
@@ -20,15 +20,35 @@ function AlarmManagement({}) {
       return (
         <>
           <h1> ⁎ 날씨 알림</h1>
-          <Alarm title={"날씨 알림"} description={weatherDescription} />
+          <Alarm
+            title={"날씨 알림"}
+            description={weatherDescription}
+            reSend={reSend}
+          />
           <h1> ⁎ 질병 알림</h1>
-          <Alarm title={"질병 알림"} description={diseaseDescription} />
+          <Alarm
+            title={"질병 알림"}
+            description={diseaseDescription}
+            reSend={reSend}
+          />
         </>
       );
     } else if (sort === "날씨") {
-      return <Alarm title={"날씨 알림"} description={weatherDescription} />;
+      return (
+        <Alarm
+          title={"날씨 알림"}
+          description={weatherDescription}
+          reSend={reSend}
+        />
+      );
     } else if (sort === "질병") {
-      return <Alarm title={"질병 알림"} description={diseaseDescription} />;
+      return (
+        <Alarm
+          title={"질병 알림"}
+          description={diseaseDescription}
+          reSend={reSend}
+        />
+      );
     }
   };
   return (

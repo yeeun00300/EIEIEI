@@ -3,6 +3,7 @@ import styles from "./CustomerManagement.module.scss";
 import AdminList from "./AdminList/AdminList";
 import Sort from "../../pages/Admin/components/Sort";
 import Search from "../../pages/Admin/components/Search";
+import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
 
 function CustomerManagement() {
   const [search, setSearch] = useState("");
@@ -21,6 +22,7 @@ function CustomerManagement() {
   return (
     <div className={styles.CustomerManagement}>
       <Search setSearch={setSearch} />
+      <DateRangePickerValue />
       <Sort
         title=""
         name="Customer"

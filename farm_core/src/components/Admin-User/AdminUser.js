@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./AdminUser.module.scss";
 import Search from "../../pages/Admin/components/Search";
 import Sort from "../../pages/Admin/components/Sort";
+import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
 
 function AdminUser() {
   const [search, setSearch] = useState("");
@@ -9,10 +10,12 @@ function AdminUser() {
   useEffect(() => {}, [search, sort]);
   return (
     <div className={styles.AdminUser}>
-      <div>회원 정보 리스트</div>
-      <div>
+      <div className={styles.AdminUtil}>
+        <div>회원 정보 리스트</div>
         <Search setSearch={setSearch} />
-        <div>등록 기간 : </div>
+        <div className={styles.datePicker}>
+          <DateRangePickerValue />
+        </div>
         <Sort
           title="회원별 회원/탈퇴회원 :"
           name="member"
@@ -42,7 +45,7 @@ function AdminUser() {
           ]}
         /> */}
       </div>
-      <div>
+      <div className={styles.AdminList}>
         회원 리스트
         <ul>
           <li></li>

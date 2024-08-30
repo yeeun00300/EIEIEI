@@ -3,6 +3,16 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: relative;
+  button {
+    font-size: 18px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 8px;
+    position: absolute;
+    top: 24px;
+    right: 30px;
+  }
   li {
     padding: 12px;
     list-style-type: none;

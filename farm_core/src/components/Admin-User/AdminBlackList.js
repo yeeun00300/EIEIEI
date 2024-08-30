@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AdminBlackList.module.scss";
 import Search from "../../pages/Admin/components/Search";
+import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
 
 function AdminBlackList() {
   const [search, setSearch] = useState("");
   useEffect(() => {}, [search]);
   return (
     <div className={styles.AdminBlackList}>
-      <div>차단된 회원</div>
-      <div>
+      <div className={styles.AdminUtil}>
+        <div>차단된 회원</div>
         <Search setSearch={setSearch} />
-        <div>등록기간 : </div>
+        <DateRangePickerValue />
         {/* <div>
           회원별 회원/탈퇴회원 :
           <input type="radio" id="user" name="member" value="회원" />
@@ -32,7 +33,7 @@ function AdminBlackList() {
           <label for="layer">산란계</label>
         </div> */}
       </div>
-      <div>
+      <div className={styles.AdminList}>
         회원 리스트
         <ul>
           <li></li>

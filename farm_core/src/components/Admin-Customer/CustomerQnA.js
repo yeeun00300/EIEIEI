@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminList from "./AdminList/AdminList";
 import Search from "../../pages/Admin/components/Search";
+import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
 
 function CustomerQnA() {
   const [search, setSearch] = useState("");
@@ -8,6 +9,7 @@ function CustomerQnA() {
   return (
     <div>
       <Search setSearch={setSearch} />
+      <DateRangePickerValue />
       <AdminList title={"문의사항"} />
     </div>
   );
