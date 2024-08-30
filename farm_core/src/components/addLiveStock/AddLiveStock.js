@@ -55,10 +55,11 @@ function AddLiveStock(props) {
             type="text"
             value={address}
             //value 를 넣어서 주소값이라고 알려주자고
-            onClick={openPostcodePopup}
+            // onClick={openPostcodePopup}
             // 클릭시 주소 검색 팝업 만들어놓은거 열자고
             onChange={handleChange}
           />
+          <button onClick={openPostcodePopup}>클릭</button>
         </div>
         <div>
           <label htmlFor="size">면적:</label>
@@ -87,6 +88,10 @@ function AddLiveStock(props) {
         <div>
           <label htmlFor="operatingHours">운영 시간:</label>
           <input type="text" name="operatingHours" />
+        </div>
+        <div>
+          <label htmlFor="insurance_details">가입한 보험 번호:</label>
+          <input type="text" name="insurance_details" />
         </div>
         <div>
           <label htmlFor="note">기타 메모:</label>

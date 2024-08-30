@@ -87,21 +87,25 @@ function Layout(props) {
   const USER_PRODUCTS = [
     {
       id: "My_Farm",
-      label: "나의 목장",
+      label: "나의 축사",
       children: [
-        { id: "My_Farm01", label: "나의 목장 1" },
-        { id: "My_Farm02", label: "나의 목장 2" },
-        { id: "My_Farm03", label: "나의 목장 3" },
+        { id: "My_Farm01", label: "축사 1(대전..)" },
+        { id: "My_Farm02", label: "축사 2(경기도..)" },
+        { id: "My_Farm03", label: "축사 3(대구...)" },
       ],
     },
     {
       id: "My_Farm_Details",
-      label: "목장 상세 관리",
+      label: "축사 상세 관리",
       children: [
-        { id: "My_Farm_Details_Farm", label: "목장 상세 현황" },
+        { id: "My_Farm_Details_Farm", label: "축사 상세 현황" },
         { id: "My_Farm_Add", label: "+ 축사 추가" },
         { id: "My_Farm_Details_stock", label: "가축 상세 현황" },
+<<<<<<< Updated upstream
         { id: "My_Farm_Add1", label: "+ 가축 추가" },
+=======
+        { id: "My_Farm_Add_stock", label: "+ 가축 추가" },
+>>>>>>> Stashed changes
 
         // { id: "My_Farm_Details_CCTV", label: "CCTV" },
         { id: "My_Farm_Details_Disease", label: "질병 현황" },
@@ -190,10 +194,14 @@ function Layout(props) {
   // user nav component
   const renderUserContent = () => {
     const componentsMap = {
-      "": <Outlet />,
-      My_Farm: <Outlet />,
-      My_Farm_Details: " ",
+      // "": "",
+      // My_Farm: <Outlet />,
+      // My_Farm_Details: " ",
+      "": <MyLiveStock />,
+      My_Farm: <MyLiveStock />,
+      My_Farm_Details: <h1>목장 현황</h1>,
       My_Farm_Board: <Community />,
+      My_Farm_Board: "",
       My_Farm_MyPage: <MyPage />,
       My_Farm01: <MyLiveStock />,
       My_Farm02: <h1></h1>,
@@ -223,7 +231,8 @@ function Layout(props) {
       // My_Farm_MyPage_Payment: <h1>결제 내역</h1>,
     };
 
-    return componentsMap[itemId] || <h1>Default Content</h1>;
+    return componentsMap[itemId];
+    // return componentsMap[itemId] || <h1>Default Content</h1>;
   };
   // --------------------------------------------------------------------
 
