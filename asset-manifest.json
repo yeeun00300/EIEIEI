@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "//EIEIEI/static/css/main.6cb42a2c.css",
+    "main.js": "//EIEIEI/static/js/main.7dad9e42.js",
+    "static/media/video.mp4": "//EIEIEI/static/media/video.d8e9485774ed5e9604bb.mp4",
+    "static/media/swine.mp4": "//EIEIEI/static/media/swine.8c650ad46d794aed809a.mp4",
+    "static/media/cattle.mp4": "//EIEIEI/static/media/cattle.dcc3da286829bd383b90.mp4",
+    "static/media/Chick.mp4": "//EIEIEI/static/media/Chick.abb55fc9d2d0ce5980a9.mp4",
+    "static/media/신고하기.png": "//EIEIEI/static/media/신고하기.7c3005f5b8114a5b820e.png",
+    "static/media/TitleLogo.png": "//EIEIEI/static/media/TitleLogo.ef2c97409e2b323bd084.png",
+    "static/media/한우축사.jpg": "//EIEIEI/static/media/한우축사.a424d54940b2d9b933f7.jpg",
+    "static/media/인사.jpeg": "//EIEIEI/static/media/인사.48e32b929c96ba777efa.jpeg",
+    "static/media/농장.png": "//EIEIEI/static/media/농장.cbd911bf436f5dfee538.png",
+    "static/media/credit-card-3186085_1280.png": "//EIEIEI/static/media/credit-card-3186085_1280.44ee8e24a779cf9380f3.png",
+    "index.html": "//EIEIEI/index.html",
+    "main.6cb42a2c.css.map": "//EIEIEI/static/css/main.6cb42a2c.css.map",
+    "main.7dad9e42.js.map": "//EIEIEI/static/js/main.7dad9e42.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6cb42a2c.css",
+    "static/js/main.7dad9e42.js"
+  ]
+}
