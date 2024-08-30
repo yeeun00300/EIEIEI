@@ -15,7 +15,7 @@ function MapSearch({ setMap }) {
   return (
     <div
       style={{
-        width: "500px",
+        width: "700px",
         marginLeft: "5px",
         marginRight: "5px",
       }}
