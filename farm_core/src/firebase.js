@@ -121,6 +121,18 @@ async function getDisease(animalType, diseaseId) {
     console.log("불러 올수 없습니다.", error);
   }
 }
+export const joinUser = async (uid, email) => {
+  try {
+    const userRef = doc(db, "users", uid);
+    await setDoc(userRef, {
+      email: email,
+      createdAt: new Date(),
+    });
+    console.log(uid);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const saveUserData = async (userId, userData) => {
   try {
@@ -165,5 +177,6 @@ export {
   getDisease,
   checkUserIdExists,
   uploadFile,
+  getUserAuth,
 };
 export default app;
