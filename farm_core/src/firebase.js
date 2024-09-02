@@ -112,7 +112,6 @@ async function getDatas(collectionName, queryOptions) {
 //     const diseaseRef = doc(db, "disease", animalType, "disease");
 //     const docSnap = await getDoc(diseaseRef);
 
-
 export const joinUser = async (uid, email) => {
   try {
     const userRef = doc(db, "users", uid);
@@ -169,23 +168,97 @@ async function uploadFile(file) {
     );
   });
 }
+// 필드명 매핑
+const fieldNameMapping = {
+  "가축 종류": "AnimalType",
+  "축사 번호": "BarnNumber",
+  "가축 개체번호": "AnimalID",
+  "가축 주소": "AnimalLocation",
+  "입고 날짜": "EntryDate",
+  성별: "Gender",
+  크기: "Size",
+  무게: "Weight",
+  "출생 날짜": "BirthDate",
+  섭취량: "FeedIntake",
+  "수분 섭취량": "WaterIntake",
+  활동량: "ActivityLevel",
+  온도: "Temperature",
+  "격리 상태": "IsolationStatus",
+  "발정기 여부": "EstrusStatus",
+  "임신 일자": "PregnancyDate",
+  "백신 접종": "Vaccination",
+  "질병 및 치료": "DiseasesAndTreatments",
+  "출산 횟수": "NumberOfBirths",
+  출산일: "BirthDate",
+  "출사 예정일": "ExpectedBirthDate",
+  "우유 생산량": "MilkProduction",
+  "성장 속도": "GrowthRate",
+  산란량: "EggProduction",
+};
+
+// 필드명을 영어로 변환하는 함수
+function convertFieldNamesToEnglish(dataObject) {
+  const convertedObject = {};
+  for (const [key, value] of Object.entries(dataObject)) {
+    const englishKey = fieldNameMapping[key] || key;
+    convertedObject[englishKey] = value;
+  }
+  return convertedObject;
+}
+
 async function uploadExcelAndSaveData(file, collectionName) {
   try {
-    // 1. 엑셀 파일을 Firebase Storage에 업로드
-    const storageRef = ref(storage, `excel_files/${file.name}`);
-    await uploadBytes(storageRef, file);
-
-    // 2. 엑셀 파일을 읽어와서 Firestore에 저장
     const data = await file.arrayBuffer();
-    const workbook = XLSX.read(data, { type: "array" });
+    const workbook = XLSX.read(new Uint8Array(data), { type: "array" });
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-    // Firestore에 데이터를 저장
+    const headers = jsonData[0]; // 첫 번째 행이 헤더
+    const values = jsonData.slice(1); // 두 번째 행부터 값들
+
+    const dataObjects = values.map((row) => {
+      const dataObject = headers.reduce((acc, header, index) => {
+        acc[header] = row[index];
+        return acc;
+      }, {});
+
+      // 불필요한 설명 텍스트 제거 (백신 접종 및 질병 및 치료 필드)
+      if (typeof dataObject["백신 접종"] === "string") {
+        dataObject["백신 접종"] = dataObject["백신 접종"]
+          .replace(/.*\((.*)\)/, "$1")
+          .split(";")
+          .map((entry) => {
+            const [백신명, 접종일] = entry.split("(");
+            return {
+              백신명: 백신명.trim(),
+              접종일: 접종일 ? 접종일.replace(")", "").trim() : null,
+              가축개체번호: dataObject["가축 개체번호"],
+            };
+          });
+      }
+
+      if (typeof dataObject["질병 및 치료"] === "string") {
+        dataObject["질병 및 치료"] = dataObject["질병 및 치료"]
+          .replace(/.*\((.*)\)/, "$1")
+          .split(";")
+          .map((entry) => {
+            const [질병명, 치료일] = entry.split("(");
+            return {
+              질병명: 질병명.trim(),
+              치료일: 치료일 ? 치료일.replace(")", "").trim() : null,
+              가축개체번호: dataObject["가축 개체번호"],
+            };
+          });
+      }
+
+      // 필드명을 영어로 변환
+      return convertFieldNamesToEnglish(dataObject);
+    });
+
+    // Firestore에 저장
     const collectionRef = collection(db, collectionName);
-
-    for (const item of jsonData) {
-      await addDoc(collectionRef, item);
+    for (const dataObject of dataObjects) {
+      await addDoc(collectionRef, dataObject);
     }
 
     console.log("엑셀 파일 업로드 및 Firestore 저장이 완료되었습니다.");
@@ -199,10 +272,7 @@ export {
   getDatas,
   checkUserIdExists,
   uploadFile,
-<<<<<<< HEAD
   getUserAuth,
-=======
   uploadExcelAndSaveData,
->>>>>>> f84170dfe6173f37d650d3453355b0f617a89319
 };
 export default app;

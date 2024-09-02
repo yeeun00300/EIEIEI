@@ -14,7 +14,7 @@ function ExcelUpload(props) {
     setUploading(true);
     setError(null);
     try {
-      await uploadExcelAndSaveData(file, "stockList");
+      await uploadExcelAndSaveData(file, "stock");
       alert("파일이 성공적으로 업로드 및 저장 되었습니다.");
     } catch (error) {
       console.error("파일 업로드 중 오류 발생 : ", error);
@@ -31,7 +31,7 @@ function ExcelUpload(props) {
         accept=".xlsx, .xls"
         onChange={(e) => setFile(e.target.files[0])}
       />
-      <button onClick={handleFileUpload} disabled={uploading}>
+      <button onClick={handleFileUpload} disable d={uploading}>
         {uploading ? "업로드 중..." : "엑셀 파일 업로드"}
       </button>
       {error && <p style={{ color: "red" }}>{error}</p>}

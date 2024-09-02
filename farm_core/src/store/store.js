@@ -7,7 +7,7 @@ import userEditSlice from "./myPageSlice/userEditSlice";
 import mapAddrSlice from "./addressSlice/mapAddrSlice";
 import PRexcelSlice from "./excelStroageSlice/PRexcelSlice";
 import joinUserSlice from "./joinUserSlice/joinUserSlice";
-
+import stockListSlice from "./stockListSlice/stockListSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -18,6 +18,7 @@ const store = configureStore({
     mapAddrSlice,
     PRexcelSlice,
     joinUserSlice,
+    stockListSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),
