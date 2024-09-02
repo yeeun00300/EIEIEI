@@ -10,7 +10,7 @@ function MapMarker({ map, setPlaces }) {
 
     const searchNearbyPlaces = (lat, lon) => {
       const ps = new kakao.maps.services.Places();
-      const keywords = ["동물위생시험소", "동물병원"]; // 검색할 키워드
+      const keywords = ["동물병원"]; // 검색할 키워드
 
       let allPlaces = []; // 모든 장소를 저장할 배열
 
