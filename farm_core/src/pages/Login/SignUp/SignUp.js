@@ -21,6 +21,8 @@ import {
 } from "../../../store/joinUserSlice/joinUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+import { uploadProfileImage } from "../../../store/profileImageSlice/profileImageSlice";
+
 function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +42,8 @@ function SignUp() {
     id,
     idCheckMessage,
   } = useSelector((state) => state.user);
-  const { downloadURL, status, error } = useSelector((state) => state.file);
+  const { downloadURL } = useSelector((state) => state.profileImage);
+  // const { downloadURL, status, error } = useSelector((state) => state.file);
   const imgRef = useRef();
 
   useEffect(() => {
@@ -67,6 +70,13 @@ function SignUp() {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      dispatch(uploadProfileImage(file));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,7 +91,7 @@ function SignUp() {
         address,
         detailedAddress,
         farm,
-        imgFile,
+        profileImage: downloadURL,
         createdAt: new Date(),
       };
 
@@ -165,8 +175,8 @@ function SignUp() {
       <h2>Farm Core</h2>
       <h3>회원가입</h3>
       <form onSubmit={handleSubmit}>
-        {imgFile ? (
-          <img src={imgFile} alt="프로필 이미지" />
+        {downloadURL ? (
+          <img src={downloadURL} alt="프로필 이미지" />
         ) : (
           <FaImage size={100} />
         )}
@@ -175,7 +185,7 @@ function SignUp() {
           accept="image/*"
           id="profileImg"
           name="imgFile"
-          onChange={saveImgFile}
+          onChange={handleFileChange}
           ref={imgRef}
         />
         <div>

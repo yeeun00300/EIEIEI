@@ -6,12 +6,7 @@ const loginSlice = createSlice({
   initialState: {
     username: "",
     password: "",
-<<<<<<< Updated upstream
     notLogin: false,
-=======
-    email: "",
-    notLogin: true,
->>>>>>> Stashed changes
     adminLogin: false,
     // notLogin: true,
     // adminLogin: false,

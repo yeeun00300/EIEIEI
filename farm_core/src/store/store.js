@@ -8,6 +8,7 @@ import mapAddrSlice from "./addressSlice/mapAddrSlice";
 import PRexcelSlice from "./excelStroageSlice/PRexcelSlice";
 import joinUserSlice from "./joinUserSlice/joinUserSlice";
 import stockListSlice from "./stockListSlice/stockListSlice";
+import profileImageSlice from "./profileImageSlice/profileImageSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -17,12 +18,10 @@ const store = configureStore({
     user: userEditSlice,
     mapAddrSlice,
     PRexcelSlice,
-<<<<<<< Updated upstream
     joinUserSlice,
     stockListSlice,
-=======
     user: joinUserSlice,
->>>>>>> Stashed changes
+    profileImageSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),
