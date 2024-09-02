@@ -13,22 +13,22 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import { getDatabase, ref, set } from "firebase/database";
 import {
   getDownloadURL,
   getStorage,
   uploadBytes,
   uploadBytesResumable,
+  ref,
 } from "firebase/storage";
+import * as XLSX from "xlsx";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBSerjiLaZai0AzNmCU-b9WkursHA-1DXo",
-  authDomain: "eieiei-7f9be.firebaseapp.com",
-  projectId: "eieiei-7f9be",
-  storageBucket: "eieiei-7f9be.appspot.com",
-  messagingSenderId: "639615873656",
-  appId: "1:639615873656:web:bd54d387f7f08c2843738d",
-  measurementId: "G-3QBNV65HB9",
+  apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",
+  authDomain: "eieiei-ecc0d.firebaseapp.com",
+  projectId: "eieiei-ecc0d",
+  storageBucket: "eieiei-ecc0d.appspot.com",
+  messagingSenderId: "677776091340",
+  appId: "1:677776091340:web:7502195734669990197a69",
 };
 
 // Initialize Firebase
@@ -97,30 +97,22 @@ async function getDatas(collectionName, queryOptions) {
   return resultData;
 }
 
-async function addDisease(animalType, diseaseId, diseaseData) {
-  try {
-    const diseaseRef = collection(db, "disease", animalType, "disease");
-    await setDoc(doc(diseaseRef, diseaseId), diseaseData);
-    console.log("데이터가 성공적으로 추가되었습니다.");
-  } catch (error) {
-    console.error("데이터 추가 중 오류 발생:", error);
-  }
-}
+// async function addDisease(animalType, diseaseId, diseaseData) {
+//   try {
+//     const diseaseRef = collection(db, "disease", animalType, "disease");
+//     await setDoc(doc(diseaseRef, diseaseId), diseaseData);
+//     console.log("데이터가 성공적으로 추가되었습니다.");
+//   } catch (error) {
+//     console.error("데이터 추가 중 오류 발생:", error);
+//   }
+// }
 
-async function getDisease(animalType, diseaseId) {
-  try {
-    const diseaseRef = doc(db, "disease", animalType, "disease");
-    const docSnap = await getDoc(diseaseRef);
+// async function getDisease(animalType, diseaseId) {
+//   try {
+//     const diseaseRef = doc(db, "disease", animalType, "disease");
+//     const docSnap = await getDoc(diseaseRef);
 
-    if (docSnap.exists()) {
-      return docSnap.data();
-    } else {
-      return;
-    }
-  } catch (error) {
-    console.log("불러 올수 없습니다.", error);
-  }
-}
+
 export const joinUser = async (uid, email) => {
   try {
     const userRef = doc(db, "users", uid);
@@ -133,6 +125,15 @@ export const joinUser = async (uid, email) => {
     console.error(error);
   }
 };
+//     if (docSnap.exists()) {
+//       return docSnap.data();
+//     } else {
+//       return;
+//     }
+//   } catch (error) {
+//     console.log("불러 올수 없습니다.", error);
+//   }
+// }
 
 export const saveUserData = async (userId, userData) => {
   try {
@@ -168,15 +169,40 @@ async function uploadFile(file) {
     );
   });
 }
+async function uploadExcelAndSaveData(file, collectionName) {
+  try {
+    // 1. 엑셀 파일을 Firebase Storage에 업로드
+    const storageRef = ref(storage, `excel_files/${file.name}`);
+    await uploadBytes(storageRef, file);
 
+    // 2. 엑셀 파일을 읽어와서 Firestore에 저장
+    const data = await file.arrayBuffer();
+    const workbook = XLSX.read(data, { type: "array" });
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+    // Firestore에 데이터를 저장
+    const collectionRef = collection(db, collectionName);
+
+    for (const item of jsonData) {
+      await addDoc(collectionRef, item);
+    }
+
+    console.log("엑셀 파일 업로드 및 Firestore 저장이 완료되었습니다.");
+  } catch (error) {
+    console.error("엑셀 파일 업로드 및 Firestore 저장 중 오류 발생:", error);
+  }
+}
 export {
   db,
   addDatas,
   getDatas,
-  addDisease,
-  getDisease,
   checkUserIdExists,
   uploadFile,
+<<<<<<< HEAD
   getUserAuth,
+=======
+  uploadExcelAndSaveData,
+>>>>>>> f84170dfe6173f37d650d3453355b0f617a89319
 };
 export default app;
