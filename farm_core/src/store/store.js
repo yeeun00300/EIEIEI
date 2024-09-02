@@ -17,8 +17,12 @@ const store = configureStore({
     user: userEditSlice,
     mapAddrSlice,
     PRexcelSlice,
+<<<<<<< Updated upstream
     joinUserSlice,
     stockListSlice,
+=======
+    user: joinUserSlice,
+>>>>>>> Stashed changes
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

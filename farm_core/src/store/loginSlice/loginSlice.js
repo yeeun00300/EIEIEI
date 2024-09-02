@@ -6,7 +6,12 @@ const loginSlice = createSlice({
   initialState: {
     username: "",
     password: "",
+<<<<<<< Updated upstream
     notLogin: false,
+=======
+    email: "",
+    notLogin: true,
+>>>>>>> Stashed changes
     adminLogin: false,
     // notLogin: true,
     // adminLogin: false,
@@ -20,6 +25,12 @@ const loginSlice = createSlice({
     setPassword: (state, action) => {
       state.password = action.payload;
     },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
+    setProfileImage: (state, action) => {
+      state.profileImage = action.payload;
+    },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
     },
@@ -28,6 +39,7 @@ const loginSlice = createSlice({
     },
     setNotLogin: (state, action) => {
       state.notLogin = action.payload;
+      localStorage.setItem("notLogin", JSON.stringify(state.notLogin));
     },
     setAdminLogin: (state, action) => {
       state.adminLogin = action.payload;
@@ -74,6 +86,8 @@ const fetchLogin = createAsyncThunk(
 export const {
   setUsername,
   setPassword,
+  setEmail,
+  setProfileImage,
   setIsLoading,
   setError,
   setAdminLogin,

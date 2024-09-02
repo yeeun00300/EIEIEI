@@ -12,7 +12,7 @@ import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { setNotLogin } from "./store/loginSlice/loginSlice";
+import { setEmail, setNotLogin } from "./store/loginSlice/loginSlice";
 import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
 import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
 import Question from "./pages/MyPage/Question/Question";
@@ -23,11 +23,24 @@ import Livestock from "./pages/Community/Livestock";
 import KakaoCallBack from "./pages/Login/SignUp/KakaoCallBack";
 import EmailLogin from "./components/emailLogin/EmailLogin";
 import EmailSignUp from "./components/emailLogin/EmailSignUp";
+import { useEffect } from "react";
 
 function App() {
   const dispatch = useDispatch();
   const { notLogin } = useSelector((state) => state.loginSlice);
 
+  useEffect(() => {
+    const storedNotLogin = JSON.parse(localStorage.getItem("notLogin"));
+    const storedEmail = localStorage.getItem("email");
+
+    if (storedNotLogin !== null) {
+      dispatch(setNotLogin(storedNotLogin));
+    }
+
+    if (storedEmail) {
+      dispatch(setEmail(storedEmail));
+    }
+  }, [dispatch]);
   // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
 
   // const startDate = "20200821";

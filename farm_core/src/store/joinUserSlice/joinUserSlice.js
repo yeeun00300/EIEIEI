@@ -60,6 +60,14 @@ const joinUserSlice = createSlice({
       state.id = action.payload;
     },
     // Additional reducers for other state variables
+    removeUser: (state) => {
+      state.email = "";
+      state.token = "";
+      state.uid = "";
+      state.isAuthenticated = false;
+
+      localStorage.removeItem("user");
+    },
   },
 });
 
@@ -75,6 +83,7 @@ export const {
   setPasswordMatchSuccess,
   setIdCheck,
   setId,
+  removeUser,
 } = joinUserSlice.actions;
 
 export default joinUserSlice.reducer;

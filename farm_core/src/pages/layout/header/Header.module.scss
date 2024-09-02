@@ -33,3 +33,20 @@
   position: absolute;
   right: 120px;
 }
+.user {
+  position: relative;
+
+  &:hover .usermenu,
+  .usermenu:hover {
+    display: block;
+  }
+  .usermenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 150px;
+    // visibility: hidden;
+    z-index: 100;
+  }
+}

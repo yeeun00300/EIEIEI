@@ -13,6 +13,8 @@ import { getDatabase } from "firebase/database";
 import {
   setAddress,
   setAddressPopup,
+  setEmail,
+  setFarm,
   setIdCheck,
   setImgFile,
   setUsername,
@@ -22,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const {
     username,
     email,
@@ -29,7 +32,7 @@ function SignUp() {
     detailedAddress,
     farm,
     imgFile,
-
+    addressPopup,
     passwordError,
     passwordMatchError,
     passwordMatchSuccess,
@@ -37,7 +40,7 @@ function SignUp() {
     id,
     idCheckMessage,
   } = useSelector((state) => state.user);
-  const addressPopup = useSelector((state) => state.user.addressPopup);
+  const { downloadURL, status, error } = useSelector((state) => state.file);
   const imgRef = useRef();
 
   useEffect(() => {
@@ -49,11 +52,26 @@ function SignUp() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    dispatch(setUsername({ [name]: value }));
+    if (name === "username") {
+      dispatch(setUsername(value));
+    } else if (name === "email") {
+      dispatch(setEmail(value));
+    } else if (name === "address") {
+      dispatch(
+        setAddress({ address: value, detailedAddress: detailedAddress })
+      );
+    } else if (name === "detailedAddress") {
+      dispatch(setAddress({ address: address, detailedAddress: value }));
+    } else if (name === "farm") {
+      dispatch(setFarm(value));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const email = e.target.email.value;
+    localStorage.setItem("email", email);
 
     try {
       const userObj = {
@@ -63,6 +81,7 @@ function SignUp() {
         address,
         detailedAddress,
         farm,
+        imgFile,
         createdAt: new Date(),
       };
 
@@ -80,11 +99,13 @@ function SignUp() {
 
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      dispatch(setImgFile(reader.result));
-    };
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        dispatch(setImgFile(reader.result));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleIdCheck = async () => {
@@ -153,6 +174,7 @@ function SignUp() {
           type="file"
           accept="image/*"
           id="profileImg"
+          name="imgFile"
           onChange={saveImgFile}
           ref={imgRef}
         />
@@ -204,7 +226,7 @@ function SignUp() {
               value={detailedAddress}
             />
           </div>
-          {addressPopup && <Address onComplete={handleComplete} />}
+          {addressPopup && <Address setcompany={handleComplete} />}
         </div>
         <div>
           축사 번호

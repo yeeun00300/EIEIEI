@@ -4,13 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import {
+  setEmail,
   setError,
   setIsLoading,
   setNotLogin,
   setPassword,
   setUsername,
 } from "../../store/loginSlice/loginSlice";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Form from "./Form/Form";
 import EmailLogin from "../../components/emailLogin/EmailLogin";
@@ -22,9 +28,11 @@ function Login() {
   const navigate = useNavigate();
   const auth = getAuth();
   const db = getFirestore();
-  const [userData, setUserData] = useState(null);
 
-  const [userId, setUserId] = useState("");
+  // const { username, password, email, isLoading, notLogin, error } = useSelector(
+  //   (state) => state.login
+  // );
+  const [userData, setUserData] = useState(null);
 
   const { userid, password, isLoading, notLogin, email } = useSelector(
     (state) => state.loginSlice
@@ -32,49 +40,77 @@ function Login() {
   console.log(notLogin);
 
   const handleLogin = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
-    // dispatch(setIsLoading(true));
+    dispatch(setIsLoading(true));
 
     try {
       // Firebase Authentication을 사용해 로그인
-      const userCredential = await auth.signInWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
       const user = userCredential.user;
+      localStorage.setItem("authToken", user.refreshToken);
+      localStorage.setItem("userId", user.uid);
+      localStorage.setItem("email", user.email);
+      console.log("로그인 성공", user);
+
+      dispatch(setNotLogin(false));
+      navigate("/");
+      // const user = userCredential.user;
 
       // Firestore에서 사용자 데이터 가져오기
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
+      // const userDocRef = doc(db, "users", user.uid);
+      // const userDoc = await getDoc(userDocRef);
 
-      if (userDoc.exists()) {
-        const firestoreUserId = userDoc.data().id; // Firestore에서 가져온 ID
+      // if (userDoc.exists()) {
+      //   const firestoreUserId = userDoc.data().id; // Firestore에서 가져온 ID
 
-        const localStorageUserId = localStorage.getItem("id");
+      //   const localStorageUserId = localStorage.getItem("id");
 
-        // Firestore ID와 로컬 스토리지 ID 비교
-        if (firestoreUserId === localStorageUserId) {
-          console.log("로그인 성공");
-          dispatch(setNotLogin(false));
-          navigate("/");
-        } else {
-          dispatch(setError("ID가 일치하지 않습니다."));
-          dispatch(setNotLogin(true));
-        }
-      } else {
-        dispatch(setError("사용자 정보가 없습니다."));
-        dispatch(setNotLogin(true));
-      }
+      // Firestore ID와 로컬 스토리지 ID 비교
+      //     if (firestoreUserId === localStorageUserId) {
+      //       console.log("로그인 성공");
+      //       dispatch(setNotLogin(false));
+      //       navigate("/");
+      //     } else {
+      //       dispatch(setError("ID가 일치하지 않습니다."));
+      //       dispatch(setNotLogin(true));
+      //     }
+      //   } else {
+      //     dispatch(setError("사용자 정보가 없습니다."));
+      //     dispatch(setNotLogin(true));
+      //   }
     } catch (error) {
-      console.error("로그인 실패:", error);
-      dispatch(setError("로그인 실패: " + error.message));
+      // console.log(error.code);
+      // console.log(error.message);
+      let errorMessage;
+
+      switch (error.code) {
+        case "auth/wrong-password":
+          errorMessage = "비밀번호가 올바르지 않습니다.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "이메일이 등록되어 있지 않습니다.";
+          break;
+        case "auth/invalid-credential":
+          errorMessage = "이메일 또는 비밀번호를 확인해주세요.";
+          break;
+        default:
+          errorMessage = "로그인 실패: " + error.message;
+      }
+
+      console.error(errorMessage);
+      alert(errorMessage);
+      dispatch(setError(errorMessage));
       dispatch(setNotLogin(true));
     } finally {
       dispatch(setIsLoading(false));
     }
   };
+  // };
 
   // const localStorageUserId = localStorage.getItem("id");
 
@@ -95,10 +131,10 @@ function Login() {
   //   }
   // };
 
-  const handleChange = (e) => {
-    dispatch(setUsername(e.target.value));
-    setUserId(e.target.value);
-  };
+  // const handleChange = (e) => {
+  //   dispatch(setUsername(e.target.value));
+  //   setUserId(e.target.value);
+  // };
 
   // setTimeout(() => {});
 
@@ -217,34 +253,53 @@ function Login() {
           onClick={(e) => dispatch(setPassword(e.target.value))}
         />
       </label> */}
-      <EmailLogin onClick={handleLogin} />
-      계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link>
+      {/* <EmailLogin onClick={handleLogin} /> */}
+      {/* 계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link> */}
       {/* <EmailSignUp /> */}
       <div>
         {/* <div>
           <button onClick={handleLogin}>로그인 하기</button>
         </div> */}
-        <div>
-          <button className={styles.google} onClick={handleGoogleLogin}>
-            구글로 로그인
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => dispatch(setEmail(e.target.value))}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => dispatch(setPassword(e.target.value))}
+          />
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Logging in..." : "Login"}
           </button>
-        </div>
-        <div>
-          <button
-            className={styles.kakao}
-            type="button"
-            onClick={handleKakaoLogin}
-          >
-            카카오로 로그인
-          </button>
-          <SocialKakao />
-          <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
-        </div>
-        <Link to={"/SignUp"}>
-          <button className={styles.signup}>회원 상세 정보 입력하기</button>
-        </Link>
-        <button>아이디 찾기</button>
-        <button>비밀번호 찾기</button>
+          계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link>
+          {/* {notLogin && <p>{error}</p>} */}
+          <div>
+            <button className={styles.google} onClick={handleGoogleLogin}>
+              구글로 로그인
+            </button>
+          </div>
+          <div>
+            <button
+              className={styles.kakao}
+              type="button"
+              onClick={handleKakaoLogin}
+            >
+              카카오로 로그인
+            </button>
+            <SocialKakao />
+            <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
+          </div>
+          <Link to={"/SignUp"}>
+            <button className={styles.signup}>회원 상세 정보 입력하기</button>
+          </Link>
+          <button>아이디 찾기</button>
+          <button>비밀번호 찾기</button>
+        </form>
       </div>
     </div>
   );

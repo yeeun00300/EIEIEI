@@ -2,7 +2,7 @@ import React from "react";
 import DaumPostcode from "react-daum-postcode";
 import styles from "./Address.module.scss";
 
-function address(props) {
+function Address({ setcompany }) {
   const complete = (data) => {
     let fullAddress = data.address;
     let extraAddress = "";
@@ -21,11 +21,21 @@ function address(props) {
     console.log(fullAddress);
     console.log(data.zonecode);
 
-    props.setcompany({
-      ...props.company,
-      address: fullAddress,
-    });
+    if (typeof setcompany === "function") {
+      setcompany({
+        address: fullAddress,
+        detailedAddress: data.bname || "", // Example additional data
+      });
+    } else {
+      console.error("setcompany is not a function");
+    }
   };
+
+  //   props.setcompany({
+  //     ...props.company,
+  //     address: fullAddress,
+  //   });
+  // };
 
   return (
     <div>
@@ -37,4 +47,4 @@ function address(props) {
     </div>
   );
 }
-export default address;
+export default Address;

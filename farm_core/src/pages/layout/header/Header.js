@@ -4,9 +4,12 @@ import logoImg from "../../../img/TitleLogo.png";
 import { FaRegBell } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import UserMenu from "./UserMenu";
+import loginSlice from "../../../store/loginSlice/loginSlice";
 
 function Header({ title }) {
   const address = useSelector((state) => state.mapAddrSlice.address);
+  const profileImage = useSelector((state) => state, loginSlice.profilImage);
 
   return (
     <div className={styles.header}>
@@ -19,7 +22,20 @@ function Header({ title }) {
       </div>
       <div className={styles.userInfo}>
         <FaRegBell size={25} />
-        <FaRegUser size={25} />
+        <div className={styles.user}>
+          {profileImage ? (
+            <img
+              className={styles.profileImage}
+              src={profileImage}
+              alt="Profile"
+            />
+          ) : (
+            <FaRegUser size={25} />
+          )}
+          <div className={styles.usermenu}>
+            <UserMenu />
+          </div>
+        </div>
       </div>
     </div>
   );
