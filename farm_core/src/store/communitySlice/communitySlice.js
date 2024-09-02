@@ -28,7 +28,7 @@ const communitySlice = createSlice({
 });
 
 const fetchCommunity = createAsyncThunk(
-  "community/fetchProducts",
+  "community/fetchProducts/",
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getDatas(collectionName, queryOptions);

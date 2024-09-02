@@ -206,6 +206,31 @@ function convertFieldNamesToEnglish(dataObject) {
   return convertedObject;
 }
 
+// 특수 필드의 값을 배열로 처리하는 함수
+function processSpecialFields(dataObject) {
+  const specialFields = ["Vaccination", "DiseasesAndTreatments"];
+  specialFields.forEach((field) => {
+    if (dataObject[field] && typeof dataObject[field] === "string") {
+      // 필드를 /로 분리하고 ;로 나누어 배열로 변환
+      const values = dataObject[field]
+        .split("/")[0]
+        .split(";")
+        .map((entry) => {
+          const [name, date] = entry.split("(");
+          return {
+            name: name.trim(),
+            date: date ? date.replace(")", "").trim() : null,
+          };
+        })
+        .filter((entry) => entry.name); // name이 있는 항목만 필터링
+      dataObject[field] = values;
+    } else {
+      dataObject[field] = []; // 필드가 없거나 빈 문자열일 경우 빈 배열로 설정
+    }
+  });
+  return dataObject;
+}
+
 async function uploadExcelAndSaveData(file, collectionName) {
   try {
     const data = await file.arrayBuffer();
@@ -218,41 +243,24 @@ async function uploadExcelAndSaveData(file, collectionName) {
 
     const dataObjects = values.map((row) => {
       const dataObject = headers.reduce((acc, header, index) => {
-        acc[header] = row[index];
+        acc[header] = row[index] !== undefined ? row[index] : null; // undefined를 null로 변환
         return acc;
       }, {});
 
-      // 불필요한 설명 텍스트 제거 (백신 접종 및 질병 및 치료 필드)
-      if (typeof dataObject["백신 접종"] === "string") {
-        dataObject["백신 접종"] = dataObject["백신 접종"]
-          .replace(/.*\((.*)\)/, "$1")
-          .split(";")
-          .map((entry) => {
-            const [백신명, 접종일] = entry.split("(");
-            return {
-              백신명: 백신명.trim(),
-              접종일: 접종일 ? 접종일.replace(")", "").trim() : null,
-              가축개체번호: dataObject["가축 개체번호"],
-            };
-          });
-      }
-
-      if (typeof dataObject["질병 및 치료"] === "string") {
-        dataObject["질병 및 치료"] = dataObject["질병 및 치료"]
-          .replace(/.*\((.*)\)/, "$1")
-          .split(";")
-          .map((entry) => {
-            const [질병명, 치료일] = entry.split("(");
-            return {
-              질병명: 질병명.trim(),
-              치료일: 치료일 ? 치료일.replace(")", "").trim() : null,
-              가축개체번호: dataObject["가축 개체번호"],
-            };
-          });
-      }
-
       // 필드명을 영어로 변환
-      return convertFieldNamesToEnglish(dataObject);
+      let convertedObject = convertFieldNamesToEnglish(dataObject);
+
+      // 특수 필드 처리
+      convertedObject = processSpecialFields(convertedObject);
+
+      // undefined 값을 null로 변환
+      for (const key in convertedObject) {
+        if (convertedObject[key] === undefined) {
+          convertedObject[key] = null;
+        }
+      }
+
+      return convertedObject;
     });
 
     // Firestore에 저장
