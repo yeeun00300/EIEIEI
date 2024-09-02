@@ -3,6 +3,7 @@ const { kakao } = window;
 
 function MapMarker({ map, setPlaces }) {
   const [markers, setMarkers] = useState([]); // 마커 상태 추가
+  const [userMarker, setUserMarker] = useState(null); // 사용자 위치 마커 상태 추가
 
   useEffect(() => {
     if (!map) return;
@@ -49,79 +50,75 @@ function MapMarker({ map, setPlaces }) {
 
                 bounds.extend(position);
 
-                kakao.maps.event.addListener(marker, "click", () => {
-                  const infowindow = new kakao.maps.InfoWindow({
-                    content: `<div style="padding:5px;z-index:1;">${place.place_name}</div>`,
-                  });
-                  infowindow.open(map, marker);
-                });
-
                 return marker;
               });
 
-              setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
-              map.setBounds(bounds); // 지도 범위를 검색된 장소로 설정
-
-              setPlaces(allPlaces); // 검색된 모든 장소를 상태로 설정
+              setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]); // 새로운 마커 추가
+              map.setBounds(bounds); // 지도 범위 설정
+              setPlaces(allPlaces); // 모든 장소를 상태에 저장
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
               console.log(`검색 결과가 존재하지 않습니다: ${keyword}`);
             } else if (status === kakao.maps.services.Status.ERROR) {
               console.log("검색 중 오류가 발생했습니다.");
             }
           },
-          {
-            location: new kakao.maps.LatLng(lat, lon), // 현재 위치를 기준으로 검색
-            radius: 5000, // 검색 반경 (미터 단위)
-          }
+          { location: new kakao.maps.LatLng(lat, lon) }
         );
       });
     };
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          const locPosition = new kakao.maps.LatLng(lat, lon);
+    // 현재 위치를 기준으로 장소 검색
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
 
-          // 현재 위치에 마커 추가
-          const imageSrc =
-            "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
-          const imageSize = new kakao.maps.Size(20, 30);
-          const imageOption = { offset: new kakao.maps.Point(20, 30) };
-          const markerImage = new kakao.maps.MarkerImage(
-            imageSrc,
-            imageSize,
-            imageOption
-          );
+        // 사용자 위치를 나타내는 마커 생성
+        const userPosition = new kakao.maps.LatLng(latitude, longitude);
+        const userMarkerImageSrc = `http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png`; // 사용자 위치 마커 이미지 URL
+        const userImageSize = new kakao.maps.Size(36, 37); // 마커 이미지의 크기
+        const userImgOptions = {
+          spriteSize: new kakao.maps.Size(27, 35), // 스프라이트 이미지 전체 크기
+          spriteOrigin: new kakao.maps.Point(0, 0), // 사용자 위치 마커의 좌상단 좌표
+          offset: new kakao.maps.Point(13, 37), // 마커의 좌표에 맞출 이미지 내의 좌표
+        };
 
-          const marker = new kakao.maps.Marker({
-            map: map,
-            position: locPosition,
-            image: markerImage,
-          });
+        // 사용자 위치 마커 이미지 생성
+        const userMarkerImage = new kakao.maps.MarkerImage(
+          userMarkerImageSrc,
+          userImageSize,
+          userImgOptions
+        );
 
-          // 지도 중심을 현재 위치로 설정
-          map.setCenter(locPosition);
+        // 사용자 위치 마커 생성
+        const marker = new kakao.maps.Marker({
+          map: map,
+          position: userPosition,
+          image: userMarkerImage, // 사용자 위치 마커 이미지 설정
+        });
 
-          // 현재 위치 주변 장소 검색
-          searchNearbyPlaces(lat, lon);
-        },
-        (error) => {
-          console.error("Geolocation error: ", error);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0,
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, [map]);
+        // 사용자 위치 마커 상태 업데이트
+        setUserMarker(marker);
 
-  return null;
+        // 지도 중심을 사용자 위치로 설정
+        map.setCenter(userPosition);
+
+        // 장소 검색
+        searchNearbyPlaces(latitude, longitude);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
+    return () => {
+      markers.forEach((marker) => marker.setMap(null)); // 컴포넌트 언마운트 시 마커 제거
+      if (userMarker) userMarker.setMap(null); // 사용자 위치 마커 제거
+      setMarkers([]); // 상태 초기화
+      setUserMarker(null); // 사용자 위치 마커 상태 초기화
+    };
+  }, [map, setPlaces]);
+
+  return null; // 이 컴포넌트는 렌더링할 UI가 없으므로 null을 반환합니다.
 }
 
 export default MapMarker;

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import styles from "./PlaceSearch.module.scss"; // 스타일 모듈 import
 const { kakao } = window;
 
-function PlaceSearch({ map }) {
+function PlaceSearch({ map, places, setPlaces }) {
   const [keyword, setKeyword] = useState(""); // 검색 키워드 상태
-  const [places, setPlaces] = useState([]); // 검색 결과 장소 상태
   const [markers, setMarkers] = useState([]); // 마커 상태
+  const [currentInfoWindow, setCurrentInfoWindow] = useState(null); // 현재 열린 인포윈도우 상태
+
+  useEffect(() => {
+    setPlaces(places);
+  }, [places, setPlaces]);
 
   // 장소 검색 함수
   const searchPlaces = () => {
@@ -44,7 +48,7 @@ function PlaceSearch({ map }) {
         offset: new kakao.maps.Point(13, 37),
       };
 
-      // 마커 생성
+      // 마커 이미지 생성
       const markerImage = new kakao.maps.MarkerImage(
         markerImageSrc,
         imageSize,
@@ -59,13 +63,19 @@ function PlaceSearch({ map }) {
 
       bounds.extend(position);
 
-      // 마커 클릭 시 인포윈도우 표시
-      kakao.maps.event.addListener(marker, "click", () => {
-        const infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="padding:5px;z-index:1;">${place.place_name}</div>`,
-        });
-        infowindow.open(map, marker);
-      });
+      // 마커 클릭 시 인포윈도우 표시 (제거됨)
+      // kakao.maps.event.addListener(marker, "click", () => {
+      //   if (currentInfoWindow) {
+      //     currentInfoWindow.close();
+      //   }
+
+      //   const infowindow = new kakao.maps.InfoWindow({
+      //     content: `<div style="padding:5px;z-index:1;">${place.place_name}</div>`,
+      //   });
+      //   infowindow.open(map, marker);
+
+      //   setCurrentInfoWindow(infowindow);
+      // });
 
       return marker;
     });
@@ -80,32 +90,13 @@ function PlaceSearch({ map }) {
     setMarkers([]);
   };
 
-  useEffect(() => {
-    if (!map) return;
-
-    document
-      .getElementById("search-btn")
-      .addEventListener("click", searchPlaces);
-
-    return () => {
-      document
-        .getElementById("search-btn")
-        .removeEventListener("click", searchPlaces);
-    };
-  }, [keyword, map, markers]); // 마커 상태에 따라 useEffect 실행
-
-  // 목록 아이템 클릭 시 지도 이동 및 인포윈도우 표시
-  const handleItemClick = (place, index) => {
+  // 목록 아이템 클릭 시 지도 이동 및 확대
+  const handleItemClick = (place) => {
     const position = new kakao.maps.LatLng(place.y, place.x);
-
     map.setCenter(position);
-    map.setLevel(3);
+    map.setLevel(3); // 확대 레벨 조정 (작을수록 더 확대됨)
 
-    const marker = markers[index];
-    const infowindow = new kakao.maps.InfoWindow({
-      content: `<div style="padding:5px;z-index:1;">${place.place_name}</div>`,
-    });
-    infowindow.open(map, marker);
+    // 현재 위치 주변 장소를 하이라이트하려면 이 위치에 마커를 추가할 수도 있습니다.
   };
 
   // 엔터키 입력 시 검색 실행
@@ -127,7 +118,11 @@ function PlaceSearch({ map }) {
           placeholder="검색할 키워드를 입력하세요"
           className={styles.searchInput}
         />
-        <button id="search-btn" className={styles.searchButton}>
+        <button
+          id="search-btn"
+          className={styles.searchButton}
+          onClick={searchPlaces}
+        >
           검색
         </button>
       </div>
@@ -137,7 +132,7 @@ function PlaceSearch({ map }) {
             <li
               key={index}
               className={styles.placeItem}
-              onClick={() => handleItemClick(place, index)}
+              onClick={() => handleItemClick(place)}
             >
               <span>{index + 1}. </span>
               <strong>{place.place_name}</strong>

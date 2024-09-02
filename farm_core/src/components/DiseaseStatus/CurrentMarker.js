@@ -11,13 +11,13 @@ function CurrentMarker() {
   return (
     <div className={styles.container}>
       <div className={styles.placeSearchContainer}>
-        {map && <PlaceSearch map={map} places={places} />}{" "}
-        {/* 검색된 장소 전달 */}
+        {map && <PlaceSearch map={map} places={places} setPlaces={setPlaces} />}{" "}
+        {/* 검색된 장소 및 선택된 장소 상태 전달 */}
       </div>
       <div className={styles.mapContainer}>
         <MapSearch setMap={setMap} />
         {map && <MapMarker map={map} setPlaces={setPlaces} />}{" "}
-        {/* 장소 상태 설정 */}
+        {/* 장소 상태 및 선택된 장소 상태 전달 */}
       </div>
     </div>
   );
