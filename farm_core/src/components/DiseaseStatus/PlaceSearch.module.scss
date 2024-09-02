@@ -28,4 +28,11 @@
 .placeItem {
   margin-bottom: 10px;
   cursor: pointer;
+  border-bottom: 1px solid black;
+  padding: 10px;
+}
+.placeholderItem {
+  color: gray;
+  display: flex;
+  justify-content: center;
 }
