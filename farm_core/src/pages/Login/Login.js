@@ -13,6 +13,8 @@ import {
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Form from "./Form/Form";
+import EmailLogin from "../../components/emailLogin/EmailLogin";
+import EmailSignUp from "../../components/emailLogin/EmailSignUp";
 
 const { Kakao } = window;
 function Login() {
@@ -200,7 +202,7 @@ function Login() {
 
   return (
     <div className={styles.container}>
-      <Form title={"로그인"} getDataForm={handleLogin} />
+      {/* <Form title={"로그인"} getDataForm={handleLogin} /> */}
       {/* <h1>로그인</h1>
       <label>
         아이디
@@ -215,10 +217,13 @@ function Login() {
           onClick={(e) => dispatch(setPassword(e.target.value))}
         />
       </label> */}
+      <EmailLogin onClick={handleLogin} />
+      계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link>
+      {/* <EmailSignUp /> */}
       <div>
-        <div>
+        {/* <div>
           <button onClick={handleLogin}>로그인 하기</button>
-        </div>
+        </div> */}
         <div>
           <button className={styles.google} onClick={handleGoogleLogin}>
             구글로 로그인
@@ -236,7 +241,7 @@ function Login() {
           <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
         </div>
         <Link to={"/SignUp"}>
-          <button className={styles.signup}>회원가입</button>
+          <button className={styles.signup}>회원 상세 정보 입력하기</button>
         </Link>
         <button>아이디 찾기</button>
         <button>비밀번호 찾기</button>

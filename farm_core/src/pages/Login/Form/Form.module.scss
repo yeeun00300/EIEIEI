@@ -13,7 +13,7 @@
   }
 
   input {
-    width: 80%;
+    width: 100%;
     height: auto;
     padding: 10px 15px;
     color: var(--second-color);
@@ -27,7 +27,7 @@
     }
   }
   button {
-    width: 80%;
+    width: 100%;
     margin-top: 10px;
     padding: 15px 40px;
     color: #fff;
@@ -44,7 +44,7 @@
 
   .form_error {
     display: block;
-    width: 80%;
+    width: 50%;
     margin-top: 15px;
     padding: 5px;
     color: #fff;
