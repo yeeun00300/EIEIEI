@@ -112,7 +112,6 @@ async function getDatas(collectionName, queryOptions) {
 //     const diseaseRef = doc(db, "disease", animalType, "disease");
 //     const docSnap = await getDoc(diseaseRef);
 
-
 export const joinUser = async (uid, email) => {
   try {
     const userRef = doc(db, "users", uid);
@@ -199,10 +198,7 @@ export {
   getDatas,
   checkUserIdExists,
   uploadFile,
-<<<<<<< HEAD
   getUserAuth,
-=======
   uploadExcelAndSaveData,
->>>>>>> f84170dfe6173f37d650d3453355b0f617a89319
 };
 export default app;
