@@ -47,7 +47,14 @@ function getCollection(collectionName) {
 }
 
 async function addDatas(collectionName, userObj) {
-  await addDoc(getCollection(collectionName), userObj);
+  try {
+    const docRef = await addDoc(collection(db, collectionName), userObj);
+    console.log("Document written with ID: ", docRef.id);
+    return docRef.id; // 문서 ID 반환
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    throw new Error(error.message); // 에러 메시지 반환
+  }
 }
 const checkUserIdExists = async (userid) => {
   const usersRef = collection(db, "users");
@@ -133,6 +140,21 @@ export const joinUser = async (uid, email) => {
 //     console.log("불러 올수 없습니다.", error);
 //   }
 // }
+export const uploadFiles = async (file) => {
+  const storageRef = ref(storage, `admin01/profileImgs/${file.name}`);
+
+  try {
+    console.log("Uploading file:", file); // 파일 정보 확인
+    const snapshot = await uploadBytes(storageRef, file);
+    console.log("Upload snapshot:", snapshot); // 스냅샷 정보 확인
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    console.log("Download URL:", downloadURL); // 다운로드 URL 확인
+    return downloadURL;
+  } catch (error) {
+    console.error("Upload failed:", error.message); // 오류 메시지 출력
+    throw error;
+  }
+};
 
 export const saveUserData = async (userId, userData) => {
   try {

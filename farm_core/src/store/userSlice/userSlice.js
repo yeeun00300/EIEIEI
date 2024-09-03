@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
@@ -22,6 +22,11 @@ const userSlice = createSlice({
       localStorage.setItem("user", JSON.stringify(state));
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase();
+  },
 });
+
+const updateUser = createAsyncThunk("");
 export default userSlice.reducer;
 export const { setUser } = userSlice.actions;

@@ -15,7 +15,7 @@ function PlaceSearch({ map, places, setPlaces, userPosition }) {
     const ps = new kakao.maps.services.Places();
     const searchOptions = {
       location: position, // 위치 기반 검색
-      radius: 5000, // 검색 반경 (미터)
+      // radius: 5000, // 검색 반경 (미터)
     };
     ps.keywordSearch(
       searchKeyword,

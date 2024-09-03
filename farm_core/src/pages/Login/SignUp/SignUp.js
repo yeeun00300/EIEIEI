@@ -22,6 +22,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { uploadProfileImage } from "../../../store/profileImageSlice/profileImageSlice";
+import profileImageSlice from "./../../../store/profileImageSlice/profileImageSlice";
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -42,7 +43,9 @@ function SignUp() {
     id,
     idCheckMessage,
   } = useSelector((state) => state.user);
-  const { downloadURL } = useSelector((state) => state.profileImage);
+  const { downloadURL, isLoading } =
+    useSelector((state) => state.profileImageSlice) || {};
+  const { uid } = useSelector((state) => state.user);
   // const { downloadURL, status, error } = useSelector((state) => state.file);
   const imgRef = useRef();
 
@@ -72,13 +75,28 @@ function SignUp() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
+      console.log("File Info:", file);
+      console.log("File Size:", file.size);
+      console.log("File Type:", file.type);
       dispatch(uploadProfileImage(file));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isLoading) {
+      alert("이미지 업로드 중입니다. 잠시만 기다려주세요.");
+      return;
+    }
+
+    // 이미지 업로드 실패 시 경고 메시지 출력
+    if (!downloadURL) {
+      alert("이미지 업로드에 실패했습니다. 이미지를 다시 선택해주세요.");
+      return;
+    }
 
     const email = e.target.email.value;
     localStorage.setItem("email", email);
@@ -91,32 +109,33 @@ function SignUp() {
         address,
         detailedAddress,
         farm,
-        profileImage: downloadURL,
+        uid,
+        profileImages: downloadURL,
         createdAt: new Date(),
       };
 
       console.log(`테스트용${userObj.detailedAddress}`);
-      await addDatas("users", userObj);
+      // await addDatas("users", userObj);
+      await addDatas("users", { ...userObj, uid });
       console.log(userObj);
       alert("회원가입에 성공했습니다.");
       navigate("/");
     } catch (error) {
-      console.error(error);
       console.error("회원가입 실패:", error);
       alert(`회원가입 실패: ${error.message}`);
     }
   };
 
-  const saveImgFile = () => {
-    const file = imgRef.current.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        dispatch(setImgFile(reader.result));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const saveImgFile = () => {
+  //   const file = imgRef.current.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       dispatch(setImgFile(reader.result));
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleIdCheck = async () => {
     const exists = await checkUserIdExists(id);
