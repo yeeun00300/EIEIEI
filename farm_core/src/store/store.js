@@ -7,8 +7,8 @@ import userEditSlice from "./myPageSlice/userEditSlice";
 import mapAddrSlice from "./addressSlice/mapAddrSlice";
 import PRexcelSlice from "./excelStroageSlice/PRexcelSlice";
 import joinUserSlice from "./joinUserSlice/joinUserSlice";
-import stockListSlice from "./stockListSlice/stockListSlice";
 import profileImageSlice from "./profileImageSlice/profileImageSlice";
+import stockSlice from "./stockSlice/stockSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -19,9 +19,9 @@ const store = configureStore({
     mapAddrSlice,
     PRexcelSlice,
     joinUserSlice,
-    stockListSlice,
     user: joinUserSlice,
     profileImageSlice,
+    stockSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

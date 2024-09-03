@@ -186,8 +186,8 @@ const fieldNameMapping = {
   "격리 상태": "IsolationStatus",
   "발정기 여부": "EstrusStatus",
   "임신 일자": "PregnancyDate",
-  "백신 접종": "Vaccination",
-  "질병 및 치료": "DiseasesAndTreatments",
+  "실제 백신 접종 데이터": "Vaccination", // 실 데이터 필드만 사용
+  "실제 질병 및 치료 데이터": "DiseasesAndTreatments", // 실 데이터 필드만 사용
   "출산 횟수": "NumberOfBirths",
   출산일: "BirthDate",
   "출사 예정일": "ExpectedBirthDate",
@@ -200,8 +200,11 @@ const fieldNameMapping = {
 function convertFieldNamesToEnglish(dataObject) {
   const convertedObject = {};
   for (const [key, value] of Object.entries(dataObject)) {
-    const englishKey = fieldNameMapping[key] || key;
-    convertedObject[englishKey] = value;
+    // "(예시)"가 포함된 필드들을 필터링
+    if (!key.includes("(예시)")) {
+      const englishKey = fieldNameMapping[key] || key;
+      convertedObject[englishKey] = value;
+    }
   }
   return convertedObject;
 }
@@ -211,9 +214,7 @@ function processSpecialFields(dataObject) {
   const specialFields = ["Vaccination", "DiseasesAndTreatments"];
   specialFields.forEach((field) => {
     if (dataObject[field] && typeof dataObject[field] === "string") {
-      // 필드를 /로 분리하고 ;로 나누어 배열로 변환
       const values = dataObject[field]
-        .split("/")[0]
         .split(";")
         .map((entry) => {
           const [name, date] = entry.split("(");
@@ -231,6 +232,7 @@ function processSpecialFields(dataObject) {
   return dataObject;
 }
 
+// 엑셀 데이터 업로드 및 처리
 async function uploadExcelAndSaveData(file, collectionName) {
   try {
     const data = await file.arrayBuffer();
@@ -259,6 +261,9 @@ async function uploadExcelAndSaveData(file, collectionName) {
           convertedObject[key] = null;
         }
       }
+
+      // Firestore에 전송하기 전에 데이터 확인
+      console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
 
       return convertedObject;
     });
