@@ -119,18 +119,23 @@ async function getDatas(collectionName, queryOptions) {
 //     const diseaseRef = doc(db, "disease", animalType, "disease");
 //     const docSnap = await getDoc(diseaseRef);
 
-export const joinUser = async (uid, email) => {
-  try {
-    const userRef = doc(db, "users", uid);
-    await setDoc(userRef, {
-      email: email,
-      createdAt: new Date(),
-    });
-    console.log(uid);
-  } catch (error) {
-    console.error(error);
-  }
-};
+// export const joinUser = async (uid, email) => {
+//   try {
+//     const userRef = doc(db, "users", uid);
+//     console.log(`Attempting to create or update user with UID: ${uid}`);
+//     await setDoc(
+//       userRef,
+//       {
+//         email: email,
+//         createdAt: new Date(),
+//       },
+//       { merge: true }
+//     );
+//     console.log(`${uid}`);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 //     if (docSnap.exists()) {
 //       return docSnap.data();
 //     } else {
@@ -223,7 +228,7 @@ function convertFieldNamesToEnglish(dataObject) {
   const convertedObject = {};
   for (const [key, value] of Object.entries(dataObject)) {
     // "(예시)"가 포함된 필드들을 필터링
-    if (!key.includes("(예시)")) {
+    if (!key.includes("(양식")) {
       const englishKey = fieldNameMapping[key] || key;
       convertedObject[englishKey] = value;
     }
@@ -312,5 +317,7 @@ export {
   uploadFile,
   getUserAuth,
   uploadExcelAndSaveData,
+  app,
+  auth,
 };
 export default app;

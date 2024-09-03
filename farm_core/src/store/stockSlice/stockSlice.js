@@ -4,6 +4,7 @@ import { getDatas } from "../../firebase";
 const initialState = {
   stock: [],
   isLoading: false,
+  error: null,
 };
 
 const stockSlice = createSlice({
@@ -14,6 +15,7 @@ const stockSlice = createSlice({
     builder
       .addCase(fetchExcelStock.pending, (state, action) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(fetchExcelStock.fulfilled, (state, action) => {
         state.stock = action.payload;
@@ -26,7 +28,7 @@ const stockSlice = createSlice({
 });
 
 export const fetchExcelStock = createAsyncThunk(
-  "stock/stockList",
+  "stock/fetchExcelStock",
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getDatas(collectionName, queryOptions);

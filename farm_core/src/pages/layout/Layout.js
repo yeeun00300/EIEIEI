@@ -88,7 +88,7 @@ function Layout(props) {
   // user nav component
   const renderUserContent = () => {
     const componentsMap = {
-      "": <DashBoard />,
+      "": <Main />,
       My_Farm: <Main />,
       My_Farm_Details: <h1>목장 현황</h1>,
       // My_Farm_Info: " ",
