@@ -50,9 +50,9 @@ export default function GaugeNeedle({
           //   [`& .${gaugeClasses.valueText}`]: {
           //     fontSize: 40,
           //   },
-          [`& .${gaugeClasses.valueArc}`]: {
-            fill: "#4db6ac",
-          },
+          //   [`& .${gaugeClasses.valueArc}`]: {
+          //     fill: "#4db6ac",
+          //   },
           //   [`& .${gaugeClasses.referenceArc}`]: {
           //     fill: theme.palette.text.disabled,
           //   },
