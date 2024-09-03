@@ -1,8 +1,9 @@
 import React from "react";
-import * as XLSX from "xlsx";
+import * as XLSX from "xlsx-style";
 
 function ExcelTemplateDownload(props) {
   const downloadTemplate = () => {
+    // 데이터 설정
     const wsData = [
       [
         "가축 종류",
@@ -35,9 +36,41 @@ function ExcelTemplateDownload(props) {
       ],
     ];
 
+    // 워크시트 생성
     const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    // 셀 스타일 설정
+    const cellStyle = {
+      font: { sz: 12, bold: true },
+      fill: {
+        fgColor: { rgb: "FFFF00" }, // 노란색 배경
+      },
+      border: {
+        top: { style: "thin" },
+        bottom: { style: "thin" },
+        left: { style: "thin" },
+        right: { style: "thin" },
+      },
+    };
+
+    // 스타일 적용
+    ws["A1"].s = cellStyle;
+    ws["S1"].s = cellStyle;
+    ws["R1"].s = cellStyle;
+
+    // 셀 크기 조정 (열 너비 설정)
+    ws["!cols"] = [
+      { wpx: 150 }, // A 열 너비
+      { wpx: 150 }, // B 열 너비
+      // ...
+      { wpx: 150 }, // Z 열 너비
+    ];
+
+    // 워크북 생성 및 워크시트 추가
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    // 파일 작성 및 다운로드
     XLSX.writeFile(wb, "stock_template.xlsx");
   };
 
