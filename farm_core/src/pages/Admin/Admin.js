@@ -25,6 +25,7 @@ import GaugeNeedle from "../../components/Gauge/GaugeNeedle";
 import BiLineChart from "../../components/Chart/BiLineChart";
 import LineChart01 from "../../components/Chart/LineChart01";
 import BarChart01 from "../../components/Chart/BarChart";
+import Gauge01 from "../../components/Gauge/Gauge01";
 
 function Admin() {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -150,6 +151,7 @@ function Admin() {
       // ),
       chatting: (
         <>
+          <Gauge01 />
           <GaugeNeedle />
           <LineChart01 />
           <BiLineChart />

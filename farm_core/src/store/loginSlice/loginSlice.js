@@ -7,7 +7,7 @@ const loginSlice = createSlice({
     username: "",
     password: "",
     notLogin: false,
-    adminLogin: false,
+    adminLogin: true,
     isLoading: false,
     error: null,
   },
