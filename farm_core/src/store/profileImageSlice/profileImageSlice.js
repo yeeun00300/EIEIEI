@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { uploadFile } from "../../firebase"; // 파일 업로드 함수
+import { uploadFiles } from "../../firebase"; // 파일 업로드 함수
 
 const initialState = {
   fileData: null,
@@ -44,7 +44,7 @@ export const uploadProfileImage = createAsyncThunk(
   "profileImage/uploadProfileImage",
   async (file, { rejectWithValue }) => {
     try {
-      const downloadURL = await uploadFile(file);
+      const downloadURL = await uploadFiles(file);
       return downloadURL;
     } catch (error) {
       return rejectWithValue(error.message);
