@@ -206,11 +206,11 @@ function Layout(props) {
       My_Farm_Details_Farm: <h1>목장 현황</h1>,
       // My_Farm_Details_CCTV: <h1>CCTV</h1>,
       My_Farm_Details_Disease: (
-        <>
+        <div className="page">
           <DiseaseState />
           {/* <DiseaseMap /> */}
           <CurrentMarker />
-        </>
+        </div>
       ),
       // My_Farm_Details_Info: <h1>상세정보</h1>,
       My_Farm_Add: <AddLiveStock />,
