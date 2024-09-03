@@ -56,7 +56,9 @@ function KakaoCallBack(props) {
             )
             .then((res) => {
               console.log(res);
-              console.log(res.data.kakao_account.profile);
+              console.log(res.data.kakao_account.profile.nickname);
+              console.log(res.data.kakao_account.profile.profile_image_url);
+              console.log(res.data.kakao_account.email);
             });
 
           const provider = new OAuthProvider("oidc.kakao");
