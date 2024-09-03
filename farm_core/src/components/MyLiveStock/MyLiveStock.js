@@ -4,7 +4,7 @@ import Selected from "./Selected/Selected";
 import CCTVandAnimalInfo from "../CCTVandAnimalInfo/CCTVandAnimalInfo";
 function MyLiveStock(props) {
   return (
-    <div className={styles.container}>
+    <div className="page">
       <Selected />
       <CCTVandAnimalInfo />
       {/* <div className={styles.boarder}>
