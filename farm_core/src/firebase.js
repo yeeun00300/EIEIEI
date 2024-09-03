@@ -223,7 +223,7 @@ function convertFieldNamesToEnglish(dataObject) {
   const convertedObject = {};
   for (const [key, value] of Object.entries(dataObject)) {
     // "(예시)"가 포함된 필드들을 필터링
-    if (!key.includes("(예시)")) {
+    if (!key.includes("(양식")) {
       const englishKey = fieldNameMapping[key] || key;
       convertedObject[englishKey] = value;
     }

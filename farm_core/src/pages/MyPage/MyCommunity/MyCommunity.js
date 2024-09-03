@@ -1,32 +1,36 @@
-import React, { Children, useEffect, useState } from "react";
-import styles from "./MyCommunity.module.scss";
-import { getDatas } from "../../../firebase";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getStorage, ref, getDownloadURL } from "firebase/storage"; // Firebase import
 import communitySlice, {
   fetchCommunity,
 } from "./../../../store/communitySlice/communitySlice";
-import FreeboardPage from "../../Community/FreeboardPage";
+import stockSlice, {
+  fetchExcelStock,
+} from "../../../store/stockSlice/stockSlice";
 import CommunityConents from "./communityContent/CommunityConents";
-import Selected from "../../../components/MyLiveStock/Selected/Selected";
 import ExcelTemplateDownload from "../../../components/ExcelTemplateDownload/ExcelTemplateDownload";
 import ExcelUpload from "../../../components/ExcelUpload/ExcelUpload";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 function MyCommunity() {
   const dispatch = useDispatch();
+  const storage = getStorage(); // Firebase Storage 인스턴스 생성
+  const [downloadUrl, setDownloadUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const communityContents = useSelector(
     (state) => state.communitySlice?.communityContents || []
   );
-  const [downloadUrl, setDownloadUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const { stock, isLoading, error } = useSelector((state) => state.stockSlice);
+
+  useEffect(() => {
+    dispatch(fetchExcelStock({ collectionName: "stock", queryOptions: {} }));
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchDownloadUrl = async () => {
       setLoading(true);
-      const storage = getStorage();
-      const fileRef = ref(storage, "path/to/your/excel-template.xlsx"); // 엑셀 파일이 Firebase Storage에 저장된 경로
-
       try {
+        const fileRef = ref(storage, "path/to/your/excel-template.xlsx");
         const url = await getDownloadURL(fileRef);
         setDownloadUrl(url);
       } catch (error) {
@@ -37,11 +41,14 @@ function MyCommunity() {
     };
 
     fetchDownloadUrl();
-  }, []);
+  }, [storage]);
 
   useEffect(() => {
     dispatch(fetchCommunity({ collectionName: "community", queryOptions: {} }));
   }, [dispatch]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="page">
@@ -53,7 +60,7 @@ function MyCommunity() {
       <ExcelTemplateDownload />
       <ExcelUpload />
       <h1>Data from Firestore</h1>
-      {/* {loading ? (
+      {loading ? (
         <p>Loading...</p>
       ) : (
         downloadUrl && (
@@ -61,7 +68,13 @@ function MyCommunity() {
             엑셀 다운로드
           </a>
         )
-      )} */}
+      )}
+      <ul>
+        {stock.map((item) => {
+          console.log(item);
+          return <li key={item.docId}>{JSON.stringify(item)}</li>;
+        })}
+      </ul>
     </div>
   );
 }
