@@ -95,7 +95,7 @@ function Layout(props) {
       children: [
         { id: "My_Farm_Details_Farm", label: "축사 현황" },
         { id: "My_Farm_Add", label: "+ 축사 추가" },
-        { id: "My_Farm_Details_stock", label: "가축 상세 현황" },
+        { id: "My_Farm_Info_stock", label: "가축 상세 현황" },
         { id: "My_Farm_Add_stock", label: "+ 가축 추가" },
 
         // { id: "My_Farm_Details_CCTV", label: "CCTV" },
@@ -187,10 +187,10 @@ function Layout(props) {
     const componentsMap = {
       // "": "",
       // My_Farm: <Outlet />,
-      // My_Farm_Details: " ",
+      // My_Farm_Info: " ",
       "": <MyLiveStock />,
       My_Farm: <MyLiveStock />,
-      My_Farm_Details: <h1>목장 현황</h1>,
+      My_Farm_Info: <h1>목장 현황</h1>,
       My_Farm_Board: <Community />,
       My_Farm_Board: "",
       My_Farm_MyPage: <MyPage />,
@@ -207,7 +207,7 @@ function Layout(props) {
           <CurrentMarker />
         </div>
       ),
-      // My_Farm_Details_Info: <h1>상세정보</h1>,
+      // My_Farm_Info_Info: <h1>상세정보</h1>,
       My_Farm_Add: <AddLiveStock />,
       My_Farm_Board_Total: (
         <h1>

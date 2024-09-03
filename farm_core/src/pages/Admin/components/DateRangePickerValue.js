@@ -4,6 +4,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { SingleInputDateRangeField } from "@mui/x-date-pickers-pro/SingleInputDateRangeField";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+// import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 
 function DateRangePickerValue() {
   // const [value, setValue] = React.useState([
@@ -13,10 +14,12 @@ function DateRangePickerValue() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={["SingleInputDateRangeField"]}>
+      <DemoContainer components={["DateRangePicker"]}>
+        {/* <DemoContainer components={["SingleInputDateRangeField"]}> */}
         <DateRangePicker
-          slots={{ field: SingleInputDateRangeField }}
-          name="allowedRange"
+          localeText={{ start: "시작 일", end: "마지막 일" }}
+          // slots={{ field: SingleInputDateRangeField }}
+          // name="allowedRange"
         />
       </DemoContainer>
     </LocalizationProvider>
