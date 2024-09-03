@@ -95,18 +95,6 @@ function Main() {
             {/* <LineChart dataset={sampleData} /> */}
           </div>
         ))}
-        {/* <div
-          key={"5"}
-          data-grid={{
-            x: 0,
-            y: 0,
-            w: 0.4,
-            h: 3,
-            isResizable: false,
-          }}
-        >
-          <Weather />
-        </div> */}
       </ResponsiveGridLayout>
     </div>
   );
