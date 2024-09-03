@@ -50,11 +50,16 @@ function SignUp() {
   const imgRef = useRef();
 
   useEffect(() => {
-    const kakaoKey = "6d4fbd00bc61fb974013babde4a96588";
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(kakaoKey);
+    //   const kakaoKey = "6d4fbd00bc61fb974013babde4a96588";
+    //   if (window.Kakao && !window.Kakao.isInitialized()) {
+    //     window.Kakao.init(kakaoKey);
+    //   }
+    // }, []);
+    const emailFromStorage = localStorage.getItem("email");
+    if (emailFromStorage) {
+      dispatch(setEmail(emailFromStorage));
     }
-  }, []);
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
