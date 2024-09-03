@@ -75,6 +75,7 @@ function Main() {
         h: 2,
         minw: 1,
         maxh: 3,
+        children: <div>밥ㅂ바밥ㅂ바</div>,
       },
       { i: "3", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
       { i: "4", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
