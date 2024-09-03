@@ -65,7 +65,7 @@ function Main() {
         h: 3,
         minw: 0.5,
         maxh: 3,
-        children: <Box width="98%" height="98%"></Box>,
+        children: <LineChart dataset={sampleData} />,
       },
       {
         i: "2",
