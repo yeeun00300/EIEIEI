@@ -1,8 +1,12 @@
+// src/components/MapMarker.js
 import React, { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
 const { kakao } = window;
 
 function MapMarker({ map, onPositionChange, onInitialPositionSet }) {
   const userMarkerRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!map) return;
@@ -10,7 +14,18 @@ function MapMarker({ map, onPositionChange, onInitialPositionSet }) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        const userPosition = new kakao.maps.LatLng(latitude, longitude);
+        const newPosition = new kakao.maps.LatLng(latitude, longitude);
+
+        const geocoder = new kakao.maps.services.Geocoder();
+
+        geocoder.coord2Address(longitude, latitude, (result, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            const address = result[0].address.address_name;
+            dispatch(setMapAddr(address)); // Redux 상태 업데이트
+          } else {
+            dispatch(setMapAddr("주소를 찾을 수 없습니다."));
+          }
+        });
 
         const userMarkerImageSrc =
           "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png";
@@ -29,14 +44,15 @@ function MapMarker({ map, onPositionChange, onInitialPositionSet }) {
 
         const marker = new kakao.maps.Marker({
           map: map,
-          position: userPosition,
+          position: newPosition,
           image: userMarkerImage,
         });
 
         userMarkerRef.current = marker;
-        map.setCenter(userPosition);
-        if (onPositionChange) onPositionChange(userPosition); // 위치 정보 전달
-        if (onInitialPositionSet) onInitialPositionSet(userPosition); // 초기 위치 설정
+        map.setCenter(newPosition);
+
+        if (onPositionChange) onPositionChange(newPosition);
+        if (onInitialPositionSet) onInitialPositionSet(newPosition);
       },
       (error) => {
         console.error("위치 정보를 가져오는 데 실패했습니다.", error);
@@ -49,7 +65,7 @@ function MapMarker({ map, onPositionChange, onInitialPositionSet }) {
         userMarkerRef.current = null;
       }
     };
-  }, [map, onPositionChange, onInitialPositionSet]);
+  }, [map, onPositionChange, onInitialPositionSet, dispatch]);
 
   return null;
 }
