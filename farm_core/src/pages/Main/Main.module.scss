@@ -1,4 +1,13 @@
-// .main {
-//   overflow-y: auto;
-//   height: 90vh;
-// }
+.main {
+  width: 1000px;
+  position: relative;
+}
+.widget {
+  display: flex;
+}
+.sub {
+  background-color: black;
+  position: absolute;
+  top: 10px;
+  width: 200px;
+}

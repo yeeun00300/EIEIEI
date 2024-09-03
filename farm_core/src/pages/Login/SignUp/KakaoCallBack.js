@@ -7,8 +7,16 @@ import {
   signInWithCredential,
 } from "firebase/auth";
 import { auth } from "../../../firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setEmail } from "../../../store/joinUserSlice/joinUserSlice";
 
 function KakaoCallBack(props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const email = useSelector((state) => state.joinUserSlice.email);
+  console.log(email);
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get("code");
@@ -59,6 +67,8 @@ function KakaoCallBack(props) {
               console.log(res.data.kakao_account.profile.nickname);
               console.log(res.data.kakao_account.profile.profile_image_url);
               console.log(res.data.kakao_account.email);
+              const email = res.data.kakao_account.email;
+              dispatch(setEmail(email));
             });
 
           const provider = new OAuthProvider("oidc.kakao");
@@ -73,6 +83,7 @@ function KakaoCallBack(props) {
               const acToken = credential.accessToken;
               const idToken = credential.idToken;
               console.log("로그인 성공", result);
+              navigate("/SignUp");
             })
             .catch((error) => {
               // Handle error.

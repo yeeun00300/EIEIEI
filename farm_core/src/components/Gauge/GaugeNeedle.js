@@ -4,6 +4,7 @@ import {
   GaugeValueArc,
   GaugeReferenceArc,
   useGaugeState,
+  gaugeClasses,
 } from "@mui/x-charts/Gauge";
 import styles from "./GaugeNeedle.module.scss";
 
@@ -54,7 +55,7 @@ export default function GaugeNeedle({
           //     fill: "#4db6ac",
           //   },
           //   [`& .${gaugeClasses.referenceArc}`]: {
-          //     fill: theme.palette.text.disabled,
+          //     fill: "#4db6ac",
           //   },
         })}
       >

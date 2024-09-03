@@ -1,7 +1,24 @@
 import React from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
+import styles from "./LineChart01.module.scss";
 
-function LineChart01({ dataset, color, xInterval, yInterval, height, width }) {
+function LineChart01({
+  dataset = [
+    { x: 1, y: 0.8 },
+    { x: 2, y: 1.2 },
+    { x: 3, y: 2.6 },
+    { x: 5, y: 3.6 },
+    { x: 7, y: 4.8 },
+    { x: 10, y: 6.8 },
+    { x: 11, y: 9 },
+    { x: 13, y: 11 },
+  ],
+  color = "blue",
+  xInterval = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  yInterval = [1, 3, 5, 7, 9, 11],
+  height = 300,
+  width = 450,
+}) {
   // -- dataset 예시--
   // ----> 그래프 그리는 값
   // const dataset = [
@@ -24,17 +41,15 @@ function LineChart01({ dataset, color, xInterval, yInterval, height, width }) {
   //  yInterval = [1, 3, 5, 7, 9, 11];[배열]
 
   return (
-    <div>
+    <div className={styles.LineChart01}>
       <LineChart
         dataset={dataset}
         xAxis={[
           {
             dataKey: "x",
-            // tickInterval: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             tickInterval: [...xInterval],
           },
         ]}
-        // yAxis={[{ tickInterval: [1, 3, 5, 7, 9, 11] }]}
         yAxis={[{ tickInterval: [...yInterval] }]}
         series={[{ dataKey: "y", color: `${color} ` }]}
         height={height}

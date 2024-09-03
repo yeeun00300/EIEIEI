@@ -22,6 +22,10 @@ import DiseaseState from "../../components/Admin-Disease/DiseaseState";
 import DiseaseUser from "../../components/Admin-Disease/DiseaseUser";
 import AlarmManagement from "../../components/Alarm/AlarmManagement";
 import GaugeNeedle from "../../components/Gauge/GaugeNeedle";
+import BiLineChart from "../../components/Chart/BiLineChart";
+import LineChart01 from "../../components/Chart/LineChart01";
+import BarChart01 from "../../components/Chart/BarChart";
+import Gauge01 from "../../components/Gauge/Gauge01";
 
 function Admin() {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -145,7 +149,15 @@ function Admin() {
       // "alarm-disease": (
       //   <Alarm title={"질병 알림"} description={diseaseDescription} />
       // ),
-      chatting: <GaugeNeedle />,
+      chatting: (
+        <>
+          <Gauge01 />
+          <GaugeNeedle />
+          <LineChart01 />
+          <BiLineChart />
+          <BarChart01 />
+        </>
+      ),
       // chatting: <h1>채팅기록</h1>,
     };
 
