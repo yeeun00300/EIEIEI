@@ -22,7 +22,8 @@ function AdminUser() {
           setSort={setSort}
           sortArr={[
             { id: "user", value: "회원", htmlFor: "user" },
-            { id: "deleteUser", value: "탈퇴회원", htmlFor: "deleteUser" },
+            { id: "deleteUser", value: "탈퇴 회원", htmlFor: "deleteUser" },
+            { id: "blackUser", value: "차단된 회원", htmlFor: "blackUser" },
           ]}
         />
         {/* <div>

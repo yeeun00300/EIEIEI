@@ -1,0 +1,44 @@
+.GaugeNeedle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .GaugeContainer {
+    display: flex;
+    gap: 24px;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.setValue {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+    // margin-top: 12px;
+    padding: 0;
+  }
+  div {
+    margin-top: 8px;
+    color: var(--point-color);
+  }
+}
+.nowValue {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+    // margin-top: 12px;
+    padding: 0;
+  }
+  div {
+    margin-top: 8px;
+  }
+}
