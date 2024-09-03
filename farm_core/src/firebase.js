@@ -279,6 +279,9 @@ async function uploadExcelAndSaveData(file, collectionName) {
     console.error("엑셀 파일 업로드 및 Firestore 저장 중 오류 발생:", error);
   }
 }
+
+// 엑셀파일을 스토리지에서 다운로드 받을수있도록 하는것
+
 export {
   db,
   addDatas,
