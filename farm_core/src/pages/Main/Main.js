@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import SubMain from "./subMain/SubMain";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -83,20 +84,27 @@ function Main() {
   };
   return (
     <div className="page">
-      <ResponsiveGridLayout
-        className="layout"
-        layouts={LAYOUTS}
-        breakpoints={{ lg: 1000, md: 600 }}
-        cols={{ lg: 3, md: 2 }}
-        rowHeight={100}
-        width={1200}
-      >
-        {LAYOUTS.lg.map((el) => (
-          <div key={el.i} {...el}>
-            {/* <LineChart dataset={sampleData} /> */}
-          </div>
-        ))}
-      </ResponsiveGridLayout>
+      <div className={styles.main}>
+        <div className="위젯">
+          <ResponsiveGridLayout
+            className="layout"
+            layouts={LAYOUTS}
+            breakpoints={{ lg: 1000, md: 600 }}
+            cols={{ lg: 3, md: 2 }}
+            rowHeight={100}
+            width={1000}
+          >
+            {LAYOUTS.lg.map((el) => (
+              <div key={el.i} {...el}>
+                {/* <LineChart dataset={sampleData} /> */}
+              </div>
+            ))}
+          </ResponsiveGridLayout>
+        </div>
+        <div className={styles.sub}>
+          <SubMain />
+        </div>
+      </div>
     </div>
   );
 }
