@@ -4,7 +4,6 @@ import { Line } from "react-chartjs-2";
 import { Box } from "@mui/material";
 import styles from "./Main.module.scss";
 
-import Weather from "./../../api/Weather/Weather";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -66,16 +65,7 @@ function Main() {
         h: 3,
         minw: 0.5,
         maxh: 3,
-        children: (
-          <Box width="98%" height="98%">
-            <Weather
-              options={{
-                responsive: true,
-                maintainAspectRatio: false, // 부모 요소 크기에 맞추기 위해 필요
-              }}
-            />
-          </Box>
-        ),
+        children: <Box width="98%" height="98%"></Box>,
       },
       {
         i: "2",

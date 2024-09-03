@@ -25,6 +25,7 @@ import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
 import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
 import DashBoard from "../DashBoard/DashBoard";
+import Main from "../Main/Main";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -91,11 +92,9 @@ function Layout(props) {
       // My_Farm: <Outlet />,
       // My_Farm_Details: " ",
       "": <DashBoard />,
-      My_Farm: <DashBoard />,
+      My_Farm: <Main />,
       My_Farm_Details: <h1>목장 현황</h1>,
       // My_Farm_Info: " ",
-      "": <MyLiveStock />,
-      My_Farm: <MyLiveStock />,
       My_Farm_Info: <h1>목장 현황</h1>,
       My_Farm_Board: <Community />,
       My_Farm_Board: "",
