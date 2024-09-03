@@ -258,7 +258,7 @@ function Layout(props) {
           <div className={styles.wrapper}>
             {/* <Nav contents={USER_PRODUCTS} renderContent={renderUserContent} /> */}
             <div className={styles.nav}>
-              <Box sx={{ minHeight: 352, minWidth: 180 }}>
+              <Box sx={{ minHeight: 352, minWidth: 200 }}>
                 <RichTreeView
                   items={USER_PRODUCTS}
                   apiRef={apiRef}
