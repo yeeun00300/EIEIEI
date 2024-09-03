@@ -65,7 +65,7 @@ function Main() {
         h: 3,
         minw: 0.5,
         maxh: 3,
-        children: <Box width="98%" height="98%"></Box>,
+        children: <LineChart dataset={sampleData} />,
       },
       {
         i: "2",
@@ -95,18 +95,6 @@ function Main() {
             {/* <LineChart dataset={sampleData} /> */}
           </div>
         ))}
-        {/* <div
-          key={"5"}
-          data-grid={{
-            x: 0,
-            y: 0,
-            w: 0.4,
-            h: 3,
-            isResizable: false,
-          }}
-        >
-          <Weather />
-        </div> */}
       </ResponsiveGridLayout>
     </div>
   );
