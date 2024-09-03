@@ -39,7 +39,7 @@ function KakaoCallBack(props) {
         .then((res) => {
           console.log(res);
           const { access_token } = res.data;
-          const { idToken } = res.data;
+          const { id_token } = res.data;
 
           // 유저 개인정보 받아오기 위한 호출 코드
           axios
@@ -61,7 +61,8 @@ function KakaoCallBack(props) {
 
           const provider = new OAuthProvider("oidc.kakao");
           const credential = provider.credential({
-            idToken: idToken,
+            // accessToken: access_token,
+            idToken: id_token,
           });
 
           signInWithCredential(auth, credential)
@@ -69,6 +70,7 @@ function KakaoCallBack(props) {
               const credential = OAuthProvider.credentialFromResult(result);
               const acToken = credential.accessToken;
               const idToken = credential.idToken;
+              console.log("로그인 성공", result);
             })
             .catch((error) => {
               // Handle error.
