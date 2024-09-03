@@ -1,11 +1,12 @@
 .box {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   width: 100%;
 
   div {
     display: flex;
   }
+
   h2 {
     text-align: center;
     color: #333;
@@ -22,7 +23,12 @@
   label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
+    margin-right: 8px;
+    width: 200px;
+    letter-spacing: 3px;
+    text-align: right;
+    line-height: 30px;
   }
 
   input[type="text"],
