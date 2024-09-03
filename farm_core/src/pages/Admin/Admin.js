@@ -21,6 +21,7 @@ import DiseaseIssue from "../../components/Admin-Disease/DiseaseIssue";
 import DiseaseState from "../../components/Admin-Disease/DiseaseState";
 import DiseaseUser from "../../components/Admin-Disease/DiseaseUser";
 import AlarmManagement from "../../components/Alarm/AlarmManagement";
+import GaugeNeedle from "../../components/Gauge/GaugeNeedle";
 
 function Admin() {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -49,7 +50,7 @@ function Admin() {
       children: [
         { id: "weather-condition", label: "날씨 현황" },
         { id: "weather-issue", label: "기상 특보" },
-        { id: "weather-notice", label: "알림 목록" },
+        { id: "weather-notice", label: "날씨 알림" },
       ],
     },
     {
@@ -59,19 +60,19 @@ function Admin() {
         { id: "disease-state", label: "질병 현황" },
         { id: "disease-issue", label: "질병 특보" },
         { id: "disease-consult", label: "문진표 목록" },
-        { id: "disease-notice", label: "알림 목록" },
+        { id: "disease-notice", label: "질병 알림" },
       ],
     },
-    {
-      id: "alarm",
-      label: "알림 관리",
-      children: [
-        { id: "alarm-management", label: "알림 통합 관리" },
-        { id: "alarm-send", label: "알림 전송" },
-        // { id: "alarm-weather", label: "날씨 정보" },
-        // { id: "alarm-disease", label: "질병 정보" },
-      ],
-    },
+    // {
+    //   id: "alarm",
+    //   label: "알림 관리",
+    //   children: [
+    //     { id: "alarm-management", label: "알림 통합 관리" },
+    //     { id: "alarm-send", label: "알림 전송" },
+    //     { id: "alarm-weather", label: "날씨 정보" },
+    //     { id: "alarm-disease", label: "질병 정보" },
+    //   ],
+    // },
     {
       id: "chatting",
       label: "채팅기록",
@@ -125,26 +126,27 @@ function Admin() {
       "disease-issue": <DiseaseState />,
       "disease-consult": <h1>문진표 목록</h1>,
       "disease-notice": <DiseaseIssue />,
-      "alarm-management": <AlarmManagement reSend={true} />,
+      // "alarm-management": <AlarmManagement reSend={true} />,
       // "alarm-management": (
       //   <Alarm title={"날씨 알림"} description={weatherDescription} />
       // ),
-      "alarm-send": (
-        <>
-          <Alarm
-            title={"날씨 알림"}
-            description={weatherDescription}
-            reSend={false}
-          />
-        </>
-      ),
+      // "alarm-send": (
+      //   <>
+      //     <Alarm
+      //       title={"날씨 알림"}
+      //       description={weatherDescription}
+      //       reSend={false}
+      //     />
+      //   </>
+      // ),
       // "alarm-weather": (
       //   <Alarm title={"날씨 알림"} description={weatherDescription} />
       // ),
       // "alarm-disease": (
       //   <Alarm title={"질병 알림"} description={diseaseDescription} />
       // ),
-      chatting: <h1>채팅기록</h1>,
+      chatting: <GaugeNeedle />,
+      // chatting: <h1>채팅기록</h1>,
     };
 
     return componentsMap[itemId] || <h1>Default Content</h1>;
