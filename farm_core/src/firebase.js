@@ -317,5 +317,7 @@ export {
   uploadFile,
   getUserAuth,
   uploadExcelAndSaveData,
+  app,
+  auth,
 };
 export default app;

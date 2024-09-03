@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import {
+  getAuth,
+  OAuthCredential,
+  OAuthProvider,
+  signInWithCredential,
+} from "firebase/auth";
+import { auth } from "../../../firebase";
 
 function KakaoCallBack(props) {
   useEffect(() => {
@@ -32,6 +39,7 @@ function KakaoCallBack(props) {
         .then((res) => {
           console.log(res);
           const { access_token } = res.data;
+          const { idToken } = res.data;
 
           // 유저 개인정보 받아오기 위한 호출 코드
           axios
@@ -49,6 +57,22 @@ function KakaoCallBack(props) {
             .then((res) => {
               console.log(res);
               console.log(res.data.kakao_account.profile);
+            });
+
+          const provider = new OAuthProvider("oidc.kakao");
+          const credential = provider.credential({
+            idToken: idToken,
+          });
+
+          signInWithCredential(auth, credential)
+            .then((result) => {
+              const credential = OAuthProvider.credentialFromResult(result);
+              const acToken = credential.accessToken;
+              const idToken = credential.idToken;
+            })
+            .catch((error) => {
+              // Handle error.
+              console.log(error);
             });
         })
         .catch((Error) => {
