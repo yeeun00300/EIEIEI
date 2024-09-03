@@ -109,14 +109,14 @@ function SignUp() {
         address,
         detailedAddress,
         farm,
-        uid,
+
         profileImages: downloadURL,
         createdAt: new Date(),
       };
 
       console.log(`테스트용${userObj.detailedAddress}`);
       // await addDatas("users", userObj);
-      await addDatas("users", { ...userObj, uid });
+      await addDatas("users", { ...userObj, email });
       console.log(userObj);
       alert("회원가입에 성공했습니다.");
       navigate("/");

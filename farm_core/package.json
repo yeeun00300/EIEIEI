@@ -19,6 +19,7 @@
     "axios": "^1.7.4",
     "chart.js": "^4.4.4",
     "classnames": "^2.5.1",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.13",
     "dompurify": "^3.1.6",
     "env-cmd": "^10.1.0",
@@ -44,7 +45,8 @@
     "sheetjs": "^2.0.0",
     "styled-components": "^6.1.12",
     "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "xlsx-style": "^0.8.13"
   },
   "scripts": {
     "start": "env-cmd -f .env react-scripts start",

@@ -19,7 +19,8 @@ function EmailSignUp(props) {
         password
       );
       const { user } = userCredential;
-      await joinUser(user.uid, user.email);
+      console.log("Creating/updating user with UID:", user.uid);
+      // await joinUser(user.uid, user.email);
       dispatch(
         setUser({ email: user.email, token: user.refreshToken, uid: user.uid })
       );

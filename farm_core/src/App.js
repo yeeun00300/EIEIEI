@@ -86,7 +86,7 @@ function App() {
         ) : (
           // 로그인시
           <Route path="/" element={<Layout />}>
-            <Route index element={<Main />} />
+            {/* <Route index element={<Main />} /> */}
             <Route path="DashBoard" element={<DashBoard />} />
             {/* <Route path="LiveStock" element={<LiveStock />} /> */}
             <Route path="Customer" element={<Customer />} />

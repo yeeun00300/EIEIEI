@@ -9,6 +9,7 @@ import logoImg from "../../img/TitleLogo.png";
 import NewBoardPage from "./NewBoardPage";
 import FreeboardPage from "./FreeboardPage";
 import { useSelector } from "react-redux";
+import MyCalendar from "../../components/Calendar/MyCalendar";
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};
@@ -108,6 +109,7 @@ function Community() {
           notices={noticeItems}
           onItemClick={handleOpenBoard}
         />
+        <MyCalendar />
       </ListPage>
     </div>
   );

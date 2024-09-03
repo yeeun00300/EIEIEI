@@ -25,6 +25,7 @@ import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
 import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
 import DashBoard from "../DashBoard/DashBoard";
+import Main from "../Main/Main";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -87,15 +88,10 @@ function Layout(props) {
   // user nav component
   const renderUserContent = () => {
     const componentsMap = {
-      // "": "",
-      // My_Farm: <Outlet />,
-      // My_Farm_Details: " ",
-      "": <DashBoard />,
-      My_Farm: <DashBoard />,
+      "": <Main />,
+      My_Farm: <Main />,
       My_Farm_Details: <h1>목장 현황</h1>,
       // My_Farm_Info: " ",
-      "": <MyLiveStock />,
-      My_Farm: <MyLiveStock />,
       My_Farm_Info: <h1>목장 현황</h1>,
       My_Farm_Board: <Community />,
       My_Farm_Board: "",
@@ -103,9 +99,7 @@ function Layout(props) {
       My_Farm01: <DashBoard />,
       My_Farm02: <h1></h1>,
       My_Farm03: <h1>나의 목장 03</h1>,
-
       My_Farm_Details_Farm: <MyLiveStock />,
-      // My_Farm_Details_CCTV: <h1>CCTV</h1>,
       My_Farm_Details_Disease: (
         <div className="page">
           <DiseaseState />
@@ -113,7 +107,6 @@ function Layout(props) {
           <CurrentMarker />
         </div>
       ),
-      // My_Farm_Info_Info: <h1>상세정보</h1>,
       My_Farm_Add: <AddLiveStock />,
       My_Farm_Board_Total: (
         <h1>
@@ -122,47 +115,20 @@ function Layout(props) {
       ),
       My_Farm_Board_FreeBoard: <Community />,
       My_Farm_Board_Community: <Livestock />,
-      // My_Farm_MyPage_InfoEdit: <h1>회원정보/수정</h1>,
-      // My_Farm_MyPage_MyBoard: <h1>내 게시글</h1>,
-      // My_Farm_MyPage_Inquire: <h1>1:1문의하기</h1>,
-      // My_Farm_MyPage_Payment: <h1>결제 내역</h1>,
     };
 
     return componentsMap[itemId];
-    // return componentsMap[itemId] || <h1>Default Content</h1>;
   };
   // --------------------------------------------------------------------
 
   return (
     <>
       {adminLogin ? (
-        // <div className={styles.layout}>
-        //   <Header title={"AdminPage"} />
-        //   <div className={styles.wrapper}>
-        // {/* <TreeViewComp
-        //   contents={MUI_X_PRODUCTS}
-        //   renderContent={renderContent}
-        // /> */}
-        //     {/* <div className={styles.nav}>
-        //       <Box sx={{ minHeight: 352, minWidth: 250 }}>
-        //         <RichTreeView
-        //           items={MUI_X_PRODUCTS}
-        //           apiRef={apiRef}
-        //           selectedItems={selectedItem?.id ?? null}
-        //           onSelectedItemsChange={handleSelectedItemsChange}
-        //         />
-        //       </Box>
-        //       <Footer />
-        //     </div>
-        //     {renderContent()}
-        //   </div>
-        // </div> */}
         <Admin />
       ) : (
         <div className={styles.layout}>
           <Header title={"FarmCore"} />
           <div className={styles.wrapper}>
-            {/* <Nav contents={USER_PRODUCTS} renderContent={renderUserContent} /> */}
             <div className={styles.nav}>
               <Box sx={{ minHeight: 352, minWidth: 180 }}>
                 <RichTreeView
@@ -175,8 +141,6 @@ function Layout(props) {
               <Footer />
             </div>
             {renderUserContent()}
-            {/* <Outlet /> */}
-            {/* <Weather /> */}
           </div>
         </div>
       )}

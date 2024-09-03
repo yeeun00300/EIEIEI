@@ -4,7 +4,6 @@ import { Line } from "react-chartjs-2";
 import { Box } from "@mui/material";
 import styles from "./Main.module.scss";
 
-import Weather from "./../../api/Weather/Weather";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -66,16 +65,7 @@ function Main() {
         h: 3,
         minw: 0.5,
         maxh: 3,
-        children: (
-          <Box width="98%" height="98%">
-            <Weather
-              options={{
-                responsive: true,
-                maintainAspectRatio: false, // 부모 요소 크기에 맞추기 위해 필요
-              }}
-            />
-          </Box>
-        ),
+        children: <LineChart dataset={sampleData} />,
       },
       {
         i: "2",
@@ -85,6 +75,7 @@ function Main() {
         h: 2,
         minw: 1,
         maxh: 3,
+        children: <div>밥ㅂ바밥ㅂ바</div>,
       },
       { i: "3", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
       { i: "4", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
@@ -105,18 +96,6 @@ function Main() {
             {/* <LineChart dataset={sampleData} /> */}
           </div>
         ))}
-        {/* <div
-          key={"5"}
-          data-grid={{
-            x: 0,
-            y: 0,
-            w: 0.4,
-            h: 3,
-            isResizable: false,
-          }}
-        >
-          <Weather />
-        </div> */}
       </ResponsiveGridLayout>
     </div>
   );
