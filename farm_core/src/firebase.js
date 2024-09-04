@@ -104,6 +104,12 @@ async function getDatas(collectionName, queryOptions) {
   return resultData;
 }
 
+async function getDataAll(collectionName) {
+  const collect = await collection(db, collectionName);
+  const snapshot = await getDocs(collect);
+
+  return snapshot;
+}
 // async function addDisease(animalType, diseaseId, diseaseData) {
 //   try {
 //     const diseaseRef = collection(db, "disease", animalType, "disease");
@@ -147,7 +153,7 @@ async function getDatas(collectionName, queryOptions) {
 // }
 export const uploadFiles = async (file) => {
   const storageRef = ref(storage, `admin01/profileImgs/${file.name}`);
-
+  console.log(`프로필 이미지확인:${file.name}`);
   try {
     console.log("Uploading file:", file); // 파일 정보 확인
     const snapshot = await uploadBytes(storageRef, file);
@@ -317,6 +323,7 @@ export {
   db,
   addDatas,
   getDatas,
+  getDataAll,
   checkUserIdExists,
   uploadFile,
   getUserAuth,
