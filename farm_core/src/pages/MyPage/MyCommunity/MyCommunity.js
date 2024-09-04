@@ -11,6 +11,7 @@ import CommunityConents from "./communityContent/CommunityConents";
 import ExcelTemplateDownload from "../../../components/ExcelTemplateDownload/ExcelTemplateDownload";
 import ExcelUpload from "../../../components/ExcelUpload/ExcelUpload";
 import StockAddfromExcel from "../../../components/StockAdd/StockAddfromExcel";
+import PaymentPage from "../../paymentPage/PaymentPage";
 
 function MyCommunity() {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ function MyCommunity() {
           return <CommunityConents {...content} key={idx} />;
         })}
       </div>
+      <PaymentPage />
     </div>
   );
 }

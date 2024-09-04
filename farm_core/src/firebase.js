@@ -197,29 +197,30 @@ async function uploadFile(file) {
 }
 // 필드명 매핑
 const fieldNameMapping = {
-  "가축 종류": "AnimalType",
-  "축사 번호": "BarnNumber",
-  "가축 개체번호": "AnimalID",
-  "가축 주소": "AnimalLocation",
-  "입고 날짜": "EntryDate",
-  성별: "Gender",
-  크기: "Size",
-  무게: "Weight",
-  "출생 날짜": "BirthDate",
-  섭취량: "FeedIntake",
-  "수분 섭취량": "WaterIntake",
-  활동량: "ActivityLevel",
-  온도: "Temperature",
-  "격리 상태": "IsolationStatus",
-  "발정기 여부": "EstrusStatus",
-  "임신 일자": "PregnancyDate",
-  "실제 백신 접종 데이터": "Vaccination", // 실 데이터 필드만 사용
-  "실제 질병 및 치료 데이터": "DiseasesAndTreatments", // 실 데이터 필드만 사용
-  "출산 횟수": "NumberOfBirths",
-  출산일: "BirthDate",
-  "출사 예정일": "ExpectedBirthDate",
-  "우유 생산량": "MilkProduction",
-  "성장 속도": "GrowthRate",
+  "가축 종류": "stockType",
+  품종: "variety",
+  "축사 번호": "farmId",
+  "가축 개체번호": "stockId",
+  "가축 주소": "farmAddress",
+  "입고 날짜": "incomingDate",
+  성별: "sexual",
+  크기: "size",
+  무게: "weight",
+  "출생 날짜": "birthDate",
+  섭취량: "feed",
+  "수분 섭취량": "drink",
+  활동량: "activity",
+  온도: "temp",
+  "격리 상태": "isolation",
+  "발정기 여부": "mating(bool)",
+  "임신 일자": "pregnantDate",
+  "백신 접종 데이터": "vaccine",
+  "질병 및 치료 데이터": "disease",
+  "출산 횟수": "breedCount",
+  출산일: "birthDate",
+  출산일: "breedDate",
+  "우유 생산량": "milk",
+  "폐사 여부": "ruin(bool)",
   산란량: "EggProduction",
 };
 
@@ -238,24 +239,33 @@ function convertFieldNamesToEnglish(dataObject) {
 
 // 특수 필드의 값을 배열로 처리하는 함수
 function processSpecialFields(dataObject) {
-  const specialFields = ["Vaccination", "DiseasesAndTreatments"];
+  const specialFields = ["vaccine", "disease"];
+
   specialFields.forEach((field) => {
     if (dataObject[field] && typeof dataObject[field] === "string") {
-      const values = dataObject[field]
+      // 문자열을 객체 배열로 변환
+      const entries = dataObject[field]
         .split(";")
-        .map((entry) => {
-          const [name, date] = entry.split("(");
-          return {
-            name: name.trim(),
-            date: date ? date.replace(")", "").trim() : null,
-          };
-        })
-        .filter((entry) => entry.name); // name이 있는 항목만 필터링
-      dataObject[field] = values;
+        .map((entry) => entry.trim())
+        .filter((entry) => entry);
+
+      dataObject[field] = entries.map((entry) => {
+        const [type, details] = entry.split("(");
+        const detailsPart = details ? details.replace(")", "") : "";
+        return { [type.trim()]: detailsPart };
+      });
+    } else if (dataObject[field] && Array.isArray(dataObject[field])) {
+      // 이미 배열일 경우 변환
+      dataObject[field] = dataObject[field].map((item) => {
+        const [type, details] = item.split("(");
+        const detailsPart = details ? details.replace(")", "") : "";
+        return { [type.trim()]: detailsPart };
+      });
     } else {
-      dataObject[field] = []; // 필드가 없거나 빈 문자열일 경우 빈 배열로 설정
+      dataObject[field] = [];
     }
   });
+
   return dataObject;
 }
 
@@ -265,7 +275,10 @@ async function uploadExcelAndSaveData(file, collectionName) {
     const data = await file.arrayBuffer();
     const workbook = XLSX.read(new Uint8Array(data), { type: "array" });
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+      header: 1,
+      raw: true,
+    });
 
     const headers = jsonData[0]; // 첫 번째 행이 헤더
     const values = jsonData.slice(1); // 두 번째 행부터 값들
@@ -276,7 +289,15 @@ async function uploadExcelAndSaveData(file, collectionName) {
 
     const dataObjects = values.map((row) => {
       const dataObject = headers.reduce((acc, header, index) => {
-        acc[header] = row[index] !== undefined ? row[index] : null; // undefined를 null로 변환
+        let cellValue = row[index] !== undefined ? row[index] : null;
+
+        // 날짜 시리얼 값인지 확인하고 변환
+        if (typeof cellValue === "number" && header.includes("날짜")) {
+          const jsDate = new Date((cellValue - 25569) * 86400 * 1000); // 엑셀 날짜 시리얼 값을 JavaScript 날짜로 변환
+          cellValue = jsDate.toISOString().split("T")[0]; // 'YYYY-MM-DD' 형식으로 변환
+        }
+
+        acc[header] = cellValue;
         return acc;
       }, {});
 
@@ -310,7 +331,6 @@ async function uploadExcelAndSaveData(file, collectionName) {
     console.error("엑셀 파일 업로드 및 Firestore 저장 중 오류 발생:", error);
   }
 }
-
 // 엑셀파일을 스토리지에서 다운로드 받을수있도록 하는것
 
 export {

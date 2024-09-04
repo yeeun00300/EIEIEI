@@ -5,8 +5,9 @@ import styles from "./ExcelUpload.module.scss";
 
 function ExcelUpload(props) {
   const [file, setFile] = useState(null);
-  const [uploading, setUploading] = useState(false); // 업로드 상태 관리
-  const [error, setError] = useState(null); // 오류 상태 관리
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(null);
+
   const handleFileUpload = async () => {
     if (!file) {
       alert("파일을 선택해주세요");

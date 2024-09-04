@@ -1,3 +1,6 @@
-ul {
-  list-style-type: none;
+.stockListBox {
+  overflow: scroll;
+  ul {
+    list-style-type: none;
+  }
 }

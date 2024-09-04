@@ -24,26 +24,18 @@ function MyStockAddPage() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        downloadUrl && (
-          <a href={downloadUrl} download="stock_template.xlsx">
-            엑셀 다운로드
-          </a>
-        )
+        <>
+          {downloadUrl && (
+            <a href={downloadUrl} download="stock_template.xlsx">
+              엑셀 다운로드
+            </a>
+          )}
+          <div className={styles.stockListBox}>
+            {/* 엑셀 데이터만 테이블 바디에 렌더링 */}
+            <StockAddfromExcel items={stock} />
+          </div>
+        </>
       )}
-      {/* <ul>
-        {stock.map((item) => (
-          <li key={item.docId}>
-            <StockAddfromExcel item={item} />
-          </li>
-        ))}
-      </ul> */}
-      <ul>
-        {stock.map((item) => (
-          <li key={item.docId}>
-            <StockAddfromExcel item={item} />
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
