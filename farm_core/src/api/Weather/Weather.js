@@ -4,12 +4,12 @@ import styles from "./Weather.module.scss";
 import WeatherItem from "./WeatherItem";
 
 const initializeData = {
-  city: { name: "" },
+  city: { name: " " },
   list: [
     { main: { humidity: 0, temp: 0, temp_max: 0, temp_min: 0 } },
     { wind: { speed: 0, deg: 0, gust: 0 } },
-    { dt_txt: "" },
-    { weather: [{ description: "", main: "Clear", icon: "01n" }] },
+    { dt_txt: " " },
+    { weather: [{ description: " ", main: "Clear", icon: "01d" }] },
   ],
 };
 
@@ -49,8 +49,7 @@ function Weather() {
 
   useEffect(() => {
     success();
-  }, [weatherData]);
-  // console.log(weatherData);
+  }, []);
 
   return (
     <div className={styles.Weather}>
