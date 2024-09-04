@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import { processExcelFile, uploadExcelAndSaveData } from "../../firebase";
+import styles from "./ExcelUpload.module.scss";
 
 function ExcelUpload(props) {
   const [file, setFile] = useState(null);
-  const [uploading, setUploading] = useState(false); // 업로드 상태 관리
-  const [error, setError] = useState(null); // 오류 상태 관리
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(null);
+
   const handleFileUpload = async () => {
     if (!file) {
       alert("파일을 선택해주세요");
@@ -25,16 +27,21 @@ function ExcelUpload(props) {
   };
 
   return (
-    <div>
+    <div className={styles.uploadContainer}>
       <input
         type="file"
         accept=".xlsx, .xls"
         onChange={(e) => setFile(e.target.files[0])}
+        className={styles.fileInput}
       />
-      <button onClick={handleFileUpload} disable d={uploading}>
+      <button
+        onClick={handleFileUpload}
+        disabled={uploading}
+        className={styles.uploadButton}
+      >
         {uploading ? "업로드 중..." : "엑셀 파일 업로드"}
       </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
     </div>
   );
 }

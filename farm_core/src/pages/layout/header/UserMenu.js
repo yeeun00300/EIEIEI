@@ -13,7 +13,7 @@ function UserMenu(props) {
   const auth = getUserAuth();
 
   const email = useSelector((state) => state.loginSlice.email);
-  console.log(email);
+  // console.log(email);
   const handleLogout = () => {
     signOut(auth)
       .then(() => {

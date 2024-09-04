@@ -1,15 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Header.module.scss";
 import logoImg from "../../../img/TitleLogo.png";
 import { FaRegBell } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
-import loginSlice from "../../../store/loginSlice/loginSlice";
+import { getDataAll, getDatas } from "../../../firebase";
 
 function Header({ title }) {
   const address = useSelector((state) => state.mapAddrSlice.address);
-  const profileImage = useSelector((state) => state, loginSlice.profilImage);
+  const email = useSelector((state) => state.loginSlice.email);
+  // const profileImage = useSelector((state) => state.loginSlice.profilImage);
+
+  // const profileImage = useSelector(
+  //   (state) => state.profileImageSlice.downloadURL
+  // );
+
+  // const profileImage = useSelector
+
+  const profileImage = useSelector((state) => state.loginSlice.profileImages);
+  console.log("Profile Image URL:", profileImage); // 상태 로그 추가
+  console.log(`email확인:${email}`);
+
+  // const getUserInfo = async () => {
+  //   const queryOptions = {
+  //     conditions: [
+  //       {
+  //         field: "email",
+  //         operator: "==",
+  //         value: email,
+  //       },
+  //     ],
+  //   };
+  //   const result = await getDatas("users", queryOptions);
+  //   // const dd = result[0];
+  //   // const profile = dd.profileImages;
+  //   console.log(result);
+  // };
+  // useEffect(() => {
+  //   getUserInfo();
+  // }, []);
 
   return (
     <div className={styles.header}>

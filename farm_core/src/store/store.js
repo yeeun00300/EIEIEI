@@ -10,6 +10,7 @@ import joinUserSlice from "./joinUserSlice/joinUserSlice";
 import profileImageSlice from "./profileImageSlice/profileImageSlice";
 import stockSlice from "./stockSlice/stockSlice";
 import weatherSlice from "./weatherSlice/weatherSlice";
+
 const store = configureStore({
   reducer: {
     addressSlice,

@@ -140,8 +140,8 @@ function StockCondition(props) {
         <input type="date" id="pregnantDate" name="pregnantDate" />
       </div>
       <div className="form-group">
-        <label htmlFor="vaccin">백신 접종 (형식: 백신명(접종일))</label>
-        <input type="text" id="vaccin" name="vaccin" />
+        <label htmlFor="vaccine">백신 접종 (형식: 백신명(접종일))</label>
+        <input type="text" id="vaccine" name="vaccine" />
       </div>
       <div className="form-group">
         <label htmlFor="disease">

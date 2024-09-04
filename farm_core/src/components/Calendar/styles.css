@@ -1,0 +1,210 @@
+/* styles.css */
+
+/* 캘린더를 감싸는 Wrapper 스타일 */
+.calendar-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  align-items: center; /* 중앙 정렬 */
+  position: relative;
+}
+
+.calendar {
+  width: 100%;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0.25rem 0.125rem 0.625rem 0rem rgba(0, 0, 0, 0.13);
+  padding: 3% 5%;
+  background-color: white;
+  margin-bottom: 1.25rem; /* 캘린더와 일정 리스트 사이의 여백 */
+
+  height: 21rem;
+}
+.calendar .react-calendar__month-view__days__day {
+  height: 3rem;
+}
+.calendar .react-calendar__month-view abbr {
+  color: #666666; /* 예시 컬러 */
+}
+
+/* 네비게이션 가운데 정렬 */
+.calendar .react-calendar__navigation {
+  justify-content: center;
+}
+
+/* 네비게이션 폰트 설정 */
+.calendar .react-calendar__navigation button {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+/* 네비게이션 버튼 컬러 */
+.calendar .react-calendar__navigation button:focus {
+  background-color: white;
+}
+
+/* 네비게이션 비활성화 됐을때 스타일 */
+.calendar .react-calendar__navigation button:disabled {
+  background-color: white;
+  color: #333333; /* 예시 컬러 */
+}
+
+/* 년/월 상단 네비게이션 칸 크기 줄이기 */
+.calendar .react-calendar__navigation__label {
+  flex-grow: 0 !important;
+}
+
+/* 요일 밑줄 제거 */
+.calendar .react-calendar__month-view__weekdays abbr {
+  text-decoration: none;
+  font-weight: 800;
+}
+
+/* 일요일에만 빨간 폰트 */
+.calendar
+  .react-calendar__month-view__weekdays__weekday--weekend
+  abbr[title="일요일"] {
+  color: #ff0000; /* 예시 컬러 */
+}
+
+/* 오늘 날짜 폰트 컬러 */
+.calendar .react-calendar__tile--now {
+  background: none;
+}
+.calendar .react-calendar__tile--now abbr {
+  color: #ff5733; /* 예시 컬러 */
+}
+
+/* 네비게이션 월 스타일 적용 */
+.calendar .react-calendar__year-view__months__month {
+  border-radius: 0.8rem;
+  background-color: #dddddd; /* 예시 컬러 */
+  padding: 0;
+}
+
+/* 네비게이션 현재 월 스타일 적용 */
+.calendar .react-calendar__tile--hasActive {
+  background-color: #ff5733; /* 예시 컬러 */
+}
+.calendar .react-calendar__tile--hasActive abbr {
+  color: white;
+}
+
+/* 일 날짜 간격 */
+.calendar .react-calendar__tile {
+  padding: 0.3125rem 0rem 1.125rem;
+  position: relative;
+}
+
+/* 네비게이션 월 스타일 적용 */
+.calendar .react-calendar__year-view__months__month {
+  flex: 0 0 calc(33.3333% - 0.625rem) !important;
+  margin-inline-start: 0.3125rem !important;
+  margin-inline-end: 0.3125rem !important;
+  margin-block-end: 0.625rem;
+  padding: 1.25rem 0.4167rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666666; /* 예시 컬러 */
+}
+
+/* 선택한 날짜 스타일 적용 */
+.calendar .react-calendar__tile:enabled:hover,
+.calendar .react-calendar__tile:enabled:focus,
+.calendar .react-calendar__tile--active {
+  background-color: transparent; /* 예시 컬러 */
+}
+.calendar .react-calendar__tile--active .react-calendar__tile__content {
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+}
+
+/* 날짜 영역만 동그랗게 배경 적용 */
+.calendar .react-calendar__tile--active abbr {
+  background-color: #ffcc00; /* 동그랗게 적용할 색상 */
+  border-radius: 50%;
+  padding: 0.5rem;
+  color: black; /* 날짜 텍스트 색상 */
+  display: inline-block;
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
+  z-index: 1; /* 추가된 부분 */
+}
+.calendar .react-calendar__tile abbr {
+  width: 2rem; /* 위와 동일한 너비 */
+  height: 2rem; /* 위와 동일한 높이 */
+  /* display: inline-block; */
+  text-align: center;
+}
+
+/* 오늘 버튼 스타일 */
+
+.today-button {
+  position: absolute;
+  right: 7%;
+  top: 4%;
+  background-color: #007bff; /* 예시 색상 */
+  color: #ffcc00; /* 예시 색상 */
+  width: 15%;
+  text-align: center;
+  line-height: 1.6rem;
+  border-radius: 0.9375rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.calendar-schedule {
+  background-color: #f2e;
+  border-radius: 4px;
+  padding: 6px 8px; /* 패딩 조정 */
+  color: black;
+  /* margin: 4px 0; */
+  text-align: center;
+  white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+  overflow: hidden; /* 텍스트가 넘치면 숨김 처리 */
+  text-overflow: ellipsis; /* 넘치는 텍스트를 '...'로 표시 */
+  font-size: 0.85rem; /* 폰트 크기 조정 */
+  width: 80%;
+  max-width: 100%; /* 최대 너비 제한 */
+  height: 1.5rem; /* 고정된 높이 */
+  line-height: 1.5rem; /* 텍스트 수직 정렬 */
+  box-sizing: border-box;
+  display: inline-block;
+}
+
+/* 선택된 날짜 정보 표시 스타일 */
+.selected-date-info {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.625rem;
+}
+.selected-date-info-num {
+  background-color: rgb(248, 114, 203);
+  padding: 0.5rem;
+  border-radius: 0.425rem;
+  font-size: 0.78rem;
+}
+/* 스케줄 추가 버튼 스타일 */
+
+.schedule-info button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.625rem 0.9375rem;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+}
+.dot {
+  background-color: rgb(248, 114, 203);
+  border-radius: 50%;
+  width: 0.3rem;
+  height: 0.3rem;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}

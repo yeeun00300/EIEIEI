@@ -26,6 +26,8 @@ import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
 import DashBoard from "../DashBoard/DashBoard";
 import Main from "../Main/Main";
+import MyFarmInfoPage from "../MyFarmInfo/MyFarmInfoPage";
+import MyStockAddPage from "../MyStockAddPage/MyStockAddPage";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -107,7 +109,10 @@ function Layout(props) {
           <CurrentMarker />
         </div>
       ),
+
       My_Farm_Add: <AddLiveStock />,
+      My_Farm_Info_stock: <MyFarmInfoPage />,
+      My_Farm_Add_stock: <MyStockAddPage />,
       My_Farm_Board_Total: (
         <h1>
           <Community />
