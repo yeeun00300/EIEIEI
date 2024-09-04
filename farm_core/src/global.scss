@@ -56,18 +56,19 @@ body {
   text-align: center;
   //outlet page에만 스크롤 생기게
   overflow-y: auto;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 4.375rem);
+  width: calc(100vw - 12.5rem);
 }
 
 .page::-webkit-scrollbar {
-  width: 8px; /* 스크롤바의 너비 */
+  width: 0.5rem; /* 스크롤바의 너비 */
 }
 
 .page::-webkit-scrollbar-thumb {
   height: 30%; /* 스크롤바의 길이 */
   background: gray; /* 스크롤바의 색상 */
 
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 .page::-webkit-scrollbar-track {
@@ -76,14 +77,14 @@ body {
 
 // page 안에 있는 wrapper
 .container {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
-  padding: 5px;
+  padding: 0.3125rem;
 
   @media (min-width: 576px) {
-    padding: 15px;
+    padding: 0.9375rem;
   }
   @media (min-width: 990px) {
-    padding: 5px;
+    padding: 0.3125rem;
   }
 }
