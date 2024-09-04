@@ -6,7 +6,7 @@ function MyLiveStock(props) {
   return (
     <div className="page">
       <Selected />
-      <CCTVandAnimalInfo />
+      {/* <CCTVandAnimalInfo /> */}
       {/* <div className={styles.boarder}>
         <div>
           <p>현재 온도 : 28.5</p>

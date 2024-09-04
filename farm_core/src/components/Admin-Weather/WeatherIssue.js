@@ -3,12 +3,15 @@ import styles from "./WeatherIssue.module.scss";
 import Search from "../../pages/Admin/components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import { setWeatherIssueContent } from "../../store/weatherSlice/weatherSlice";
+import { addDatas, getDatas } from "../../firebase";
 
 function WeatherIssue() {
   const dispatch = useDispatch();
   const { weatherIssueContent } = useSelector((state) => state.weatherSlice);
   const [search, setSearch] = useState("");
+  const [dateList, setDateList] = useState([]);
   const now = new Date();
+  const createdAt = now.getTime();
   const today = now.toISOString("kr").split("T")[0].replaceAll("-", "");
   const beforeDay2 =
     now.toISOString("kr").split("T")[0].replaceAll("-", "") - 2;
@@ -29,13 +32,25 @@ function WeatherIssue() {
         dispatch(setWeatherIssueContent(json.response.body.items.item));
       });
   };
+
+  const getWeatherData = async () => {
+    const query = ("send", "==", "true");
+    const result = await getDatas("weatherInfo", query);
+    const dateResult = result.map((data) => {
+      return data;
+    });
+    setDateList(dateResult);
+  };
+
   useEffect(() => {
     getWeatherContent();
+    getWeatherData();
   }, []);
 
   return (
     <div className={styles.WeatherIssue}>
       <Search setSearch={setSearch} />
+
       {weatherIssueContent.map((item, idx) => {
         const { t1, t2, t6, tmFc, other } = item;
         const year = `${tmFc}`.substring(0, 4);
@@ -43,14 +58,53 @@ function WeatherIssue() {
         const day = `${tmFc}`.substring(6, 8);
         const hour = `${tmFc}`.substring(8, 10);
         const minute = `${tmFc}`.substring(10);
+        const weatherIssueTitle = `${t2}`.substring(3).split(":")[0];
+        const weatherIssueArea = `${t2}`.substring(3).split(":")[1];
+
+        const weatherIssueDate = `${year}-${month}-${day} ${hour}:${minute}`;
+        const weatherIssueItem = {
+          weatherIssue: weatherIssueTitle,
+          weatherDate: weatherIssueDate,
+          weatherDescription: other,
+          createdAt: createdAt,
+          send: true,
+        };
+        // const reWeatherIssueItem = {
+        //   weatherIssue: weatherIssueTitle,
+        //   weatherDate: weatherIssueDate,
+        //   weatherDescription: other,
+        //   createdAt: data.createdAt,
+        //   updatedAt: createdAt,
+        //   send: true,
+        // };
+        const matchedData = dateList.find(
+          (data) => data.weatherDate === weatherIssueDate
+        );
+
         return (
           <ul key={idx}>
             <li>
               <h2>
-                {t1} <span>{`${year}-${month}-${day} ${hour}:${minute}`}</span>
+                {t1} <span>{weatherIssueDate}</span>
               </h2>
-              <h4>{t2}</h4>
+              <h4>{`${weatherIssueTitle} - ${weatherIssueArea}`}</h4>
               <h4>{other}</h4>
+              {matchedData ? (
+                <button
+                // onClick={() => addDatas("weatherInfo", reWeatherIssueItem)}
+                >
+                  재전송하기
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    addDatas("weatherInfo", weatherIssueItem);
+                    alert("전송이 완료되었습니다.");
+                  }}
+                >
+                  전송하기
+                </button>
+              )}
             </li>
           </ul>
         );
