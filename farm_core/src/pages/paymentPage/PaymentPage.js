@@ -10,7 +10,7 @@ const data = {
   paymethod: "card",
 };
 
-console.log(window);
+
 function PaymentPage(props) {
   // const requestPayment = async () => {
   //   const response = await PortOne.requestPayment(data);
