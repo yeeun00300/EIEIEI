@@ -4,17 +4,17 @@ import "./ScheduleModal.css"; // 사용자 정의 CSS 파일
 
 Modal.setAppElement("#root");
 
-const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedule }) => {
-  const [title, setTitle] = useState(schedule?.title || "");
-  const [description, setDescription] = useState(schedule?.description || "");
+const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
+  const [title, setTitle] = useState(schedules?.title || "");
+  const [description, setDescription] = useState(schedules?.description || "");
   const [hour, setHour] = useState(
-    schedule?.time ? parseInt(schedule.time.split(":")[0]) : ""
+    schedules?.time ? parseInt(schedules.time.split(":")[0]) : ""
   ); // 시간
   const [minute, setMinute] = useState(
-    schedule?.time ? schedule.time.split(":")[1].split(" ")[0] : ""
+    schedules?.time ? schedules.time.split(":")[1].split(" ")[0] : ""
   ); // 분
   const [ampm, setAmpm] = useState(
-    schedule?.time ? schedule.time.split(" ")[1] : "AM"
+    schedules?.time ? schedules.time.split(" ")[1] : "AM"
   ); // 오전/오후
 
   const handleSave = () => {
@@ -23,24 +23,24 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedule }) => {
       title,
       description,
       time: formattedTime,
-      date: schedule?.date || new Date(),
+      date: schedules?.date || new Date(),
     });
     onRequestClose();
   };
 
   useEffect(() => {
-    if (schedule) {
-      setTitle(schedule.title || "");
-      setDescription(schedule.description || "");
-      if (schedule.time) {
-        const [time, period] = schedule.time.split(" ");
+    if (schedules) {
+      setTitle(schedules.title || "");
+      setDescription(schedules.description || "");
+      if (schedules.time) {
+        const [time, period] = schedules.time.split(" ");
         const [h, m] = time.split(":");
         setHour(parseInt(h));
         setMinute(m);
         setAmpm(period);
       }
     }
-  }, [schedule]);
+  }, [schedules]);
 
   return (
     <Modal
@@ -50,7 +50,7 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedule }) => {
       className="ReactModal__Content"
       overlayClassName="ReactModal__Overlay"
     >
-      <h2>{schedule ? "Edit Schedule" : "Add Schedule"}</h2>
+      <h2>{schedules ? "Edit Schedule" : "Add Schedule"}</h2>
       <input
         type="text"
         placeholder="Title"
@@ -83,7 +83,9 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedule }) => {
           <option value="PM">PM</option>
         </select>
       </div>
-      <button onClick={handleSave}>Save</button>
+      <button onClick={handleSave} className="schedule-btn">
+        Save
+      </button>
     </Modal>
   );
 };
