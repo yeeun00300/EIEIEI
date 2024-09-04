@@ -1,6 +1,6 @@
 import React from "react";
 import ExcelJS from "exceljs";
-
+import styles from "./ExcelTemplateDownload.module.scss";
 function ExcelTemplateDownload(props) {
   const downloadTemplate = async () => {
     const workbook = new ExcelJS.Workbook();
@@ -94,8 +94,10 @@ function ExcelTemplateDownload(props) {
   };
 
   return (
-    <div>
-      <button onClick={downloadTemplate}>엑셀 다운로드</button>
+    <div className={styles.downloadContainer}>
+      <button onClick={downloadTemplate} className={styles.downloadButton}>
+        엑셀 다운로드
+      </button>
     </div>
   );
 }

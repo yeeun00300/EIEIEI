@@ -1,14 +1,44 @@
 import React from "react";
 import styles from "./StockAddfromExcel.module.scss";
+
+const order = [
+  "ActivityLevel",
+  "AnimalID",
+  "AnimalLocation",
+  "AnimalType",
+  "BarnNumber",
+  "BirthDate",
+  "DiseasesAndTreatments",
+  "EggProduction",
+  "EntryDate",
+  "EstrusStatus",
+  "FeedIntake",
+  "Gender",
+  "GrowthRate",
+  "IsolationStatus",
+  "MilkProduction",
+  "NumberOfBirths",
+  "PregnancyDate",
+  "Size",
+  "Temperature",
+  "Vaccination",
+  "WaterIntake",
+  "Weight",
+  "출산 예정일",
+];
+
 function StockAddfromExcel({ item }) {
-  console.log(item);
+  // item이 객체일 경우 처리
+  if (typeof item !== "object" || item === null) {
+    return <p>Invalid data</p>;
+  }
 
   return (
-    <div className="page">
+    <>
       <table className={styles.table}>
         <thead>
           <tr>
-            {Object.keys(item).map((key) => (
+            {order.map((key) => (
               <th key={key} className={styles.th}>
                 {key}
               </th>
@@ -17,36 +47,32 @@ function StockAddfromExcel({ item }) {
         </thead>
         <tbody>
           <tr>
-            {Object.values(item).map((value, index) => (
-              <td key={index} className={styles.td}>
-                {Array.isArray(value) ? (
+            {order.map((key) => (
+              <td key={key} className={styles.td}>
+                {Array.isArray(item[key]) ? (
                   <table className={styles.nestedTable}>
                     <tbody>
-                      {value.map((subItem, subIndex) => (
+                      {item[key].map((subItem, subIndex) => (
                         <tr key={subIndex}>
                           {Object.entries(subItem).map(([subKey, subValue]) => (
-                            <>
-                              <th key={subKey} className={styles.th}>
-                                {subKey}
-                              </th>
-                              <td key={subKey + subIndex} className={styles.td}>
-                                {subValue}
-                              </td>
-                            </>
+                            <React.Fragment key={subKey}>
+                              <th className={styles.th}>{subKey}</th>
+                              <td className={styles.td}>{subValue}</td>
+                            </React.Fragment>
                           ))}
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 ) : (
-                  value.toString()
+                  item[key]?.toString() || "X"
                 )}
               </td>
             ))}
           </tr>
         </tbody>
       </table>
-    </div>
+    </>
   );
 }
 

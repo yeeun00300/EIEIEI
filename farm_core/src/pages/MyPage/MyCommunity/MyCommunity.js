@@ -21,12 +21,6 @@ function MyCommunity() {
   const communityContents = useSelector(
     (state) => state.communitySlice?.communityContents || []
   );
-  const { stock, isLoading, error } = useSelector((state) => state.stockSlice);
-
-  console.log(stock);
-  useEffect(() => {
-    dispatch(fetchExcelStock({ collectionName: "stock", queryOptions: {} }));
-  }, [dispatch]);
 
   useEffect(() => {
     const fetchDownloadUrl = async () => {
@@ -49,9 +43,6 @@ function MyCommunity() {
     dispatch(fetchCommunity({ collectionName: "community", queryOptions: {} }));
   }, [dispatch]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <div className="page">
       <div>
@@ -59,28 +50,6 @@ function MyCommunity() {
           return <CommunityConents {...content} key={idx} />;
         })}
       </div>
-      <ExcelTemplateDownload />
-      <ExcelUpload />
-      <h1>Data from Firestore</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        downloadUrl && (
-          <a href={downloadUrl} download="stock_template.xlsx">
-            엑셀 다운로드
-          </a>
-        )
-      )}
-      <ul>
-        {stock.map((item) => {
-          console.log(item);
-          return (
-            <li>
-              <StockAddfromExcel item={item} />
-            </li>
-          );
-        })}
-      </ul>
     </div>
   );
 }
