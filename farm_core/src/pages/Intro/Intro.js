@@ -1,16 +1,25 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import SignUp from "../Login/SignUp/SignUp";
 import styles from "./Intro.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import video from "../../video/video.mp4";
 import Login from "../Login/Login";
 
 function Intro(props) {
   const videoRef = useRef();
+  const navigate = useNavigate();
   const setPlayBackRate = () => {
     videoRef.current.playbackRate = 1;
   };
 
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("authToken"); // 예시로 authToken 확인
+    if (!isLoggedIn) {
+      navigate("/"); // 로그인 페이지로 리다이렉트
+    }
+
+    // localStorage.clear(); // 로컬스토리지 비우는 것은 주의
+  }, [navigate]);
   return (
     <div className={styles.main}>
       <div className={styles.container}>

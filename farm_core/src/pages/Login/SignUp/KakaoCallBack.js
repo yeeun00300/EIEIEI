@@ -9,14 +9,20 @@ import {
 import { auth } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail } from "../../../store/joinUserSlice/joinUserSlice";
+import {
+  setEmail,
+  setNickname,
+  setUsername,
+} from "../../../store/joinUserSlice/joinUserSlice";
 
 function KakaoCallBack(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const email = useSelector((state) => state.joinUserSlice.email);
+  const nickname = useSelector((state) => state.joinUserSlice.nickname);
   console.log(email);
+  console.log(nickname);
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get("code");
@@ -68,7 +74,10 @@ function KakaoCallBack(props) {
               console.log(res.data.kakao_account.profile.profile_image_url);
               console.log(res.data.kakao_account.email);
               const email = res.data.kakao_account.email;
+              const nickname = res.data.kakao_account.profile.nickname;
+              const username = nickname;
               dispatch(setEmail(email));
+              dispatch(setNickname(username));
             });
 
           const provider = new OAuthProvider("oidc.kakao");

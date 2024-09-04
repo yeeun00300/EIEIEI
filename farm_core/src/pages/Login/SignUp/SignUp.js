@@ -34,6 +34,7 @@ function SignUp() {
     address,
     detailedAddress,
     farm,
+    nickname,
     imgFile,
     addressPopup,
     passwordError,
@@ -59,7 +60,10 @@ function SignUp() {
     if (emailFromStorage) {
       dispatch(setEmail(emailFromStorage));
     }
-  }, [dispatch]);
+    if (nickname) {
+      dispatch(setUsername(nickname));
+    }
+  }, [dispatch, nickname]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

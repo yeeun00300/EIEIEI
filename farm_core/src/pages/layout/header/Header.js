@@ -5,11 +5,15 @@ import { FaRegBell } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
-import loginSlice from "../../../store/loginSlice/loginSlice";
 
 function Header({ title }) {
   const address = useSelector((state) => state.mapAddrSlice.address);
-  const profileImage = useSelector((state) => state, loginSlice.profilImage);
+  // const profileImage = useSelector((state) => state.loginSlice.profilImage);
+  const profileImage = useSelector(
+    (state) => state.profileImageSlice.downloadURL
+  );
+
+  console.log("Profile Image URL:", profileImage); // 상태 로그 추가
 
   return (
     <div className={styles.header}>
