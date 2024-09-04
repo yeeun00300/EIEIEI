@@ -3,15 +3,19 @@ import styles from "./Header.module.scss";
 import logoImg from "../../../img/TitleLogo.png";
 import { FaRegBell } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
-import { getDataAll, getDatas } from "../../../firebase";
+import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
+import checkLoginSlice from "./../../../store/checkLoginSlice/checkLoginSlice";
 
 function Header({ title }) {
-  const address = useSelector((state) => state.mapAddrSlice.address);
-  const email = useSelector((state) => state.loginSlice.email);
+  const dispatch = useDispatch();
+  // const address = useSelector((state) => state.mapAddrSlice.address);
+  const email = localStorage.getItem("email");
   // const profileImage = useSelector((state) => state.loginSlice.profilImage);
-
+  const { checkLogin, isLoading } = useSelector(
+    (state) => state.checkLoginSlice
+  );
   // const profileImage = useSelector(
   //   (state) => state.profileImageSlice.downloadURL
   // );
@@ -22,24 +26,24 @@ function Header({ title }) {
   console.log("Profile Image URL:", profileImage); // 상태 로그 추가
   console.log(`email확인:${email}`);
 
-  // const getUserInfo = async () => {
-  //   const queryOptions = {
-  //     conditions: [
-  //       {
-  //         field: "email",
-  //         operator: "==",
-  //         value: email,
-  //       },
-  //     ],
-  //   };
-  //   const result = await getDatas("users", queryOptions);
-  //   // const dd = result[0];
-  //   // const profile = dd.profileImages;
-  //   console.log(result);
-  // };
-  // useEffect(() => {
-  //   getUserInfo();
-  // }, []);
+  useEffect(() => {
+    const queryOptions = {
+      conditions: [
+        {
+          field: "email",
+          operator: "==",
+          value: email,
+        },
+      ],
+    };
+    // dispatch(fetchLogin({ collectionName: "users", queryOptions }));
+    dispatch(fetchLogin({ collectionName: "users", queryOptions }));
+
+    console.log(checkLogin);
+    console.log(isLoading);
+  }, [email]);
+
+  if (isLoading) return <div>로딩중</div>;
 
   return (
     <div className={styles.header}>
@@ -48,7 +52,7 @@ function Header({ title }) {
         <div className={styles.logoText}>{title}</div>
       </div>
       <div className={styles.address}>
-        {address ? address : "현재 정보가 없습니다"}
+        {/* {address ? address : "현재 정보가 없습니다"} */}
       </div>
       <div className={styles.userInfo}>
         <FaRegBell size={25} />
