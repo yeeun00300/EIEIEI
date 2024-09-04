@@ -1,0 +1,50 @@
+.schedule-list {
+  padding: 10px;
+  width: 100%;
+}
+
+.schedule-list-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.schedule-list-items {
+  list-style-type: none;
+  padding: 0;
+}
+
+.schedule-list-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.schedule-list-item-content {
+  flex-grow: 1;
+}
+
+.schedule-list-item-time {
+  display: block;
+  color: #666;
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.schedule-list-item-description {
+  margin: 5px 0;
+}
+
+.schedule-list-item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.schedule-list-item-edit {
+  cursor: pointer;
+}
+.schedule-list-item-delete {
+  cursor: pointer;
+}

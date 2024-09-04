@@ -1,0 +1,40 @@
+.ReactModal__Overlay {
+  position: fixed; /* 모달을 화면에 고정 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  z-index: 1000; /* 모달을 다른 요소 위에 위치하도록 설정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 모달 컨텐츠 스타일 */
+.ReactModal__Content {
+  width: 90%;
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  position: relative;
+  overflow: auto; /* 내용이 넘칠 경우 스크롤이 생기도록 함 */
+  z-index: 1001; /* 모달 컨텐츠가 오버레이 위에 위치하도록 설정 */
+}
+
+body.ReactModal__Body--open {
+  overflow: hidden; /* 모달이 열릴 때 페이지 스크롤 비활성화 */
+}
+.time-picker {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.time-picker select {
+  padding: 5px;
+  font-size: 1rem;
+}
