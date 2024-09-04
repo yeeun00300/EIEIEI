@@ -270,6 +270,10 @@ async function uploadExcelAndSaveData(file, collectionName) {
     const headers = jsonData[0]; // 첫 번째 행이 헤더
     const values = jsonData.slice(1); // 두 번째 행부터 값들
 
+    if (values.length > 30) {
+      throw new Error("한 번에 최대 30마리까지만 등록할 수 있습니다.");
+    }
+
     const dataObjects = values.map((row) => {
       const dataObject = headers.reduce((acc, header, index) => {
         acc[header] = row[index] !== undefined ? row[index] : null; // undefined를 null로 변환
