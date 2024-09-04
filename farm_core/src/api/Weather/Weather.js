@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Weather.module.scss";
 import WeatherItem from "./WeatherItem";
+import { setWeatherData } from "../../store/weatherSlice/weatherSlice";
 
 const initializeData = {
   city: { name: " " },
@@ -14,10 +15,11 @@ const initializeData = {
 };
 
 function Weather() {
-  const [weatherData, setWeatherData] = useState(initializeData);
+  // const [weatherData, setWeatherData] = useState(initializeData);
+  const dispatch = useDispatch();
   const APIkey = "6e3669d9ce0d4e84eddd41c90c38ab37";
-  const { adminLogin } = useSelector((state) => state.loginSlice);
-  const success = (position) => {
+  const { weatherData } = useSelector((state) => state.weatherSlice);
+  const success = () => {
     //   대전 선화동 위도 경도
     const latitude = 36.328799;
     const longitude = 127.4230707;
@@ -39,51 +41,24 @@ function Weather() {
           return await response.json();
         })
         .then((json) => {
-          setWeatherData(json);
+          dispatch(setWeatherData(json));
+          // setWeatherData(json);
         });
     } catch (error) {
       console.log(`weather error: ${error}`);
     }
   };
-  const weatherCity = weatherData.city.name;
+  const weatherCity = weatherData?.city?.name;
 
   useEffect(() => {
     success();
+    getWeather();
   }, []);
 
   return (
     <div className={styles.Weather}>
       <h1>{weatherCity}의 날씨</h1>
       <WeatherItem weatherData={weatherData} />
-      {/* {adminLogin ? (
-        <>
-          <h1>오늘의 날씨</h1>
-          <h3>
-            <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} />
-          </h3>
-          <h3>
-            {description}, {main}
-          </h3>
-          <h3>현재 온도 : {temp}℃</h3>
-          <h3>
-            최소/최대 온도 : {temp_min}℃/{temp_max}℃
-          </h3>
-          <h3>습도 : {humidity}%</h3>
-          <h3>풍속 : {speed}m/s</h3>
-          <h3>돌풀 : {gust}m/s</h3>
-          <h3>풍향 : {deg}도</h3>
-        </>
-      ) : (
-        <>
-          <h1>오늘의 날씨</h1>
-          <h3>
-            <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} />
-          </h3>
-          <h3>{description}</h3>
-          <h3>현재 온도 : {temp}℃</h3>
-          <h3>습도 : {humidity}%</h3>
-        </>
-      )} */}
     </div>
   );
 }
