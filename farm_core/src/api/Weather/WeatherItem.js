@@ -19,7 +19,7 @@ function WeatherItem({ weatherData }) {
     <div className={styles.weatherItem}>
       {adminLogin ? (
         <>
-          {weatherList.map((item) => {
+          {weatherList?.map((item) => {
             const weatherIcon = item.weather?.[0]?.icon;
             return (
               <div>

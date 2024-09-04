@@ -30,6 +30,9 @@ const joinUserSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
+    setNickname: (state, action) => {
+      state.nickname = action.payload;
+    },
     setAddress: (state, action) => {
       state.address = action.payload.address;
       state.detailedAddress = action.payload.detailedAddress;
@@ -73,6 +76,7 @@ const joinUserSlice = createSlice({
 
 export const {
   setUsername,
+  setNickname,
   setEmail,
   setAddress,
   setFarm,

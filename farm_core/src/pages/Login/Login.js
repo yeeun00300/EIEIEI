@@ -110,45 +110,6 @@ function Login() {
       dispatch(setIsLoading(false));
     }
   };
-  // };
-
-  // const localStorageUserId = localStorage.getItem("id");
-
-  // const handleLogin = (e) => {
-  //   console.log(e.target.value);
-
-  //   localStorage.setItem("id", userId);
-  //   dispatch(setNotLogin(false));
-  //   if (localStorageUserId) {
-  //     alert("로그인 성공");
-
-  //     dispatch(setNotLogin(false));
-
-  //     navigate("/");
-  //   } else {
-  //     dispatch(setError("아이디 또는 비밀번호가 틀렸습니다"));
-  //     return false;
-  //   }
-  // };
-
-  // const handleChange = (e) => {
-  //   dispatch(setUsername(e.target.value));
-  //   setUserId(e.target.value);
-  // };
-
-  // setTimeout(() => {});
-
-  // useEffect(() => {
-  // const storeUserId = localStorage.getItem("id");
-  // if (storeUserId) {
-  //   dispatch({});
-  // }
-  // }, [localStorageUserId]);
-  // localStorage.getItem("id");
-
-  // const userId = () => {
-  //   localStorage.getItem("id");
-  // };
 
   // 카카오 소셜 로그인
   const [userInfo, setUserInfo] = useState(() => {

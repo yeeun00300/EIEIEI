@@ -19,6 +19,9 @@ function EmailSignUp(props) {
         password
       );
       const { user } = userCredential;
+
+      localStorage.setItem("email", email);
+
       console.log("Creating/updating user with UID:", user.uid);
       // await joinUser(user.uid, user.email);
       dispatch(

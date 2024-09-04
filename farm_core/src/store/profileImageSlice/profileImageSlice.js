@@ -44,6 +44,7 @@ export const uploadProfileImage = createAsyncThunk(
   "profileImage/uploadProfileImage",
   async (file, { rejectWithValue }) => {
     try {
+      console.log(`file확인용:${file}`);
       const downloadURL = await uploadFiles(file);
       return downloadURL;
     } catch (error) {

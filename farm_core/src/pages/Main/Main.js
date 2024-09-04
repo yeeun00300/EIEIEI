@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Line } from "react-chartjs-2";
 import { Box } from "@mui/material";
@@ -6,6 +6,7 @@ import styles from "./Main.module.scss";
 import Weather from "./../../api/Weather/Weather";
 import DiseaseMap from "./../../components/DiseaseStatus/DiseaseMap";
 import GaugeNeedle from "./../../components/Gauge/GaugeNeedle";
+import MyCalendar from "./../../components/Calendar/MyCalendar";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -73,7 +74,7 @@ function Main() {
         i: "2",
         x: 1,
         y: 0,
-        w: 1,
+        w: 2,
         h: 6,
         minw: 1.5,
         maxh: 3,
@@ -101,27 +102,83 @@ function Main() {
       },
     ],
   };
+
+  // 1. 레이아웃 정보를 로컬스토리지에 저장
+  const saveLayout = (layout) => {
+    localStorage.setItem("userLayout", JSON.stringify(layout));
+  };
+
+  // 2. 로컬스토리지에 저장된 최신 레이아웃정보 불러오기
+  const loadLayout = () => {
+    const savedLayout = localStorage.getItem("userLayout");
+    return savedLayout ? JSON.parse(savedLayout) : LAYOUTS;
+  };
+
+  // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
+  const [layout, setLayout] = useState(loadLayout());
+
+  // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
+  const onLayoutChange = (newLayout) => {
+    setLayout((prevLayout) => ({
+      ...prevLayout,
+      lg: newLayout, // 'lg' 레이아웃을 업데이트
+    }));
+    saveLayout({
+      lg: newLayout, // 'lg' 레이아웃 저장
+    });
+    console.log(newLayout);
+  };
+
+  // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
+  useEffect(() => {
+    const savedLayout = loadLayout();
+    setLayout(savedLayout);
+  }, []);
+
+  const [edit, setEdit] = useState(false);
+  //대시보드 편집중일때
+  const editMode = () => {
+    setEdit(true);
+  };
+  //대시보드 편집 완료(파이어베이스에 등록하는거 추가예정)
+  const fixedMode = () => {
+    setEdit(false);
+  };
   return (
     <div className="page">
       <div className={styles.box}>
         <div className={styles.widget}>
           <ResponsiveGridLayout
             className="layout"
-            layouts={LAYOUTS}
+            layouts={layout}
             breakpoints={{ lg: 1000, md: 600 }}
             cols={{ lg: 5, md: 2 }}
             rowHeight={100}
             width={1000}
             isResizable={false}
+            onLayoutChange={onLayoutChange}
+            isDraggable={edit}
           >
             {LAYOUTS.lg.map((el) => (
               <div key={el.i} {...el}>
-                {/* <LineChart dataset={sampleData} /> */}
+                {el.children}
               </div>
             ))}
           </ResponsiveGridLayout>
         </div>
-        <div className={styles.sub}>캘린더 들어갈 곳</div>
+        <div className={styles.sub}>
+          캘린더 들어갈 곳
+          <MyCalendar />
+          {edit ? (
+            <button className={styles.button} onClick={fixedMode}>
+              대시보드 저장하기
+            </button>
+          ) : (
+            <button className={styles.button} onClick={editMode}>
+              대시보드 편집하기
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
