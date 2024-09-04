@@ -11,6 +11,7 @@
     "@mui/x-date-pickers": "^7.14.0",
     "@mui/x-date-pickers-pro": "^7.14.0",
     "@mui/x-tree-view": "^7.13.0",
+    "@portone/browser-sdk": "^0.0.9",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.7",
     "@testing-library/jest-dom": "^5.17.0",
