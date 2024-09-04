@@ -3,7 +3,9 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import { Line } from "react-chartjs-2";
 import { Box } from "@mui/material";
 import styles from "./Main.module.scss";
-
+import Weather from "./../../api/Weather/Weather";
+import DiseaseMap from "./../../components/DiseaseStatus/DiseaseMap";
+import GaugeNeedle from "./../../components/Gauge/GaugeNeedle";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,7 +16,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import SubMain from "./subMain/SubMain";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -62,9 +63,9 @@ function Main() {
         i: "1",
         x: 0,
         y: 0,
-        w: 0.5,
+        w: 1,
         h: 3,
-        minw: 0.5,
+        minw: 1,
         maxh: 3,
         children: <LineChart dataset={sampleData} />,
       },
@@ -72,27 +73,46 @@ function Main() {
         i: "2",
         x: 1,
         y: 0,
-        w: 2,
+        w: 1,
+        h: 6,
+        minw: 1.5,
+        maxh: 3,
+        children: <DiseaseMap />,
+      },
+      {
+        i: "3",
+        x: 2,
+        y: 0,
+        w: 1,
         h: 2,
         minw: 1,
         maxh: 3,
-        children: <div>밥ㅂ바밥ㅂ바</div>,
+        children: <GaugeNeedle />,
       },
-      { i: "3", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
-      { i: "4", x: 2, y: 0, w: 2, h: 2, minw: 1, maxh: 3 },
+      {
+        i: "4",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 2,
+        minw: 1,
+        maxh: 3,
+        children: <div>안녕하세요2</div>,
+      },
     ],
   };
   return (
     <div className="page">
-      <div className={styles.main}>
-        <div className="위젯">
+      <div className={styles.box}>
+        <div className={styles.widget}>
           <ResponsiveGridLayout
             className="layout"
             layouts={LAYOUTS}
             breakpoints={{ lg: 1000, md: 600 }}
-            cols={{ lg: 3, md: 2 }}
+            cols={{ lg: 5, md: 2 }}
             rowHeight={100}
             width={1000}
+            isResizable={false}
           >
             {LAYOUTS.lg.map((el) => (
               <div key={el.i} {...el}>
@@ -101,9 +121,7 @@ function Main() {
             ))}
           </ResponsiveGridLayout>
         </div>
-        <div className={styles.sub}>
-          <SubMain />
-        </div>
+        <div className={styles.sub}>캘린더 들어갈 곳</div>
       </div>
     </div>
   );
