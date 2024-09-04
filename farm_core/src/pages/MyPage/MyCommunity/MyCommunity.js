@@ -10,6 +10,7 @@ import stockSlice, {
 import CommunityConents from "./communityContent/CommunityConents";
 import ExcelTemplateDownload from "../../../components/ExcelTemplateDownload/ExcelTemplateDownload";
 import ExcelUpload from "../../../components/ExcelUpload/ExcelUpload";
+import StockAddfromExcel from "../../../components/StockAdd/StockAddfromExcel";
 
 function MyCommunity() {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function MyCommunity() {
   );
   const { stock, isLoading, error } = useSelector((state) => state.stockSlice);
 
+  console.log(stock);
   useEffect(() => {
     dispatch(fetchExcelStock({ collectionName: "stock", queryOptions: {} }));
   }, [dispatch]);
@@ -72,7 +74,11 @@ function MyCommunity() {
       <ul>
         {stock.map((item) => {
           console.log(item);
-          return <li key={item.docId}>{JSON.stringify(item)}</li>;
+          return (
+            <li>
+              <StockAddfromExcel item={item} />
+            </li>
+          );
         })}
       </ul>
     </div>
