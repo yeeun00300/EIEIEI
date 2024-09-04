@@ -5,17 +5,11 @@ import "./ScheduleModal.css"; // 사용자 정의 CSS 파일
 Modal.setAppElement("#root");
 
 const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
-  const [title, setTitle] = useState(schedules?.title || "");
-  const [description, setDescription] = useState(schedules?.description || "");
-  const [hour, setHour] = useState(
-    schedules?.time ? parseInt(schedules.time.split(":")[0]) : ""
-  ); // 시간
-  const [minute, setMinute] = useState(
-    schedules?.time ? schedules.time.split(":")[1].split(" ")[0] : ""
-  ); // 분
-  const [ampm, setAmpm] = useState(
-    schedules?.time ? schedules.time.split(" ")[1] : "AM"
-  ); // 오전/오후
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [hour, setHour] = useState("");
+  const [minute, setMinute] = useState("");
+  const [ampm, setAmpm] = useState("AM");
 
   const handleSave = () => {
     const formattedTime = `${hour}:${minute} ${ampm}`;
@@ -39,6 +33,13 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
         setMinute(m);
         setAmpm(period);
       }
+    } else {
+      // 새로 추가할 때는 기본값을 설정
+      setTitle("");
+      setDescription("");
+      setHour("");
+      setMinute("");
+      setAmpm("AM");
     }
   }, [schedules]);
 
@@ -64,6 +65,9 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
       />
       <div className="time-picker">
         <select value={hour} onChange={(e) => setHour(e.target.value)}>
+          <option value="" disabled>
+            Select Hour
+          </option>
           {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
             <option key={h} value={h}>
               {h}
@@ -72,6 +76,9 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
         </select>
         <span>:</span>
         <select value={minute} onChange={(e) => setMinute(e.target.value)}>
+          <option value="" disabled>
+            Select Minute
+          </option>
           {Array.from({ length: 60 }, (_, i) => i).map((m) => (
             <option key={m} value={m.toString().padStart(2, "0")}>
               {m.toString().padStart(2, "0")}

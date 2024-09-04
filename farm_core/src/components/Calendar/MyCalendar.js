@@ -63,7 +63,9 @@ const MyCalendar = () => {
     }
     setSchedules(newSchedules);
     setModalOpen(false);
-    setSelectedDate(null);
+
+    setSelectedDate(schedule.date);
+    setDate(schedule.date);
   };
 
   const handleDeleteSchedule = (index) => {
