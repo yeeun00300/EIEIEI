@@ -14,7 +14,7 @@ function DiseaseMap() {
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
-      center: new kakao.maps.LatLng(37.566826, 126.9786567),
+      center: new kakao.maps.LatLng(35.866826, 127.9786567),
       level: 13,
     };
 
@@ -110,7 +110,7 @@ function DiseaseMap() {
         marginRight: "5px",
       }}
     >
-      <div id="map" style={{ width: "99%", height: "700px" }}></div>
+      <div id="map" style={{ width: "99%", height: "600px" }}></div>
     </div>
   );
 }
