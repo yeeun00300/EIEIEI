@@ -28,3 +28,56 @@
   background-color: red;
   width: 15%;
 }
+
+.button {
+  width: 90%;
+  align-items: center;
+  appearance: none;
+  background-color: #fcfcfd;
+  border-radius: 0.25rem; /* 4px */
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 0.125rem 0.25rem,
+    /* 2px 4px */ rgba(45, 35, 66, 0.3) 0 0.4375rem 0.8125rem -0.1875rem,
+    /* 7px 13px -3px */ #d6d6e7 0 -0.1875rem 0 inset; /* -3px */
+  box-sizing: border-box;
+  // color: #36395a;
+  cursor: pointer;
+  display: inline-flex;
+  // font-family: var(--)
+  height: 3rem; /* 48px */
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 1rem; /* 16px */
+  padding-right: 1rem; /* 16px */
+  // position: relative;
+  // text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 1.125rem; /* 18px */
+}
+
+.button:focus {
+  box-shadow: #d6d6e7 0 0 0 0.09375rem inset,
+    /* 1.5px */ rgba(45, 35, 66, 0.4) 0 0.125rem 0.25rem,
+    /* 2px 4px */ rgba(45, 35, 66, 0.3) 0 0.4375rem 0.8125rem -0.1875rem,
+    /* 7px 13px -3px */ #d6d6e7 0 -0.1875rem 0 inset; /* -3px */
+}
+
+.button:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 0.25rem 0.5rem,
+    /* 4px 8px */ rgba(45, 35, 66, 0.3) 0 0.4375rem 0.8125rem -0.1875rem,
+    /* 7px 13px -3px */ #d6d6e7 0 -0.1875rem 0 inset; /* -3px */
+  transform: translateY(-0.125rem); /* -2px */
+}
+
+.button:active {
+  box-shadow: #d6d6e7 0 0.1875rem 0.4375rem inset; /* 3px 7px */
+  transform: translateY(0.125rem); /* 2px */
+}

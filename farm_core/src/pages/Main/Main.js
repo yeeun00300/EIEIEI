@@ -134,6 +134,15 @@ function Main() {
     setLayout(savedLayout);
   }, []);
 
+  const [edit, setEdit] = useState(true);
+  //대시보드 편집중일때
+  const editMode = () => {
+    setEdit(true);
+  };
+  //대시보드 편집 완료(파이어베이스에 등록하는거 추가예정)
+  const fixedMode = () => {
+    setEdit(false);
+  };
   return (
     <div className="page">
       <div className={styles.box}>
@@ -147,6 +156,7 @@ function Main() {
             width={1000}
             isResizable={false}
             onLayoutChange={onLayoutChange}
+            isDraggable={edit}
           >
             {LAYOUTS.lg.map((el) => (
               <div key={el.i} {...el}>
@@ -155,7 +165,18 @@ function Main() {
             ))}
           </ResponsiveGridLayout>
         </div>
-        <div className={styles.sub}>캘린더 들어갈 곳</div>
+        <div className={styles.sub}>
+          캘린더 들어갈 곳
+          {edit ? (
+            <button className={styles.button} onClick={fixedMode}>
+              대시보드 저장하기
+            </button>
+          ) : (
+            <button className={styles.button} onClick={editMode}>
+              대시보드 편집하기
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
