@@ -37,6 +37,8 @@ function MyCommunity() {
       }
     };
 
+    console.log(window);
+
     fetchDownloadUrl();
   }, [storage]);
 
