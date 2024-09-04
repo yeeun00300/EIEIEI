@@ -16,7 +16,7 @@ const MyCalendar = () => {
   const [schedules, setSchedules] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingSchedule, setEditingSchedule] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(today);
 
   useEffect(() => {
     const storedSchedules = JSON.parse(localStorage.getItem("schedules"));
@@ -71,16 +71,21 @@ const MyCalendar = () => {
     setSchedules(newSchedules);
   };
 
-  const renderSchedulesForDate = (date) => {
-    return schedules
-      .filter((schedule) => moment(schedule.date).isSame(date, "day"))
-      .slice(0, 2)
-      .map((schedule, index) => (
-        <div className="calendar-schedule" key={index}>
-          {schedule.title}
-        </div>
-      ));
+  // 해당 날짜에 일정이 있는지 확인하여 점을 표시하는 함수
+  const renderDotForDate = (date) => {
+    const hasSchedule = schedules.some((schedule) =>
+      moment(schedule.date).isSame(date, "day")
+    );
+    if (hasSchedule) {
+      return <div className="dot" />;
+    }
+    return null;
   };
+
+  // 선택된 날짜에 해당하는 일정 필터링
+  const filteredSchedules = schedules.filter((schedule) =>
+    selectedDate ? moment(schedule.date).isSame(selectedDate, "day") : false
+  );
 
   return (
     <div className="calendar-wrapper">
@@ -109,13 +114,9 @@ const MyCalendar = () => {
             date.getMonth() === today.getMonth() &&
             date.getDate() === today.getDate()
           ) {
-            html.push(
-              <div className="today-text" key="today">
-                오늘
-              </div>
-            );
+            html.push(<div className="today-text" key="today"></div>);
           }
-          html.push(renderSchedulesForDate(date));
+          html.push(renderDotForDate(date));
           return <>{html}</>;
         }}
       />
@@ -131,20 +132,21 @@ const MyCalendar = () => {
             </span>
           </div>
         )}
+        <span>일정 추가 : </span>
         <button className="add-schedule-button" onClick={handleAddSchedule}>
           +
         </button>
       </div>
       <ScheduleList
-        schedules={schedules}
+        schedules={filteredSchedules} // 선택된 날짜의 일정만 전달
         onEdit={handleEditSchedule}
         onDelete={handleDeleteSchedule}
-      />
+      ></ScheduleList>
       <ScheduleModal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
         onSave={handleSaveSchedule}
-        schedule={editingSchedule}
+        schedules={editingSchedule}
       />
     </div>
   );

@@ -17,9 +17,12 @@
   padding: 3% 5%;
   background-color: white;
   margin-bottom: 1.25rem; /* 캘린더와 일정 리스트 사이의 여백 */
-}
 
-/* 전체 폰트 컬러 */
+  height: 21rem;
+}
+.calendar .react-calendar__month-view__days__day {
+  height: 3rem;
+}
 .calendar .react-calendar__month-view abbr {
   color: #666666; /* 예시 컬러 */
 }
@@ -114,7 +117,7 @@
 .calendar .react-calendar__tile--active .react-calendar__tile__content {
   position: relative;
   z-index: 1;
-  background-color: transparent; /* 스케줄 영역에 배경색 적용 안 함 */
+  background-color: transparent;
 }
 
 /* 날짜 영역만 동그랗게 배경 적용 */
@@ -124,43 +127,28 @@
   padding: 0.5rem;
   color: black; /* 날짜 텍스트 색상 */
   display: inline-block;
-  height: 100%;
   text-align: center;
   width: 2rem;
   height: 2rem;
-  /* line-height: 1.6; */
+  z-index: 1; /* 추가된 부분 */
+}
+.calendar .react-calendar__tile abbr {
+  width: 2rem; /* 위와 동일한 너비 */
+  height: 2rem; /* 위와 동일한 높이 */
+  /* display: inline-block; */
+  text-align: center;
 }
 
 /* 오늘 버튼 스타일 */
+
 .today-button {
   position: absolute;
   right: 7%;
-  top: 6%;
-  background-color: #007bff; /* 예시 컬러 */
-  color: #ffcc00; /* 예시 컬러 */
-  width: fit-content;
-  text-align: center;
-  border-radius: 0.9375rem;
-  font-size: 0.8rem;
-  font-weight: 800;
-  width: fit-content;
-}
-
-/* 오늘 날짜에 텍스트 삽입 스타일 */
-
-/* 출석한 날짜에 점 표시 스타일 */
-
-.today-button {
-  /* position: absolute;
-  right: 7%;
-  top: 6%;
+  top: 4%;
   background-color: #007bff; /* 예시 색상 */
   color: #ffcc00; /* 예시 색상 */
   width: 15%;
-  /* min-width: fit-content; */
-  /* height: 1.5rem; */
   text-align: center;
-  margin: 0 auto;
   line-height: 1.6rem;
   border-radius: 0.9375rem;
   font-size: 0.8rem;
@@ -168,40 +156,18 @@
   cursor: pointer;
 }
 
-/* 오늘 날짜에 텍스트 삽입 스타일 */
-.today-text {
-  font-size: x-small;
-  color: #333333; /* 예시 색상 */
-  font-weight: 600;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* 출석한 날짜에 점 표시 스타일 */
-.dot {
-  background-color: #333333;
-  border-radius: 50%;
-  width: 0.3rem;
-  height: 0.3rem;
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translateX(-50%);
-}
 .calendar-schedule {
   background-color: #f2e;
   border-radius: 4px;
   padding: 6px 8px; /* 패딩 조정 */
   color: black;
-  margin: 4px 0; /* 위아래 여백 */
+  /* margin: 4px 0; */
   text-align: center;
   white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
   overflow: hidden; /* 텍스트가 넘치면 숨김 처리 */
   text-overflow: ellipsis; /* 넘치는 텍스트를 '...'로 표시 */
   font-size: 0.85rem; /* 폰트 크기 조정 */
-  width: 80%; /* 스케줄 제목 영역의 너비 */
+  width: 80%;
   max-width: 100%; /* 최대 너비 제한 */
   height: 1.5rem; /* 고정된 높이 */
   line-height: 1.5rem; /* 텍스트 수직 정렬 */
@@ -219,11 +185,9 @@
   background-color: rgb(248, 114, 203);
   padding: 0.5rem;
   border-radius: 0.425rem;
+  font-size: 0.78rem;
 }
 /* 스케줄 추가 버튼 스타일 */
-.schedule-info {
-  margin-top: 0.625rem;
-}
 
 .schedule-info button {
   background-color: #007bff;
@@ -232,4 +196,15 @@
   padding: 0.625rem 0.9375rem;
   border-radius: 0.3125rem;
   cursor: pointer;
+}
+.dot {
+  background-color: rgb(248, 114, 203);
+  border-radius: 50%;
+  width: 0.3rem;
+  height: 0.3rem;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
 }
