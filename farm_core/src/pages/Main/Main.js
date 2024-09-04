@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Line } from "react-chartjs-2";
 import { Box } from "@mui/material";
@@ -73,7 +73,7 @@ function Main() {
         i: "2",
         x: 1,
         y: 0,
-        w: 1,
+        w: 2,
         h: 6,
         minw: 1.5,
         maxh: 3,
@@ -101,22 +101,56 @@ function Main() {
       },
     ],
   };
+
+  // 1. 레이아웃 정보를 로컬스토리지에 저장
+  const saveLayout = (layout) => {
+    localStorage.setItem("userLayout", JSON.stringify(layout));
+  };
+
+  // 2. 로컬스토리지에 저장된 최신 레이아웃정보 불러오기
+  const loadLayout = () => {
+    const savedLayout = localStorage.getItem("userLayout");
+    return savedLayout ? JSON.parse(savedLayout) : LAYOUTS;
+  };
+
+  // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
+  const [layout, setLayout] = useState(loadLayout());
+
+  // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
+  const onLayoutChange = (newLayout) => {
+    setLayout((prevLayout) => ({
+      ...prevLayout,
+      lg: newLayout, // 'lg' 레이아웃을 업데이트
+    }));
+    saveLayout({
+      lg: newLayout, // 'lg' 레이아웃 저장
+    });
+    console.log(newLayout);
+  };
+
+  // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
+  useEffect(() => {
+    const savedLayout = loadLayout();
+    setLayout(savedLayout);
+  }, []);
+
   return (
     <div className="page">
       <div className={styles.box}>
         <div className={styles.widget}>
           <ResponsiveGridLayout
             className="layout"
-            layouts={LAYOUTS}
+            layouts={layout}
             breakpoints={{ lg: 1000, md: 600 }}
             cols={{ lg: 5, md: 2 }}
             rowHeight={100}
             width={1000}
             isResizable={false}
+            onLayoutChange={onLayoutChange}
           >
             {LAYOUTS.lg.map((el) => (
               <div key={el.i} {...el}>
-                {/* <LineChart dataset={sampleData} /> */}
+                {el.children}
               </div>
             ))}
           </ResponsiveGridLayout>

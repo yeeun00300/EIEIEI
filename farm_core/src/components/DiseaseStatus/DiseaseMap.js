@@ -110,7 +110,7 @@ function DiseaseMap() {
         marginRight: "5px",
       }}
     >
-      <div id="map" style={{ width: "99%", height: "600px" }}></div>
+      <div id="map" style={{ width: "100%", height: "37.5rem" }}></div>
     </div>
   );
 }
