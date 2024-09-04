@@ -6,6 +6,7 @@ import styles from "./Main.module.scss";
 import Weather from "./../../api/Weather/Weather";
 import DiseaseMap from "./../../components/DiseaseStatus/DiseaseMap";
 import GaugeNeedle from "./../../components/Gauge/GaugeNeedle";
+import MyCalendar from "./../../components/Calendar/MyCalendar";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -134,7 +135,7 @@ function Main() {
     setLayout(savedLayout);
   }, []);
 
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(false);
   //대시보드 편집중일때
   const editMode = () => {
     setEdit(true);
@@ -167,6 +168,7 @@ function Main() {
         </div>
         <div className={styles.sub}>
           캘린더 들어갈 곳
+          <MyCalendar />
           {edit ? (
             <button className={styles.button} onClick={fixedMode}>
               대시보드 저장하기
