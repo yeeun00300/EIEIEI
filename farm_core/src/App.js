@@ -84,15 +84,20 @@ function App() {
         ) : (
           // 로그인시
           <Route path="/" element={<Layout />}>
+            {/* <Route index element={<HomePage />} /> */}
             {/* <Route index element={<Main />} /> */}
-            <Route path="DashBoard" element={<DashBoard />} />
+            {/* <Route path="DashBoard" element={<DashBoard />} /> */}
             {/* <Route path="LiveStock" element={<LiveStock />} /> */}
-            <Route path="Customer" element={<Customer />} />
+            {/* <Route path="Customer" element={<Customer />} />
             <Route path="Community" element={<Community />} />
             <Route path="freeBoard" element={<FreeboardPage />} />
             <Route path="newBoard" element={<NewBoardPage />} />
             <Route path="livestockBoard" element={<Livestock />} />
-            <Route path="MyPage" element={<MyPage />} />
+            <Route path="MyPage" element={<MyPage />} /> */}
+            {/* <Route path="UserInfo" element={<UserInfo />} />
+            <Route path="MyCommunity" element={<MyCommunity />} />
+            <Route path="Question" element={<Question />} />
+            <Route path="payment" element={<Payment />} /> */}
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />

@@ -12,9 +12,10 @@ import styles from "./WeatherItem.module.scss";
 //   ],
 // };
 
-function WeatherItem({ weatherData }) {
+function WeatherItem() {
+  const { weatherData } = useSelector((state) => state.weatherSlice);
   const { adminLogin } = useSelector((state) => state.loginSlice);
-  const weatherList = weatherData.list;
+  const weatherList = weatherData?.list;
   return (
     <div className={styles.weatherItem}>
       {adminLogin ? (
@@ -22,7 +23,7 @@ function WeatherItem({ weatherData }) {
           {weatherList?.map((item) => {
             const weatherIcon = item.weather?.[0]?.icon;
             return (
-              <div>
+              <div key={item.dt}>
                 <h3>
                   <img
                     src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
@@ -41,10 +42,10 @@ function WeatherItem({ weatherData }) {
         </>
       ) : (
         <>
-          {weatherList.map((item) => {
+          {weatherList?.map((item) => {
             const weatherIcon = item.weather?.[0]?.icon;
             return (
-              <div>
+              <div key={item.dt}>
                 <h3>
                   <img
                     src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
