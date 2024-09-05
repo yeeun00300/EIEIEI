@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { getUserAuth, joinUser } from "../../firebase";
+import { checkUserInFirestore, getUserAuth, joinUser } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setUser } from "../../store/userSlice/userSlice";
@@ -13,6 +13,14 @@ function EmailSignUp(props) {
 
   const handleSignUpAndLogin = async (email, password) => {
     try {
+      const isUserExists = await checkUserInFirestore(email);
+
+      if (isUserExists) {
+        alert("이미 가입된 이메일입니다.");
+        navigate("/"); // 로그인 페이지로 이동
+        return;
+      }
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -21,15 +29,15 @@ function EmailSignUp(props) {
       const { user } = userCredential;
 
       localStorage.setItem("email", email);
+      localStorage.setItem("uid", user.uid);
 
-      console.log("Creating/updating user with UID:", user.uid);
-      // await joinUser(user.uid, user.email);
       dispatch(
         setUser({ email: user.email, token: user.refreshToken, uid: user.uid })
       );
-      navigate("/SignUp");
+      navigate("/SignUp"); // 회원가입 완료 후 이동할 페이지
     } catch (error) {
       console.log(error);
+      alert("회원가입 중 오류가 발생했습니다.");
     }
   };
   return (

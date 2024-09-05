@@ -21,7 +21,7 @@ const store = configureStore({
     user: userEditSlice,
     mapAddrSlice,
     PRexcelSlice,
-    joinUserSlice,
+
     user: joinUserSlice,
     profileImageSlice,
     stockSlice,

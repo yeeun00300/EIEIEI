@@ -55,7 +55,8 @@ function MyCommunity() {
           return <CommunityConents {...content} key={idx} />;
         })}
       </div>
-      <RegularPayment />
+      {/* <PaymentPage /> */}
+      <input type="date" />
     </div>
   );
 }

@@ -39,8 +39,18 @@ function Login() {
   );
   console.log(notLogin);
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      alert("유효하지 않은 이메일 주소입니다.");
+      return;
+    }
 
     dispatch(setIsLoading(true));
 
@@ -52,37 +62,28 @@ function Login() {
         password
       );
       const user = userCredential.user;
-      localStorage.setItem("authToken", user.refreshToken);
-      localStorage.setItem("userId", user.uid);
-      localStorage.setItem("email", user.email);
-      console.log("로그인 성공", user);
+      // 로그인 후 사용자 상태 확인
+      const userDoc = await getDoc(doc(db, "users", user.uid));
 
-      dispatch(setNotLogin(false));
-      navigate("/");
-      // const user = userCredential.user;
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
 
-      // Firestore에서 사용자 데이터 가져오기
-      // const userDocRef = doc(db, "users", user.uid);
-      // const userDoc = await getDoc(userDocRef);
-
-      // if (userDoc.exists()) {
-      //   const firestoreUserId = userDoc.data().id; // Firestore에서 가져온 ID
-
-      //   const localStorageUserId = localStorage.getItem("id");
-
-      // Firestore ID와 로컬 스토리지 ID 비교
-      //     if (firestoreUserId === localStorageUserId) {
-      //       console.log("로그인 성공");
-      //       dispatch(setNotLogin(false));
-      //       navigate("/");
-      //     } else {
-      //       dispatch(setError("ID가 일치하지 않습니다."));
-      //       dispatch(setNotLogin(true));
-      //     }
-      //   } else {
-      //     dispatch(setError("사용자 정보가 없습니다."));
-      //     dispatch(setNotLogin(true));
-      //   }
+        if (userData.isAdditionalInfoComplete) {
+          // 추가 정보 입력이 완료된 사용자
+          localStorage.setItem("authToken", user.refreshToken);
+          localStorage.setItem("userId", user.uid);
+          localStorage.setItem("email", user.email);
+          console.log("로그인 성공", user);
+          dispatch(setNotLogin(false));
+          navigate("/"); // 메인 페이지로 리디렉션
+        } else {
+          // 추가 정보 입력이 필요한 사용자
+          navigate("/SignUp"); // 추가 정보 입력 페이지로 리디렉션
+        }
+      } else {
+        // 사용자 문서가 존재하지 않으면 에러 처리
+        throw new Error("사용자 데이터가 존재하지 않습니다.");
+      }
     } catch (error) {
       // console.log(error.code);
       // console.log(error.message);
@@ -94,6 +95,9 @@ function Login() {
           break;
         case "auth/user-not-found":
           errorMessage = "이메일이 등록되어 있지 않습니다.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "유효하지 않은 이메일 주소입니다.";
           break;
         case "auth/invalid-credential":
           errorMessage = "이메일 또는 비밀번호를 확인해주세요.";
@@ -134,7 +138,9 @@ function Login() {
     };
     return (
       <>
-        <button onClick={handleLogin}>카카오 로그인</button>
+        <button onClick={handleLogin} type="button">
+          카카오 로그인
+        </button>
       </>
     );
   };
@@ -187,13 +193,20 @@ function Login() {
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
-      .then((data) => {
-        setUserData(data.user);
-        console.log(data);
-        navigate("/");
+      .then((result) => {
+        const user = result.user;
+        console.log("구글 로그인 성공:", user);
+        // 사용자의 이메일을 콘솔에 출력해 확인합니다.
+        console.log("구글 로그인 이메일:", user.email);
+        // 이메일이 유효한지 검증하는 추가 로직을 확인하세요.
+        if (!user.email || !validateEmail(user.email)) {
+          throw new Error("유효하지 않은 이메일 주소입니다.");
+        }
+        navigate("/SignUp"); // 로그인 후 리디렉션
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.error("Google login error:", error);
+        alert("로그인 실패: " + error.message);
       });
   }
 
@@ -240,7 +253,11 @@ function Login() {
           계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link>
           {/* {notLogin && <p>{error}</p>} */}
           <div>
-            <button className={styles.google} onClick={handleGoogleLogin}>
+            <button
+              className={styles.google}
+              onClick={handleGoogleLogin}
+              type="button"
+            >
               구글로 로그인
             </button>
           </div>
