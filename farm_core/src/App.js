@@ -44,36 +44,8 @@ function App() {
       dispatch(setEmail(storedEmail));
     }
   }, [dispatch]);
-  // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
-
-  // const startDate = "20200821";
-  // const endDate = "20201003";
-
-  // fetch(
-  //   `/api/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
-  // )
-  //   .then((data) => {
-  //     return data.json();
-  //   })
-  //   .then((result) => {
-  //     console.log(result);
-  //   });
-  // const notLogin = true;
-  // const notLogin = false;
-
-  //  관리자 페이지 로그인 유뮤 - loginSlice => notLogin
-  const logInOX = () => {
-    if (notLogin) {
-      dispatch(setNotLogin({ notLogin: false }));
-    } else {
-      dispatch(setNotLogin({ notLogin: true }));
-    }
-  };
-  // const localStorageUserId = localStorage.getItem("id");
 
   return (
-    // <div className="App">
-    // Final Project!
     <BrowserRouter>
       <Routes>
         {notLogin ? (
@@ -115,7 +87,6 @@ function App() {
         <Route path="Admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
-    // </div>
   );
 }
 

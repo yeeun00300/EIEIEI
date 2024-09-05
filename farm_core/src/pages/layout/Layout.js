@@ -115,47 +115,6 @@ function Layout(props) {
       setSelectedItem(item);
     }
   };
-  const itemId = selectedItem.id;
-
-  // --------------------------------------------------------------------
-  // user nav component
-  // const renderUserContent = () => {
-  //   const componentsMap = {
-  //     "": <Main />,
-  //     My_Farm: <Main />,
-  //     My_Farm_Details: <h1>목장 현황</h1>,
-  //     // My_Farm_Info: " ",
-  //     My_Farm_Info: <h1>목장 현황</h1>,
-  //     My_Farm_Board: <Community />,
-  //     My_Farm_Board: "",
-  //     My_Farm_MyPage: <MyPage />,
-  //     My_Farm01: <DashBoard />,
-  //     My_Farm02: <h1></h1>,
-  //     My_Farm03: <h1>나의 목장 03</h1>,
-  //     My_Farm_Details_Farm: <MyLiveStock />,
-  //     My_Farm_Details_Disease: (
-  //       <div className="page">
-  //         <DiseaseState />
-  //         {/* <DiseaseMap /> */}
-  //         <CurrentMarker />
-  //       </div>
-  //     ),
-
-  //     My_Farm_Add: <AddLiveStock />,
-  //     My_Farm_Info_stock: <MyFarmInfoPage />,
-  //     My_Farm_Add_stock: <MyStockAddPage />,
-  //     My_Farm_Board_Total: (
-  //       <h1>
-  //         <Community />
-  //       </h1>
-  //     ),
-  //     My_Farm_Board_FreeBoard: <Community />,
-  //     My_Farm_Board_Community: <Livestock />,
-  //   };
-
-  //   return componentsMap[itemId];
-  // };
-  // --------------------------------------------------------------------
 
   const navigate = useNavigate();
 
@@ -165,13 +124,44 @@ function Layout(props) {
       navigate(selectedItem.route);
     }
   }, [selectedItem, navigate]);
+
+  // 사용자 정보 header에 넘겨주기----------------------------------------------
+  const { checkLogin, isLoading } = useSelector(
+    (state) => state.checkLoginSlice
+  );
+  const email = localStorage.getItem("email");
+  useEffect(() => {
+    if (email) {
+      const queryOptions = {
+        conditions: [
+          {
+            field: "email",
+            operator: "==",
+            value: email,
+          },
+        ],
+      };
+      dispatch(fetchLogin({ collectionName: "users", queryOptions }));
+    }
+  }, [dispatch, email]);
+
+  useEffect(() => {
+    console.log("CheckLogin state:", checkLogin);
+    console.log("Loading state:", isLoading);
+  }, [checkLogin, isLoading]);
+
+  if (isLoading) return <div>로딩중</div>;
+  if (!checkLogin || Object.keys(checkLogin).length === 0)
+    return <div>데이터가 없습니다</div>;
+  // --------------------------------------------------------------------------------------
+
   return (
     <>
       {adminLogin ? (
         <Admin />
       ) : (
         <div className={styles.layout}>
-          <Header title={"FarmCore"} />
+          <Header title={"FarmCore"} userInfo={checkLogin} />
           <div className={styles.wrapper}>
             <div className={styles.nav}>
               <Box sx={{ minHeight: 352, minWidth: 180 }}>

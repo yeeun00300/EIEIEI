@@ -8,19 +8,19 @@ import UserMenu from "./UserMenu";
 import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
 
 function Header({ title, userInfo }) {
-  // const { address, email, farm, name, profileImages } = userInfo;
+  const { address, email, farm, name, profileImages } = userInfo;
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
         <img className={styles.logoImg} src={logoImg} alt="" />
         <div className={styles.logoText}>{title}</div>
       </div>
-      {/* <div className={styles.address}>
+      <div className={styles.address}>
         {address ? address : "현재 정보가 없습니다"}
-      </div> */}
+      </div>
       <div className={styles.userInfo}>
         <FaRegBell size={25} />
-        {/* <div className={styles.user}>
+        <div className={styles.user}>
           {profileImages ? (
             <img
               className={styles.profileImage}
@@ -33,7 +33,7 @@ function Header({ title, userInfo }) {
           <div className={styles.usermenu}>
             <UserMenu />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
