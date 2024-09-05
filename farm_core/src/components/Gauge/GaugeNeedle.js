@@ -40,6 +40,10 @@ export default function GaugeNeedle({
   setValue = 0,
   value = 50,
   unit = "",
+  up,
+  down,
+  valueMin,
+  valueMax,
 }) {
   return (
     <div className={styles.GaugeNeedle}>
@@ -47,20 +51,11 @@ export default function GaugeNeedle({
       <GaugeContainer
         width={200}
         height={200}
-        startAngle={-110}
-        endAngle={110}
-        value={value}
-        sx={(theme) => ({
-          //   [`& .${gaugeClasses.valueText}`]: {
-          //     fontSize: 40,
-          //   },
-          //   [`& .${gaugeClasses.valueArc}`]: {
-          //     fill: "#4db6ac",
-          //   },
-          //   [`& .${gaugeClasses.referenceArc}`]: {
-          //     fill: "#4db6ac",
-          //   },
-        })}
+        startAngle={-100}
+        endAngle={100}
+        value={nowValue}
+        valueMin={valueMin}
+        valueMax={valueMax}
       >
         <GaugeReferenceArc />
         <GaugeValueArc />
@@ -68,10 +63,14 @@ export default function GaugeNeedle({
       </GaugeContainer>
       <div className={styles.GaugeContainer}>
         <div className={styles.setValue}>
-          <p>{setName}</p>
+          {/* <p>{setName}</p> */}
           <div>
             {setValue}
             {unit}
+            <div className={styles.setting}>
+              <span onClick={up}>{`▲`}</span>
+              <span onClick={down}>{`▼`}</span>
+            </div>
           </div>
         </div>
         <div>
