@@ -5,16 +5,24 @@
   gap: 12px;
   position: relative;
   button {
-    font-size: 18px;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 8px;
+    // font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
     position: absolute;
-    top: 24px;
-    right: 30px;
+    top: 12px;
+    right: 20px;
+    cursor: pointer;
+    &:hover {
+      background-color: lightgray;
+    }
+  }
+  span {
+    color: darkgrey;
+    font-size: 12px;
   }
   li {
-    padding: 12px;
+    padding: 24px;
     list-style-type: none;
     border: 1px solid black;
     border-radius: 12px;

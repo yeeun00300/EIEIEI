@@ -14,7 +14,7 @@ function WeatherIssue() {
   const createdAt = now.getTime();
   const today = now.toISOString("kr").split("T")[0].replaceAll("-", "");
   const beforeDay2 =
-    now.toISOString("kr").split("T")[0].replaceAll("-", "") - 2;
+    now.toISOString("kr").split("T")[0].replaceAll("-", "") - 3;
   const apiKey =
     "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA%3D%3D";
   // const apiKey1 =
@@ -40,6 +40,11 @@ function WeatherIssue() {
       return data;
     });
     setDateList(dateResult);
+  };
+  const handleSendData = async (weatherIssueItem) => {
+    await addDatas("weatherInfo", weatherIssueItem);
+    alert("전송이 완료되었습니다.");
+    setDateList((prevList) => [...prevList, weatherIssueItem]); // Add new item to dateList
   };
 
   useEffect(() => {
@@ -69,44 +74,32 @@ function WeatherIssue() {
           createdAt: createdAt,
           send: true,
         };
-        // const reWeatherIssueItem = {
-        //   weatherIssue: weatherIssueTitle,
-        //   weatherDate: weatherIssueDate,
-        //   weatherDescription: other,
-        //   createdAt: data.createdAt,
-        //   updatedAt: createdAt,
-        //   send: true,
-        // };
         const matchedData = dateList.find(
           (data) => data.weatherDate === weatherIssueDate
         );
 
         return (
-          <ul key={idx}>
-            <li>
-              <h2>
-                {t1} <span>{weatherIssueDate}</span>
-              </h2>
-              <h4>{`${weatherIssueTitle} - ${weatherIssueArea}`}</h4>
-              <h4>{other}</h4>
-              {matchedData ? (
-                <button
-                // onClick={() => addDatas("weatherInfo", reWeatherIssueItem)}
-                >
-                  재전송하기
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    addDatas("weatherInfo", weatherIssueItem);
-                    alert("전송이 완료되었습니다.");
-                  }}
-                >
-                  전송하기
-                </button>
-              )}
-            </li>
-          </ul>
+          <>
+            {matchedData ? (
+              <></>
+            ) : (
+              <>
+                <ul key={idx}>
+                  <li>
+                    <h2>
+                      {t1} <span>{weatherIssueDate}</span>
+                    </h2>
+                    <h4>{`${weatherIssueTitle} - ${weatherIssueArea}`}</h4>
+                    <h4>{other}</h4>
+
+                    <button onClick={() => handleSendData(weatherIssueItem)}>
+                      전송하기
+                    </button>
+                  </li>
+                </ul>
+              </>
+            )}
+          </>
         );
       })}
     </div>

@@ -9,17 +9,24 @@ const initializeData = {
     { weather: [{ description: " ", main: "Clear", icon: "01d" }] },
   ],
 };
+const initializeDataToday = {
+  main: { humidity: 0, temp: 0 },
+};
 
 const weatherSlice = createSlice({
   name: "weather",
   initialState: {
     weatherData: initializeData,
+    todayWeatherData: initializeDataToday,
     weatherIssueContent: [],
     isLoading: false,
     error: null,
   },
   reducers: {
     setWeatherData: (state, action) => {
+      state.weatherData = action.payload;
+    },
+    setTodayWeatherData: (state, action) => {
       state.weatherData = action.payload;
     },
     setWeatherIssueContent: (state, action) => {
@@ -42,5 +49,6 @@ const weatherSlice = createSlice({
   //   },
 });
 
-export const { setWeatherData, setWeatherIssueContent } = weatherSlice.actions;
+export const { setWeatherData, setWeatherIssueContent, setTodayWeatherData } =
+  weatherSlice.actions;
 export default weatherSlice.reducer;
