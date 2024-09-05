@@ -8,6 +8,8 @@
   }
   .GaugeContainer {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 24px;
     div {
       display: flex;
@@ -27,8 +29,10 @@
     padding: 0;
   }
   div {
-    margin-top: 8px;
     color: var(--point-color);
+    display: flex;
+    // flex-direction: column;
+    gap: 4px;
   }
 }
 .nowValue {
@@ -43,5 +47,23 @@
   }
   div {
     margin-top: 8px;
+  }
+}
+.setting {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 8px;
+    border: 1px solid var(--point-color);
+    padding: 2px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--point-color);
+      color: white;
+      border: 1px solid white;
+    }
   }
 }
