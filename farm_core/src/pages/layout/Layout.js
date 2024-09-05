@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Layout.module.scss";
 import Header from "./header/Header";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Footer from "./footer/Footer";
 import Nav from "./nav/Nav";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
@@ -28,6 +28,7 @@ import DashBoard from "../DashBoard/DashBoard";
 import Main from "../Main/Main";
 import MyFarmInfoPage from "../MyFarmInfo/MyFarmInfoPage";
 import MyStockAddPage from "../MyStockAddPage/MyStockAddPage";
+import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -39,34 +40,63 @@ function Layout(props) {
       id: "My_Farm",
       label: "나의 축사",
       children: [
-        { id: "My_Farm01", label: "축사 1(대전..)" },
-        { id: "My_Farm02", label: "축사 2(경기도..)" },
-        { id: "My_Farm03", label: "축사 3(대구...)" },
+        { id: "My_Farm01", label: "축사 1(대전..)", route: "/My_Farm01" },
+        { id: "My_Farm02", label: "축사 2(경기도..)", route: "/My_Farm02" },
+        { id: "My_Farm03", label: "축사 3(대구...)", route: "/My_Farm03" },
       ],
     },
     {
       id: "My_Farm_Details",
       label: "축사 정보",
       children: [
-        { id: "My_Farm_Details_Farm", label: "축사 현황" },
-        { id: "My_Farm_Add", label: "+ 축사 추가" },
-        { id: "My_Farm_Info_stock", label: "가축 상세 현황" },
-        { id: "My_Farm_Add_stock", label: "+ 가축 추가" },
+        {
+          id: "My_Farm_Details_Farm",
+          label: "축사 현황",
+          route: "/My_Farm_Details_Farm",
+        },
+        {
+          id: "My_Farm_Add",
+          label: "+ 축사 추가",
+          route: "/My_Farm_Add",
+        },
+        {
+          id: "My_Farm_Info_stock",
+          label: "가축 상세 현황",
+          route: "/My_Farm_Info_stock",
+        },
+        {
+          id: "My_Farm_Add_stock",
+          label: "+ 가축 추가",
+          route: "/My_Farm_Add_stock",
+        },
 
-        { id: "My_Farm_Details_Disease", label: "축사 관리하기" },
+        {
+          id: "My_Farm_Details_Disease",
+          label: "축사 관리하기",
+          route: "/My_Farm_Details_Disease",
+        },
       ],
     },
     {
       id: "My_Farm_Board",
       label: "게시판",
       children: [
-        { id: "My_Farm_Board_FreeBoard", label: "자유게시판" },
-        { id: "My_Farm_Board_Community", label: "축산 관리 커뮤니티" },
+        {
+          id: "My_Farm_Board_FreeBoard",
+          label: "자유게시판",
+          route: "/My_Farm_Board_FreeBoard",
+        },
+        {
+          id: "My_Farm_Board_Community",
+          label: "축산 관리 커뮤니티",
+          route: "/My_Farm_Board_Community",
+        },
       ],
     },
     {
       id: "My_Farm_MyPage",
       label: "마이페이지",
+      route: "/My_Farm_MyPage",
     },
   ];
 
@@ -81,51 +111,60 @@ function Layout(props) {
     if (itemId == null) {
       setSelectedItem(null);
     } else {
-      setSelectedItem(apiRef.current.getItem(itemId));
+      const item = apiRef.current.getItem(itemId);
+      setSelectedItem(item);
     }
   };
   const itemId = selectedItem.id;
 
   // --------------------------------------------------------------------
   // user nav component
-  const renderUserContent = () => {
-    const componentsMap = {
-      "": <Main />,
-      My_Farm: <Main />,
-      My_Farm_Details: <h1>목장 현황</h1>,
-      // My_Farm_Info: " ",
-      My_Farm_Info: <h1>목장 현황</h1>,
-      My_Farm_Board: <Community />,
-      My_Farm_Board: "",
-      My_Farm_MyPage: <MyPage />,
-      My_Farm01: <DashBoard />,
-      My_Farm02: <h1></h1>,
-      My_Farm03: <h1>나의 목장 03</h1>,
-      My_Farm_Details_Farm: <MyLiveStock />,
-      My_Farm_Details_Disease: (
-        <div className="page">
-          <DiseaseState />
-          {/* <DiseaseMap /> */}
-          <CurrentMarker />
-        </div>
-      ),
+  // const renderUserContent = () => {
+  //   const componentsMap = {
+  //     "": <Main />,
+  //     My_Farm: <Main />,
+  //     My_Farm_Details: <h1>목장 현황</h1>,
+  //     // My_Farm_Info: " ",
+  //     My_Farm_Info: <h1>목장 현황</h1>,
+  //     My_Farm_Board: <Community />,
+  //     My_Farm_Board: "",
+  //     My_Farm_MyPage: <MyPage />,
+  //     My_Farm01: <DashBoard />,
+  //     My_Farm02: <h1></h1>,
+  //     My_Farm03: <h1>나의 목장 03</h1>,
+  //     My_Farm_Details_Farm: <MyLiveStock />,
+  //     My_Farm_Details_Disease: (
+  //       <div className="page">
+  //         <DiseaseState />
+  //         {/* <DiseaseMap /> */}
+  //         <CurrentMarker />
+  //       </div>
+  //     ),
 
-      My_Farm_Add: <AddLiveStock />,
-      My_Farm_Info_stock: <MyFarmInfoPage />,
-      My_Farm_Add_stock: <MyStockAddPage />,
-      My_Farm_Board_Total: (
-        <h1>
-          <Community />
-        </h1>
-      ),
-      My_Farm_Board_FreeBoard: <Community />,
-      My_Farm_Board_Community: <Livestock />,
-    };
+  //     My_Farm_Add: <AddLiveStock />,
+  //     My_Farm_Info_stock: <MyFarmInfoPage />,
+  //     My_Farm_Add_stock: <MyStockAddPage />,
+  //     My_Farm_Board_Total: (
+  //       <h1>
+  //         <Community />
+  //       </h1>
+  //     ),
+  //     My_Farm_Board_FreeBoard: <Community />,
+  //     My_Farm_Board_Community: <Livestock />,
+  //   };
 
-    return componentsMap[itemId];
-  };
+  //   return componentsMap[itemId];
+  // };
   // --------------------------------------------------------------------
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (selectedItem && selectedItem.route) {
+      console.log("Selected Item:", selectedItem);
+      navigate(selectedItem.route);
+    }
+  }, [selectedItem, navigate]);
   return (
     <>
       {adminLogin ? (
@@ -141,11 +180,13 @@ function Layout(props) {
                   apiRef={apiRef}
                   selectedItems={selectedItem?.id ?? null}
                   onSelectedItemsChange={handleSelectedItemsChange}
+                  // onItemClick={handleItemClick}
                 />
               </Box>
               <Footer />
             </div>
-            {renderUserContent()}
+            {/* {renderUserContent()} */}
+            <Outlet />
           </div>
         </div>
       )}
