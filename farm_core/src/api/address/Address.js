@@ -17,9 +17,9 @@ function Address({ setcompany }) {
       }
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-    console.log(data);
-    console.log(fullAddress);
-    console.log(data.zonecode);
+    // console.log(data);
+    // console.log(fullAddress);
+    // console.log(data.zonecode);
 
     if (typeof setcompany === "function") {
       setcompany({
