@@ -12,7 +12,7 @@ function AddLiveStock(props) {
   const { zoneCode, address, isOpen } = useSelector(
     (state) => state.addressSlice
   );
-  console.log(zoneCode);
+  // console.log(zoneCode);
 
   const open = useDaumPostcodePopup();
 
@@ -22,7 +22,7 @@ function AddLiveStock(props) {
     dispatch(setAddress(address));
     dispatch(setZoneCode(zoneCode));
     dispatch(toggleOpen());
-    console.log(data);
+    // console.log(data);
   };
   // 카카오 주소 검색하는 핸들러가 필요해
   const openPostcodePopup = () => {
