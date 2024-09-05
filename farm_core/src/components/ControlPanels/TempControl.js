@@ -5,31 +5,12 @@ import { setTodayWeatherData } from "../../store/weatherSlice/weatherSlice";
 import { setDoc } from "firebase/firestore";
 
 function TempControl() {
-  const dispatch = useDispatch();
   const { todayWeatherData } = useSelector((state) => state.weatherSlice);
-  const [setValue, setSetValue] = useState(20);
-  const APIkey2 = "7318e8d03f33842f882be1c11ec76a8b";
-  const success = () => {
-    //   대전 선화동 위도 경도
-    const latitude = 36.328799;
-    const longitude = 127.4230707;
-    const todayWeatherData = getTodayWeather(latitude, longitude);
-  };
-  const getTodayWeather = async (lat, lon) => {
-    try {
-      await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey2}&units=metric&lang=kr`
-      )
-        .then(async (response) => {
-          return await response.json();
-        })
-        .then((json) => {
-          dispatch(setTodayWeatherData(json));
-        });
-    } catch (error) {
-      console.log(`weather error: ${error}`);
-    }
-  };
+  const nowTemp = parseInt(todayWeatherData?.main?.temp);
+  const [setValue, setSetValue] = useState(25);
+  const [time, setTime] = useState(new Date());
+  const [intervalValue, setIntervalValue] = useState(nowTemp);
+
   const handleUp = () => {
     if (setValue >= 40) {
       alert("온도가 너무 높습니다.");
@@ -48,10 +29,20 @@ function TempControl() {
   };
 
   useEffect(() => {
-    success();
-    getTodayWeather();
-  }, [setValue]);
-  const nowTemp = parseInt(todayWeatherData?.main?.temp);
+    const interval = setInterval(() => {
+      setTime(new Date());
+      // 상태 업데이트 (1분마다 렌더링 유도)
+      if (intervalValue > setValue) {
+        setIntervalValue(intervalValue - 1);
+      } else if (intervalValue < setValue) {
+        setIntervalValue(intervalValue + 1);
+      } else {
+        return false;
+      }
+    }, 10000);
+    // 시간간격조정
+    return () => clearInterval(interval);
+  }, [setValue, intervalValue]);
 
   //   const nowTemp = parseInt(todayWeatherData.main.temp);
   return (
@@ -64,8 +55,8 @@ function TempControl() {
         down={handleDown}
         unit="℃"
         nowName="현재온도"
-        nowValue={nowTemp}
-        valueMin={10}
+        nowValue={intervalValue}
+        valueMin={0}
         valueMax={50}
       />
     </div>

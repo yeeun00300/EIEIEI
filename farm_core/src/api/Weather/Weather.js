@@ -21,35 +21,34 @@ function Weather() {
   // const [weatherData, setWeatherData] = useState(initializeData);
   const dispatch = useDispatch();
   const APIkey1 = "6e3669d9ce0d4e84eddd41c90c38ab37";
-  // const APIkey2 = "7318e8d03f33842f882be1c11ec76a8b";
+  const APIkey2 = "7318e8d03f33842f882be1c11ec76a8b";
   const { weatherData } = useSelector((state) => state.weatherSlice);
   const success = () => {
     //   대전 선화동 위도 경도
     const latitude = 36.328799;
     const longitude = 127.4230707;
     const weatherResult = getWeather(latitude, longitude);
-    // const todayWeatherData = getTodayWeather(latitude, longitude);
+    const todayWeatherData = getTodayWeather(latitude, longitude);
   };
 
   // open the weather
 
   // 당일 날씨
-  // const getTodayWeather = async (lat, lon) => {
-  //   try {
-  //     await fetch(
-  //       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey2}&units=metric&lang=kr`
-  //     )
-  //       .then(async (response) => {
-  //         return await response.json();
-  //       })
-  //       .then((json) => {
-  //         console.log(json);
-  //         dispatch(setTodayWeatherData(json));
-  //       });
-  //   } catch (error) {
-  //     console.log(`weather error: ${error}`);
-  //   }
-  // };
+  const getTodayWeather = async (lat, lon) => {
+    try {
+      await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey2}&units=metric&lang=kr`
+      )
+        .then(async (response) => {
+          return await response.json();
+        })
+        .then((json) => {
+          dispatch(setTodayWeatherData(json));
+        });
+    } catch (error) {
+      console.log(`weather error: ${error}`);
+    }
+  };
 
   // 5일 후까지의 날씨
   const getWeather = async (lat, lon) => {

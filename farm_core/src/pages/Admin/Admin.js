@@ -30,6 +30,7 @@ import TempControl from "../../components/ControlPanels/TempControl";
 import HumidControl from "../../components/ControlPanels/HumidControl";
 import CO2Control from "../../components/ControlPanels/CO2Control";
 import LIghtControl from "../../components/ControlPanels/LIghtControl";
+import AMControl from "../../components/ControlPanels/AMControl";
 
 function Admin() {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -158,8 +159,9 @@ function Admin() {
           <Gauge01 />
           <TempControl />
           <HumidControl />
-          <CO2Control />
           <LIghtControl />
+          <CO2Control />
+          <AMControl />
           {/* <GaugeNeedle /> */}
           <LineChart01 />
           <BiLineChart />

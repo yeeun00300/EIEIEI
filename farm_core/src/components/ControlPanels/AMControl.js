@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import GaugeNeedle from "../Gauge/GaugeNeedle";
 
-function CO2Control() {
+function AMControl() {
   //   const { todayWeatherData } = useSelector((state) => state.weatherSlice);
-  const [setValue, setSetValue] = useState(300);
+  const [setValue, setSetValue] = useState(25);
   const [time, setTime] = useState(new Date());
   const randomNum = Math.random() * 0.01;
   const [intervalValue, setIntervalValue] = useState(
@@ -30,31 +30,32 @@ function CO2Control() {
       if (intervalValue > setValue) {
         setIntervalValue(intervalValue - 1);
       } else if (intervalValue < setValue) {
-        setIntervalValue(intervalValue + 1);
+        setIntervalValue(intervalValue + 0.01);
       } else {
         return false;
       }
-    }, 150);
+    }, 10000);
     // 시간간격조정
     return () => clearInterval(interval);
   }, [setValue, intervalValue]);
   //   const nowHumid = parseInt(todayWeatherData?.main?.humidity);
+
   return (
     <div>
       <GaugeNeedle
-        title="CO2"
-        setName="CO2 설정"
+        title="Ammo"
+        setName="Ammo 설정"
         setValue={setValue}
         // up={handleUp}
         // down={handleDown}
         unit="ppm"
-        nowName="CO2농도"
+        nowName="암모니아"
         nowValue={intervalValue}
         valueMin={0}
-        valueMax={1000}
+        valueMax={25}
       />
     </div>
   );
 }
 
-export default CO2Control;
+export default AMControl;
