@@ -7,6 +7,9 @@ import userInfoEditSlice, {
 } from "./../../store/userInfoEditSlice/UserInfoEditSlice";
 import { MdPayment } from "react-icons/md";
 import logoImg from "../../img/TitleLogo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { SiKakaotalk } from "react-icons/si";
 
 function RegularPayment(props) {
   const dispatch = useDispatch();
@@ -139,10 +142,10 @@ function RegularPayment(props) {
               기본 패키지 설명: 기본적인 모든 기능을 포함합니다.
             </p>
             <button onClick={requestPayment} className={styles.button}>
-              <i className="fa fa-credit-card"></i> PortOne 결제
+              <FontAwesomeIcon icon={faCreditCard} /> PortOne 결제
             </button>
             <button onClick={requestKakaoPay} className={styles.button}>
-              <i className="fa fa-kakao"></i> 카카오페이 결제
+              <SiKakaotalk /> 카카오페이 결제
             </button>
           </div>
           {/* 추가적인 패키지 옵션은 여기에 추가하세요 */}
