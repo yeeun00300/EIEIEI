@@ -104,6 +104,14 @@ async function getDatas(collectionName, queryOptions) {
   return resultData;
 }
 
+async function getData(collectionName, queryOptions) {
+  const q = getQuery(collectionName, queryOptions);
+  const snapshot = await getDocs(q);
+  const doc = snapshot.docs[0];
+  const resultData = { ...doc.data(), docId: doc.id };
+  return resultData;
+}
+
 async function getDataAll(collectionName) {
   const collect = await collection(db, collectionName);
   const snapshot = await getDocs(collect);
@@ -342,6 +350,7 @@ async function uploadExcelAndSaveData(file, collectionName) {
 export {
   db,
   addDatas,
+  getData,
   getDatas,
   getDataAll,
   checkUserIdExists,

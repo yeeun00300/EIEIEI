@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDatas } from "../../firebase";
+import { getData, getDatas } from "../../firebase";
 // import { getDatasRest } from "../../api";
 
 const initialState = {
@@ -33,7 +33,7 @@ const fetchLogin = createAsyncThunk(
   // 첫번째 파라미터는 payload--> state변경 , 두번째 파라미터는 dispatch 가능
   async ({ collectionName, queryOptions }) => {
     try {
-      const resultData = await getDatas(collectionName, queryOptions);
+      const resultData = await getData(collectionName, queryOptions);
       console.log(resultData);
       return resultData;
     } catch (error) {
