@@ -13,10 +13,6 @@ import Community from "./pages/Community/Community";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setEmail, setNotLogin } from "./store/loginSlice/loginSlice";
-import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
-import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
-import Question from "./pages/MyPage/Question/Question";
-import Payment from "./pages/MyPage/Payment/Payment";
 import FreeboardPage from "./pages/Community/FreeboardPage";
 import NewBoardPage from "./pages/Community/NewBoardPage";
 import Livestock from "./pages/Community/Livestock";
@@ -24,6 +20,10 @@ import KakaoCallBack from "./pages/Login/SignUp/KakaoCallBack";
 import EmailLogin from "./components/emailLogin/EmailLogin";
 import EmailSignUp from "./components/emailLogin/EmailSignUp";
 import { useEffect } from "react";
+import RegularPayment from "./pages/RegularPayment/RegularPayment";
+import MyLiveStock from "./components/MyLiveStock/MyLiveStock";
+import AddLiveStock from "./components/addLiveStock/AddLiveStock";
+import MyStockAddPage from "./pages/MyStockAddPage/MyStockAddPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,36 +41,8 @@ function App() {
       dispatch(setEmail(storedEmail));
     }
   }, [dispatch]);
-  // const apiKey = "9b43514a1ca3411aaada4dc62811db1d";
-
-  // const startDate = "20200821";
-  // const endDate = "20201003";
-
-  // fetch(
-  //   `/api/Agree_WS/webservices/StockRestService/getInspctDataList/${apiKey}/${startDate}/${endDate}`
-  // )
-  //   .then((data) => {
-  //     return data.json();
-  //   })
-  //   .then((result) => {
-  //     console.log(result);
-  //   });
-  // const notLogin = true;
-  // const notLogin = false;
-
-  //  관리자 페이지 로그인 유뮤 - loginSlice => notLogin
-  const logInOX = () => {
-    if (notLogin) {
-      dispatch(setNotLogin({ notLogin: false }));
-    } else {
-      dispatch(setNotLogin({ notLogin: true }));
-    }
-  };
-  // const localStorageUserId = localStorage.getItem("id");
 
   return (
-    // <div className="App">
-    // Final Project!
     <BrowserRouter>
       <Routes>
         {notLogin ? (
@@ -82,31 +54,36 @@ function App() {
             <Route path="SignUp" element={<SignUp />} />
             <Route path="oauth" element={<KakaoCallBack />} />
             {/* <Route path="Login" element={<Login />} /> */}
-            {/* {<Route path="payment" element={<PaymentPage />} />} */}
+            <Route path="RegularPayment" element={<RegularPayment />} />
           </Route>
         ) : (
           // 로그인시
           <Route path="/" element={<Layout />}>
-            {/* <Route index element={<HomePage />} /> */}
-            {/* <Route index element={<Main />} /> */}
-            {/* <Route path="DashBoard" element={<DashBoard />} /> */}
-            {/* <Route path="LiveStock" element={<LiveStock />} /> */}
-            {/* <Route path="Customer" element={<Customer />} />
-            <Route path="Community" element={<Community />} />
-            <Route path="freeBoard" element={<FreeboardPage />} />
-            <Route path="newBoard" element={<NewBoardPage />} />
-            <Route path="livestockBoard" element={<Livestock />} />
-            <Route path="MyPage" element={<MyPage />} /> */}
-            {/* <Route path="UserInfo" element={<UserInfo />} />
-            <Route path="MyCommunity" element={<MyCommunity />} />
-            <Route path="Question" element={<Question />} />
-            <Route path="payment" element={<Payment />} /> */}
+            {/* 나의 축사(농장수 만큼 반복예정 path추가하기) */}
+            <Route index element={<Main />} />
+            {/* 축사현황 */}
+            <Route path="My_Farm_Details_Farm" element={<MyLiveStock />} />
+            {/* 축사추가 */}
+            <Route path="My_Farm_Add" element={<AddLiveStock />} />
+            {/* 가축 상세 현황 */}
+            {/* <Route path="My_Farm_Info_stock" element={<AddLiveStock />} /> */}
+            {/* 가축 추가 */}
+            <Route path="My_Farm_Add_stock" element={<MyStockAddPage />} />
+            {/* 축사 관리하기 */}
+            {/* <Route path="My_Farm_Details_Disease" element={<MyStockAddPage />} /> */}
+            {/* 자유게시판 */}
+            <Route path="My_Farm_Board_FreeBoard" element={<Community />} />
+            {/* 축산 관리 커뮤니티 */}
+            <Route path="My_Farm_Board_Community" element={<Livestock />} />
+            {/* 마이페이지 */}
+            <Route path="My_Farm_MyPage" element={<MyPage />} />
+            {/* 결제(라우트 옮길 예정) */}
+            {/* <Route path="payment" element={<Payment />} /> */}
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
-    // </div>
   );
 }
 

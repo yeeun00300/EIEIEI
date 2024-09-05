@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./UserInfo.module.scss";
 import img from "../../../img/person.png";
 import DaumPostcode from "react-daum-postcode";
-import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAddress,
@@ -16,14 +15,13 @@ import { useParams } from "react-router-dom";
 
 function UserInfo(props) {
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const userId = Number(id);
   const { address, zoneCode, isOpen } = useSelector(
     (state) => state.addressSlice
   );
 
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
   console.log(userInfo);
+  const email = localStorage.getItem("email");
 
   const themeObj = {
     bgColor: "#FFFFFF",
@@ -56,59 +54,61 @@ function UserInfo(props) {
     dispatch(setAddress(e.target.value));
   };
 
-  console.log(userInfo);
   useEffect(() => {
     const queryOptions = {
-      conditions: [{ filed: "id", operator: "==", value: userId }],
+      conditions: [{ field: "email", operator: "==", value: email }],
     };
     dispatch(fetchUser({ collectionName: "users", queryOptions }));
   }, []);
 
   return (
-    <div>
-      <div className="wrapper">
+    <div className="page">
+      <div className={styles.wrapper}>
         <h1>My Page</h1>
         <hr />
         <div className={styles.wrapper}>
           <div className={styles.userInfo}>
             <div className={styles.profile}>
-              <img src={img} className={styles.personImg} />
-
+              <img
+                src={userInfo[0].profileImages}
+                className={styles.personImg}
+              />
               <input type="file" className={styles.hidden} />
+              <p className={styles.profileContent}>프로필사진 변경하기</p>
             </div>
-            <div className={styles.profileBtn}>
-              <button>프로필사진변경하기</button>
+            <div className={styles.profileBtn}></div>
+            <div>
+              <span>이름 :</span> <input value={userInfo[0].name} />
             </div>
             <div>
-              이름 : <input />
+              <span>농장번호 :</span>{" "}
+              <input type="number" value={userInfo[0].farm} />
             </div>
             <div>
-              생년월일 : <input type="date" />
-            </div>
-            <div>
-              전화번호 : <input />
+              <span>전화번호 :</span> <input />
             </div>
             <div className={styles.addr}>
-              주소 :
-              <p>
+              <span>주소 :</span>
+              <div className={styles.addrInputs}>
                 <input
                   placeholder="주소"
                   onChange={handleChange}
                   value={address}
+                  className={styles.addrIP}
                 />
-              </p>
-              <p>
-                <input placeholder="상세주소를 작성해주세요" />
-              </p>
-              <p>
                 <input
                   placeholder="우편번호"
                   type="number"
                   disabled
                   value={zoneCode}
                   onChange={handleChange}
+                  className={styles.addrZone}
                 />
-              </p>
+              </div>
+              <input
+                placeholder="상세주소를 작성해주세요"
+                className={styles.addr2}
+              />
               <button onClick={toggleHandler}>주소 찾기</button>
             </div>
             {isOpen && (

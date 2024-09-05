@@ -11,6 +11,7 @@ import profileImageSlice from "./profileImageSlice/profileImageSlice";
 import stockSlice from "./stockSlice/stockSlice";
 import weatherSlice from "./weatherSlice/weatherSlice";
 import checkLoginSlice from "./checkLoginSlice/checkLoginSlice";
+import userSlice from "./userSlice/userSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -20,12 +21,13 @@ const store = configureStore({
     user: userEditSlice,
     mapAddrSlice,
     PRexcelSlice,
-    joinUserSlice,
+
     user: joinUserSlice,
     profileImageSlice,
     stockSlice,
     weatherSlice,
     checkLoginSlice,
+    // userSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

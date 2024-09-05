@@ -21,7 +21,7 @@ const initialState = {
 };
 
 const joinUserSlice = createSlice({
-  name: "user",
+  name: "joinuser",
   initialState,
   reducers: {
     setUsername: (state, action) => {

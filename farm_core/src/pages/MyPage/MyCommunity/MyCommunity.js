@@ -12,6 +12,8 @@ import ExcelTemplateDownload from "../../../components/ExcelTemplateDownload/Exc
 import ExcelUpload from "../../../components/ExcelUpload/ExcelUpload";
 import StockAddfromExcel from "../../../components/StockAdd/StockAddfromExcel";
 import PayPage from "../../pay/PayPage";
+import RegularPayment from "../../RegularPayment/RegularPayment";
+import styles from "./MyCommunity.module.scss";
 
 function MyCommunity() {
   const dispatch = useDispatch();
@@ -48,12 +50,13 @@ function MyCommunity() {
 
   return (
     <div className="page">
-      <div>
+      <div className={styles.communitybox}>
         {communityContents.map((content, idx) => {
           return <CommunityConents {...content} key={idx} />;
         })}
       </div>
-      <PayPage />
+      {/* <PaymentPage /> */}
+      <input type="date" />
     </div>
   );
 }

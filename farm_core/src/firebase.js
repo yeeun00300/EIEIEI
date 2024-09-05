@@ -210,6 +210,17 @@ async function uploadFile(file) {
     );
   });
 }
+export const checkUserInFirestore = async (email) => {
+  try {
+    const userDoc = doc(db, "users", email);
+    const docSnap = await getDoc(userDoc);
+    return docSnap.exists();
+  } catch (error) {
+    console.error("Error checking user in Firestore:", error);
+    return false;
+  }
+};
+
 // 필드명 매핑
 const fieldNameMapping = {
   "가축 종류": "stockType",
@@ -366,5 +377,6 @@ export {
   updateDatas,
   app,
   auth,
+  storage,
 };
 export default app;
