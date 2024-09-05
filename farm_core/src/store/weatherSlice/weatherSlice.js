@@ -10,13 +10,15 @@ const initializeData = {
   ],
 };
 const initializeDataToday = {
-  main: { humidity: 0, temp: 25 },
+  main: { humidity: 0, temp: 0 },
 };
 
 const weatherSlice = createSlice({
   name: "weather",
   initialState: {
+    // 5일간 날씨
     weatherData: initializeData,
+    // 오늘 날씨
     todayWeatherData: initializeDataToday,
     weatherIssueContent: [],
     isLoading: false,
@@ -27,7 +29,7 @@ const weatherSlice = createSlice({
       state.weatherData = action.payload;
     },
     setTodayWeatherData: (state, action) => {
-      state.weatherData = action.payload;
+      state.todayWeatherData = action.payload;
     },
     setWeatherIssueContent: (state, action) => {
       state.weatherIssueContent = action.payload;
