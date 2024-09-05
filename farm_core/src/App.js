@@ -13,10 +13,6 @@ import Community from "./pages/Community/Community";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setEmail, setNotLogin } from "./store/loginSlice/loginSlice";
-import UserInfo from "./pages/MyPage/UserInfo/UserInfo";
-import MyCommunity from "./pages/MyPage/MyCommunity/MyCommunity";
-import Question from "./pages/MyPage/Question/Question";
-import Payment from "./pages/MyPage/Payment/Payment";
 import FreeboardPage from "./pages/Community/FreeboardPage";
 import NewBoardPage from "./pages/Community/NewBoardPage";
 import Livestock from "./pages/Community/Livestock";
@@ -24,6 +20,7 @@ import KakaoCallBack from "./pages/Login/SignUp/KakaoCallBack";
 import EmailLogin from "./components/emailLogin/EmailLogin";
 import EmailSignUp from "./components/emailLogin/EmailSignUp";
 import { useEffect } from "react";
+import RegularPayment from "./pages/RegularPayment/RegularPayment";
 
 function App() {
   const dispatch = useDispatch();
@@ -82,7 +79,7 @@ function App() {
             <Route path="SignUp" element={<SignUp />} />
             <Route path="oauth" element={<KakaoCallBack />} />
             {/* <Route path="Login" element={<Login />} /> */}
-            {/* {<Route path="payment" element={<PaymentPage />} />} */}
+            <Route path="RegularPayment" element={<RegularPayment />} />
           </Route>
         ) : (
           // 로그인시
@@ -96,10 +93,6 @@ function App() {
             <Route path="newBoard" element={<NewBoardPage />} />
             <Route path="livestockBoard" element={<Livestock />} />
             <Route path="MyPage" element={<MyPage />} />
-            {/* <Route path="UserInfo" element={<UserInfo />} />
-            <Route path="MyCommunity" element={<MyCommunity />} />
-            <Route path="Question" element={<Question />} />
-            <Route path="payment" element={<Payment />} /> */}
           </Route>
         )}
         <Route path="Admin" element={<Admin />} />
