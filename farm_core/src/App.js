@@ -82,6 +82,7 @@ function App() {
             <Route path="SignUp" element={<SignUp />} />
             <Route path="oauth" element={<KakaoCallBack />} />
             {/* <Route path="Login" element={<Login />} /> */}
+            {/* {<Route path="payment" element={<PaymentPage />} />} */}
           </Route>
         ) : (
           // 로그인시
