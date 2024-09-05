@@ -10,7 +10,7 @@ const initializeData = {
   ],
 };
 const initializeDataToday = {
-  main: { humidity: 0, temp: 0 },
+  main: { humidity: 0, temp: 25 },
 };
 
 const weatherSlice = createSlice({
