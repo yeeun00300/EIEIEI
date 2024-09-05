@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Community.module.scss";
 import searchImg from "../../img/돋보기.png";
 import BoardList from "./components/BoardList";
@@ -8,8 +8,12 @@ import hiImg from "../../img/인사.jpeg";
 import logoImg from "../../img/TitleLogo.png";
 import NewBoardPage from "./NewBoardPage";
 import FreeboardPage from "./FreeboardPage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MyCalendar from "../../components/Calendar/MyCalendar";
+import Auction from "../../components/RealTimeLiveStock/Auction";
+import communitySlice, {
+  fetchCommunity,
+} from "./../../store/communitySlice/communitySlice";
 
 const handleSubmit = () => {};
 const handleKeywordChange = () => {};
@@ -55,11 +59,30 @@ const noticeItems = [
     admin: "admin",
   },
 ];
+
 function Community() {
+  const dispatch = useDispatch();
+  const { communityContents } = useSelector((state) => state.communitySlice);
+
   const [isWriting, setIsWriting] = useState(false);
   const [openBoard, setOpenBoard] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const queryOptions = {
+      conditions: [
+        {
+          field: "farmId",
+          operator: "==",
+          value: "123",
+        },
+      ],
+    };
+
+    dispatch(fetchCommunity({ collectionName: "community", queryOptions }));
+  }, [dispatch]);
+  console.log(communityContents);
 
   const handleNewBoardClick = () => {
     setIsWriting(true);
@@ -105,11 +128,11 @@ function Community() {
 
         <p>총 n개 게시물</p>
         <BoardList
-          items={dummyItems}
+          items={communityContents}
           notices={noticeItems}
           onItemClick={handleOpenBoard}
         />
-        <MyCalendar />
+        <Auction />
       </ListPage>
     </div>
   );
