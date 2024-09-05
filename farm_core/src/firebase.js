@@ -11,6 +11,7 @@ import {
   orderBy,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import {
@@ -339,6 +340,11 @@ async function uploadExcelAndSaveData(file, collectionName) {
 }
 // 엑셀파일을 스토리지에서 다운로드 받을수있도록 하는것
 
+async function updateDatas(collectionName, docId, updateInfoObj) {
+  const docRef = await doc(db, collectionName, docId);
+  updateDoc(docRef, updateInfoObj);
+}
+
 export {
   db,
   addDatas,
@@ -348,6 +354,7 @@ export {
   uploadFile,
   getUserAuth,
   uploadExcelAndSaveData,
+  updateDatas,
   app,
   auth,
 };

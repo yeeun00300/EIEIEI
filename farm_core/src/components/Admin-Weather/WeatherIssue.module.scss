@@ -7,14 +7,17 @@
     // list-style-type: none;
     // padding: 18px;
     margin: 0;
+    padding: 0;
     border: 1px solid black;
     border-radius: 12px;
     li {
       margin-bottom: 8px;
+      list-style-type: none;
       position: relative;
+      padding: 24px;
       button {
         position: absolute;
-        top: 0;
+        top: 12px;
         right: 20px;
         padding: 10px;
         border: none;

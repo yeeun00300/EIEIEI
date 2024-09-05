@@ -26,6 +26,7 @@ import BiLineChart from "../../components/Chart/BiLineChart";
 import LineChart01 from "../../components/Chart/LineChart01";
 import BarChart01 from "../../components/Chart/BarChart";
 import Gauge01 from "../../components/Gauge/Gauge01";
+import TempControl from "../../components/ControlPanels/TempControl";
 
 function Admin() {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -125,7 +126,7 @@ function Admin() {
       "customer-declare": <CustomerDeclare />,
       "weather-condition": <Weather />,
       "weather-issue": <WeatherIssue />,
-      "weather-notice": <h1>알림 목록</h1>,
+      "weather-notice": <AlarmManagement reSend={true} sort={"날씨"} />,
       "disease-state": <DiseaseUser />,
       "disease-issue": <DiseaseState />,
       "disease-consult": <h1>문진표 목록</h1>,
@@ -152,7 +153,8 @@ function Admin() {
       chatting: (
         <>
           <Gauge01 />
-          <GaugeNeedle />
+          <TempControl />
+          {/* <GaugeNeedle /> */}
           <LineChart01 />
           <BiLineChart />
           <BarChart01 />

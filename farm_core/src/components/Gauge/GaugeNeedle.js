@@ -33,14 +33,17 @@ function GaugePointer() {
 }
 
 export default function GaugeNeedle({
+  title = "title",
   nowName = "현재 값",
   nowValue = 0,
   setName = "설정 값",
   setValue = 0,
   value = 50,
+  unit = "",
 }) {
   return (
     <div className={styles.GaugeNeedle}>
+      <h3>{title}</h3>
       <GaugeContainer
         width={200}
         height={200}
@@ -66,7 +69,10 @@ export default function GaugeNeedle({
       <div className={styles.GaugeContainer}>
         <div className={styles.setValue}>
           <p>{setName}</p>
-          <div>{setValue}</div>
+          <div>
+            {setValue}
+            {unit}
+          </div>
         </div>
         <div>
           {"-->"}
@@ -75,7 +81,10 @@ export default function GaugeNeedle({
         </div>
         <div className={styles.nowValue}>
           <p>{nowName}</p>
-          <div>{nowValue}</div>
+          <div>
+            {nowValue}
+            {unit}
+          </div>
         </div>
       </div>
     </div>
