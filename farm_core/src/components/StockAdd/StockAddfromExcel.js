@@ -3,6 +3,7 @@ import styles from "./StockAddfromExcel.module.scss";
 
 const order = [
   "stockType",
+  "stockCode",
   "variety",
   "farmId",
   "stockId",
@@ -13,7 +14,6 @@ const order = [
   "weight",
   "birthDate",
   "feed",
-  "drink",
   "activity",
   "temp",
   "isolation",

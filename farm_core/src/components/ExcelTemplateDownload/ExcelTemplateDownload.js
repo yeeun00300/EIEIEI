@@ -8,6 +8,7 @@ function ExcelTemplateDownload(props) {
 
     worksheet.addRow([
       "가축 종류",
+      "가축 코드",
       "품종",
       "축사 번호",
       "가축 개체번호",
@@ -18,7 +19,6 @@ function ExcelTemplateDownload(props) {
       "무게",
       "출생 날짜",
       "섭취량",
-      "수분 섭취량",
       "활동량",
       "온도",
       "격리 상태",

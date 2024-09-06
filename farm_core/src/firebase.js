@@ -224,6 +224,7 @@ export const checkUserInFirestore = async (email) => {
 // 필드명 매핑
 const fieldNameMapping = {
   "가축 종류": "stockType",
+  "가축 코드": "stockCode",
   품종: "variety",
   "축사 번호": "farmId",
   "가축 개체번호": "stockId",
@@ -234,7 +235,6 @@ const fieldNameMapping = {
   무게: "weight",
   "출생 날짜": "birthDate",
   섭취량: "feed",
-  "수분 섭취량": "drink",
   활동량: "activity",
   온도: "temp",
   "격리 상태": "isolation",
