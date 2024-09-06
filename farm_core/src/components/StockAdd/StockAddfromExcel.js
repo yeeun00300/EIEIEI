@@ -50,8 +50,17 @@ function StockAddfromExcel({ items }) {
     <tbody>
       {items.map((item, rowIndex) => (
         <tr key={rowIndex}>
-          {order.map((key) => (
-            <td key={key} className={styles.td}>
+          {order.map((key, columnIndex) => (
+            <td
+              key={`${rowIndex}-${columnIndex}-${key}`}
+              className={`${styles.td} ${
+                key === "mating(bool)" ||
+                key === "breedCount" ||
+                key === "stockType"
+                  ? styles.narrow
+                  : ""
+              }`}
+            >
               {Array.isArray(item[key]) ? (
                 <div>
                   {item[key].map((subItem, subIndex) => {

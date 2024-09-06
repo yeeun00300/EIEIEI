@@ -12,10 +12,17 @@
   padding: 8px;
   text-align: left;
 }
-
+.table {
+  table-layout: auto;
+}
+.td.mating,
+.td.breedCount .stockType {
+  min-width: 10px; // 상대적으로 적은 내용을 가진 셀의 너비 줄이기
+}
 .td {
   border: 1px solid black;
   padding: 8px;
+  min-width: 1%;
 }
 
 .nestedTable {
