@@ -1,6 +1,7 @@
 import React from "react";
 import ExcelJS from "exceljs";
 import styles from "./ExcelTemplateDownload.module.scss";
+
 function ExcelTemplateDownload(props) {
   const downloadTemplate = async () => {
     const workbook = new ExcelJS.Workbook();
@@ -46,7 +47,7 @@ function ExcelTemplateDownload(props) {
       cell.font = { bold: true };
     }
 
-    for (let row = 1; row <= 30; row++) {
+    for (let row = 1; row <= 31; row++) {
       for (let col = 1; col <= 27; col++) {
         worksheet.getCell(row, col).border = {
           top: { style: "thin" },
@@ -75,6 +76,127 @@ function ExcelTemplateDownload(props) {
     worksheet.getColumn(20).width = 150;
     worksheet.getColumn(21).width = 100;
 
+    // 날짜를 입력할 열에 대한 셀 서식을 지정합니다.
+    const dateColumns = [7, 11, 17, 23, 24]; // 날짜에 해당하는 열의 인덱스
+    dateColumns.forEach((colIdx) => {
+      worksheet.getColumn(colIdx).numFmt = "yy-mm-dd"; // yy-mm-dd 형식으로 설정
+    });
+
+    // 가축 코드 (2번째 열) 을 텍스트 형식으로 설정
+    worksheet.getColumn(2).numFmt = "@"; // 텍스트 형식으로 설정하여 01-01, 01-02와 같은 형식 사용 가능
+
+    // 데이터 유효성 검사 설정 (툴팁 제공)
+    worksheet.getCell("H2:H31").dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formula1: '"M,F"',
+      showInputMessage: true,
+      promptTitle: "성별 입력",
+      prompt: "성별을 M 또는 F로 입력해 주세요.",
+    };
+
+    worksheet.getCell("O2:O31").dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formula1: '"Y,N"',
+      showInputMessage: true,
+      promptTitle: "격리 상태 입력",
+      prompt: "격리 상태를 Y 또는 N으로 입력해 주세요.",
+    };
+
+    worksheet.getCell("P2:P31").dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formula1: '"Y,N"',
+      showInputMessage: true,
+      promptTitle: "발정기 여부 입력",
+      prompt: "발정기 여부를 Y 또는 N으로 입력해 주세요.",
+    };
+
+    worksheet.getCell("Z2:Z31").dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formula1: '"Y,N"',
+      showInputMessage: true,
+      promptTitle: "폐사여부 입력",
+      prompt: "폐사여부를 Y 또는 N으로 입력해 주세요.",
+    };
+
+    worksheet.getCell("V2:V31").dataValidation = {
+      type: "whole",
+      operator: "greaterThan",
+      formula1: "0",
+      showInputMessage: true,
+      promptTitle: "출산 횟수 입력",
+      prompt: "출산 횟수를 숫자로 입력해 주세요.",
+    };
+
+    worksheet.getCell("I2:I31").dataValidation = {
+      type: "whole",
+      operator: "greaterThan",
+      formula1: "0",
+      showInputMessage: true,
+      promptTitle: "크기 입력",
+      prompt: "크기를 OO cm로 입력해 주세요.",
+    };
+
+    worksheet.getCell("J2:J31").dataValidation = {
+      type: "whole",
+      operator: "greaterThan",
+      formula1: "0",
+      showInputMessage: true,
+      promptTitle: "무게 입력",
+      prompt: "무게를 OO kg으로 입력해 주세요.",
+    };
+
+    worksheet.getCell("L2:L31").dataValidation = {
+      type: "whole",
+      operator: "between",
+      formula1: "0",
+      formula2: "100",
+      showInputMessage: true,
+      promptTitle: "섭취량 입력",
+      prompt: "섭취량을 OOg / ml로 입력해 주세요.",
+    };
+
+    worksheet.getCell("M2:M31").dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formula1: '"많음,적음"',
+      showInputMessage: true,
+      promptTitle: "활동량 입력",
+      prompt: "활동량을 '많음' 또는 '적음'으로 입력해 주세요.",
+    };
+
+    worksheet.getCell("N2:N31").dataValidation = {
+      type: "whole",
+      operator: "greaterThan",
+      formula1: "0",
+      showInputMessage: true,
+      promptTitle: "온도 입력",
+      prompt: "온도를 숫자로 입력해 주세요.",
+    };
+
+    worksheet.getCell("Y2:Y31").dataValidation = {
+      type: "whole",
+      operator: "between",
+      formula1: "0",
+      formula2: "1000000",
+      showInputMessage: true,
+      promptTitle: "우유 생산량 입력",
+      prompt: "우유 생산량을 일 OO ml로 입력해 주세요.",
+    };
+
+    worksheet.getCell("AA2:AA31").dataValidation = {
+      type: "whole",
+      operator: "between",
+      formula1: "0",
+      formula2: "10000",
+      showInputMessage: true,
+      promptTitle: "산란량 입력",
+      prompt: "산란량을 일 OO 개로 입력해 주세요.",
+    };
+
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -86,6 +208,7 @@ function ExcelTemplateDownload(props) {
     link.click();
     window.URL.revokeObjectURL(url);
   };
+
   return (
     <div className={styles.downloadContainer}>
       <button onClick={downloadTemplate} className={styles.downloadButton}>
