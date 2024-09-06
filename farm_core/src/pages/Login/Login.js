@@ -51,7 +51,6 @@ function Login() {
       alert("유효하지 않은 이메일 주소입니다.");
       return;
     }
-
     dispatch(setIsLoading(true));
 
     try {
@@ -61,14 +60,16 @@ function Login() {
         email,
         password
       );
-      const user = userCredential.user;
+      const { user } = userCredential;
+      console.log(user);
       // 로그인 후 사용자 상태 확인
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      // const userDoc = await getDoc(doc(db, "users", user.uid));
+      // console.log(userDoc);
 
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
+      if (user) {
+        // const userData = userDoc.data();
 
-        if (userData.isAdditionalInfoComplete) {
+        if (user && user.email) {
           // 추가 정보 입력이 완료된 사용자
           localStorage.setItem("authToken", user.refreshToken);
           localStorage.setItem("userId", user.uid);
