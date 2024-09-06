@@ -46,7 +46,7 @@ function ExcelTemplateDownload(props) {
       cell.font = { bold: true };
     }
 
-    for (let row = 1; row <= 2; row++) {
+    for (let row = 1; row <= 30; row++) {
       for (let col = 1; col <= 27; col++) {
         worksheet.getCell(row, col).border = {
           top: { style: "thin" },
