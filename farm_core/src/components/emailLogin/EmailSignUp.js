@@ -13,20 +13,18 @@ function EmailSignUp(props) {
 
   const handleSignUpAndLogin = async (email, password) => {
     try {
-      const isUserExists = await checkUserInFirestore(email);
-
-      if (isUserExists) {
-        alert("이미 가입된 이메일입니다.");
-        navigate("/"); // 로그인 페이지로 이동
-        return;
-      }
-
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       const { user } = userCredential;
+
+      if (user) {
+        alert("이미 가입된 이메일입니다.");
+        navigate("/"); // 로그인 페이지로 이동
+        return;
+      }
 
       localStorage.setItem("email", email);
       localStorage.setItem("uid", user.uid);
