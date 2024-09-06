@@ -4,6 +4,7 @@ import { getDatas } from "../../firebase";
 const loginSlice = createSlice({
   name: "login",
   initialState: {
+    uid: "",
     username: "",
     password: "",
     notLogin: true,
@@ -54,7 +55,6 @@ const loginSlice = createSlice({
       })
       .addCase(fetchLogin.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.products = action.payload;
       })
       .addCase(fetchLogin.rejected, (state, action) => {
         state.isLoading = false;
