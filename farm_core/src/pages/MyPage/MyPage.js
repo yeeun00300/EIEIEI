@@ -13,6 +13,7 @@ import UserInfo from "./UserInfo/UserInfo";
 import Question from "./Question/Question";
 import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
+import FilterGrid from "../../components/Grid/FilterGrid";
 const dataObj = {
   UserInfo: { label: "회원정보수정", path: "UserInfo" },
   myCommunity: { label: "내 게시글", path: "MyCommunity" },
@@ -95,6 +96,7 @@ function MyPage() {
               </button>
             </Card>
           </div>
+          <FilterGrid />
         </div>
         {activeComponent === "UserInfo" && <UserInfo />}
         {activeComponent === "MyCommunity" && <MyCommunity />}
