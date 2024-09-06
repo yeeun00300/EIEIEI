@@ -8,7 +8,8 @@ import UserMenu from "./UserMenu";
 import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
 
 function Header({ title, userInfo }) {
-  const { address, email, farm, name, profileImages } = userInfo;
+  const { userAddress, email, farm, name, profileImages } = userInfo;
+  const address = useSelector((state) => state.mapAddrSlice.address);
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
