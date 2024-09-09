@@ -24,7 +24,6 @@ function Header({ title, userInfo, address }) {
     orderBys,
   });
   const [weatherInfo] = useCollectionData(q);
-  console.log(weatherInfo);
 
   // const address = useSelector((state) => state.mapAddrSlice.address);
   const hereAddress = address;
@@ -38,14 +37,12 @@ function Header({ title, userInfo, address }) {
         queryOptions: queryOptions,
       })
     );
-
-    console.log(`확인용`);
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("weatherIssueAlarm 값 변경", weatherIssueAlarm);
     console.log("weatherInfo 값 변경", weatherInfo);
-  }, [weatherInfo]);
+    console.log("weatherIssueAlarm 값 변경", weatherIssueAlarm);
+  }, [weatherInfo, weatherIssueAlarm]);
 
   return (
     <div className={styles.header}>
@@ -63,7 +60,7 @@ function Header({ title, userInfo, address }) {
             {isLoading ? (
               <div>알람 로딩</div>
             ) : (
-              <AccordionAlarm weatherIssueAlarm={weatherIssueAlarm} />
+              <AccordionAlarm weatherIssueAlarm={weatherInfo} />
             )}
           </div>
         </div>
