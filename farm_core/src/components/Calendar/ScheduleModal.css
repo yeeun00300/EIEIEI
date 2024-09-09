@@ -36,8 +36,8 @@ h2 {
   color: #333; /* 더 어두운 색상으로 가독성 향상 */
 }
 
-input,
-textarea {
+.inputModal,
+.textareaModal {
   width: 100%;
   border: 1px solid #ddd; /* 밝은 테두리 */
   border-radius: 8px; /* 둥근 모서리 */
@@ -48,13 +48,13 @@ textarea {
   transition: border-color 0.2s ease; /* 테두리 색상 부드러운 전환 */
 }
 
-input:focus,
-textarea:focus {
+.inputModal:focus,
+.textareaModal:focus {
   border-color: #007bff; /* 포커스 시 파란색 테두리 */
   outline: none; /* 기본 윤곽선 제거 */
 }
 
-textarea {
+.textareaModal {
   resize: vertical; /* 세로로만 크기 조절 가능 */
   min-height: 100px; /* 최소 높이 설정 */
 }

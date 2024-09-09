@@ -7,9 +7,9 @@ function BoardList({ items, notices, onItemClick }) {
   return (
     <div className={styles.boardList}>
       {/* notices 배열을 통해 NoticeItem 컴포넌트 렌더링 */}
-      {notices.map((notice) => (
+      {/* {notices.map((notice) => (
         <NoticeItem key={notice.id} notice={notice} />
-      ))}
+      ))} */}
 
       {/* items 배열을 통해 FreeBoardItem 컴포넌트 렌더링 */}
       {items.map((item) => (
@@ -17,19 +17,6 @@ function BoardList({ items, notices, onItemClick }) {
       ))}
     </div>
 
-    // <div className={styles.boardList}>
-    //   {notices.map((notice) => renderItem(notice))}
-    //   {items.map((item) => renderItem(item))}
-    // </div>
-
-    // <div className={styles.boardList}>
-    //   {notices.map((notice) => (
-    //     <NoticeItem key={notices.id} data={notice} />
-    //   ))}
-    //   {items.map((item) => (
-    //     <FreeBoardItem key={item.id} data={item} />
-    //   ))}
-    // </div>
   );
 }
 

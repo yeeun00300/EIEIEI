@@ -22,6 +22,7 @@ import {
   ref,
 } from "firebase/storage";
 import * as XLSX from "xlsx";
+import { v4 as uuidv4 } from "uuid";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",
@@ -383,6 +384,41 @@ async function updateDatas(collectionName, docId, updateInfoObj) {
   updateDoc(docRef, updateInfoObj);
 }
 // 게시판
+async function getCommunityDatas(collectionName, queryOptions) {
+  try {
+    const colRef = collection(db, collectionName);
+    let q = query(colRef);
+
+    if (queryOptions) {
+      const { conditions = [], orderBys = [], limits } = queryOptions;
+
+      conditions.forEach((condition) => {
+        q = query(
+          q,
+          where(condition.field, condition.operator, condition.value)
+        );
+      });
+
+      orderBys.forEach((order) => {
+        q = query(q, orderBy(order.field, order.direction || "asc"));
+      });
+
+      if (limits) {
+        q = query(q, limit(limits));
+      }
+    }
+
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+}
 
 async function uploadImage(path, imgFile) {
   const storage = getStorage();
@@ -394,27 +430,26 @@ async function uploadImage(path, imgFile) {
 
 async function addCommunityDatas(collectionName, dataObj) {
   try {
-    const uuid = crypto.randomUUID();
+    const uuid = uuidv4(); // UUID로 고유 이미지 경로 생성
     const path = `community/${uuid}`;
     const url = await uploadImage(path, dataObj.imgUrl);
 
-    dataObj.imgUrl = url;
+    dataObj.imgUrl = url; // 업로드한 이미지의 URL 할당
 
+    // 타임스탬프 추가
     const time = new Date().getTime();
     dataObj.createdAt = time;
     dataObj.updatedAt = time;
 
-    const lastId = await getLastNum(collectionName, "id");
-    dataObj.id = lastId + 1;
-
+    // Firestore에 게시글 추가
     const collect = await collection(db, collectionName);
     const result = await addDoc(collect, dataObj);
     const docSnap = await getDoc(result);
 
-    const resultData = { ...docSnap.data(), docId: docSnap.id };
-    console.log(result);
-    return resultData;
+    // 생성된 문서의 데이터 반환
+    return { ...docSnap.data(), docId: docSnap.id };
   } catch (error) {
+    console.error(error);
     return false;
   }
 }
@@ -430,6 +465,8 @@ export {
   getUserAuth,
   uploadExcelAndSaveData,
   updateDatas,
+  addCommunityDatas,
+  getCommunityDatas,
   getQuery,
   app,
   auth,
