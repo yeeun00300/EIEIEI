@@ -8,6 +8,8 @@ import UserMenu from "./UserMenu";
 import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
 import AccordionAlarm from "../../../components/Alarm/AccordionAlarm";
 import { fetchWeatherData } from "../../../store/weatherSlice/weatherSlice";
+import { getQuery } from "../../../firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Header({ title, userInfo, address }) {
   const dispatch = useDispatch();
@@ -15,6 +17,15 @@ function Header({ title, userInfo, address }) {
   const { weatherIssueAlarm, isLoading } = useSelector(
     (state) => state.weatherSlice
   );
+  const conditions = [{ field: "send", operator: "==", value: true }];
+  const orderBys = [];
+  const q = getQuery("weatherInfo", {
+    conditions,
+    orderBys,
+  });
+  const [weatherInfo] = useCollectionData(q);
+  console.log(weatherInfo);
+
   // const address = useSelector((state) => state.mapAddrSlice.address);
   const hereAddress = address;
   useEffect(() => {
@@ -33,7 +44,8 @@ function Header({ title, userInfo, address }) {
 
   useEffect(() => {
     console.log("weatherIssueAlarm 값 변경", weatherIssueAlarm);
-  }, [weatherIssueAlarm]);
+    console.log("weatherInfo 값 변경", weatherInfo);
+  }, [weatherInfo]);
 
   return (
     <div className={styles.header}>
@@ -49,7 +61,7 @@ function Header({ title, userInfo, address }) {
           <FaRegBell size={25} />
           <div className={styles.alarmList}>
             {isLoading ? (
-              <div>알람 로딩 확인용</div>
+              <div>알람 로딩</div>
             ) : (
               <AccordionAlarm weatherIssueAlarm={weatherIssueAlarm} />
             )}

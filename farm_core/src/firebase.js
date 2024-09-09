@@ -50,7 +50,7 @@ function getCollection(collectionName) {
 async function addDatas(collectionName, userObj) {
   try {
     const docRef = await addDoc(collection(db, collectionName), userObj);
-    console.log("Document written with ID: ", docRef.id);
+    // console.log("Document written with ID: ", docRef.id);
     return docRef.id; // 문서 ID 반환
   } catch (error) {
     console.error("Error adding document: ", error);
@@ -430,6 +430,7 @@ export {
   getUserAuth,
   uploadExcelAndSaveData,
   updateDatas,
+  getQuery,
   app,
   auth,
   storage,
