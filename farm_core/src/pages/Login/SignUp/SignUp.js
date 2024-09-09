@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./SignUp.module.scss";
 import { useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+} from "firebase/auth";
 import { addDatas, checkUserIdExists, saveUserData } from "../../../firebase";
 import Address from "./../../../api/address/Address";
 import logoImg from "./../../../img/TitleLogo.png";
@@ -17,23 +22,33 @@ import {
   setFarm,
   setIdCheck,
   setImgFile,
+  setIsPhoneVerified,
+  setNickname,
+  setPhone,
+  setPhoneVerificationCode,
+  setPhoneVerificationStatus,
+  setRecaptchaVerifier,
   setUsername,
 } from "../../../store/joinUserSlice/joinUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { uploadProfileImage } from "../../../store/profileImageSlice/profileImageSlice";
 import profileImageSlice from "./../../../store/profileImageSlice/profileImageSlice";
+import { joinUser } from "./../../../firebase";
 
 function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const auth = getAuth();
   const {
     username,
     email,
     address,
     detailedAddress,
     farm,
+    nickname,
+    phone = "",
+    birthday,
     imgFile,
     addressPopup,
     passwordError,
@@ -42,6 +57,9 @@ function SignUp() {
     idCheck,
     id,
     idCheckMessage,
+    phoneVerificationCode,
+    phoneVerificationStatus,
+    recaptchaVerifier,
   } = useSelector((state) => state.user);
   const { downloadURL, isLoading } =
     useSelector((state) => state.profileImageSlice) || {};
@@ -58,27 +76,97 @@ function SignUp() {
       //     window.Kakao.init(kakaoKey);
       //   }
       // }, []);
-      const emailFromStorage = localStorage.getItem("email");
-      if (emailFromStorage) {
-        dispatch(setEmail(emailFromStorage));
-      }
+    }
+    const emailFromStorage = localStorage.getItem("email");
+    console.log("LocalStorage에서 가져온 이메일:", emailFromStorage);
+    if (emailFromStorage) {
+      dispatch(setEmail(emailFromStorage));
+    } else {
+      console.log("LocalStorage에 이메일이 없습니다.");
     }
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   if (!recaptchaVerifier) {
+  //     const verifier = new RecaptchaVerifier(
+  //       "recaptcha-container",
+  //       {
+  //         size: "invisible",
+  //         callback: (response) => {
+  //           console.log("reCAPTCHA solved");
+  //         },
+  //         "expired-callback": () => {
+  //           console.log("reCAPTCHA expired");
+  //         },
+  //       },
+  //       auth
+  //     );
+  //     dispatch(setRecaptchaVerifier(verifier));
+  //   }
+  // }, [recaptchaVerifier, dispatch, auth]);
+
+  // window.recaptchaVerifier = new RecaptchaVerifier(
+  //   "sign-in-button",
+  //   {
+  //     size: "invisible",
+  //     callback: (response) => {
+  //       // reCAPTCHA solved, allow signInWithPhoneNumber.
+  //       // onSignInSubmit();
+  //       console.log(`캡차 인증 확인`);
+  //     },
+  //   },
+  //   auth
+  // );
+
   const handleChange = (e) => {
+    // const { name, value } = e.target;
+    // if (name === "username") {
+    //   dispatch(setUsername(value));
+    // } else if (name === "email") {
+    //   dispatch(setEmail(value));
+    // } else if (name === "address") {
+    //   dispatch(
+    //     setAddress({ address: value, detailedAddress: detailedAddress })
+    //   );
+    // } else if (name === "detailedAddress") {
+    //   dispatch(setAddress({ address: address, detailedAddress: value }));
+    // } else if (name === "farm") {
+    //   dispatch(setFarm(value));
+    // } else if (name === "phone") {
+    //   dispatch(setPhone(value));
+    // } else if (name === "phoneVerificationCode") {
+    //   dispatch(setPhoneVerificationCode(value));
+    // } else if (name === "nickname") {
+    //   dispatch(setNickname(value));
+    // }
     const { name, value } = e.target;
-    if (name === "username") {
-      dispatch(setUsername(value));
-    } else if (name === "email") {
-      dispatch(setEmail(value));
-    } else if (name === "address") {
-      dispatch(
-        setAddress({ address: value, detailedAddress: detailedAddress })
-      );
-    } else if (name === "detailedAddress") {
-      dispatch(setAddress({ address: address, detailedAddress: value }));
-    } else if (name === "farm") {
-      dispatch(setFarm(value));
+    switch (name) {
+      case "username":
+        dispatch(setUsername(value));
+        break;
+      case "email":
+        dispatch(setEmail(value));
+        break;
+      case "address":
+        dispatch(setAddress({ address: value, detailedAddress }));
+        break;
+      case "detailedAddress":
+        dispatch(setAddress({ address, detailedAddress: value }));
+        break;
+      case "farm":
+        dispatch(setFarm(value));
+        break;
+      case "phone":
+        dispatch(setPhone(value));
+        break;
+      case "phoneVerificationCode":
+        dispatch(setPhoneVerificationCode(value));
+        break;
+      case "nickname":
+        dispatch(setNickname(value));
+        break;
+      default:
+        break;
     }
   };
 
@@ -90,6 +178,46 @@ function SignUp() {
       console.log("File Size:", file.size);
       console.log("File Type:", file.type);
       dispatch(uploadProfileImage(file));
+    }
+  };
+  const handlePhoneVerification = async () => {
+    if (!phone) {
+      alert("전화번호를 입력해주세요.");
+      return;
+    }
+
+    try {
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        `+${phone}`,
+        recaptchaVerifier
+      );
+      window.confirmationResult = confirmationResult;
+      dispatch(setPhoneVerificationStatus("인증 코드가 발송되었습니다."));
+    } catch (error) {
+      dispatch(
+        setPhoneVerificationStatus(`인증 코드 요청 실패: ${error.message}`)
+      );
+    }
+  };
+
+  // 인증 코드 확인
+  const handlePhoneVerificationSubmit = async () => {
+    if (!phoneVerificationCode) {
+      alert("인증 코드를 입력해주세요.");
+      return;
+    }
+
+    try {
+      const result = await window.confirmationResult.confirm(
+        phoneVerificationCode
+      );
+      dispatch(setIsPhoneVerified(true));
+      dispatch(setPhoneVerificationStatus("전화번호 인증이 완료되었습니다."));
+    } catch (error) {
+      dispatch(
+        setPhoneVerificationStatus(`인증 코드 확인 실패: ${error.message}`)
+      );
     }
   };
 
@@ -118,7 +246,9 @@ function SignUp() {
         address,
         detailedAddress,
         farm,
-
+        nickname,
+        birthday,
+        phone,
         profileImages: downloadURL,
         createdAt: new Date(),
       };
@@ -232,6 +362,26 @@ function SignUp() {
           </div>
         </div>
         <div>
+          닉네임
+          <input
+            placeholder="닉네임을 입력해주세요"
+            type="text"
+            name="nickname"
+            value={nickname}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          생년월일
+          <input
+            placeholder="생년월일을 입력해주세요"
+            type="number"
+            name="birthday"
+            value={birthday}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
           이메일
           <input
             placeholder="Email을 입력해주세요"
@@ -239,8 +389,37 @@ function SignUp() {
             name="email"
             value={email}
             onChange={handleChange}
+            readOnly
           />
         </div>
+        <div>
+          핸드폰 번호
+          <input
+            placeholder="핸드폰번호를 입력해주세요"
+            type="tel"
+            name="phone"
+            value={phone}
+            onChange={handleChange}
+          />
+        </div>
+        {/* <div>
+          <button type="button" onClick={handlePhoneVerification}>
+            인증 코드 발송
+          </button>
+          <div>
+            <input
+              placeholder="인증 코드를 입력해주세요"
+              type="text"
+              name="phoneVerificationCode"
+              value={phoneVerificationCode}
+              onChange={handleChange}
+            />
+            <button type="button" onClick={handlePhoneVerificationSubmit}>
+              인증 코드 확인
+            </button>
+          </div>
+          {phoneVerificationStatus && <p>{phoneVerificationStatus}</p>}
+        </div> */}
         <div>
           주소
           <input
@@ -266,7 +445,7 @@ function SignUp() {
           </div>
           {addressPopup && <Address setcompany={handleComplete} />}
         </div>
-        <div>
+        {/* <div>
           축사 번호
           <input
             placeholder="축사 번호를 입력해주세요"
@@ -275,7 +454,7 @@ function SignUp() {
             value={farm}
             onChange={handleChange}
           />
-        </div>
+        </div> */}
         <div className={styles.button}>
           <button type="submit">완료</button>
           <button type="button" onClick={() => navigate("/")}>
@@ -283,6 +462,7 @@ function SignUp() {
           </button>
         </div>
       </form>
+      <div id="recaptcha-container"></div>
     </div>
   );
 }
