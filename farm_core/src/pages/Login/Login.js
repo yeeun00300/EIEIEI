@@ -21,18 +21,13 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Form from "./Form/Form";
 import EmailLogin from "../../components/emailLogin/EmailLogin";
 import EmailSignUp from "../../components/emailLogin/EmailSignUp";
+import { checkUserInFirestore } from "../../firebase";
 
 const { Kakao } = window;
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = getAuth();
-  const db = getFirestore();
-
-  // const { username, password, email, isLoading, notLogin, error } = useSelector(
-  //   (state) => state.login
-  // );
-  const [userData, setUserData] = useState(null);
 
   const { userid, password, isLoading, notLogin, email } = useSelector(
     (state) => state.loginSlice
@@ -62,13 +57,8 @@ function Login() {
       );
       const { user } = userCredential;
       console.log(user);
-      // 로그인 후 사용자 상태 확인
-      // const userDoc = await getDoc(doc(db, "users", user.uid));
-      // console.log(userDoc);
 
       if (user) {
-        // const userData = userDoc.data();
-
         if (user && user.email) {
           // 추가 정보 입력이 완료된 사용자
           localStorage.setItem("authToken", user.refreshToken);
@@ -194,16 +184,21 @@ function Login() {
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         const user = result.user;
-        console.log("구글 로그인 성공:", user);
-        // 사용자의 이메일을 콘솔에 출력해 확인합니다.
-        console.log("구글 로그인 이메일:", user.email);
-        // 이메일이 유효한지 검증하는 추가 로직을 확인하세요.
-        if (!user.email || !validateEmail(user.email)) {
-          throw new Error("유효하지 않은 이메일 주소입니다.");
+        const isUserExists = await checkUserInFirestore(user.email);
+        console.log(isUserExists);
+        if (isUserExists) {
+          // 이미 가입한 사용자
+          console.log(`true확인용`);
+          localStorage.setItem("email", user.email);
+          dispatch(setNotLogin(false));
+          navigate("/");
+        } else {
+          // 구글 최초 회원가입->추가정보입력페이지 이동
+          console.log(`false확인용`);
+          navigate("/SignUp");
         }
-        navigate("/SignUp"); // 로그인 후 리디렉션
       })
       .catch((error) => {
         console.error("Google login error:", error);
