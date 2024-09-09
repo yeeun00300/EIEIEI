@@ -208,28 +208,7 @@ function Login() {
 
   return (
     <div className={styles.container}>
-      {/* <Form title={"로그인"} getDataForm={handleLogin} /> */}
-      {/* <h1>로그인</h1>
-      <label>
-        아이디
-    
-        <input onChange={handleChange} />
-   
-      </label>
-      <label>
-        비밀번호
-        <input
-          type="password"
-          onClick={(e) => dispatch(setPassword(e.target.value))}
-        />
-      </label> */}
-      {/* <EmailLogin onClick={handleLogin} /> */}
-      {/* 계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link> */}
-      {/* <EmailSignUp /> */}
       <div>
-        {/* <div>
-          <button onClick={handleLogin}>로그인 하기</button>
-        </div> */}
         <form onSubmit={handleLogin}>
           <input
             type="email"
