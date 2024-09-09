@@ -223,7 +223,7 @@ function Admin({ userInfo, address }) {
   // };
 
   useEffect(() => {
-    console.log(userInfo);
+    // console.log(userInfo);
   }, [itemId]);
   return (
     <div className={styles.layout}>

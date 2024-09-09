@@ -2,16 +2,6 @@ import React, { useEffect } from "react";
 import { List } from "@mui/material/List";
 import { useSelector } from "react-redux";
 import styles from "./WeatherItem.module.scss";
-// const initializeData = {
-//   city: { name: "" },
-//   list: [
-//     { main: { humidity: 0, temp: 0, temp_max: 0, temp_min: 0 } },
-//     { wind: { speed: 0, deg: 0, gust: 0 } },
-//     { dt_txt: "" },
-//     { weather: [{ description: "", main: "Clear", icon: "01n" }] },
-//   ],
-// };
-
 function WeatherItem() {
   const { weatherData } = useSelector((state) => state.weatherSlice);
   const { adminLogin } = useSelector((state) => state.loginSlice);

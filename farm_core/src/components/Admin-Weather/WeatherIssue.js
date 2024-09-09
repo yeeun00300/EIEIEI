@@ -84,7 +84,7 @@ function WeatherIssue() {
               <></>
             ) : (
               <>
-                <ul key={idx}>
+                <ul key={tmFc}>
                   <li>
                     <h2>
                       {t1} <span>{weatherIssueDate}</span>

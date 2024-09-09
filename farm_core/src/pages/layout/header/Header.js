@@ -40,8 +40,8 @@ function Header({ title, userInfo, address }) {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("weatherInfo 값 변경", weatherInfo);
-    console.log("weatherIssueAlarm 값 변경", weatherIssueAlarm);
+    // console.log("weatherInfo 값 변경", weatherInfo);
+    // console.log("weatherIssueAlarm 값 변경", weatherIssueAlarm);
   }, [weatherInfo, weatherIssueAlarm]);
 
   return (

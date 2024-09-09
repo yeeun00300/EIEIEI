@@ -27,12 +27,12 @@ const weatherSlice = createSlice({
     error: null,
   },
   reducers: {
-    setWeatherData: (state, action) => {
-      state.weatherData = action.payload;
-    },
-    setTodayWeatherData: (state, action) => {
-      state.todayWeatherData = action.payload;
-    },
+    // setWeatherData: (state, action) => {
+    //   state.weatherData = action.payload;
+    // },
+    // setTodayWeatherData: (state, action) => {
+    //   state.todayWeatherData = action.payload;
+    // },
     setWeatherIssueContent: (state, action) => {
       state.weatherIssueContent = action.payload;
     },
@@ -48,12 +48,32 @@ const weatherSlice = createSlice({
       })
       .addCase(fetchWeatherData.rejected, (state, action) => {
         state.isLoading = false;
+      })
+      .addCase(fetchWeatherForecastData.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchWeatherForecastData.fulfilled, (state, action) => {
+        state.weatherData = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchWeatherForecastData.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchWeatherTodayData.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchWeatherTodayData.fulfilled, (state, action) => {
+        state.todayWeatherData = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchWeatherTodayData.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
 
 const fetchWeatherData = createAsyncThunk(
-  "Login/fetchWeatherData",
+  "weatherAlarm/fetchWeatherData",
   // 첫번째 파라미터는 payload--> state변경 , 두번째 파라미터는 dispatch 가능
   async ({ collectionName, queryOptions }) => {
     try {
@@ -66,7 +86,47 @@ const fetchWeatherData = createAsyncThunk(
   }
 );
 
+// 5일간 날씨
+const fetchWeatherForecastData = createAsyncThunk(
+  "weatherForcast/fetchWeatherForecastData",
+  async ({ APIkey, lat, lon }) => {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+      );
+      const data = await response.json();
+      // console.log("Forecast API Data:", data); // 데이터를 출력하여 확인
+      return data;
+    } catch (error) {
+      console.log(`error : ${error}`);
+      return null;
+    }
+  }
+);
+
+// 오늘 날씨
+const fetchWeatherTodayData = createAsyncThunk(
+  "weatherToday/fetchWeatherTodayData",
+  async ({ APIkey, lat, lon }) => {
+    try {
+      const response = await fetch(
+        //   `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+        // `https://api.openweathermap.org/data/2.5/weather?q=Daejeon&exclude=hourly&appid=${APIkey}&units=metric&lang=kr`
+        // `https://api.openweathermap.org//data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr&mode=json`
+        // `/api4/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
+      );
+      const data = await response.json();
+      // console.log("TodayWeather API Data:", data); // 데이터를 출력하여 확인
+      return data;
+    } catch (error) {
+      console.log(`error : ${error}`);
+      return null;
+    }
+  }
+);
+
 export const { setWeatherData, setWeatherIssueContent, setTodayWeatherData } =
   weatherSlice.actions;
-export { fetchWeatherData };
+export { fetchWeatherData, fetchWeatherForecastData, fetchWeatherTodayData };
 export default weatherSlice.reducer;
