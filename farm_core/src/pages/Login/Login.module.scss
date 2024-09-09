@@ -1,61 +1,101 @@
 .container {
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  h1 {
-    margin-bottom: 20px;
-  }
-
-  label {
+  form {
     display: flex;
     flex-direction: column;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
+    width: 100%;
+    gap: 0.625rem;
+  }
+  .loginContainer {
+    display: flex;
+    flex-direction: column;
+    height: 6.25rem;
+    gap: 32px;
+  }
+
+  .loginBox {
+    position: relative;
+    width: 100%;
   }
 
   input {
-    padding: 10px;
-    font-size: 1rem;
-    margin-top: 5px;
+    font-size: 15px;
+    color: #222222;
     width: 100%;
-    max-width: 300px;
+    // height: 50px;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    position: relative;
+    // background-color: red;
+    // background: none;
+    z-index: 5;
   }
 
-  div {
-    display: flex;
-    flex-direction: column;
-
-    div {
-      margin-bottom: 10px;
-      width: 100%;
-    }
-
-    button {
-      padding: 10px 50px;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      cursor: pointer;
-      width: 100%;
-      max-width: 100%;
-
-      text-align: center;
-    }
-
-    .google {
-      background-color: #4285f4;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      margin: 0;
-    }
-
-    .kakao {
-      background-color: #fee500;
-      color: black;
-      border: none;
-      border-radius: 5px;
-    }
+  input::placeholder {
+    color: #aaaaaa;
   }
+  input:focus {
+    outline: none;
+  }
+
+  span {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0%; /* right로만 바꿔주면 오 - 왼 */
+    background-color: #666;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    transition: 0.5s;
+  }
+
+  label {
+    position: absolute;
+    color: #aaa;
+    left: 10px;
+    font-size: 20px;
+    bottom: 8px;
+    transition: all 0.2s;
+    z-index: 6;
+  }
+
+  input:focus ~ label {
+    font-size: 16px;
+    bottom: 60px;
+    color: #666;
+    font-weight: bold;
+  }
+
+  input:focus ~ span,
+  input:valid ~ span {
+    width: 100%;
+  }
+
+  .google {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 0;
+  }
+
+  .kakao {
+    background-color: #fee500;
+    color: black;
+    border: none;
+    border-radius: 5px;
+  }
+}
+
+.loginBtn {
+  width: 100%;
+  background-color: var(--main-color);
 }

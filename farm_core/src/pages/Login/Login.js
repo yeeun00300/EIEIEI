@@ -208,52 +208,64 @@ function Login() {
 
   return (
     <div className={styles.container}>
-      <div>
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => dispatch(setEmail(e.target.value))}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => dispatch(setPassword(e.target.value))}
-          />
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? "Logging in..." : "Login"}
+      <form onSubmit={handleLogin}>
+        <div className={styles.loginContainer}>
+          <div className={styles.loginBox}>
+            <input
+              id="email"
+              type="email"
+              // placeholder="Email"
+              value={email}
+              onChange={(e) => dispatch(setEmail(e.target.value))}
+              required
+            />
+            <label htmlFor="email">Email</label>
+            <span></span>
+          </div>
+          <div className={styles.loginBox}>
+            <input
+              id="password"
+              type="password"
+              // placeholder="Password"
+              value={password}
+              onChange={(e) => dispatch(setPassword(e.target.value))}
+              required
+            />
+            <label htmlFor="password">Password</label>
+            <span></span>
+          </div>
+        </div>
+        <button className={styles.loginBtn} type="submit" disabled={isLoading}>
+          {isLoading ? "Logging in..." : "Login"}
+        </button>
+        계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link>
+        {/* {notLogin && <p>{error}</p>} */}
+        <div>
+          <button
+            className={styles.google}
+            onClick={handleGoogleLogin}
+            type="button"
+          >
+            구글로 로그인
           </button>
-          계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link>
-          {/* {notLogin && <p>{error}</p>} */}
-          <div>
-            <button
-              className={styles.google}
-              onClick={handleGoogleLogin}
-              type="button"
-            >
-              구글로 로그인
-            </button>
-          </div>
-          <div>
-            <button
-              className={styles.kakao}
-              type="button"
-              onClick={handleKakaoLogin}
-            >
-              카카오로 로그인
-            </button>
-            <SocialKakao />
-            <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
-          </div>
-          <Link to={"/SignUp"}>
-            <button className={styles.signup}>회원 상세 정보 입력하기</button>
-          </Link>
-          <button>아이디 찾기</button>
-          <button>비밀번호 찾기</button>
-        </form>
-      </div>
+        </div>
+        <div>
+          <button
+            className={styles.kakao}
+            type="button"
+            onClick={handleKakaoLogin}
+          >
+            카카오로 로그인
+          </button>
+          <SocialKakao />
+          <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
+        </div>
+        <Link to={"/SignUp"}>
+          <button className={styles.signup}>회원 상세 정보 입력하기</button>
+        </Link>
+        <button>아이디 찾기</button>
+        <button>비밀번호 찾기</button>
+      </form>
     </div>
   );
 }
