@@ -45,7 +45,7 @@ function MyCommunity() {
   }, [storage]);
 
   useEffect(() => {
-    dispatch(fetchCommunity({ collectionName: "community", queryOptions: {} }));
+    // dispatch(fetchCommunityPost({ collectionName: "community", queryOptions: {} }));
   }, [dispatch]);
 
   return (

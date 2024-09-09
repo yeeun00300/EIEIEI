@@ -57,11 +57,13 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className="inputModal"
       />
       <textarea
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        className="textareaModal"
       />
       <div className="time-picker">
         <select value={hour} onChange={(e) => setHour(e.target.value)}>

@@ -16,20 +16,16 @@ function FreeBoardItem({ item, onItemClick }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
-        <img src={item.image} />
+        <img src={item.imgUrl} />
         <div className={styles.content}>
           <a className={styles.title} onClick={handleClick}>
             {item.title}
           </a>
           <p>{item.content}</p>
           <div>
-            <ul className={styles.tags}>
-              <li>{item.tag1}</li>
-              <li>{item.tag2}</li>
-            </ul>
           </div>
           <p>{item.user}</p>
-          <p>{`작성일 : ${item.date}`}</p>
+          <p>{`작성일 : ${item.createdAt}`}</p>
           <div className={styles.reactions}>
             <FaRegThumbsUp />
             <span>4</span>

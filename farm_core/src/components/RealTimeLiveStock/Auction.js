@@ -10,11 +10,11 @@ const Auction = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "/api5/Grid_20160308000000000346_1/1/5",
+          "/api5/Grid_20151127000000000313_1/1/5",
           {
             params: {
-              DELNG_DE: "20150801",
-              WHSAL_MRKT_NEW_NM: "가락동농수산물시장",
+              DELNG_DE: "20230830",
+              WHSAL_MRKT_NM: "서울강서도매시장",
             },
           }
         );
