@@ -13,6 +13,7 @@ import {
   setEmail,
   setNickname,
 } from "../../../store/joinUserSlice/joinUserSlice";
+import { setNotLogin } from "../../../store/loginSlice/loginSlice";
 
 function KakaoCallBack(props) {
   const dispatch = useDispatch();
@@ -91,6 +92,10 @@ function KakaoCallBack(props) {
           if (isUserExists) {
             // 이미 등록된 사용자
             alert("가입된 정보입니다. 로그인을 성공했습니다.");
+            // navigate("/"); // 메인 페이지로 리디렉션
+            // dispatch()
+            localStorage.setItem("email", email);
+            dispatch(setNotLogin(false));
             navigate("/"); // 메인 페이지로 리디렉션
           } else {
             // 신규 사용자
