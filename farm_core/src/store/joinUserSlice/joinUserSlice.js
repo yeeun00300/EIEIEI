@@ -18,6 +18,10 @@ const initialState = {
   passwordMatchSuccess: "",
   idCheck: false,
   idCheckMessage: "",
+  phoneVerificationCode: "",
+  phoneVerificationStatus: "",
+  isPhoneVerified: false,
+  recaptchaVerifier: null,
 };
 
 const joinUserSlice = createSlice({
@@ -32,6 +36,12 @@ const joinUserSlice = createSlice({
     },
     setNickname: (state, action) => {
       state.nickname = action.payload;
+    },
+    setBirthday: (state, action) => {
+      state.birthday = action.payload;
+    },
+    setPhone: (state, action) => {
+      state.phone = action.payload;
     },
     setAddress: (state, action) => {
       state.address = action.payload.address;
@@ -62,6 +72,18 @@ const joinUserSlice = createSlice({
     setId: (state, action) => {
       state.id = action.payload;
     },
+    setPhoneVerificationCode: (state, action) => {
+      state.phoneVerificationCode = action.payload;
+    },
+    setPhoneVerificationStatus: (state, action) => {
+      state.phoneVerificationStatus = action.payload;
+    },
+    setIsPhoneVerified: (state, action) => {
+      state.isPhoneVerified = action.payload;
+    },
+    setRecaptchaVerifier: (state, action) => {
+      state.recaptchaVerifier = action.payload;
+    },
     // Additional reducers for other state variables
     removeUser: (state) => {
       state.email = "";
@@ -86,7 +108,13 @@ export const {
   setPasswordMatchError,
   setPasswordMatchSuccess,
   setIdCheck,
+  setPhone,
   setId,
+  setBirthday,
+  setPhoneVerificationCode,
+  setPhoneVerificationStatus,
+  setIsPhoneVerified,
+  setRecaptchaVerifier,
   removeUser,
 } = joinUserSlice.actions;
 
