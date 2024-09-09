@@ -6,9 +6,11 @@ import { FaRegUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
+import AccordionAlarm from "../../../components/Alarm/AccordionAlarm";
 
 function Header({ title, userInfo, address }) {
   const { userAddress, email, farm, name, profileImages } = userInfo;
+  console.log(userInfo);
   // const address = useSelector((state) => state.mapAddrSlice.address);
   const hereAddress = address;
   return (
@@ -21,7 +23,12 @@ function Header({ title, userInfo, address }) {
         {hereAddress ? hereAddress : "현재 정보가 없습니다"}
       </div>
       <div className={styles.userInfo}>
-        <FaRegBell size={25} />
+        <div className={styles.alarmInfo}>
+          <FaRegBell size={25} />
+          <div className={styles.alarmList}>
+            <AccordionAlarm />
+          </div>
+        </div>
         <div className={styles.user}>
           {profileImages ? (
             <img

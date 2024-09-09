@@ -37,6 +37,7 @@ const fetchLogin = createAsyncThunk(
       console.log(resultData);
       return resultData;
     } catch (error) {
+      console.log(`error : ${error}`);
       return null;
     }
   }

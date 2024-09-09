@@ -159,7 +159,7 @@ function Layout(props) {
   return (
     <>
       {adminLogin ? (
-        <Admin />
+        <Admin userInfo={checkLogin} address={address} />
       ) : (
         <div className={styles.layout}>
           <Header title={"FarmCore"} userInfo={checkLogin} address={address} />

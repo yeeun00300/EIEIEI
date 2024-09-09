@@ -31,8 +31,10 @@ import HumidControl from "../../components/ControlPanels/HumidControl";
 import CO2Control from "../../components/ControlPanels/CO2Control";
 import LIghtControl from "../../components/ControlPanels/LIghtControl";
 import AMControl from "../../components/ControlPanels/AMControl";
+import UserInfo from "./../MyPage/UserInfo/UserInfo";
+import AccordionAlarm from "../../components/Alarm/AccordionAlarm";
 
-function Admin() {
+function Admin({ userInfo, address }) {
   // const [selectedDW, setSelectedDW] = useState("All");
   const MUI_X_PRODUCTS = [
     {
@@ -220,10 +222,16 @@ function Admin() {
   //   }
   // };
 
-  useEffect(() => {}, [itemId]);
+  useEffect(() => {
+    console.log(userInfo);
+  }, [itemId]);
   return (
     <div className={styles.layout}>
-      <Header title={"AdminPage test Server"} />
+      <Header
+        title={"AdminPage test Server"}
+        userInfo={userInfo}
+        address={address}
+      />
       <div className={styles.wrapper}>
         <div className={styles.nav}>
           <Box sx={{ minHeight: 352, minWidth: 200 }}>

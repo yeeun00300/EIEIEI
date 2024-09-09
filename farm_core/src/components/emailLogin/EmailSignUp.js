@@ -33,11 +33,11 @@ function EmailSignUp(props) {
       const { user } = userCredential;
       console.log(user);
 
-      if (user) {
-        alert("이미 가입된 이메일입니다.");
-        navigate("/"); // 로그인 페이지로 이동
-        return;
-      }
+      // if (user) {
+      //   alert("이미 가입된 이메일입니다.");
+      //   navigate("/"); // 로그인 페이지로 이동
+      //   return;
+      // }
 
       localStorage.setItem("email", email);
       localStorage.setItem("uid", user.uid);

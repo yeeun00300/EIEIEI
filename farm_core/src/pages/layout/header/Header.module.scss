@@ -28,6 +28,8 @@
   display: flex;
   width: 6.25rem;
   justify-content: space-around;
+  height: 100%;
+  align-items: center;
 }
 .address {
   position: absolute;
@@ -54,4 +56,20 @@
     // visibility: hidden;
     z-index: 100;
   }
+}
+.alarmInfo {
+  height: 100%;
+  padding: 22px 0;
+  width: 80%;
+  text-align: center;
+}
+.alarmList {
+  display: none;
+  opacity: 0;
+  transition: 0.2s all ease-in-out;
+}
+.alarmInfo:hover .alarmList,
+.alarmList:hover {
+  display: block;
+  opacity: 1;
 }

@@ -1,0 +1,49 @@
+.AccordionAlarm {
+  width: 25%;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  position: fixed;
+  top: 70px;
+  right: 60px;
+  z-index: 12;
+  h2 {
+    font-size: 8px;
+  }
+  button {
+    padding: 8px 10px;
+  }
+}
+.weatherAlarmDate {
+  font-size: 8px;
+  color: gray;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+// .AccordionAlarm > div > h2 {
+//   background-color: var(--point-color);
+// }
+// .AccordionAlarm > div > div > div {
+//   padding: 8px 10px;
+//   border-radius: 0;
+// }
+// .AccordionAlarm > div > div > div > div {
+//     border: none;
+//     border-bottom: 1px solid black;
+//     border-radius: 0;
+// }
+.AlarmCount {
+  font-size: 12px;
+  background-color: #ff0000a4;
+  color: white;
+  margin: 0 12px;
+  padding: 4px;
+  border-radius: 8px;
+  text-align: end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
