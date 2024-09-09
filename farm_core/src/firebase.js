@@ -358,6 +358,42 @@ async function updateDatas(collectionName, docId, updateInfoObj) {
   const docRef = await doc(db, collectionName, docId);
   updateDoc(docRef, updateInfoObj);
 }
+// 게시판
+
+async function uploadImage(path, imgFile) {
+  const storage = getStorage();
+  const imageRef = ref(storage, path);
+  await uploadBytes(imageRef, imgFile);
+  const url = await getDownloadURL(imageRef);
+  return url;
+}
+
+async function addCommunityDatas(collectionName, dataObj) {
+  try {
+    const uuid = crypto.randomUUID();
+    const path = `community/${uuid}`;
+    const url = await uploadImage(path, dataObj.imgUrl);
+
+    dataObj.imgUrl = url;
+
+    const time = new Date().getTime();
+    dataObj.createdAt = time;
+    dataObj.updatedAt = time;
+
+    const lastId = await getLastNum(collectionName, "id");
+    dataObj.id = lastId + 1;
+
+    const collect = await collection(db, collectionName);
+    const result = await addDoc(collect, dataObj);
+    const docSnap = await getDoc(result);
+
+    const resultData = { ...docSnap.data(), docId: docSnap.id };
+    console.log(result);
+    return resultData;
+  } catch (error) {
+    return false;
+  }
+}
 
 export {
   db,
