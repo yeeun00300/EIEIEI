@@ -5,35 +5,26 @@ import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import { getDatas } from "../../firebase";
 import styles from "./AccordionAlarm.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWeatherData } from "../../store/weatherSlice/weatherSlice";
 
-function AccordionAlarm() {
-  const [weatherItems, setWeatherItems] = useState([]);
-  const handleLoad = async () => {
-    const weatherData = await getDatas("weatherInfo", ("send", "==", true));
-    // setWeatherItems((prevList) => [...weatherData]);
-    setWeatherItems(weatherData);
-  };
-
-  useEffect(() => {
-    handleLoad();
-  }, []);
-
+function AccordionAlarm({ weatherIssueAlarm }) {
   return (
     <div className={styles.AccordionAlarm}>
       <Accordion defaultActiveKey="0" alwaysOpen>
         <AccordionHeader>
           날씨 알림
-          <span className={styles.AlarmCount}>{weatherItems.length}</span>
+          <span className={styles.AlarmCount}>{weatherIssueAlarm.length}</span>
         </AccordionHeader>
         <AccordionBody>
-          {weatherItems.map((weatherItem, idx) => {
-            const { weatherIssue, weatherDescription, weatherDate } =
+          {weatherIssueAlarm.map((weatherItem, idx) => {
+            const { weatherIssue, weatherDescription, weatherDate, createdAt } =
               weatherItem;
             const newDate =
               weatherDate.split("-")[1] + "-" + weatherDate.split("-")[2];
             return (
               <>
-                <AccordionItem eventKey={idx + 1} key={idx}>
+                <AccordionItem eventKey={idx + 1} key={createdAt}>
                   <AccordionHeader>
                     {weatherIssue}{" "}
                     <span className={styles.weatherAlarmDate}>{newDate}</span>

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getDatas } from "../../firebase";
 
 const initializeData = {
   city: { name: " " },
@@ -21,6 +22,7 @@ const weatherSlice = createSlice({
     // 오늘 날씨
     todayWeatherData: initializeDataToday,
     weatherIssueContent: [],
+    weatherIssueAlarm: [],
     isLoading: false,
     error: null,
   },
@@ -35,22 +37,36 @@ const weatherSlice = createSlice({
       state.weatherIssueContent = action.payload;
     },
   },
-  //   extraReducers: (builder) => {
-  //     builder;
-  //   .addCase(fetchWeatherData.pending, (state, action) => {
-  //     state.isLoading = true;
-  //     state.error = null;
-  //   })
-  //   .addCase(fetchWeatherData.fulfilled, (state, action) => {
-  //     state.stock = action.payload;
-  //     state.isLoading = false;
-  //   })
-  //   .addCase(fetchWeatherData.rejected, (state, action) => {
-  //     state.isLoading = false;
-  //   });
-  //   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchWeatherData.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchWeatherData.fulfilled, (state, action) => {
+        state.weatherIssueAlarm = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchWeatherData.rejected, (state, action) => {
+        state.isLoading = false;
+      });
+  },
 });
+
+const fetchWeatherData = createAsyncThunk(
+  "Login/fetchWeatherData",
+  // 첫번째 파라미터는 payload--> state변경 , 두번째 파라미터는 dispatch 가능
+  async ({ collectionName, queryOptions }) => {
+    try {
+      const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
+    } catch (error) {
+      console.log(`error : ${error}`);
+      return null;
+    }
+  }
+);
 
 export const { setWeatherData, setWeatherIssueContent, setTodayWeatherData } =
   weatherSlice.actions;
+export { fetchWeatherData };
 export default weatherSlice.reducer;
