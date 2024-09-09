@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
 
-function Header({ title, userInfo }) {
+function Header({ title, userInfo, address }) {
   const { userAddress, email, farm, name, profileImages } = userInfo;
-  const address = useSelector((state) => state.mapAddrSlice.address);
+  // const address = useSelector((state) => state.mapAddrSlice.address);
+  const hereAddress = address;
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
@@ -17,7 +18,7 @@ function Header({ title, userInfo }) {
         <div className={styles.logoText}>{title}</div>
       </div>
       <div className={styles.address}>
-        {address ? address : "현재 정보가 없습니다"}
+        {hereAddress ? hereAddress : "현재 정보가 없습니다"}
       </div>
       <div className={styles.userInfo}>
         <FaRegBell size={25} />

@@ -21,6 +21,7 @@ function MapMarker({ map, onPositionChange, onInitialPositionSet }) {
         geocoder.coord2Address(longitude, latitude, (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
             const address = result[0].address.address_name;
+            console.log(address);
             dispatch(setMapAddr(address)); // Redux 상태 업데이트
           } else {
             dispatch(setMapAddr("주소를 찾을 수 없습니다."));

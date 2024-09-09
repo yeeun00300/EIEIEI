@@ -129,6 +129,7 @@ function Layout(props) {
   const { checkLogin, isLoading } = useSelector(
     (state) => state.checkLoginSlice
   );
+  const address = useSelector((state) => state.mapAddrSlice.address);
   const email = localStorage.getItem("email");
   useEffect(() => {
     if (email) {
@@ -161,7 +162,7 @@ function Layout(props) {
         <Admin />
       ) : (
         <div className={styles.layout}>
-          <Header title={"FarmCore"} userInfo={checkLogin} />
+          <Header title={"FarmCore"} userInfo={checkLogin} address={address} />
           <div className={styles.wrapper}>
             <div className={styles.nav}>
               <Box sx={{ minHeight: 352, minWidth: 180 }}>
