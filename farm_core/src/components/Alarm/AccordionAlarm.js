@@ -14,10 +14,10 @@ function AccordionAlarm({ weatherIssueAlarm }) {
       <Accordion defaultActiveKey="0" alwaysOpen>
         <AccordionHeader>
           날씨 알림
-          <span className={styles.AlarmCount}>{weatherIssueAlarm.length}</span>
+          <span className={styles.AlarmCount}>{weatherIssueAlarm?.length}</span>
         </AccordionHeader>
         <AccordionBody>
-          {weatherIssueAlarm.map((weatherItem, idx) => {
+          {weatherIssueAlarm?.map((weatherItem, idx) => {
             const { weatherIssue, weatherDescription, weatherDate, createdAt } =
               weatherItem;
             const newDate =
