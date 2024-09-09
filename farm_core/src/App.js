@@ -81,7 +81,6 @@ function App() {
             {/* <Route path="payment" element={<Payment />} /> */}
           </Route>
         )}
-        <Route path="Admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );

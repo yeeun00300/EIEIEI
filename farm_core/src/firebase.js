@@ -210,11 +210,35 @@ async function uploadFile(file) {
     );
   });
 }
+// export const checkUserInFirestore = async (email) => {
+//   try {
+//     const userDoc = doc(db, "users", email);
+//     const docSnap = await getDoc(userDoc);
+//     if (docSnap.exists()) {
+//       console.log(`303유저 정보확인:${docSnap}`);
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   } catch (error) {
+//     console.error("Error checking user in Firestore:", error);
+//     return false;
+//   }
+// };
+
 export const checkUserInFirestore = async (email) => {
   try {
-    const userDoc = doc(db, "users", email);
-    const docSnap = await getDoc(userDoc);
-    return docSnap.exists();
+    console.log("Checking user in Firestore with email:", email); // 입력된 이메일 확인
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      console.log(`유저 정보 확인: ${email}`);
+      return true;
+    } else {
+      console.log(`유저 정보 없음: ${email}`);
+      return false;
+    }
   } catch (error) {
     console.error("Error checking user in Firestore:", error);
     return false;
@@ -357,6 +381,42 @@ async function uploadExcelAndSaveData(file, collectionName) {
 async function updateDatas(collectionName, docId, updateInfoObj) {
   const docRef = await doc(db, collectionName, docId);
   updateDoc(docRef, updateInfoObj);
+}
+// 게시판
+
+async function uploadImage(path, imgFile) {
+  const storage = getStorage();
+  const imageRef = ref(storage, path);
+  await uploadBytes(imageRef, imgFile);
+  const url = await getDownloadURL(imageRef);
+  return url;
+}
+
+async function addCommunityDatas(collectionName, dataObj) {
+  try {
+    const uuid = crypto.randomUUID();
+    const path = `community/${uuid}`;
+    const url = await uploadImage(path, dataObj.imgUrl);
+
+    dataObj.imgUrl = url;
+
+    const time = new Date().getTime();
+    dataObj.createdAt = time;
+    dataObj.updatedAt = time;
+
+    const lastId = await getLastNum(collectionName, "id");
+    dataObj.id = lastId + 1;
+
+    const collect = await collection(db, collectionName);
+    const result = await addDoc(collect, dataObj);
+    const docSnap = await getDoc(result);
+
+    const resultData = { ...docSnap.data(), docId: docSnap.id };
+    console.log(result);
+    return resultData;
+  } catch (error) {
+    return false;
+  }
 }
 
 export {
