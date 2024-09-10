@@ -12,8 +12,9 @@
     right: 20px;
     button {
       border: none;
-      // border-radius: 12px;
+      border-radius: 12px;
       padding: 10px;
+      margin-left: 10px;
       cursor: pointer;
       &:hover {
         background-color: lightgray;

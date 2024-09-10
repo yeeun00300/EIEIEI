@@ -20,7 +20,6 @@ function Header({ title, userInfo, address }) {
   const { weatherIssueAlarm, isLoading, onWeatherIssueAlarm } = useSelector(
     (state) => state.weatherSlice
   );
-  console.log(onWeatherIssueAlarm);
 
   const conditions = [];
   const orderBys = [{ field: "weatherDate", direction: "desc" }];
@@ -42,12 +41,12 @@ function Header({ title, userInfo, address }) {
         queryOptions: queryOptions,
       })
     );
-    dispatch(
-      fetchOnData({
-        collectionName: "weatherInfo",
-        queryOptions: queryOptions,
-      })
-    );
+    // dispatch(
+    //   fetchOnData({
+    //     collectionName: "weatherInfo",
+    //     queryOptions: queryOptions,
+    //   })
+    // );
   }, [dispatch]);
 
   useEffect(() => {}, [weatherInfo, weatherIssueAlarm]);
