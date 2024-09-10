@@ -201,7 +201,7 @@ function Login() {
           {isLoading ? "Logging in..." : "Login"}
         </button>
         <div className={styles.links}>
-          <Link>아이디 찾기</Link> |<Link>비밀번호 찾기</Link> |
+          <Link>아이디 찾기</Link>|<Link>비밀번호 찾기</Link>|
           <Link to={"/emailsignup"}>회원 가입하기</Link>
         </div>
         <div className={styles.buttons}>

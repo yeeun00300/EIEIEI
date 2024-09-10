@@ -3,32 +3,16 @@ import styles from "./Layout.module.scss";
 import Header from "./header/Header";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import Footer from "./footer/Footer";
-import Nav from "./nav/Nav";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
-import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { adminCheck, setAdminLogin } from "../../store/loginSlice/loginSlice";
 import { Box } from "@mui/material";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import MyPage from "../MyPage/MyPage";
-import Community from "../Community/Community";
-import FreeboardPage from "../Community/FreeboardPage";
 import Admin from "../Admin/Admin";
-import Weather from "../../api/Weather/Weather";
-import MyLiveStock from "../../components/MyLiveStock/MyLiveStock";
-import Livestock from "../Community/Livestock";
-import AddLiveStock from "../../components/addLiveStock/AddLiveStock";
-import DiseaseIssueItem from "../../components/Admin-Disease/DiseaseIssueItem/DiseaseIssueItem";
-import DiseaseState from "../../components/Admin-Disease/DiseaseState";
-import DiseaseMap from "../../components/DiseaseStatus/DiseaseMap";
-import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
-import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
-import DashBoard from "../DashBoard/DashBoard";
-import Main from "../Main/Main";
-import MyFarmInfoPage from "../MyFarmInfo/MyFarmInfoPage";
-import MyStockAddPage from "../MyStockAddPage/MyStockAddPage";
 import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
+import { onUserStateChange } from "../../firebase";
+import { getAuth } from "firebase/auth";
+import { setAdminLogin } from "../../store/loginSlice/loginSlice";
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -145,17 +129,19 @@ function Layout(props) {
     }
   }, [dispatch, email]);
 
+  const { adminLogin } = useSelector((state) => state.loginSlice);
   useEffect(() => {
     console.log("CheckLogin state:", checkLogin);
     console.log("Loading state:", isLoading);
+    const { uid } = checkLogin;
+    console.log(uid);
+    if (uid !== undefined) {
+      dispatch(setAdminLogin(true));
+      console.log(adminLogin);
+    } else {
+      dispatch(setAdminLogin(false));
+    }
   }, [checkLogin, isLoading]);
-
-  const { adminLogin } = useSelector((state) => state.loginSlice);
-
-  // useEffect(() => {
-  //   dispatch(adminCheck());
-  //   console.log(adminLogin);
-  // }, [dispatch]);
 
   if (isLoading) return <div>로딩중</div>;
   if (!checkLogin || Object.keys(checkLogin).length === 0)
