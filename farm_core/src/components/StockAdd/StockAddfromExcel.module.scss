@@ -2,30 +2,38 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  table-layout: auto; /* 자동 테이블 레이아웃 */
 }
 
-.th {
-  border: 1px solid black;
-  background-color: gray;
-  color: white;
-  font-weight: bold;
-  padding: 8px;
-  text-align: left;
-}
-.table {
-  table-layout: auto;
-}
-.td.mating,
-.td.breedCount .stockType {
-  min-width: 10px; // 상대적으로 적은 내용을 가진 셀의 너비 줄이기
-}
+.th,
 .td {
   border: 1px solid black;
   padding: 8px;
-  min-width: 1%;
+  text-align: center;
+  word-wrap: break-word; /* 셀 내에서 텍스트 줄바꿈 */
+  white-space: normal; /* 줄바꿈 허용 */
 }
 
-.nestedTable {
-  width: 100%;
-  border-collapse: collapse;
+.th {
+  background-color: gray;
+  color: white;
+  font-weight: bold;
+}
+
+/* 짧은 데이터의 열 */
+.narrow {
+  width: 5%;
+}
+
+/* 긴 데이터의 열 */
+.wide {
+  width: 5%;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 긴 내용이 넘칠 때 ...로 표시 */
+  white-space: nowrap; /* 한 줄로 표시 */
+}
+
+/* 크기 및 무게에 중간 크기 적용 */
+.medium {
+  width: 1%;
 }

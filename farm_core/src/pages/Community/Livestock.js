@@ -1,57 +1,112 @@
-import React from "react";
-import ListPage from "./components/ListPage";
+import React, { useEffect, useState } from "react";
 import styles from "./Livestock.module.scss";
 import searchImg from "../../img/돋보기.png";
 import BoardList from "./components/BoardList";
-import logoImg from "../../img/TitleLogo.png";
-import cowImg from "../../img/한우축사.jpg";
-const dummyItems = [
-  {
-    id: 1,
-    title: "사료 배합 질문",
-    content: "비육기에 접어들어...",
-    image: cowImg,
-    date: "2024-08-23",
-    tag1: "#스마트팜",
-    tag2: "#한우",
-    user: "userId",
-  },
-];
-const noticeItems = [
-  {
-    id: 1,
-    title: "커뮤니티 이용안내📢",
-    content: "신고 및 제재 기준",
-    image: logoImg,
-    date: "2024-01-25",
-    admin: "admin",
-  },
-];
+import ListPage from "./components/ListPage";
+import { useNavigate } from "react-router-dom";
+import NewBoardPage from "./NewBoardPage";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCommunityPosts } from "../../store/communitySlice/communitySlice";
+import FreeboardPage from "./FreeboardPage";
 
 function Livestock() {
-  const handleSubmit = () => {};
-  const handleKeywordChange = () => {};
+  const dispatch = useDispatch();
+  const { livestockContents } = useSelector((state) => state.communitySlice);
+
+  const [isWriting, setIsWriting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("최신순");
+  const [filteredContents, setFilteredContents] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const queryOptions = {
+      conditions: [
+        {
+          field: "communityType",
+          operator: "==",
+          value: "livestock",
+        },
+      ],
+    };
+
+    dispatch(
+      fetchCommunityPosts({
+        collectionName: "livestock",
+        queryOptions,
+      })
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
+    let results = livestockContents;
+
+    if (searchQuery) {
+      results = results.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.content.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (sortOption === "추천순") {
+      results = results.sort((a, b) => b.like - a.like);
+    } else if (sortOption === "최신순") {
+      results = results.sort((a, b) => b.createdAt - a.createdAt);
+    }
+
+    setFilteredContents(results);
+  }, [livestockContents, searchQuery, sortOption]);
+
+  const handleNewBoardClick = () => {
+    setIsWriting(true);
+  };
+
+  const handleBackToList = () => {
+    setIsWriting(false);
+    setSelectedItem(null);
+  };
+
+  const handleOpenBoard = (item) => {
+    setSelectedItem(item);
+    navigate(`/My_Farm_Board_Livestock/${item.id}`);
+  };
+
   return (
     <div className="page">
-      <ListPage variant="livestock">
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <input
-            placeholder="검색으로 게시글 찾기"
-            onChange={handleKeywordChange}
-          />
-          <button className={styles.search}>
-            <img src={searchImg} />
-          </button>
-          <button className={styles.new}>새 글 쓰기</button>
+      {isWriting ? (
+        <NewBoardPage onCancel={handleBackToList} />
+      ) : (
+        <>
+          {selectedItem && <FreeboardPage item={selectedItem} />}
+          <ListPage variant="livestock">
+            <form className={styles.form}>
+              <input
+                placeholder="검색으로 게시글 찾기"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button className={styles.search}>
+                <img src={searchImg} alt="검색" />
+              </button>
+              <button className={styles.new} onClick={handleNewBoardClick}>
+                새 글 쓰기
+              </button>
+              <select
+                value={sortOption}
+                onChange={(e) => setSortOption(e.target.value)}
+              >
+                <option value="추천순">추천순</option>
+                <option value="최신순">최신순</option>
+              </select>
+            </form>
 
-          <select>
-            <option>추천순</option>
-            <option>최신순</option>
-          </select>
-        </form>
-        <p>총 n개 게시물</p>
-        <BoardList items={dummyItems} notices={noticeItems} />
-      </ListPage>
+            <p>총 {filteredContents.length}개 게시물</p>
+            <BoardList items={filteredContents} onItemClick={handleOpenBoard} />
+          </ListPage>
+        </>
+      )}
     </div>
   );
 }

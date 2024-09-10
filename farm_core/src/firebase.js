@@ -267,7 +267,7 @@ const fieldNameMapping = {
   "가축 개체번호": "stockId",
   "가축 주소": "farmAddress",
   "입고 날짜": "incomingDate",
-  성별: "sexual",
+  성별: "sex",
   크기: "size",
   무게: "weight",
   "출생 날짜": "birthDate",
@@ -276,15 +276,15 @@ const fieldNameMapping = {
   온도: "temp",
   "격리 상태": "isolation",
   "발정기 여부": "mating(bool)",
-  "임신 일자": "pregnantDate",
+  "임신 날짜": "pregnantDate",
   "백신 접종 데이터": "vaccine",
   "질병 및 치료 데이터": "disease",
   "출산 횟수": "breedCount",
-  출산일: "birthDate",
-  출산일: "breedDate",
+  "출산 날짜": "breedDate",
+  "출산 예정 날짜": "breedDueDate",
   "우유 생산량": "milk",
-  "폐사 여부": "ruin(bool)",
-  산란량: "EggProduction",
+  "폐사 여부": "deceased(bool)",
+  산란량: "eggProduction",
 };
 
 // 필드명을 영어로 변환하는 함수
@@ -404,6 +404,15 @@ async function getCommunityDatas(collectionName, queryOptions) {
     if (queryOptions) {
       const { conditions = [], orderBys = [], limits } = queryOptions;
 
+      // communityType을 조건에 추가
+      if (queryOptions.communityType) {
+        conditions.push({
+          field: "communityType",
+          operator: "==",
+          value: queryOptions.communityType,
+        });
+      }
+
       conditions.forEach((condition) => {
         q = query(
           q,
@@ -431,7 +440,6 @@ async function getCommunityDatas(collectionName, queryOptions) {
     throw new Error(error.message);
   }
 }
-
 async function uploadImage(path, file) {
   const storage = getStorage();
   const storageRef = ref(storage, path);
@@ -479,7 +487,7 @@ async function addCommunityDatas(collectionName, dataObj) {
     dataObj.updatedAt = time;
 
     // Firestore에 게시글 추가
-    const collect = await collection(db, collectionName);
+    const collect = collection(db, collectionName);
     const result = await addDoc(collect, dataObj);
     const docSnap = await getDoc(result);
 
@@ -490,6 +498,7 @@ async function addCommunityDatas(collectionName, dataObj) {
     return false;
   }
 }
+
 const uploadProfileImage = async (file) => {
   const storage = getStorage();
   const storageRef = ref(storage, `profile_images/${file.name}`);

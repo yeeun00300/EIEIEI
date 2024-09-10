@@ -3,13 +3,12 @@ import styles from "./NewBoardPage.module.scss";
 import { useDispatch } from "react-redux";
 import { createCommunityPost } from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
-import { uploadImage } from "../../firebase";
-import { v4 as uuidv4 } from "uuid";
 
 function NewBoardPage({ onCancel }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [selectedBoard, setSelectedBoard] = useState("community"); // 기본값은 자유게시판
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -29,9 +28,15 @@ function NewBoardPage({ onCancel }) {
         stockType: "",
         notice: false,
       };
+
+      // 선택한 게시판에 따라 데이터 전송
       await dispatch(
-        createCommunityPost({ collectionName: "community", dataObj })
+        createCommunityPost({
+          collectionName: selectedBoard,
+          dataObj,
+        })
       );
+
       setTitle("");
       setContent("");
       setImage(null);
@@ -45,6 +50,18 @@ function NewBoardPage({ onCancel }) {
     <div className={styles.container}>
       <h2>새 글 쓰기</h2>
       <form onSubmit={handleSubmit}>
+        <div className={styles.group}>
+          <label htmlFor="boardType">게시판 선택</label>
+          <select
+            id="boardType"
+            value={selectedBoard}
+            onChange={(e) => setSelectedBoard(e.target.value)}
+            required
+          >
+            <option value="community">자유게시판</option>
+            <option value="livestock">축산 관리 커뮤니티</option>
+          </select>
+        </div>
         <div className={styles.group}>
           <label htmlFor="title">제목</label>
           <input

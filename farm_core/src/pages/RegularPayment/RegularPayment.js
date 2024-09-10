@@ -1,75 +1,46 @@
-import React, { useEffect } from "react";
-import styles from "./RegularPayment.module.scss";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import userSlice, { setUser } from "./../../store/userSlice/userSlice";
-import userInfoEditSlice, {
-  fetchUser,
-} from "./../../store/userInfoEditSlice/UserInfoEditSlice";
+import { setCardInfo } from "../../store/myPageSlice/paymentSlice";
+import styles from "./RegularPayment.module.scss";
 import { MdPayment } from "react-icons/md";
 import logoImg from "../../img/TitleLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { SiKakaotalk } from "react-icons/si";
 
-function RegularPayment(props) {
+function RegularPayment() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+  const [sdkLoaded, setSdkLoaded] = useState(false); // SDK 로드 상태를 관리하는 상태
 
-  const email = localStorage.getItem("email");
-
-  // 사용자 정보를 가져오는 useEffect
+  // SDK 스크립트 로드 및 상태 업데이트
   useEffect(() => {
-    if (email) {
-      const queryOptions = {
-        conditions: [
-          {
-            field: "email",
-            operator: "==",
-            value: email,
-          },
-        ],
-      };
-      dispatch(fetchUser({ collectionName: "users", queryOptions }));
-    }
-  }, [dispatch, email]);
-
-  // userInfo 업데이트 후 확인
-  useEffect(() => {
-    if (userInfo) {
-      console.log("사용자 정보:", userInfo);
-      console.log("이메일:", userInfo[0].email);
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    // 포트원 SDK를 로드
     const script = document.createElement("script");
     script.src = "https://cdn.portone.io/v2/browser-sdk.js";
     script.async = true;
+    script.onload = () => {
+      console.log("PortOne SDK loaded");
+      setSdkLoaded(true); // SDK 로드 완료 시 상태 업데이트
+    };
     document.body.appendChild(script);
-
-    // 카카오페이 SDK를 로드
-    const kakaoScript = document.createElement("script");
-    kakaoScript.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    kakaoScript.async = true;
-    document.body.appendChild(kakaoScript);
 
     return () => {
       document.body.removeChild(script);
-      document.body.removeChild(kakaoScript);
     };
   }, []);
 
-  const requestPayment = (provider) => {
-    if (window.PortOne && userInfo.length > 0) {
+  const requestPayment = () => {
+    if (window.PortOne && sdkLoaded && userInfo && userInfo.length > 0) {
       const customerEmail = userInfo[0].email;
       const customerName = userInfo[0].name;
+      const uniquePaymentId = `test-${Date.now()}`;
 
       console.log("결제 요청 - 이메일:", customerEmail);
       console.log("결제 요청 - 이름:", customerName);
+
       window.PortOne.requestPayment({
         storeId: "store-8ead5501-fb96-4f25-a67c-2c9f4d8fed3a",
-        paymentId: "testm0njbmb3",
+        paymentId: uniquePaymentId,
         orderName: "EIEIEI 프로그램 정기구독",
         totalAmount: 1000,
         currency: "KRW",
@@ -80,21 +51,40 @@ function RegularPayment(props) {
           fullName: customerName,
           email: customerEmail,
         },
+        onSuccess: (response) => {
+          console.log("결제 성공 응답:", response);
+          if (response && response.cardNumber) {
+            dispatch(
+              setCardInfo({
+                cardNumber: response.cardNumber,
+                cardType: response.cardType,
+              })
+            );
+          } else {
+            console.error("카드 정보가 응답에 없습니다:", response);
+          }
+        },
+        onFailure: (error) => {
+          console.error("결제 실패 응답:", error);
+        },
       });
     } else {
-      console.error("PortOne SDK is not loaded.");
+      console.error("PortOne SDK is not loaded or userInfo is missing.");
     }
   };
+
   const requestKakaoPay = () => {
-    if (window.PortOne && userInfo.length > 0) {
+    if (window.PortOne && sdkLoaded && userInfo && userInfo.length > 0) {
       const customerEmail = userInfo[0].email;
       const customerName = userInfo[0].name;
+      const uniquePaymentId = `test-${Date.now()}`;
 
       console.log("결제 요청 - 이메일:", customerEmail);
       console.log("결제 요청 - 이름:", customerName);
+
       window.PortOne.requestPayment({
         storeId: "store-8ead5501-fb96-4f25-a67c-2c9f4d8fed3a",
-        paymentId: "testm0oq5kll",
+        paymentId: uniquePaymentId,
         orderName: "EIEIEI 프로그램 정기구독",
         totalAmount: 1000,
         currency: "KRW",
@@ -106,9 +96,26 @@ function RegularPayment(props) {
           fullName: customerName,
           email: customerEmail,
         },
+        onSuccess: (response) => {
+          console.log("카카오페이 결제 성공 응답:", response);
+          if (response && response.cardNumber) {
+            dispatch(
+              setCardInfo({
+                cardNumber: response.cardNumber,
+                cardType: response.cardType,
+              })
+            );
+          } else {
+            console.error("카드 정보가 응답에 없습니다:", response);
+          }
+        },
+        onFailure: (error) => {
+          console.error("카카오페이 결제 실패 응답:", error);
+        },
       });
     }
   };
+
   return (
     <div className="page">
       <div className={styles.mainbox}>
@@ -141,10 +148,18 @@ function RegularPayment(props) {
             <p className={styles.description}>
               기본 패키지 설명: 기본적인 모든 기능을 포함합니다.
             </p>
-            <button onClick={requestPayment} className={styles.button}>
+            <button
+              onClick={requestPayment}
+              className={styles.button}
+              disabled={!sdkLoaded} // SDK가 로드되지 않았으면 버튼 비활성화
+            >
               <FontAwesomeIcon icon={faCreditCard} /> PortOne 결제
             </button>
-            <button onClick={requestKakaoPay} className={styles.button}>
+            <button
+              onClick={requestKakaoPay}
+              className={styles.button}
+              disabled={!sdkLoaded} // SDK가 로드되지 않았으면 버튼 비활성화
+            >
               <SiKakaotalk /> 카카오페이 결제
             </button>
           </div>

@@ -1,27 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import "./App.css";
 import Main from "./pages/Main/Main";
-import Login from "./pages/Login/Login";
-import Customer from "./pages/Customer/Customer";
-import Admin from "./pages/Admin/Admin";
 import SignUp from "./pages/Login/SignUp/SignUp";
-import DashBoard from "./pages/DashBoard/DashBoard";
 import MyPage from "./pages/MyPage/MyPage";
 import Layout from "./pages/layout/Layout";
 import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  adminCheck,
-  setEmail,
-  setNotLogin,
-} from "./store/loginSlice/loginSlice";
+import { setEmail, setNotLogin } from "./store/loginSlice/loginSlice";
 import FreeboardPage from "./pages/Community/FreeboardPage";
-import NewBoardPage from "./pages/Community/NewBoardPage";
 import Livestock from "./pages/Community/Livestock";
 import KakaoCallBack from "./pages/Login/SignUp/KakaoCallBack";
-import EmailLogin from "./components/emailLogin/EmailLogin";
 import EmailSignUp from "./components/emailLogin/EmailSignUp";
 import { useEffect, useState } from "react";
 import RegularPayment from "./pages/RegularPayment/RegularPayment";
@@ -53,11 +43,9 @@ function App() {
           // 비로그인시
           <Route path="/">
             <Route index element={<Intro />} />
-            <Route path="EmailLogin" element={<EmailLogin />} />
             <Route path="EmailSignUp" element={<EmailSignUp />} />
             <Route path="SignUp" element={<SignUp />} />
             <Route path="oauth" element={<KakaoCallBack />} />
-            {/* <Route path="Login" element={<Login />} /> */}
             <Route path="RegularPayment" element={<RegularPayment />} />
           </Route>
         ) : (

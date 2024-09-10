@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import NewBoardPage from "./NewBoardPage";
 import FreeboardPage from "./FreeboardPage";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCommunityPost } from "./../../store/communitySlice/communitySlice";
+import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice";
 
 function Community() {
   const dispatch = useDispatch();
@@ -22,14 +22,16 @@ function Community() {
     const queryOptions = {
       conditions: [
         {
-          field: "notice",
+          field: "communityType",
           operator: "==",
-          value: false,
+          value: "community",
         },
       ],
     };
 
-    dispatch(fetchCommunityPost({ collectionName: "community", queryOptions }));
+    dispatch(
+      fetchCommunityPosts({ collectionName: "community", queryOptions })
+    );
   }, [dispatch]);
 
   const handleNewBoardClick = () => {
