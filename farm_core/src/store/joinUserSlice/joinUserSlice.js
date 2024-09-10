@@ -22,6 +22,7 @@ const initialState = {
   phoneVerificationStatus: "",
   isPhoneVerified: false,
   recaptchaVerifier: null,
+  sentCode: "",
 };
 
 const joinUserSlice = createSlice({
@@ -84,6 +85,21 @@ const joinUserSlice = createSlice({
     setRecaptchaVerifier: (state, action) => {
       state.recaptchaVerifier = action.payload;
     },
+    setPassword: (state, action) => {
+      state.password = action.payload;
+    },
+    setVerificationCode: (state, action) => {
+      state.verificationCode = action.payload;
+    },
+    setSentCode: (state, action) => {
+      state.sentCode = action.payload;
+    },
+    setIsCodeSent: (state, action) => {
+      state.isCodeSent = action.payload;
+    },
+    setIsEmailVerified: (state, action) => {
+      state.isEmailVerified = action.payload;
+    },
     // Additional reducers for other state variables
     removeUser: (state) => {
       state.email = "";
@@ -116,6 +132,11 @@ export const {
   setIsPhoneVerified,
   setRecaptchaVerifier,
   removeUser,
+  setPassword,
+  setVerificationCode,
+  setSentCode,
+  setIsCodeSent,
+  setIsEmailVerified,
 } = joinUserSlice.actions;
 
 export default joinUserSlice.reducer;

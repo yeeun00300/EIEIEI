@@ -18,7 +18,7 @@ const store = configureStore({
     loginSlice,
     communitySlice,
     userInfoEditSlice,
-    user: userEditSlice,
+    userEditSlice,
     mapAddrSlice,
     PRexcelSlice,
 

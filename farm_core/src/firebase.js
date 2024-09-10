@@ -420,12 +420,20 @@ async function getCommunityDatas(collectionName, queryOptions) {
   }
 }
 
-async function uploadImage(path, imgFile) {
+async function uploadImage(file) {
   const storage = getStorage();
+  const path = `community/${uuidv4()}_${file.name}`; // 파일 이름을 UUID와 함께 고유하게 만듭니다.
   const imageRef = ref(storage, path);
-  await uploadBytes(imageRef, imgFile);
-  const url = await getDownloadURL(imageRef);
-  return url;
+
+  try {
+    await uploadBytes(imageRef, file);
+    const downloadURL = await getDownloadURL(imageRef);
+    console.log("Download URL:", downloadURL); // URL을 확인합니다.
+    return downloadURL;
+  } catch (error) {
+    console.error("Upload failed:", error.message); // 오류 메시지를 출력합니다.
+    throw error;
+  }
 }
 
 async function addCommunityDatas(collectionName, dataObj) {
@@ -454,6 +462,16 @@ async function addCommunityDatas(collectionName, dataObj) {
   }
 }
 
+const uploadProfileImage = async (file) => {
+  const storage = getStorage();
+  const storageRef = ref(storage, `profile_images/${file.name}`);
+
+  await uploadBytes(storageRef, file);
+  const downloadURL = await getDownloadURL(storageRef);
+
+  return downloadURL;
+};
+
 export {
   db,
   addDatas,
@@ -467,9 +485,11 @@ export {
   updateDatas,
   addCommunityDatas,
   getCommunityDatas,
+  uploadImage,
   getQuery,
   app,
   auth,
   storage,
+  uploadProfileImage,
 };
 export default app;
