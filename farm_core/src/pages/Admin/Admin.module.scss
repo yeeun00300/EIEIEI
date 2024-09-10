@@ -24,16 +24,9 @@
     flex: 1;
     padding: 0 30px;
     padding-top: 24px;
-    //   position: relative;
-    // button {
-    //   font-size: 28px;
-    //   border: 1px solid black;
-    //   border-radius: 8px;
-    //   padding: 8px;
-    //   position: absolute;
-    //   top: 24px;
-    //   right: 30px;
-    // }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
   }
 }
 

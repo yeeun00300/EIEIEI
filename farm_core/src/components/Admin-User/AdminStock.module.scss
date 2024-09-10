@@ -1,7 +1,8 @@
 .AdminStock {
   display: flex;
-  flex-direction: column;
   gap: 24px;
+  width: 70vw;
+  overflow: hidden;
 }
 .AdminUtil {
   display: flex;
@@ -14,6 +15,15 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border: 1px solid black;
   padding: 12px;
+  height: 90vh;
+  overflow: scroll;
+}
+.stockCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid black;
+  border-radius: 12px;
 }
