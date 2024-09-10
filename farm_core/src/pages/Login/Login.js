@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { startTransition, useEffect, useState } from "react";
 import styles from "./Login.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,11 @@ import Form from "./Form/Form";
 import EmailLogin from "../../components/emailLogin/EmailLogin";
 import EmailSignUp from "../../components/emailLogin/EmailSignUp";
 import { checkUserInFirestore } from "../../firebase";
+
+import kakaoImg from "../../img/kakao_login.png";
+import googleImg from "../../img/google_login.png";
+
+import googleSvg from "../../img/web_light_sq_SU.svg";
 
 const { Kakao } = window;
 function Login() {
@@ -129,54 +134,11 @@ function Login() {
     };
     return (
       <>
-        <button onClick={handleLogin} type="button">
-          카카오 로그인
+        <button className={styles.kakao} onClick={handleLogin} type="button">
+          <img className={styles.logos} src={kakaoImg} alt="" />
         </button>
       </>
     );
-  };
-  // const code = new URL(document.URL).searchParams.get("code");
-
-  // 카카오 로그인
-  const handleKakaoLogin = () => {
-    Kakao.Auth.login({
-      success: function (authObj) {
-        console.log("카카오 로그인 성공:", authObj);
-        window.Kakao.API.request({
-          url: "/v2/user/me",
-          success: function (response) {
-            console.log("사용자 정보:", response);
-            // 카카오 로그인 성공 시 처리할 로직 추가
-            const userInfo = {
-              id: response.id,
-              email: response.kakao_account.email,
-            };
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            setUserInfo(userInfo);
-
-            // navigator("/");
-          },
-          fail: function (error) {
-            console.error("사용자 정보 요청 실패:", error);
-          },
-        });
-      },
-      fail: function (err) {
-        console.error("카카오 로그인 실패:", err);
-      },
-    });
-  };
-  const handleKakaoLogout = () => {
-    if (window.Kakao.Auth.getAccessToken()) {
-      window.Kakao.Auth.logout(() => {
-        console.log("카카오 로그아웃 성공");
-        // 로그아웃 후 처리할 로직 추가
-        // localStorage.removeItem("userInfo");
-        // setUserId("");
-      });
-    } else {
-      console.log("로그인 상태가 아닙니다.");
-    }
   };
 
   // 구글
@@ -213,7 +175,7 @@ function Login() {
           <div className={styles.loginBox}>
             <input
               id="email"
-              type="email"
+              type="text"
               // placeholder="Email"
               value={email}
               onChange={(e) => dispatch(setEmail(e.target.value))}
@@ -238,33 +200,20 @@ function Login() {
         <button className={styles.loginBtn} type="submit" disabled={isLoading}>
           {isLoading ? "Logging in..." : "Login"}
         </button>
-        계정이 없습니까? &nbsp; <Link to={"/emailsignup"}>가입하기</Link>
-        {/* {notLogin && <p>{error}</p>} */}
-        <div>
+        <div className={styles.links}>
+          <Link>아이디 찾기</Link> |<Link>비밀번호 찾기</Link> |
+          <Link to={"/emailsignup"}>회원 가입하기</Link>
+        </div>
+        <div className={styles.buttons}>
           <button
             className={styles.google}
             onClick={handleGoogleLogin}
             type="button"
           >
-            구글로 로그인
-          </button>
-        </div>
-        <div>
-          <button
-            className={styles.kakao}
-            type="button"
-            onClick={handleKakaoLogin}
-          >
-            카카오로 로그인
+            <img className={styles.logos} src={googleSvg} alt="" />
           </button>
           <SocialKakao />
-          <button onClick={handleKakaoLogout}>카카오 로그아웃</button>
         </div>
-        <Link to={"/SignUp"}>
-          <button className={styles.signup}>회원 상세 정보 입력하기</button>
-        </Link>
-        <button>아이디 찾기</button>
-        <button>비밀번호 찾기</button>
       </form>
     </div>
   );
