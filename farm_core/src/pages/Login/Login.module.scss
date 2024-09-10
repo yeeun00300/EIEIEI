@@ -86,7 +86,7 @@
   .links {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-evenly;
     color: #aaa;
   }
 
@@ -134,7 +134,7 @@
   width: 100%;
   border: none;
   padding: 10px 20px;
-  margin-top: 10px;
+  margin-top: 20px;
   border-radius: 8px;
   background-color: var(--main-color);
 }
