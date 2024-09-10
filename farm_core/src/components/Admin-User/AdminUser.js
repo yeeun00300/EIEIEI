@@ -11,6 +11,7 @@ import { DataGrid } from "@mui/x-data-grid";
 function AdminUser() {
   const dispatch = useDispatch();
   const { userList } = useSelector((state) => state.checkLoginSlice);
+  // console.log(userList);
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
@@ -18,46 +19,82 @@ function AdminUser() {
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
-      field: "firstName",
-      headerName: "First name",
-      width: 150,
+      field: "farmId",
+      headerName: "Farm Id",
+      width: 90,
       editable: true,
     },
     {
-      field: "lastName",
-      headerName: "Last name",
-      width: 150,
+      field: "name",
+      headerName: "name",
+      width: 100,
       editable: true,
     },
     {
-      field: "age",
-      headerName: "Age",
+      field: "nickname",
+      headerName: "nickname",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "email",
+      headerName: "email",
+      // type: "number",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "address",
+      headerName: "address",
+      // type: "number",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "createdAt",
+      headerName: "createdAt",
       type: "number",
-      width: 110,
+      width: 140,
       editable: true,
     },
     {
-      field: "fullName",
-      headerName: "Full name",
-      description: "This column has a value getter and is not sortable.",
-      // sortable: false,
-      width: 160,
-      valueGetter: (value, row) =>
-        `${row.firstName || ""} ${row.lastName || ""}`,
+      field: "admin",
+      headerName: "admin",
+      // type: "number",
+      width: 100,
+      editable: true,
     },
+    // {
+    //   field: "fullName",
+    //   headerName: "Full name",
+    //   description: "This column has a value getter and is not sortable.",
+    //   // sortable: false,
+    //   width: 160,
+    //   valueGetter: (value, row) =>
+    //     `${row.firstName || ""} ${row.lastName || ""}`,
+    // },
   ];
 
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  ];
+  const rows = userList.map((item, idx) => {
+    const { address, email, farm, name, uid, nickname, createdAt } = item;
+    const seconds = createdAt.seconds; // 주어진 초
+    const date = new Date(seconds * 1000); // 밀리초로 변환하여 Date 객체 생성
+    const year = date.getFullYear(); // 연도
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 월 (0부터 시작하므로 1 더해줌)
+    const day = String(date.getDate()).padStart(2, "0"); // 일
+    const selectDate = `${year}-${month}-${day}`;
+    const admin = uid ? "O" : " ";
+    return {
+      id: idx,
+      farmId: farm || "X",
+      name: name,
+      nickname: nickname || "X",
+      email: email,
+      address: address,
+      createdAt: selectDate,
+      admin: admin,
+    };
+  });
 
   const queryOptions = {};
   useEffect(() => {
@@ -111,7 +148,7 @@ function AdminUser() {
             initialState={{
               pagination: {
                 paginationModel: {
-                  pageSize: 5,
+                  pageSize: 9,
                 },
               },
             }}
