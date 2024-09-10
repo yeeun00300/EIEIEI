@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./FreeboardItem.module.scss";
-import hiImg from "../../../img/인사.jpeg";
-import { Link, replace, useNavigate } from "react-router-dom";
-import { FaRegThumbsUp } from "react-icons/fa6";
-import { FaRegThumbsDown } from "react-icons/fa6";
-import FreeboardPage from "../FreeboardPage";
+import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 
 function FreeBoardItem({ item, onItemClick }) {
   const handleClick = () => {
@@ -16,21 +12,32 @@ function FreeBoardItem({ item, onItemClick }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
-        <img src={item.imgUrl} />
+        {item.photoUrl && <img src={item.photoUrl} alt="게시물" />}
         <div className={styles.content}>
           <a className={styles.title} onClick={handleClick}>
             {item.title}
           </a>
-          <p>{item.content}</p>
+          <p>{item.contents}</p>
           <div>
+            {item.declareReason && (
+              <p><strong>신고 사유:</strong> {item.declareReason}</p>
+            )}
+            {item.declareState && (
+              <p><strong>신고 상태:</strong> {item.declareState}</p>
+            )}
+            {item.declareCount > 0 && (
+              <p><strong>신고 횟수:</strong> {item.declareCount}</p>
+            )}
           </div>
-          <p>{item.user}</p>
-          <p>{`작성일 : ${item.createdAt}`}</p>
+          <p>{`작성자: ${item.user}`}</p>
+          <p>{`작성일: ${item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A'}`}</p>
+          <p>{`수정일: ${item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : 'N/A'}`}</p>
+          <p>{`가축 종류: ${item.stockType || 'N/A'}`}</p>
           <div className={styles.reactions}>
             <FaRegThumbsUp />
-            <span>4</span>
+            <span>{item.like || 0}</span>
             <FaRegThumbsDown />
-            <span>0</span>
+            <span>{item.dislike || 0}</span>
           </div>
         </div>
       </div>
