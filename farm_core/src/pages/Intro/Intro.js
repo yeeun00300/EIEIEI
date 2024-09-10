@@ -20,15 +20,18 @@ function Intro(props) {
       <div className={styles.container}>
         <div className={styles.info}>
           <div className={styles.logo}>
-            <img src={logoImg} alt="" />
+            {/* <img src={logoImg} alt="" /> */}
           </div>
           <div className={styles.text}>
             <h1>FarmCore</h1>
-            스마트 팜 운영원리 생육환경 유지관리 SW(온실·축사 내 온·습도,
-            CO2수준 등 생육조건 설정) <br />
-            환경정보 모니터링(온·습도, 일사량, CO2, 생육환경 등자동수집) <br />
-            자동·원격환경관리(냉·난방기 구동, 창문 개폐, CO2,영양분·사료 공급
-            등)
+            <div>
+              스마트 팜 운영원리 생육환경 유지관리 SW(온실·축사 내 온·습도,
+              CO2수준 등 생육조건 설정) <br />
+              환경정보 모니터링(온·습도, 일사량, CO2, 생육환경 등자동수집){" "}
+              <br />
+              자동·원격환경관리(냉·난방기 구동, 창문 개폐, CO2,영양분·사료 공급
+              등)
+            </div>
           </div>
         </div>
         <div className={styles.loginDiv}>

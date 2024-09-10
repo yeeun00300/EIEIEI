@@ -183,7 +183,7 @@ function Login() {
         </button>
         <div className={styles.links}>
           <Link>아이디 찾기</Link>|<Link>비밀번호 찾기</Link>|
-          <Link to={"/emailsignup"}>회원 가입하기</Link>
+          <Link to={"/emailsignup"}>회원가입</Link>
         </div>
         <div className={styles.buttons}>
           <button
