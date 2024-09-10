@@ -18,6 +18,7 @@ import { getDatabase } from "firebase/database";
 import {
   setAddress,
   setAddressPopup,
+  setBirthday,
   setEmail,
   setFarm,
   setIdCheck,
@@ -140,33 +141,42 @@ function SignUp() {
     //   dispatch(setNickname(value));
     // }
     const { name, value } = e.target;
-    switch (name) {
-      case "username":
-        dispatch(setUsername(value));
-        break;
-      case "email":
-        dispatch(setEmail(value));
-        break;
-      case "address":
-        dispatch(setAddress({ address: value, detailedAddress }));
-        break;
-      case "detailedAddress":
-        dispatch(setAddress({ address, detailedAddress: value }));
-        break;
-      case "farm":
-        dispatch(setFarm(value));
-        break;
-      case "phone":
-        dispatch(setPhone(value));
-        break;
-      case "phoneVerificationCode":
-        dispatch(setPhoneVerificationCode(value));
-        break;
-      case "nickname":
-        dispatch(setNickname(value));
-        break;
-      default:
-        break;
+
+    if (name === "phone") {
+      const numericValue = value.replace(/\D/g, "");
+      dispatch(setPhone(numericValue));
+    } else {
+      switch (name) {
+        case "username":
+          dispatch(setUsername(value));
+          break;
+        case "email":
+          dispatch(setEmail(value));
+          break;
+        case "address":
+          dispatch(setAddress({ address: value, detailedAddress }));
+          break;
+        case "detailedAddress":
+          dispatch(setAddress({ address, detailedAddress: value }));
+          break;
+        case "farm":
+          dispatch(setFarm(value));
+          break;
+        case "phoneVerificationCode":
+          dispatch(setPhoneVerificationCode(value));
+          break;
+        case "nickname":
+          dispatch(setNickname(value));
+          break;
+        case "birthday":
+          // 생년월일을 YYYY-MM-DD 형식으로 유지
+          if (value === "" || /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+            dispatch(setBirthday(value));
+          }
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -374,8 +384,8 @@ function SignUp() {
         <div>
           생년월일
           <input
-            placeholder="생년월일을 입력해주세요"
-            type="number"
+            placeholder="YYYY-MM-DD"
+            type="date"
             name="birthday"
             value={birthday}
             onChange={handleChange}
@@ -400,6 +410,7 @@ function SignUp() {
             name="phone"
             value={phone}
             onChange={handleChange}
+            pattern="[0-9]*"
           />
         </div>
         {/* <div>

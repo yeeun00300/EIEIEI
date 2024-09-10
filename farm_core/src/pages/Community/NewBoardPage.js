@@ -1,23 +1,45 @@
 import React, { useState } from "react";
 import styles from "./NewBoardPage.module.scss";
+import { useDispatch } from "react-redux";
+import { createCommunityPost } from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
+import { uploadImage } from "../../firebase";
+import { v4 as uuidv4 } from "uuid";
 
-function NewBoardPage() {
+
+function NewBoardPage({ onCancel }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 여기에 제출 로직 작성 (예: 서버에 데이터 보내기)
-    console.log("Title:", title);
-    console.log("Content:", content);
-    console.log("Iamge:", image);
-    // 폼 초기화
-    setTitle("");
-    setContent("");
-    setImage(null);
+    try {
+      const dataObj = {
+        title,
+        content,
+        imgUrl: image ? await uploadImage(`community/${uuidv4()}`, image) : '',
+        createdAt: new Date().getTime(),
+        updatedAt: new Date().getTime(),
+        like: 0,
+        dislike: 0,
+        declareReason: '',
+        declareState: '',
+        declareCount: 0,
+        stockType: '',
+        notice: false,
+      };
+      await dispatch(createCommunityPost({ collectionName: 'community', dataObj }));
+      setTitle('');
+      setContent('');
+      setImage(null);
+      onCancel();
+    } catch (error) {
+      console.error('새 글 등록 실패:', error);
+    }
   };
+
   return (
     <div className={styles.container}>
       <h2>새 글 쓰기</h2>
@@ -35,7 +57,6 @@ function NewBoardPage() {
         </div>
         <div className={styles.group}>
           <label htmlFor="content">내용</label>
-
           <ImageUploader onImageUpload={(file) => setImage(file)} />
           <textarea
             id="content"
@@ -48,7 +69,7 @@ function NewBoardPage() {
         <button type="submit" className="submitBtn">
           글 등록하기
         </button>
-        <button>취소하기</button>
+        <button type="button" onClick={onCancel}>취소하기</button>
       </form>
     </div>
   );
