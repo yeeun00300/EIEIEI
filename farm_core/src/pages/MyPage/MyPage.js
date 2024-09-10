@@ -13,6 +13,7 @@ import UserInfo from "./UserInfo/UserInfo";
 import Question from "./Question/Question";
 import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
+import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
 const dataObj = {
   UserInfo: { label: "회원정보수정", path: "UserInfo" },
   myCommunity: { label: "내 게시글", path: "MyCommunity" },
@@ -21,25 +22,18 @@ const dataObj = {
 };
 
 function MyPage() {
-  const { id } = useParams();
-  const userId = Number(id);
-  const [user, setUser] = useState(false);
   const [activeComponent, setActiveComponent] = useState(null);
-
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
-  const isEditingUser = useSelector((state) => state.user.isEditingUser);
+  console.log(userInfo);
+  const email = localStorage.getItem("email");
+
   useEffect(() => {
-    const queryOptions = [{ condition: "id", operator: "==", value: userId }];
-    dispatch(fetchUser({ collectionName: "users", queryOptions }))
-      .unwrap()
-      .then((result) => {
-        console.log("불러온 유저 정보:", result); // 불러온 유저 정보 로그
-      })
-      .catch((error) => {
-        console.error("유저 정보 불러오기 에러:", error); // 에러 로그
-      });
-  }, [dispatch, userId]);
+    const queryOptions = {
+      conditions: [{ field: "email", operator: "==", value: email }],
+    };
+    dispatch(fetchUser({ collectionName: "users", queryOptions }));
+  }, []);
 
   const handleComponentChange = (componentName) => {
     if (activeComponent === componentName) {
@@ -48,13 +42,13 @@ function MyPage() {
       setActiveComponent(componentName);
     }
   };
-
+  console.log(userInfo[0]);
   return (
     <div className="page">
       <div>
         <div className={styles.wrapper}>
           <div className={styles.user}>
-            <h3>ID님 환영합니다.</h3>
+            <h3>{userInfo[0]?.name}님 환영합니다.</h3>
             <div>
               <button>로그아웃</button>
             </div>

@@ -454,6 +454,16 @@ async function addCommunityDatas(collectionName, dataObj) {
   }
 }
 
+const uploadProfileImage = async (file) => {
+  const storage = getStorage();
+  const storageRef = ref(storage, `profile_images/${file.name}`);
+
+  await uploadBytes(storageRef, file);
+  const downloadURL = await getDownloadURL(storageRef);
+
+  return downloadURL;
+};
+
 export {
   db,
   addDatas,
@@ -471,5 +481,6 @@ export {
   app,
   auth,
   storage,
+  uploadProfileImage,
 };
 export default app;
