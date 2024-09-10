@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getDatas } from "../../firebase";
+import { getAuth } from "firebase/auth";
+import { get, getDatabase, ref } from "firebase/database";
 
 const loginSlice = createSlice({
   name: "login",
@@ -59,6 +61,17 @@ const loginSlice = createSlice({
       .addCase(fetchLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(adminCheck.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(adminCheck.fulfilled, (state, action) => {
+        state.adminLogin = true;
+        state.isLoading = false;
+      })
+      .addCase(adminCheck.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -75,6 +88,24 @@ const fetchLogin = createAsyncThunk(
     }
   }
 );
+
+const adminCheck = createAsyncThunk("Login/adminCheck", async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (user) {
+    const db = getDatabase();
+    const userRef = ref(db, "users/" + user.uid);
+    const snapshot = await get(userRef);
+
+    if (snapshot.exists()) {
+      const userData = snapshot.val();
+      return userData.isAdmin === true;
+    }
+  }
+});
+
+export { adminCheck };
 
 export const {
   setUsername,
