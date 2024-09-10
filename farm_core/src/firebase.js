@@ -432,23 +432,29 @@ async function getCommunityDatas(collectionName, queryOptions) {
   }
 }
 
-async function uploadImage(file) {
+async function uploadImage(path, file) {
   const storage = getStorage();
-  const storageRef = ref(storage, `community/${file.name}`);
+  const storageRef = ref(storage, path);
+
+  // 파일의 MIME 타입을 설정하는 메타데이터
+  const metadata = {
+    contentType: file.type, // 파일의 MIME 타입을 자동으로 설정
+  };
 
   return new Promise((resolve, reject) => {
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata); // 메타데이터 추가
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        // Optionally handle upload progress here
+        // 업로드 진행 상태를 처리할 수 있습니다 (필요한 경우)
       },
       (error) => {
         reject(error);
       },
       async () => {
         try {
+          // 업로드가 완료되면 다운로드 URL을 반환
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
           resolve(downloadURL);
         } catch (error) {
@@ -460,11 +466,12 @@ async function uploadImage(file) {
 }
 async function addCommunityDatas(collectionName, dataObj) {
   try {
-    const uuid = uuidv4(); // UUID로 고유 이미지 경로 생성
-    const path = `community/${uuid}`;
-    const url = await uploadImage(path, dataObj.imgUrl);
-
-    dataObj.imgUrl = url; // 업로드한 이미지의 URL 할당
+    // 이미지가 있을 경우 업로드 후 URL 반환
+    if (dataObj.imgUrl) {
+      const uuid = uuidv4(); // UUID로 고유 이미지 경로 생성
+      const url = await uploadImage(`community/${uuid}`, dataObj.imgUrl); // 고유 경로와 이미지 파일을 함께 업로드
+      dataObj.imgUrl = url; // 업로드한 이미지의 URL 할당
+    }
 
     // 타임스탬프 추가
     const time = new Date().getTime();
@@ -483,7 +490,6 @@ async function addCommunityDatas(collectionName, dataObj) {
     return false;
   }
 }
-
 const uploadProfileImage = async (file) => {
   const storage = getStorage();
   const storageRef = ref(storage, `profile_images/${file.name}`);

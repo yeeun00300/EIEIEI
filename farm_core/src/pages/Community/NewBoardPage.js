@@ -18,7 +18,7 @@ function NewBoardPage({ onCancel }) {
       const dataObj = {
         title,
         content,
-        imgUrl: image ? await uploadImage(`community/${uuidv4()}`, image) : "",
+        imgUrl: image,
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
         like: 0,

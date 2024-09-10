@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./FreeboardItem.module.scss";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 function FreeBoardItem({ item, onItemClick }) {
   const handleClick = () => {
@@ -8,6 +9,10 @@ function FreeBoardItem({ item, onItemClick }) {
       onItemClick(item);
     }
   };
+
+  const userNickName =
+    useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
+    "닉네임 없음";
 
   return (
     <div className={styles.wrapper}>
@@ -18,24 +23,8 @@ function FreeBoardItem({ item, onItemClick }) {
             {item.title}
           </a>
           <p className={styles.description}>{item.content}</p>
-          <div>
-            {item.declareReason && (
-              <p>
-                <strong>신고 사유:</strong> {item.declareReason}
-              </p>
-            )}
-            {item.declareState && (
-              <p>
-                <strong>신고 상태:</strong> {item.declareState}
-              </p>
-            )}
-            {item.declareCount > 0 && (
-              <p>
-                <strong>신고 횟수:</strong> {item.declareCount}
-              </p>
-            )}
-          </div>
-          <p>{`작성자: ${item.user}`}</p>
+          <div></div>
+          <p>{`작성자: ${userNickName}`}</p>
           <p>
             {`작성일: ${
               item.createdAt
@@ -50,7 +39,6 @@ function FreeBoardItem({ item, onItemClick }) {
                 : "N/A"
             }`}
           </p>
-          <p>{`가축 종류: ${item.stockType || "N/A"}`}</p>
           <div className={styles.reactions}>
             <FaRegThumbsUp />
             <span>{item.like || 0}</span>
