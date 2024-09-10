@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
+  sendEmailVerification,
 } from "firebase/auth";
 import { setUser } from "../../store/userSlice/userSlice";
 import Form from "../../pages/Login/Form/Form";
+import { setEmail, setPassword } from "../../store/joinUserSlice/joinUserSlice";
 
 function EmailSignUp(props) {
   const dispatch = useDispatch();
