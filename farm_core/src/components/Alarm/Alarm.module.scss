@@ -4,17 +4,20 @@
   flex-direction: column;
   gap: 12px;
   position: relative;
-  button {
+  width: 100%;
+  .AlarmBtn {
     // font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    padding: 10px;
     position: absolute;
     top: 12px;
     right: 20px;
-    cursor: pointer;
-    &:hover {
-      background-color: lightgray;
+    button {
+      border: none;
+      // border-radius: 12px;
+      padding: 10px;
+      cursor: pointer;
+      &:hover {
+        background-color: lightgray;
+      }
     }
   }
   span {

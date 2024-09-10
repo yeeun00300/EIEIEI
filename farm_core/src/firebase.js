@@ -3,6 +3,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -112,6 +113,17 @@ async function getData(collectionName, queryOptions) {
   const doc = snapshot.docs[0];
   const resultData = { ...doc.data(), docId: doc.id };
   return resultData;
+}
+
+async function deleteDatas(collectionName, docId) {
+  try {
+    const cartRef = getCollection(collectionName);
+    const docRef = await doc(cartRef, docId.toString());
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.log("error Delete", error);
+  }
 }
 
 async function getDataAll(collectionName) {
@@ -487,6 +499,7 @@ export {
   getCommunityDatas,
   uploadImage,
   getQuery,
+  deleteDatas,
   app,
   auth,
   storage,

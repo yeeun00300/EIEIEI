@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDatas } from "../../firebase";
+import { getDatas, getQuery } from "../../firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const initializeData = {
   city: { name: " " },
@@ -23,6 +24,7 @@ const weatherSlice = createSlice({
     todayWeatherData: initializeDataToday,
     weatherIssueContent: [],
     weatherIssueAlarm: [],
+    onWeatherIssueAlarm: [],
     isLoading: false,
     error: null,
   },
@@ -47,6 +49,16 @@ const weatherSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchWeatherData.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchOnData.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchOnData.fulfilled, (state, action) => {
+        state.onWeatherIssueAlarm = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchOnData.rejected, (state, action) => {
         state.isLoading = false;
       })
       .addCase(fetchWeatherForecastData.pending, (state, action) => {
@@ -78,6 +90,21 @@ const fetchWeatherData = createAsyncThunk(
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
+    } catch (error) {
+      console.log(`error : ${error}`);
+      return null;
+    }
+  }
+);
+// 실시간 데이터 콜
+const fetchOnData = createAsyncThunk(
+  "weatherAlarm/fetchOnData",
+  // 첫번째 파라미터는 payload--> state변경 , 두번째 파라미터는 dispatch 가능
+  async ({ collectionName, queryOptions }) => {
+    try {
+      const q = await getQuery(collectionName, queryOptions);
+      const resultData = useCollectionData(q);
       return resultData;
     } catch (error) {
       console.log(`error : ${error}`);
@@ -128,5 +155,10 @@ const fetchWeatherTodayData = createAsyncThunk(
 
 export const { setWeatherData, setWeatherIssueContent, setTodayWeatherData } =
   weatherSlice.actions;
-export { fetchWeatherData, fetchWeatherForecastData, fetchWeatherTodayData };
+export {
+  fetchWeatherData,
+  fetchWeatherForecastData,
+  fetchWeatherTodayData,
+  fetchOnData,
+};
 export default weatherSlice.reducer;

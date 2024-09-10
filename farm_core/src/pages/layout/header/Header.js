@@ -7,21 +7,26 @@ import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
 import AccordionAlarm from "../../../components/Alarm/AccordionAlarm";
-import { fetchWeatherData } from "../../../store/weatherSlice/weatherSlice";
+import {
+  fetchOnData,
+  fetchWeatherData,
+} from "../../../store/weatherSlice/weatherSlice";
 import { getQuery } from "../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Header({ title, userInfo, address }) {
   const dispatch = useDispatch();
   const { userAddress, email, farm, name, profileImages } = userInfo;
-  const { weatherIssueAlarm, isLoading } = useSelector(
+  const { weatherIssueAlarm, isLoading, onWeatherIssueAlarm } = useSelector(
     (state) => state.weatherSlice
   );
-  const conditions = [{ field: "send", operator: "==", value: true }];
-  const orderBys = [];
+  console.log(onWeatherIssueAlarm);
+
+  const conditions = [];
+  const orderBys = [{ field: "weatherDate", direction: "desc" }];
   const q = getQuery("weatherInfo", {
-    conditions,
-    orderBys,
+    conditions: conditions,
+    orderBys: orderBys,
   });
   const [weatherInfo] = useCollectionData(q);
 
@@ -37,12 +42,15 @@ function Header({ title, userInfo, address }) {
         queryOptions: queryOptions,
       })
     );
+    dispatch(
+      fetchOnData({
+        collectionName: "weatherInfo",
+        queryOptions: queryOptions,
+      })
+    );
   }, [dispatch]);
 
-  useEffect(() => {
-    // console.log("weatherInfo 값 변경", weatherInfo);
-    // console.log("weatherIssueAlarm 값 변경", weatherIssueAlarm);
-  }, [weatherInfo, weatherIssueAlarm]);
+  useEffect(() => {}, [weatherInfo, weatherIssueAlarm]);
 
   return (
     <div className={styles.header}>

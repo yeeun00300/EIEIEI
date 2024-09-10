@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Alarm.module.scss";
-import { updateDatas } from "../../firebase";
+import { deleteDatas, updateDatas } from "../../firebase";
 
 function Alarm({
   title,
@@ -11,19 +11,28 @@ function Alarm({
   collectionName,
   docId,
 }) {
-  const handleClick = () => {};
   return (
     <ul className={styles.Alarm}>
       <li>
         {reSend ? (
-          <button
-            onClick={() => {
-              updateDatas(collectionName, docId, reSendContext);
-              alert("재전송 되었습니다.");
-            }}
-          >
-            재전송하기
-          </button>
+          <div className={styles.AlarmBtn}>
+            <button
+              onClick={() => {
+                deleteDatas(collectionName, docId);
+                alert("삭제 되었습니다.");
+              }}
+            >
+              삭제하기
+            </button>
+            <button
+              onClick={() => {
+                updateDatas(collectionName, docId, reSendContext);
+                alert("재전송 되었습니다.");
+              }}
+            >
+              재전송하기
+            </button>
+          </div>
         ) : (
           <button>전송하기</button>
         )}

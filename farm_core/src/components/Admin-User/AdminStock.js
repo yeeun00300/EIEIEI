@@ -39,7 +39,7 @@ function AdminStock() {
     );
   }, [search, sort]);
   const toggleOpen = (id) => {
-    setOpen((prev) => (prev === id ? null : id));
+    setOpen((prev) => (prev === id ? "" : id));
   };
   return (
     <div className={styles.AdminStock}>
@@ -108,11 +108,27 @@ function AdminStock() {
       {isLoading ? (
         <></>
       ) : (
-        <div className={styles.stockCard}>
+        <div className={styles.stockCards}>
           {stock?.map((stockItem, idx) => {
-            const { stockId, stockType, incomingDate } = stockItem;
+            const {
+              stockId,
+              stockType,
+              incomingDate,
+              variety,
+              birthDate,
+              sexual,
+              weight,
+              size,
+              breedCount,
+              breedDate,
+              pregnantDate,
+            } = stockItem;
             return (
-              <div style={{ minHeight: "150px" }} key={idx}>
+              <div
+                style={{ minHeight: "150px" }}
+                key={idx}
+                className={styles.stockCard}
+              >
                 <Collapse in={open === stockId} dimension="width">
                   <div id="example-collapse-text1">
                     <Card body style={{ width: "400px" }}>
@@ -130,6 +146,66 @@ function AdminStock() {
                           </tr>
                           <tr>
                             <td>종류</td>
+                            <td>{stockType}</td>
+                          </tr>
+                          <tr>
+                            <td>품종</td>
+                            <td>{variety}</td>
+                          </tr>
+                          <tr>
+                            <td>성별</td>
+                            <td>{sexual}</td>
+                          </tr>
+                          <tr>
+                            <td>출생</td>
+                            <td>{birthDate}</td>
+                          </tr>
+                          <tr>
+                            <td>입고 날짜</td>
+                            <td>{incomingDate}</td>
+                          </tr>
+                          <tr>
+                            <td>체중</td>
+                            <td>{weight}</td>
+                          </tr>
+                          <tr>
+                            <td>크기</td>
+                            <td>{size}</td>
+                          </tr>
+                          <tr>
+                            <td>질병이력</td>
+                            <td>{stockType}</td>
+                          </tr>
+                          <tr>
+                            <td>예방접종</td>
+                            <td>{stockType}</td>
+                          </tr>
+                          <tr>
+                            <td>건강상태</td>
+                            <td>{stockType}</td>
+                          </tr>
+                          <tr>
+                            <td>생산량</td>
+                            <td>{stockType}</td>
+                          </tr>
+                          <tr>
+                            <td>임신횟수</td>
+                            <td>{breedCount ? breedCount : "X"}</td>
+                          </tr>
+                          <tr>
+                            <td>최근 임신날짜</td>
+                            <td>{pregnantDate ? pregnantDate : "X"}</td>
+                          </tr>
+                          <tr>
+                            <td>최근 출산예정</td>
+                            <td>{breedDate ? breedDate : "X"}</td>
+                          </tr>
+                          <tr>
+                            <td>최근 출산날짜</td>
+                            <td>{stockType}</td>
+                          </tr>
+                          <tr>
+                            <td>사료</td>
                             <td>{stockType}</td>
                           </tr>
                         </tbody>
