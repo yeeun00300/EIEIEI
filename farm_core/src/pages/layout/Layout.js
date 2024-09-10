@@ -152,10 +152,10 @@ function Layout(props) {
 
   const { adminLogin } = useSelector((state) => state.loginSlice);
 
-  useEffect(() => {
-    dispatch(adminCheck());
-    console.log(adminLogin);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(adminCheck());
+  //   console.log(adminLogin);
+  // }, [dispatch]);
 
   if (isLoading) return <div>로딩중</div>;
   if (!checkLogin || Object.keys(checkLogin).length === 0)

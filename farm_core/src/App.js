@@ -77,6 +77,10 @@ function App() {
             {/* <Route path="My_Farm_Details_Disease" element={<MyStockAddPage />} /> */}
             {/* 자유게시판 */}
             <Route path="My_Farm_Board_FreeBoard" element={<Community />} />
+            <Route
+              path="My_Farm_Board_FreeBoard/:id"
+              element={<FreeboardPage />}
+            />
             {/* 축산 관리 커뮤니티 */}
             <Route path="My_Farm_Board_Community" element={<Livestock />} />
             {/* 마이페이지 */}

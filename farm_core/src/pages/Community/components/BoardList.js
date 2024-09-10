@@ -16,8 +16,6 @@ function BoardList({ items, notices, onItemClick }) {
         <FreeBoardItem key={item.id} item={item} onItemClick={onItemClick} />
       ))}
     </div>
-
   );
 }
-
 export default BoardList;

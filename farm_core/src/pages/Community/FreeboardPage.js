@@ -1,19 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./FreeboardPage.module.scss";
-import hiImg from "../../img/인사.jpeg";
-import { FaRegThumbsUp } from "react-icons/fa6";
-import { FaRegThumbsDown } from "react-icons/fa6";
+import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import sirenImg from "../../img/신고하기.png";
 import CommentSection from "./components/CommentSection";
 
-function FreeboardPage() {
-  const postData = {
-    title: "안녕하세요",
-    content: "처음 왔는데 게시판이 너무 좋네요!",
-    date: "2024-08-23",
-    imgUrl: hiImg,
-  };
-
+function FreeboardPage({ postData }) {
   return (
     <div className="page">
       <div className={styles.wrapper}>
@@ -32,7 +23,7 @@ function FreeboardPage() {
           <button>삭제하기</button>
           <div className={styles.siren}>
             <button>
-              <img src={sirenImg} />
+              <img src={sirenImg} alt="신고하기" />
             </button>
             <span>신고하기</span>
           </div>

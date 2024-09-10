@@ -43,14 +43,14 @@ function Community() {
 
   const handleOpenBoard = (item) => {
     setSelectedItem(item);
-    setOpenBoard(true);
+    navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
   };
 
   if (isWriting) {
     return <NewBoardPage onCancel={handleBackToList} />;
   }
   if (openBoard && selectedItem) {
-    return <FreeboardPage />;
+    return <FreeboardPage item={selectedItem} />;
   }
 
   return (
@@ -59,7 +59,7 @@ function Community() {
         <form className={styles.form}>
           <input placeholder="검색으로 게시글 찾기" />
           <button className={styles.search}>
-            <img src={searchImg} />
+            <img src={searchImg} alt="검색" />
           </button>
           <button className={styles.new} onClick={handleNewBoardClick}>
             새 글 쓰기

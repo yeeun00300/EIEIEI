@@ -434,20 +434,30 @@ async function getCommunityDatas(collectionName, queryOptions) {
 
 async function uploadImage(file) {
   const storage = getStorage();
-  const path = `community/${uuidv4()}_${file.name}`; // 파일 이름을 UUID와 함께 고유하게 만듭니다.
-  const imageRef = ref(storage, path);
+  const storageRef = ref(storage, `community/${file.name}`);
 
-  try {
-    await uploadBytes(imageRef, file);
-    const downloadURL = await getDownloadURL(imageRef);
-    console.log("Download URL:", downloadURL); // URL을 확인합니다.
-    return downloadURL;
-  } catch (error) {
-    console.error("Upload failed:", error.message); // 오류 메시지를 출력합니다.
-    throw error;
-  }
+  return new Promise((resolve, reject) => {
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Optionally handle upload progress here
+      },
+      (error) => {
+        reject(error);
+      },
+      async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        } catch (error) {
+          reject(error);
+        }
+      }
+    );
+  });
 }
-
 async function addCommunityDatas(collectionName, dataObj) {
   try {
     const uuid = uuidv4(); // UUID로 고유 이미지 경로 생성
