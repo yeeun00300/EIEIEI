@@ -1,47 +1,53 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addCommunityDatas, getCommunityDatas, getDatas } from "../../firebase";
+import { addCommunityDatas, getCommunityDatas } from "../../firebase";
 
 const initialState = {
-  communityContents: [],
-  photoUrl: "",
-  communityType: "",
-  title: "",
-  contents: "",
-  createdAt: null,
-  updatedAt: null,
-  like: 0,
-  dislike: 0,
-  declareReason: "",
-  declareState: "",
-  declareCount: 0,
-  stockType: "",
-  notice: false,
+  communityContents: [], // 커뮤니티 게시글 목록
+  livestockContents: [], // 축산 관리 게시글 목록
+  isLoading: false, // 데이터 로딩 상태
+  error: null, // 오류 메시지
+  selectedItem: null, // 현재 선택된 게시글 (자세히 보기)
 };
 
 const communitySlice = createSlice({
   name: "community",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedItem: (state, action) => {
+      state.selectedItem = action.payload;
+    },
+    clearSelectedItem: (state) => {
+      state.selectedItem = null;
+    },
+  },
   extraReducers: (builder) => {
+    // 커뮤니티 게시글 조회
     builder
-      // 게시글 조회
-      .addCase(fetchCommunityPost.pending, (state, action) => {
+      .addCase(fetchCommunityPosts.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchCommunityPost.fulfilled, (state, action) => {
-        state.communityContents = action.payload;
+      .addCase(fetchCommunityPosts.fulfilled, (state, action) => {
+        if (action.meta.arg.communityType === "community") {
+          state.communityContents = action.payload;
+        } else if (action.meta.arg.communityType === "livestock") {
+          state.livestockContents = action.payload;
+        }
         state.isLoading = false;
       })
-      .addCase(fetchCommunityPost.rejected, (state, action) => {
+      .addCase(fetchCommunityPosts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
       // 게시글 생성
-      .addCase(createCommunityPost.pending, (state, action) => {
+      .addCase(createCommunityPost.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createCommunityPost.fulfilled, (state, action) => {
-        state.communityContents.push(action.payload);
+        if (action.meta.arg.communityType === "community") {
+          state.communityContents.push(action.payload);
+        } else if (action.meta.arg.communityType === "livestock") {
+          state.livestockContents.push(action.payload);
+        }
         state.isLoading = false;
       })
       .addCase(createCommunityPost.rejected, (state, action) => {
@@ -51,22 +57,27 @@ const communitySlice = createSlice({
   },
 });
 
-const fetchCommunityPost = createAsyncThunk(
-  "community/fetchCommunityPost",
-  async ({ collectionName, queryOptions }) => {
+// 비동기 작업: 게시글 조회
+const fetchCommunityPosts = createAsyncThunk(
+  "community/fetchCommunityPosts",
+  async ({ communityType, queryOptions }) => {
     try {
-      const snapshot = await getCommunityDatas(collectionName, queryOptions);
-      return snapshot;
+      // collectionName을 communityType으로 변경
+      const data = await getCommunityDatas(communityType, queryOptions);
+      return data;
     } catch (error) {
       throw new Error(error.message);
     }
   }
 );
+
+// 비동기 작업: 게시글 생성
 const createCommunityPost = createAsyncThunk(
-  "community/createPost",
-  async ({ collectionName, dataObj }) => {
+  "community/createCommunityPost",
+  async ({ communityType, dataObj }) => {
     try {
-      const data = await addCommunityDatas(collectionName, dataObj);
+      // collectionName을 communityType으로 변경
+      const data = await addCommunityDatas(communityType, dataObj);
       return data;
     } catch (error) {
       console.error("커뮤니티 게시글 생성에 실패했습니다:", error);
@@ -74,5 +85,6 @@ const createCommunityPost = createAsyncThunk(
     }
   }
 );
+
 export default communitySlice.reducer;
-export { fetchCommunityPost, createCommunityPost };
+export { fetchCommunityPosts, createCommunityPost };

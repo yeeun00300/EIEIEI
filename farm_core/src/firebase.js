@@ -404,6 +404,15 @@ async function getCommunityDatas(collectionName, queryOptions) {
     if (queryOptions) {
       const { conditions = [], orderBys = [], limits } = queryOptions;
 
+      // communityType을 조건에 추가
+      if (queryOptions.communityType) {
+        conditions.push({
+          field: "communityType",
+          operator: "==",
+          value: queryOptions.communityType,
+        });
+      }
+
       conditions.forEach((condition) => {
         q = query(
           q,
@@ -431,7 +440,6 @@ async function getCommunityDatas(collectionName, queryOptions) {
     throw new Error(error.message);
   }
 }
-
 async function uploadImage(path, file) {
   const storage = getStorage();
   const storageRef = ref(storage, path);
@@ -479,7 +487,7 @@ async function addCommunityDatas(collectionName, dataObj) {
     dataObj.updatedAt = time;
 
     // Firestore에 게시글 추가
-    const collect = await collection(db, collectionName);
+    const collect = collection(db, collectionName);
     const result = await addDoc(collect, dataObj);
     const docSnap = await getDoc(result);
 
@@ -490,6 +498,7 @@ async function addCommunityDatas(collectionName, dataObj) {
     return false;
   }
 }
+
 const uploadProfileImage = async (file) => {
   const storage = getStorage();
   const storageRef = ref(storage, `profile_images/${file.name}`);
