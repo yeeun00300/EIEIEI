@@ -49,9 +49,6 @@ function MyPage() {
         <div className={styles.wrapper}>
           <div className={styles.user}>
             <h3>{userInfo[0]?.name}님 환영합니다.</h3>
-            <div>
-              <button>로그아웃</button>
-            </div>
           </div>
           <div className={styles.lists}>
             <Card>

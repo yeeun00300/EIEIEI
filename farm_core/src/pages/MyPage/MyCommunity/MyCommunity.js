@@ -25,28 +25,28 @@ function MyCommunity() {
     (state) => state.communitySlice?.communityContents || []
   );
 
-  useEffect(() => {
-    const fetchDownloadUrl = async () => {
-      setLoading(true);
-      try {
-        const fileRef = ref(storage, "path/to/your/excel-template.xlsx");
-        const url = await getDownloadURL(fileRef);
-        setDownloadUrl(url);
-      } catch (error) {
-        console.error("Error fetching download URL:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchDownloadUrl = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const fileRef = ref(storage, "path/to/your/excel-template.xlsx");
+  //       const url = await getDownloadURL(fileRef);
+  //       setDownloadUrl(url);
+  //     } catch (error) {
+  //       console.error("Error fetching download URL:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    console.log(window);
+  //   console.log(window);
 
-    fetchDownloadUrl();
-  }, [storage]);
+  //   fetchDownloadUrl();
+  // }, [storage]);
 
-  useEffect(() => {
-    // dispatch(fetchCommunityPost({ collectionName: "community", queryOptions: {} }));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchCommunity({ collectionName: "community", queryOptions: {} }));
+  // }, [dispatch]);
 
   return (
     <div className="page">
