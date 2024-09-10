@@ -2,7 +2,6 @@ import React, { startTransition, useEffect, useState } from "react";
 import styles from "./Login.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import {
   setEmail,
   setError,
@@ -17,18 +16,12 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import Form from "./Form/Form";
-import EmailLogin from "../../components/emailLogin/EmailLogin";
-import EmailSignUp from "../../components/emailLogin/EmailSignUp";
 import { checkUserInFirestore } from "../../firebase";
 
 import kakaoImg from "../../img/kakao_login.png";
-import googleImg from "../../img/google_login.png";
 
 import googleSvg from "../../img/web_light_sq_SU.svg";
 
-const { Kakao } = window;
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -112,18 +105,6 @@ function Login() {
   };
 
   // 카카오 소셜 로그인
-  const [userInfo, setUserInfo] = useState(() => {
-    // 페이지 로드 시 로컬 스토리지에서 사용자 정보 불러오기
-    const savedUserInfo = localStorage.getItem("userInfo");
-    return savedUserInfo ? JSON.parse(savedUserInfo) : null;
-  });
-
-  useEffect(() => {
-    const kakaoKey = process.env.KAKAO_APP_KEY; // 카카오 JavaScript 키
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(kakaoKey);
-    }
-  }, []);
 
   const SocialKakao = () => {
     const kakaoAPIKey = `${process.env.REACT_APP_REST_API_KEY}`;
