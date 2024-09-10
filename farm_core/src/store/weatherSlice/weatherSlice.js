@@ -23,7 +23,9 @@ const weatherSlice = createSlice({
     // 오늘 날씨
     todayWeatherData: initializeDataToday,
     weatherIssueContent: [],
+    // 파이어베이스 알림
     weatherIssueAlarm: [],
+    // 실시간 알림
     onWeatherIssueAlarm: [],
     isLoading: false,
     error: null,
@@ -131,7 +133,11 @@ const fetchWeatherTodayData = createAsyncThunk(
   }
 );
 
-export const { setWeatherData, setWeatherIssueContent, setTodayWeatherData } =
-  weatherSlice.actions;
+export const {
+  setWeatherData,
+  setWeatherIssueContent,
+  setTodayWeatherData,
+  setOnWeatherIssueAlarm,
+} = weatherSlice.actions;
 export { fetchWeatherData, fetchWeatherForecastData, fetchWeatherTodayData };
 export default weatherSlice.reducer;

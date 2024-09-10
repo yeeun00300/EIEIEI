@@ -10,9 +10,11 @@ import AccordionAlarm from "../../../components/Alarm/AccordionAlarm";
 import {
   fetchOnData,
   fetchWeatherData,
+  setOnWeatherIssueAlarm,
 } from "../../../store/weatherSlice/weatherSlice";
 import { getQuery } from "../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { orderBy } from "firebase/firestore";
 
 function Header({ title, userInfo, address }) {
   const dispatch = useDispatch();
@@ -28,19 +30,20 @@ function Header({ title, userInfo, address }) {
     orderBys: orderBys,
   });
   const [weatherInfo] = useCollectionData(q);
+  dispatch(setOnWeatherIssueAlarm(weatherInfo));
 
   // const address = useSelector((state) => state.mapAddrSlice.address);
   const hereAddress = address;
   useEffect(() => {
-    const queryOptions = {
-      orderBys: [{ field: "weatherDate", direction: "desc" }],
-    };
-    dispatch(
-      fetchWeatherData({
-        collectionName: "weatherInfo",
-        queryOptions: queryOptions,
-      })
-    );
+    // const queryOptions = {
+    //   orderBys: [{ field: "weatherDate", direction: "desc" }],
+    // };
+    // dispatch(
+    //   fetchWeatherData({
+    //     collectionName: "weatherInfo",
+    //     queryOptions: queryOptions,
+    //   })
+    // );
     // dispatch(
     //   fetchOnData({
     //     collectionName: "weatherInfo",
