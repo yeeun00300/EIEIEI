@@ -3,11 +3,13 @@ import Alarm from "./Alarm";
 import Sort from "../../pages/Admin/components/Sort";
 import { getDatas } from "../../firebase";
 import Search from "../../pages/Admin/components/Search";
+import { useSelector } from "react-redux";
 
 function AlarmManagement({ reSend, sort }) {
   // const [sort, setSort] = useState("전부");
   const [weatherIssueAlarm, setWeatherIssueAlarm] = useState([]);
   const [search, setSearch] = useState("");
+  const { onWeatherIssueAlarm } = useSelector((state) => state.weatherSlice);
   const SelectedDiseaseWeather = () => {
     const weatherDescription = `< 특보 현황 >
    ○ 폭염경보: 부산, 경상남도(양산, 창원, 김해, 밀양, 의령, 함안, 창녕, 진주, 하동, 합천, 산청, 함양)
@@ -30,7 +32,9 @@ function AlarmManagement({ reSend, sort }) {
     };
     useEffect(() => {
       handleLoad();
-    }, []);
+      // }, []);
+    }, [onWeatherIssueAlarm]);
+    console.log(onWeatherIssueAlarm);
 
     if (sort === "날씨") {
       return (

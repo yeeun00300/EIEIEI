@@ -3,11 +3,22 @@ import styles from "./AdminUser.module.scss";
 import Search from "../../pages/Admin/components/Search";
 import Sort from "../../pages/Admin/components/Sort";
 import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserList } from "../../store/checkLoginSlice/checkLoginSlice";
 
 function AdminUser() {
+  const dispatch = useDispatch();
+  const { userList } = useSelector((state) => state.checkLoginSlice);
+  console.log(userList);
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-  useEffect(() => {}, [search, sort]);
+  const queryOptions = {};
+  useEffect(() => {
+    dispatch(
+      fetchUserList({ collectionName: "users", queryOptions: queryOptions })
+    );
+  }, [search, sort]);
   return (
     <div className={styles.AdminUser}>
       <div className={styles.AdminUtil}>

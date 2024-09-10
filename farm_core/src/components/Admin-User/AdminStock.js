@@ -22,12 +22,12 @@ function AdminStock() {
     M: "수컷",
   };
 
-  // const queryOptions = {
-  //   conditions: [
-  //     { field: "stockCode", operation: "==", value: codeDict[sort] },
-  //   ],
-  //   orderBys: [],
-  // };
+  const queryOptions = {
+    conditions: [
+      { field: "stockCode", operation: "==", value: codeDict[sort] },
+    ],
+    orderBys: [],
+  };
   useEffect(() => {
     dispatch(
       fetchExcelStock({

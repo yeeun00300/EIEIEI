@@ -4,6 +4,7 @@ import { getData, getDatas } from "../../firebase";
 
 const initialState = {
   checkLogin: {},
+  userList: [],
   isLoading: false,
   error: "",
 };
@@ -24,6 +25,17 @@ const checkLoginSlice = createSlice({
       .addCase(fetchLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchUserList.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUserList.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userList = action.payload;
+      })
+      .addCase(fetchUserList.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -34,7 +46,7 @@ const fetchLogin = createAsyncThunk(
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getData(collectionName, queryOptions);
-      console.log(resultData);
+      // console.log(resultData);
       return resultData;
     } catch (error) {
       console.log(`error : ${error}`);
@@ -42,6 +54,18 @@ const fetchLogin = createAsyncThunk(
     }
   }
 );
+// 모든 유저
+const fetchUserList = createAsyncThunk(
+  "users/fetchUserList",
+  async ({ collectionName, queryOptions }) => {
+    try {
+      const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
 
 export default checkLoginSlice.reducer;
-export { fetchLogin };
+export { fetchLogin, fetchUserList };
