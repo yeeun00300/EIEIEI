@@ -12,27 +12,45 @@ function FreeBoardItem({ item, onItemClick }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
-        {item.photoUrl && <img src={item.photoUrl} alt="게시물" />}
+        {item.imgUrl && <img src={item.imgUrl} alt="게시물" />}
         <div className={styles.content}>
           <a className={styles.title} onClick={handleClick}>
             {item.title}
           </a>
-          <p>{item.contents}</p>
+          <p className={styles.description}>{item.content}</p>
           <div>
             {item.declareReason && (
-              <p><strong>신고 사유:</strong> {item.declareReason}</p>
+              <p>
+                <strong>신고 사유:</strong> {item.declareReason}
+              </p>
             )}
             {item.declareState && (
-              <p><strong>신고 상태:</strong> {item.declareState}</p>
+              <p>
+                <strong>신고 상태:</strong> {item.declareState}
+              </p>
             )}
             {item.declareCount > 0 && (
-              <p><strong>신고 횟수:</strong> {item.declareCount}</p>
+              <p>
+                <strong>신고 횟수:</strong> {item.declareCount}
+              </p>
             )}
           </div>
           <p>{`작성자: ${item.user}`}</p>
-          <p>{`작성일: ${item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A'}`}</p>
-          <p>{`수정일: ${item.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : 'N/A'}`}</p>
-          <p>{`가축 종류: ${item.stockType || 'N/A'}`}</p>
+          <p>
+            {`작성일: ${
+              item.createdAt
+                ? new Date(item.createdAt).toLocaleDateString()
+                : "N/A"
+            }`}
+          </p>
+          <p>
+            {`수정일: ${
+              item.updatedAt
+                ? new Date(item.updatedAt).toLocaleDateString()
+                : "N/A"
+            }`}
+          </p>
+          <p>{`가축 종류: ${item.stockType || "N/A"}`}</p>
           <div className={styles.reactions}>
             <FaRegThumbsUp />
             <span>{item.like || 0}</span>

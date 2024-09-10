@@ -17,18 +17,18 @@ import {
   setUserNickname,
 } from "./../../../store/myPageSlice/userEditSlice";
 import { setProfileImage } from "../../../store/loginSlice/loginSlice";
-import { setFarm } from "../../../store/joinUserSlice/joinUserSlice";
 
 function UserInfo() {
   const dispatch = useDispatch();
   const { address, zoneCode, isOpen } = useSelector(
     (state) => state.addressSlice
   );
-  const { name, email, profileImage, nickName, tel, farm } = useSelector(
+  const { name, email, profileImages, nickname, phone } = useSelector(
     (state) => state.userEditSlice.userInfo
   );
   const [file, setFile] = useState(null);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(profileImages);
 
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
   const userEmail = localStorage.getItem("email");
@@ -64,67 +64,62 @@ function UserInfo() {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setPreviewUrl(fileUrl);
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    try {
-      let profileImageUrl = profileImage;
-      if (file) {
-        profileImageUrl = await uploadProfileImage(file);
-        dispatch(setProfileImage(profileImageUrl));
-      }
-
-      // dispatch를 통해 상태 업데이트
-      switch (name) {
-        case "name":
-          dispatch(setName(value));
-          break;
-        case "email":
-          dispatch(setEmail(value));
-          break;
-        case "nickName":
-          dispatch(setUserNickname(value));
-          break;
-        case "tel":
-          dispatch(setTel(value));
-          break;
-        case "farm":
-          dispatch(setFarm(value));
-          break;
-        default:
-          break;
-      }
-    } catch (error) {
-      console.error("저장 실패:", error);
+    switch (name) {
+      case "name":
+        dispatch(setName(value));
+        break;
+      case "email":
+        dispatch(setEmail(value));
+        break;
+      case "nickname":
+        dispatch(setUserNickname(value));
+        break;
+      case "phone":
+        dispatch(setTel(value));
+        break;
+      default:
+        break;
     }
   };
-
-  const handleSave = () => {
+  const handleSave = async () => {
     const userId = userInfo[0]?.docId;
     if (userId) {
-      updateDatas("users", userId, {
-        name,
-        email,
-        profileImage,
-        nickName,
-        tel,
-        farm,
-        address,
-        zoneCode,
-      })
-        .then(() => {
-          alert("저장 완료");
-        })
-        .catch((error) => {
-          console.error("저장 실패:", error);
+      try {
+        let profileImageUrl = profileImages;
+
+        // 파일이 선택된 경우, Firebase Storage에 업로드
+        if (file) {
+          profileImageUrl = await uploadProfileImage(file);
+          dispatch(setProfileImage(profileImageUrl)); // 프로필 이미지 URL 업데이트
+          console.log("Profile Image URL after dispatch:", profileImageUrl); // 콘솔에 출력
+        }
+
+        // Firestore에 사용자 데이터 업데이트
+        await updateDatas("users", userId, {
+          name,
+          email,
+          profileImages: profileImageUrl, // 업데이트된 프로필 이미지 URL
+          nickname,
+          phone,
+          address,
+          zoneCode,
         });
+
+        alert("저장 완료");
+      } catch (error) {
+        console.error("저장 실패:", error);
+      }
     } else {
       console.error("User ID가 없습니다.");
     }
   };
-
   useEffect(() => {
     const queryOptions = {
       conditions: [{ field: "email", operator: "==", value: userEmail }],
@@ -135,14 +130,14 @@ function UserInfo() {
   useEffect(() => {
     if (userInfo.length > 0) {
       const user = userInfo[0];
-      // 상태를 업데이트하여 input 필드에 데이터 표시
       dispatch(setName(user.name));
       dispatch(setEmail(user.email));
-      dispatch(setUserNickname(user.nickName));
-      dispatch(setTel(user.tel));
-      dispatch(setFarm(user.farm));
+      dispatch(setUserNickname(user.nickname));
+      dispatch(setTel(user.phone));
+      // dispatch(setFarm(user.farm));
       dispatch(setAddress(user.address));
       dispatch(setZoneCode(user.zoneCode));
+      setPreviewUrl(user.profileImages || img); // 초기 프로필 이미지 URL 설정
       setInitialDataLoaded(true);
     }
   }, [userInfo, dispatch]);
@@ -159,7 +154,7 @@ function UserInfo() {
         <div className={styles.wrapper}>
           <div className={styles.userInfo}>
             <div className={styles.profile}>
-              <img src={profileImage || img} className={styles.personImg} />
+              <img src={previewUrl || img} className={styles.personImg} />
               <input
                 type="file"
                 className={styles.hidden}
@@ -174,8 +169,8 @@ function UserInfo() {
             <div>
               <span>닉네임 :</span>
               <input
-                name="nickName"
-                value={nickName || ""}
+                name="nickname"
+                value={nickname || ""}
                 onChange={handleChange}
               />
             </div>
@@ -191,13 +186,13 @@ function UserInfo() {
             <div>
               <span>핸드폰 번호 :</span>
               <input
-                name="tel"
+                name="phone"
                 type="tel"
-                value={tel || ""}
+                value={phone || ""}
                 onChange={handleChange}
               />
             </div>
-            <div>
+            {/* <div>
               <span>축사번호 :</span>
               <input
                 name="farm"
@@ -205,7 +200,7 @@ function UserInfo() {
                 value={farm || ""}
                 onChange={handleChange}
               />
-            </div>
+            </div> */}
             <div className={styles.addr}>
               <span>주소 :</span>
               <div className={styles.addrInputs}>

@@ -54,6 +54,14 @@ function AddLiveStock(props) {
             />
           </div>
           <div>
+            <label htmlFor="barName">축사 번호:</label>
+            <input
+              type="number"
+              name="farmId"
+              placeholder="축사 번호를 입력해주세요"
+            />
+          </div>
+          <div>
             <label htmlFor="location">위치:</label>
             <input
               name="location"

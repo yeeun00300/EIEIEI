@@ -6,7 +6,6 @@ import ImageUploader from "./components/ImageUploader";
 import { uploadImage } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 
-
 function NewBoardPage({ onCancel }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -19,24 +18,26 @@ function NewBoardPage({ onCancel }) {
       const dataObj = {
         title,
         content,
-        imgUrl: image ? await uploadImage(`community/${uuidv4()}`, image) : '',
+        imgUrl: image ? await uploadImage(`community/${uuidv4()}`, image) : "",
         createdAt: new Date().getTime(),
         updatedAt: new Date().getTime(),
         like: 0,
         dislike: 0,
-        declareReason: '',
-        declareState: '',
+        declareReason: "",
+        declareState: "",
         declareCount: 0,
-        stockType: '',
+        stockType: "",
         notice: false,
       };
-      await dispatch(createCommunityPost({ collectionName: 'community', dataObj }));
-      setTitle('');
-      setContent('');
+      await dispatch(
+        createCommunityPost({ collectionName: "community", dataObj })
+      );
+      setTitle("");
+      setContent("");
       setImage(null);
       onCancel();
     } catch (error) {
-      console.error('새 글 등록 실패:', error);
+      console.error("새 글 등록 실패:", error);
     }
   };
 
@@ -69,7 +70,9 @@ function NewBoardPage({ onCancel }) {
         <button type="submit" className="submitBtn">
           글 등록하기
         </button>
-        <button type="button" onClick={onCancel}>취소하기</button>
+        <button type="button" onClick={onCancel}>
+          취소하기
+        </button>
       </form>
     </div>
   );
