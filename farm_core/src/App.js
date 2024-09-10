@@ -12,14 +12,18 @@ import Intro from "./pages/Intro/Intro";
 import Community from "./pages/Community/Community";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { setEmail, setNotLogin } from "./store/loginSlice/loginSlice";
+import {
+  adminCheck,
+  setEmail,
+  setNotLogin,
+} from "./store/loginSlice/loginSlice";
 import FreeboardPage from "./pages/Community/FreeboardPage";
 import NewBoardPage from "./pages/Community/NewBoardPage";
 import Livestock from "./pages/Community/Livestock";
 import KakaoCallBack from "./pages/Login/SignUp/KakaoCallBack";
 import EmailLogin from "./components/emailLogin/EmailLogin";
 import EmailSignUp from "./components/emailLogin/EmailSignUp";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import RegularPayment from "./pages/RegularPayment/RegularPayment";
 import MyLiveStock from "./components/MyLiveStock/MyLiveStock";
 import AddLiveStock from "./components/addLiveStock/AddLiveStock";

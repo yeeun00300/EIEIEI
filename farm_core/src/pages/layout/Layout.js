@@ -8,7 +8,7 @@ import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
 import TreeViewComp from "../../components/TreeViewComp/TreeViewComp";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { setAdminLogin } from "../../store/loginSlice/loginSlice";
+import { adminCheck, setAdminLogin } from "../../store/loginSlice/loginSlice";
 import { Box } from "@mui/material";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import MyPage from "../MyPage/MyPage";
@@ -32,7 +32,6 @@ import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
 
 function Layout(props) {
   const dispatch = useDispatch();
-  const { adminLogin } = useSelector((state) => state.loginSlice);
 
   // user nav list
   const USER_PRODUCTS = [
@@ -150,6 +149,13 @@ function Layout(props) {
     console.log("CheckLogin state:", checkLogin);
     console.log("Loading state:", isLoading);
   }, [checkLogin, isLoading]);
+
+  const { adminLogin } = useSelector((state) => state.loginSlice);
+
+  useEffect(() => {
+    dispatch(adminCheck());
+    console.log(adminLogin);
+  }, [dispatch]);
 
   if (isLoading) return <div>로딩중</div>;
   if (!checkLogin || Object.keys(checkLogin).length === 0)
