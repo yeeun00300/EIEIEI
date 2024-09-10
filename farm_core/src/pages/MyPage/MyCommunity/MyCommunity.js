@@ -11,7 +11,6 @@ import CommunityConents from "./communityContent/CommunityConents";
 import ExcelTemplateDownload from "../../../components/ExcelTemplateDownload/ExcelTemplateDownload";
 import ExcelUpload from "../../../components/ExcelUpload/ExcelUpload";
 import StockAddfromExcel from "../../../components/StockAdd/StockAddfromExcel";
-import PayPage from "../../pay/PayPage";
 import RegularPayment from "../../RegularPayment/RegularPayment";
 import styles from "./MyCommunity.module.scss";
 

@@ -17,7 +17,8 @@ function MyStockAddPage() {
 
   return (
     <div className="page">
-      <h1>가축 추가(엑셀 활용)</h1>
+      <div></div>
+      <h3>가축 추가(엑셀 활용)</h3>
       <ExcelTemplateDownload />
       <ExcelUpload />
       <h1>Data from Firestore</h1>

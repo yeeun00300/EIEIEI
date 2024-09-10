@@ -40,6 +40,7 @@ function AddLiveStock(props) {
   const handleChange = (e) => {
     dispatch(setAddress(e.target.value));
   };
+
   return (
     <div className="page">
       <div className={styles.box}>
