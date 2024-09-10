@@ -6,6 +6,7 @@ const initialState = {
   checkLogin: {},
   userList: [],
   isLoading: false,
+  userLoading: false,
   error: "",
 };
 
@@ -27,14 +28,14 @@ const checkLoginSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(fetchUserList.pending, (state) => {
-        state.isLoading = true;
+        state.userLoading = true;
       })
       .addCase(fetchUserList.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.userLoading = false;
         state.userList = action.payload;
       })
       .addCase(fetchUserList.rejected, (state, action) => {
-        state.isLoading = false;
+        state.userLoading = false;
         state.error = action.payload;
       });
   },
