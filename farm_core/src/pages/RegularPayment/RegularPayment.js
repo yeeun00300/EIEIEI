@@ -21,7 +21,8 @@ function RegularPayment() {
       const customerName = userInfo[0].name;
       const customerphone = userInfo[0].phone;
       const uniquePaymentId = `test-${Date.now()}`;
-      const payDate = new Date().toISOString().split("T")[0];
+      const payDate = kroDate();
+      console.log(payDate);
 
       const docId = userInfo[0].docId;
 

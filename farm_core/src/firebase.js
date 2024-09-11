@@ -346,6 +346,9 @@ async function uploadExcelAndSaveData(file, collectionName) {
     const headers = jsonData[0]; // 첫 번째 행이 헤더
     const values = jsonData.slice(1); // 두 번째 행부터 값들
 
+    // localStorage에서 이메일 값을 가져옴
+    const email = localStorage.getItem("email");
+
     const dataObjects = values.map((row) => {
       const dataObject = headers.reduce((acc, header, index) => {
         let cellValue = row[index] !== undefined ? row[index] : null;
@@ -373,6 +376,9 @@ async function uploadExcelAndSaveData(file, collectionName) {
         }
       }
 
+      // 이메일 필드를 추가
+      convertedObject.email = email;
+
       // Firestore에 전송하기 전에 데이터 확인
       console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
 
@@ -380,6 +386,7 @@ async function uploadExcelAndSaveData(file, collectionName) {
     });
 
     // Firestore에 저장
+    const db = getFirestore(); // Firestore 인스턴스 가져오기
     const collectionRef = collection(db, collectionName);
     for (const dataObject of dataObjects) {
       await addDoc(collectionRef, dataObject);

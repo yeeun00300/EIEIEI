@@ -1,6 +1,15 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { updateField } from "../../store/medicalSlice/medicalSlice";
 
 function MedicalList(props) {
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(updateField({ field: name, value }));
+  };
+
   return (
     <div>
       <h2>축사 문진표</h2>

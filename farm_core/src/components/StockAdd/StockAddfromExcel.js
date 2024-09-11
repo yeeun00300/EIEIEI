@@ -71,8 +71,23 @@ const order = [
   "산란량",
 ];
 
+const fieldsToRender = [
+  "가축 종류",
+  "축사 번호",
+  "가축 개체번호",
+  "품종",
+  "입고 날짜",
+  "성별",
+  "크기",
+  "무게",
+  "출생 날짜",
+  "발정기 여부",
+  "백신 접종 데이터",
+  "질병 및 치료 데이터",
+];
 function StockAddfromExcel() {
   const [items, setItems] = useState([]);
+  const [expandedRows, setExpandedRows] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -90,14 +105,24 @@ function StockAddfromExcel() {
     fetchData();
   }, []);
 
+  const handleToggleExpand = (rowIndex) => {
+    if (expandedRows.includes(rowIndex)) {
+      setExpandedRows(expandedRows.filter((index) => index !== rowIndex));
+    } else {
+      setExpandedRows([...expandedRows, rowIndex]);
+    }
+  };
+
   const renderTableHeader = () => (
     <thead>
       <tr>
-        {order.map((key) => (
+        {fieldsToRender.map((key) => (
           <th key={key} className={styles.th}>
             {key}
           </th>
         ))}
+        <th className={styles.th}>상세보기</th>{" "}
+        {/* '상세보기' 버튼을 위한 헤더 */}
       </tr>
     </thead>
   );
@@ -105,39 +130,89 @@ function StockAddfromExcel() {
   const renderTableBody = () => (
     <tbody>
       {items.map((item, rowIndex) => (
-        <tr key={rowIndex}>
-          {order.map((key, columnIndex) => (
-            <td
-              key={`${rowIndex}-${columnIndex}-${key}`}
-              className={`${styles.td} ${
-                key === "발정기 여부" ||
-                key === "출산 횟수" ||
-                key === "성별" ||
-                key === "격리 상태" ||
-                key === "폐사 여부"
-                  ? styles.narrow
-                  : key === "백신 접종 데이터" || key === "질병 및 치료 데이터"
-                  ? styles.wide
-                  : key === "크기" || key === "무게"
-                  ? styles.medium // 크기와 무게에 medium 스타일 적용
-                  : ""
-              }`}
-            >
-              {Array.isArray(item[key]) ? (
-                <div>
-                  {item[key].map((subItem, subIndex) => {
-                    const subItemString = Object.entries(subItem)
-                      .map(([type, date]) => `${type}: ${date}`)
-                      .join(", ");
-                    return <p key={subIndex}>{subItemString || "X"}</p>;
-                  })}
-                </div>
-              ) : (
-                item[key]?.toString() || "X"
-              )}
+        <React.Fragment key={rowIndex}>
+          <tr>
+            {fieldsToRender.map((key, columnIndex) => (
+              <td
+                key={`${rowIndex}-${columnIndex}-${key}`}
+                className={`${styles.td} ${
+                  key === "발정기 여부" || key === "성별" ? styles.narrow : ""
+                }`}
+              >
+                {Array.isArray(item[key]) ? (
+                  <div>
+                    {item[key].map((subItem, subIndex) => {
+                      // 객체의 key-value 쌍을 문자열로 변환
+                      const subItemString = Object.entries(subItem)
+                        .map(([subKey, subValue]) => `${subKey}: ${subValue}`)
+                        .join(", ");
+                      return <p key={subIndex}>{subItemString || "X"}</p>;
+                    })}
+                  </div>
+                ) : (
+                  item[key]?.toString() || "X"
+                )}
+              </td>
+            ))}
+            <td className={styles.td}>
+              <button onClick={() => handleToggleExpand(rowIndex)}>
+                {expandedRows.includes(rowIndex) ? "접기" : "상세보기"}
+              </button>
             </td>
-          ))}
-        </tr>
+          </tr>
+
+          {expandedRows.includes(rowIndex) && (
+            <tr>
+              <td colSpan={fieldsToRender.length + 1}>
+                <table className={styles.expandedTable}>
+                  <thead>
+                    <tr>
+                      {order.map((key) => (
+                        <th key={key} className={styles.th}>
+                          {key}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {order.map((key, columnIndex) => (
+                        <td
+                          key={`${rowIndex}-expanded-${columnIndex}-${key}`}
+                          className={`${styles.td} ${
+                            key === "백신 접종 데이터" ||
+                            key === "질병 및 치료 데이터"
+                              ? styles.wide
+                              : ""
+                          }`}
+                        >
+                          {Array.isArray(item[key]) ? (
+                            <div>
+                              {item[key].map((subItem, subIndex) => {
+                                // 객체의 key-value 쌍을 문자열로 변환
+                                const subItemString = Object.entries(subItem)
+                                  .map(
+                                    ([subKey, subValue]) =>
+                                      `${subKey}: ${subValue}`
+                                  )
+                                  .join(", ");
+                                return (
+                                  <p key={subIndex}>{subItemString || "X"}</p>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            item[key]?.toString() || "X"
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          )}
+        </React.Fragment>
       ))}
     </tbody>
   );
