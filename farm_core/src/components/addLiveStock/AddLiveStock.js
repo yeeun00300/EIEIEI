@@ -16,16 +16,16 @@ function AddLiveStock(props) {
     (state) => state.addressSlice
   );
   const {
-    farmName,
-    farmId,
-    farmScale,
-    farm_stockType,
-    farmBuild,
-    farmCondition,
-    facilities,
-    insuranceDetail,
-    note,
-  } = useSelector((state) => state.AddLiveStockSlice);
+    farmName = "",
+    farmId = "",
+    farmScale = "",
+    farm_stockType = "",
+    farmBuild = "",
+    farmCondition = "",
+    facilities = "",
+    insuranceDetail = "",
+    note = "",
+  } = useSelector((state) => state.AddLiveStockSlice || {});
 
   const [detailAddress, setDetailAddress] = useState("");
   const [formErrors, setFormErrors] = useState({});
