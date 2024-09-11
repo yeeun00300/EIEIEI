@@ -23,6 +23,8 @@ const initialState = {
   isPhoneVerified: false,
   recaptchaVerifier: null,
   sentCode: "",
+  isCodeSent: false,
+  emailVerificationStatus: "",
 };
 
 const joinUserSlice = createSlice({
@@ -97,6 +99,9 @@ const joinUserSlice = createSlice({
     setIsCodeSent: (state, action) => {
       state.isCodeSent = action.payload;
     },
+    setEmailVerificationStatus: (state, action) => {
+      state.emailVerificationStatus = action.payload;
+    },
     setIsEmailVerified: (state, action) => {
       state.isEmailVerified = action.payload;
     },
@@ -137,6 +142,7 @@ export const {
   setSentCode,
   setIsCodeSent,
   setIsEmailVerified,
+  setEmailVerificationStatus,
 } = joinUserSlice.actions;
 
 export default joinUserSlice.reducer;

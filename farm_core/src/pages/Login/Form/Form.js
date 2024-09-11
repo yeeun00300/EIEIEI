@@ -13,7 +13,10 @@ function Form({ title, getDataForm, firebaseError }) {
   });
 
   console.log(errors);
-  const onSubmit = ({ email, password }) => {
+
+  const onSubmit = (data) => {
+    console.log("폼에서 받은 데이터:", data);
+    const { email, password } = data;
     getDataForm(email, password);
     reset();
   };
@@ -56,7 +59,7 @@ function Form({ title, getDataForm, firebaseError }) {
           </div>
         )}
       </div>
-      <button>{title}</button>
+      <button type="submit">{title}</button>
       {firebaseError && (
         <span className={styles.form_error}>{firebaseError}</span>
       )}

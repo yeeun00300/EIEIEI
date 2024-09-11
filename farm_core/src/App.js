@@ -18,6 +18,7 @@ import RegularPayment from "./pages/RegularPayment/RegularPayment";
 import MyLiveStock from "./components/MyLiveStock/MyLiveStock";
 import AddLiveStock from "./components/addLiveStock/AddLiveStock";
 import MyStockAddPage from "./pages/MyStockAddPage/MyStockAddPage";
+import EmailCheck from "./components/emailLogin/EmailCheck";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function App() {
           <Route path="/">
             <Route index element={<Intro />} />
             <Route path="EmailSignUp" element={<EmailSignUp />} />
+            <Route path="verify-email" element={<EmailCheck />} />
             <Route path="SignUp" element={<SignUp />} />
             <Route path="oauth" element={<KakaoCallBack />} />
             <Route path="RegularPayment" element={<RegularPayment />} />
