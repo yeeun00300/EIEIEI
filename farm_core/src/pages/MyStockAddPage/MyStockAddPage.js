@@ -21,7 +21,7 @@ function MyStockAddPage() {
       <h3>가축 추가(엑셀 활용)</h3>
       <ExcelTemplateDownload />
       <ExcelUpload />
-      <h1>Data from Firestore</h1>
+      {/* <h1>Data from Firestore</h1> */}
       {isLoading ? (
         <p>Loading...</p>
       ) : (

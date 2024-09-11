@@ -27,8 +27,8 @@ function AddLiveStock(props) {
     note,
   } = useSelector((state) => state.AddLiveStockSlice);
 
-  // State to manage detailed address
   const [detailAddress, setDetailAddress] = useState("");
+  const [formErrors, setFormErrors] = useState({});
 
   const open = useDaumPostcodePopup();
 
@@ -48,20 +48,39 @@ function AddLiveStock(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "farmAddress") {
+    if (name === "detailAddress") {
       setDetailAddress(value); // Update detail address
     } else {
       dispatch(addField({ fieldName: name, fieldValue: value }));
     }
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!farmName) errors.farmName = "축사 이름은 필수입니다.";
+    if (!farmId) errors.farmId = "축사 번호는 필수입니다.";
+    if (!address) errors.address = "축사 위치는 필수입니다.";
+    if (!detailAddress) errors.detailAddress = "상세 주소는 필수입니다.";
+    if (!farm_stockType) errors.farm_stockType = "축사 유형은 필수입니다.";
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const email = localStorage.getItem("email");
+    const saveLayoutString = localStorage.getItem("userLayout");
+    const saveLayout = JSON.parse(saveLayoutString);
+
+    if (!validateForm()) {
+      return;
+    }
 
     const farmData = {
       farmName,
       farmId,
-      farmAddress: address + " " + detailAddress, // Combine address and detail address
+      farmAddress: address + " " + detailAddress,
       farmScale,
       farm_stockType,
       farmBuild,
@@ -69,9 +88,25 @@ function AddLiveStock(props) {
       facilities,
       insuranceDetail,
       note,
+      email,
+      saveLayout,
     };
 
     dispatch(addFarmData({ collectionName: "farm", addObj: farmData }));
+    alert("축사 추가가 완료되었습니다");
+
+    // Clear form fields
+    dispatch(addField({ fieldName: "farmName", fieldValue: "" }));
+    dispatch(addField({ fieldName: "farmId", fieldValue: "" }));
+    dispatch(addField({ fieldName: "farmScale", fieldValue: "" }));
+    dispatch(addField({ fieldName: "farm_stockType", fieldValue: "" }));
+    dispatch(addField({ fieldName: "farmBuild", fieldValue: "" }));
+    dispatch(addField({ fieldName: "farmCondition", fieldValue: "" }));
+    dispatch(addField({ fieldName: "facilities", fieldValue: "" }));
+    dispatch(addField({ fieldName: "insuranceDetail", fieldValue: "" }));
+    dispatch(addField({ fieldName: "note", fieldValue: "" }));
+    setDetailAddress(""); // Clear detail address
+    dispatch(setAddress("")); // Clear main address
   };
 
   return (
@@ -87,7 +122,11 @@ function AddLiveStock(props) {
               value={farmName}
               placeholder="축사 이름을 정해주세요"
               onChange={handleChange}
+              required
             />
+            {formErrors.farmName && (
+              <p className={styles.error}>{formErrors.farmName}</p>
+            )}
           </div>
           <div>
             <label htmlFor="farmId">축사 번호:</label>
@@ -97,7 +136,11 @@ function AddLiveStock(props) {
               value={farmId}
               placeholder="축사 번호를 입력해주세요"
               onChange={handleChange}
+              required
             />
+            {formErrors.farmId && (
+              <p className={styles.error}>{formErrors.farmId}</p>
+            )}
           </div>
           <div>
             <label htmlFor="farmAddress">축사 위치:</label>
@@ -106,19 +149,26 @@ function AddLiveStock(props) {
               type="text"
               value={address} // Use address for the main address input
               onClick={openPostcodePopup}
-              onChange={handleChange}
               placeholder="상세 주소까지 입력해주세요"
+              readOnly
             />
+            {formErrors.address && (
+              <p className={styles.error}>{formErrors.address}</p>
+            )}
           </div>
           <div>
             <label htmlFor="detailAddress">상세 주소:</label>
             <input
-              name="farmAddress"
+              name="detailAddress"
               type="text"
-              value={detailAddress} // Use detailAddress for additional input
+              value={detailAddress}
               onChange={handleChange}
               placeholder="상세 주소를 입력해주세요"
+              required
             />
+            {formErrors.detailAddress && (
+              <p className={styles.error}>{formErrors.detailAddress}</p>
+            )}
           </div>
           <div>
             <label htmlFor="farmScale">면적:</label>
@@ -138,7 +188,11 @@ function AddLiveStock(props) {
               value={farm_stockType}
               placeholder="예: 한우, 낙농, 닭, 돼지"
               onChange={handleChange}
+              required
             />
+            {formErrors.farm_stockType && (
+              <p className={styles.error}>{formErrors.farm_stockType}</p>
+            )}
           </div>
           <div>
             <label htmlFor="farmBuild">건축 연도:</label>

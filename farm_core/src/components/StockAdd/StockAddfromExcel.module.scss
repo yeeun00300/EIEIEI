@@ -12,6 +12,9 @@
   text-align: center;
   word-wrap: break-word; /* 셀 내에서 텍스트 줄바꿈 */
   white-space: normal; /* 줄바꿈 허용 */
+  p {
+    margin: 0;
+  }
 }
 
 .th {
