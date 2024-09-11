@@ -49,7 +49,7 @@ const LineChart = ({ dataset }) => {
 
 function Main() {
   const { farmId } = useParams();
-  console.log(farmId);
+  // console.log(farmId);
   const sampleData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [

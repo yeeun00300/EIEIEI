@@ -41,7 +41,7 @@ function Layout(props) {
 
   useEffect(() => {
     if (selectedItem && selectedItem.route) {
-      console.log("Selected Item:", selectedItem);
+      // console.log("Selected Item:", selectedItem);
       navigate(selectedItem.route);
     }
   }, [selectedItem, navigate]);
