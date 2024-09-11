@@ -41,7 +41,7 @@ function Layout(props) {
 
   useEffect(() => {
     if (selectedItem && selectedItem.route) {
-      console.log("Selected Item:", selectedItem);
+      // console.log("Selected Item:", selectedItem);
       navigate(selectedItem.route);
     }
   }, [selectedItem, navigate]);
@@ -102,7 +102,7 @@ function Layout(props) {
     return {
       id: farmId,
       label: farmName,
-      route: `/${farmId}`,
+      route: `/My_Farm/:${farmId}`,
     };
   });
   // user nav list

@@ -17,6 +17,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useParams } from "react-router-dom";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -47,6 +48,8 @@ const LineChart = ({ dataset }) => {
 };
 
 function Main() {
+  const { farmId } = useParams();
+  // console.log(farmId);
   const sampleData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
