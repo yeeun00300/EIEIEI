@@ -173,7 +173,7 @@ export const cattle_diagnosis = [
   },
 ];
 
-export const swine_diagnosis = [
+export const poultry_diagnosis = [
   {
     diseaseName: "돼지 유행성 설사 (Porcine Epidemic Diarrhea, PED)",
     symptoms:
@@ -325,7 +325,7 @@ export const swine_diagnosis = [
   },
 ];
 
-export const poultry_diagnosis = [
+export const swine_diagnosis = [
   {
     diseaseName: "조류 백혈병 (Avian Leukosis)",
     symptoms: "체중 감소, 백혈구 증가, 종양 발생",

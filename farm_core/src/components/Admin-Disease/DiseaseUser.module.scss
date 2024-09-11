@@ -1,11 +1,10 @@
 .DiseaseUser {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  width: 100%;
   div {
-    padding: 12px;
     border: 1px solid black;
-    border-radius: 12px;
+    // border-radius: 12px;
   }
   h2 {
     span {
