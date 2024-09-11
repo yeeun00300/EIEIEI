@@ -6,7 +6,7 @@ import { SingleInputDateRangeField } from "@mui/x-date-pickers-pro/SingleInputDa
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 // import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 
-function DateRangePickerValue() {
+function DateRangePickerValue({ setStartDay, setEndDay }) {
   // const [value, setValue] = React.useState([
   //   dayjs("2024-01-01"),
   //   dayjs("2024-01-01"),
@@ -20,6 +20,10 @@ function DateRangePickerValue() {
           localeText={{ start: "시작 일", end: "마지막 일" }}
           // slots={{ field: SingleInputDateRangeField }}
           // name="allowedRange"
+          onAccept={(e) => {
+            setStartDay(`${e[0].$y}-${e[0].$M}-${e[0].$D}`);
+            setEndDay(`${e[1].$y}-${e[1].$M}-${e[1].$D}`);
+          }}
         />
       </DemoContainer>
     </LocalizationProvider>

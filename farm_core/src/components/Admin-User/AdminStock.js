@@ -10,58 +10,111 @@ import Collapse from "react-bootstrap/Collapse";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import { codeDict } from "../../api/codeDict/codeDict";
+import FilterGrid from "../Grid/FilterGrid";
 
 function AdminStock() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [open, setOpen] = useState({});
+  const [startDay, setStartDay] = useState("");
+  const [endDay, setEndDay] = useState("");
   const { stock, isLoading } = useSelector((state) => state.stockSlice);
   const stockSexual = {
     F: "암컷",
     M: "수컷",
   };
-
-  const queryOptions = {
-    conditions: [
-      { field: "stockCode", operation: "==", value: codeDict[sort] },
-    ],
-    orderBys: [],
+  const columns = [
+    {
+      field: "farmId",
+      headerName: "Farm Id",
+      width: 90,
+      editable: true,
+    },
+    {
+      field: "type",
+      headerName: "type",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "date",
+      headerName: "date",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "sex",
+      headerName: "sex",
+      // type: "number",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "detail",
+      headerName: "detail",
+      // type: "number",
+      width: 100,
+      editable: true,
+    },
+  ];
+  const toggleOpen = (id) => {
+    setOpen((prev) => (prev === id ? "" : id));
   };
+
+  const rows = stock?.map((stockItem, idx) => {
+    const {
+      stockId,
+      stockType,
+      incomingDate,
+      variety,
+      birthDate,
+      sex,
+      weight,
+      size,
+      breedCount,
+      breedDate,
+      pregnantDate,
+      farmId,
+    } = stockItem;
+    return {
+      farmId: farmId,
+      type: stockType,
+      date: incomingDate,
+      sex: stockSexual[sex],
+      detail: (
+        <Button
+          onClick={() => toggleOpen(stockId)} // ID에 따라 상태 관리
+          aria-controls="example-collapse-text1"
+          aria-expanded={open[stockId] || false}
+        >
+          click
+        </Button>
+      ),
+    };
+  });
+
   useEffect(() => {
     dispatch(
       fetchExcelStock({
         collectionName: "stock",
         queryOptions: {},
-        // queryOptions: ("stockCode", "==", codeDict[sort]),
-        // queryOptions: queryOptions,
       })
     );
-  }, [search, sort]);
-  const toggleOpen = (id) => {
-    setOpen((prev) => (prev === id ? "" : id));
-  };
+  }, [sort, startDay, codeDict]);
+
   return (
     <div className={styles.AdminStock}>
       <div className={styles.AdminUtil}>
         <div>가축 정보 리스트</div>
-        <Search setSearch={setSearch} />
-        <DateRangePickerValue />
-        <Sort
-          title="농장 종류별 :"
-          name="stock"
-          setSort={setSort}
-          sort={sort}
-          sortArr={[
-            { id: "k-beef", value: "한우", htmlFor: "k-beef" },
-            { id: "dairy", value: "낙농", htmlFor: "dairy" },
-            { id: "pork", value: "양돈", htmlFor: "pork" },
-            { id: "chicken", value: "육계", htmlFor: "chicken" },
-            { id: "layer", value: "산란계", htmlFor: "layer" },
-          ]}
-        />
         <div className={styles.AdminList}>
-          <Table striped bordered hover>
+          <FilterGrid
+            rows={rows}
+            columns={columns}
+            height={800}
+            pageSize={13}
+          />
+          {/* <Table striped bordered hover>
             <thead>
               <tr>
                 <th>축사번호</th>
@@ -73,18 +126,17 @@ function AdminStock() {
             </thead>
             <tbody>
               {isLoading ? (
-                <></>
+                <div>No Data!!</div>
               ) : (
                 <>
                   {stock?.map((stockItem) => {
-                    const { stockId, stockType, incomingDate, sexual } =
-                      stockItem;
+                    const { stockId, stockType, incomingDate, sex } = stockItem;
                     return (
                       <tr key={stockId}>
                         <td>{stockId}</td>
                         <td>{stockType}</td>
                         <td>{incomingDate}</td>
-                        <td>{stockSexual[sexual]}</td>
+                        <td>{stockSexual[sex]}</td>
                         <td>
                           <Button
                             onClick={() => toggleOpen(stockId)} // ID에 따라 상태 관리
@@ -100,7 +152,7 @@ function AdminStock() {
                 </>
               )}
             </tbody>
-          </Table>
+          </Table> */}
         </div>
       </div>
 
@@ -116,7 +168,7 @@ function AdminStock() {
               incomingDate,
               variety,
               birthDate,
-              sexual,
+              sex,
               weight,
               size,
               breedCount,
@@ -154,7 +206,7 @@ function AdminStock() {
                           </tr>
                           <tr>
                             <td>성별</td>
-                            <td>{sexual}</td>
+                            <td>{stockSexual[sex]}</td>
                           </tr>
                           <tr>
                             <td>출생</td>

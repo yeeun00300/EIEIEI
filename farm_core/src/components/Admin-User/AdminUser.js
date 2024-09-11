@@ -7,14 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserList } from "../../store/checkLoginSlice/checkLoginSlice";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
+import FilterGrid from "../Grid/FilterGrid";
 
 function AdminUser() {
   const dispatch = useDispatch();
   const { userList } = useSelector((state) => state.checkLoginSlice);
-  // console.log(userList);
-
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("");
+  // const [search, setSearch] = useState("");
+  // const [sort, setSort] = useState("");
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -75,13 +74,13 @@ function AdminUser() {
     // },
   ];
 
-  const rows = userList.map((item, idx) => {
+  const rows = userList?.map((item, idx) => {
     const { address, email, farm, name, uid, nickname, createdAt } = item;
-    const seconds = createdAt.seconds; // 주어진 초
-    const date = new Date(seconds * 1000); // 밀리초로 변환하여 Date 객체 생성
-    const year = date.getFullYear(); // 연도
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 월 (0부터 시작하므로 1 더해줌)
-    const day = String(date.getDate()).padStart(2, "0"); // 일
+    const seconds = createdAt.seconds;
+    const date = new Date(seconds * 1000);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     const selectDate = `${year}-${month}-${day}`;
     const admin = uid ? "O" : " ";
     return {
@@ -101,12 +100,12 @@ function AdminUser() {
     dispatch(
       fetchUserList({ collectionName: "users", queryOptions: queryOptions })
     );
-  }, [search, sort]);
+  }, []);
   return (
     <div className={styles.AdminUser}>
       <div className={styles.AdminUtil}>
         <div>회원 정보 리스트</div>
-        <Search setSearch={setSearch} />
+        {/* <Search setSearch={setSearch} />
         <div className={styles.datePicker}>
           <DateRangePickerValue />
         </div>
@@ -119,7 +118,7 @@ function AdminUser() {
             { id: "deleteUser", value: "탈퇴 회원", htmlFor: "deleteUser" },
             { id: "blackUser", value: "차단된 회원", htmlFor: "blackUser" },
           ]}
-        />
+        /> */}
         {/* <div>
           회원별 회원/탈퇴회원 :
           <input type="radio" id="user" name="member" value="회원" />
@@ -139,24 +138,30 @@ function AdminUser() {
             { id: "layer", value: "산란계", htmlFor: "layer" },
           ]}
         /> */}
-      </div>
-      <div className={styles.AdminList}>
-        <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid
+        <div className={styles.AdminList}>
+          <FilterGrid
             rows={rows}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 9,
-                },
-              },
-            }}
-            pageSizeOptions={[5]}
-            // checkboxSelection
-            disableRowSelectionOnClick
+            height={800}
+            pageSize={13}
           />
-        </Box>
+          {/* <Box sx={{ height: 800, width: "100%" }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 13,
+                  },
+                },
+              }}
+              pageSizeOptions={[10]}
+              // checkboxSelection
+              disableRowSelectionOnClick
+            />
+          </Box> */}
+        </div>
       </div>
     </div>
   );
