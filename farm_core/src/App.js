@@ -56,7 +56,7 @@ function App() {
             {/* index element 최초 로그인시 보여줄 예시화면 만들기 */}
             <Route index element={<Main />} />
             {/* 나의 축사(농장수 만큼 반복예정 path추가하기) */}
-            {/* <Route path="My_Farm/:farmId" element={<Main />} /> */}
+            <Route path="/My_Farm/:farmId" element={<Main />} />
             {/* 축사현황 */}
             <Route path="My_Farm_Details_Farm" element={<MyLiveStock />} />
             {/* 축사추가 */}
