@@ -1,0 +1,25 @@
+import React from "react";
+import someone from "../../img/person.png";
+import styles from "./ChatMessage.module.scss";
+
+function ChatMessage({ message }) {
+  return (
+    <>
+      {message.send == "received" ? (
+        <div className={styles.received}>
+          <img src={message.img} />
+          <p>{message.message}</p>
+          <span className="message-timestamp"></span>
+        </div>
+      ) : (
+        <div className={styles.sent}>
+          <img src={someone} />
+          <p>{message.message}</p>
+          <span className="message-timestamp"></span>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default ChatMessage;

@@ -33,6 +33,7 @@ import LIghtControl from "../../components/ControlPanels/LIghtControl";
 import AMControl from "../../components/ControlPanels/AMControl";
 import UserInfo from "./../MyPage/UserInfo/UserInfo";
 import AccordionAlarm from "../../components/Alarm/AccordionAlarm";
+import Chatting from "../../components/Chatting/Chatting";
 
 function Admin({ userInfo, address }) {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -168,6 +169,7 @@ function Admin({ userInfo, address }) {
           <LineChart01 />
           <BiLineChart />
           <BarChart01 />
+          <Chatting />
         </>
       ),
       // chatting: <h1>채팅기록</h1>,
