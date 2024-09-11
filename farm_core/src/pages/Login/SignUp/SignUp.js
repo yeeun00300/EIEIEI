@@ -353,6 +353,7 @@ function SignUp() {
           accept="image/*"
           id="profileImg"
           name="imgFile"
+          required={true}
           onChange={handleFileChange}
           ref={imgRef}
         />
@@ -366,6 +367,7 @@ function SignUp() {
               placeholder="이름을 입력해주세요."
               type="text"
               name="username"
+              required={true}
               value={username}
               onChange={handleChange}
             />
@@ -377,6 +379,7 @@ function SignUp() {
             placeholder="닉네임을 입력해주세요"
             type="text"
             name="nickname"
+            required={true}
             value={nickname}
             onChange={handleChange}
           />
@@ -387,6 +390,7 @@ function SignUp() {
             placeholder="YYYY-MM-DD"
             type="date"
             name="birthday"
+            required={true}
             value={birthday}
             onChange={handleChange}
           />
@@ -397,6 +401,7 @@ function SignUp() {
             placeholder="Email을 입력해주세요"
             type="email"
             name="email"
+            required={true}
             value={email}
             onChange={handleChange}
             readOnly
@@ -407,6 +412,7 @@ function SignUp() {
           <input
             placeholder="핸드폰번호를 입력해주세요"
             type="tel"
+            required={true}
             name="phone"
             value={phone}
             onChange={handleChange}

@@ -18,6 +18,7 @@ import RegularPayment from "./pages/RegularPayment/RegularPayment";
 import MyLiveStock from "./components/MyLiveStock/MyLiveStock";
 import AddLiveStock from "./components/addLiveStock/AddLiveStock";
 import MyStockAddPage from "./pages/MyStockAddPage/MyStockAddPage";
+import EmailCheck from "./components/emailLogin/EmailCheck";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function App() {
           <Route path="/">
             <Route index element={<Intro />} />
             <Route path="EmailSignUp" element={<EmailSignUp />} />
+            <Route path="verify-email" element={<EmailCheck />} />
             <Route path="SignUp" element={<SignUp />} />
             <Route path="oauth" element={<KakaoCallBack />} />
             <Route path="RegularPayment" element={<RegularPayment />} />
@@ -51,8 +53,10 @@ function App() {
         ) : (
           // 로그인시
           <Route path="/" element={<Layout />}>
-            {/* 나의 축사(농장수 만큼 반복예정 path추가하기) */}
+            {/* index element 최초 로그인시 보여줄 예시화면 만들기 */}
             <Route index element={<Main />} />
+            {/* 나의 축사(농장수 만큼 반복예정 path추가하기) */}
+            {/* <Route path="My_Farm/:farmId" element={<Main />} /> */}
             {/* 축사현황 */}
             <Route path="My_Farm_Details_Farm" element={<MyLiveStock />} />
             {/* 축사추가 */}

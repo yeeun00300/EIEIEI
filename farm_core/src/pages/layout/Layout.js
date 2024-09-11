@@ -9,24 +9,113 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Admin from "../Admin/Admin";
-import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
+import {
+  fetchFarmList,
+  fetchLogin,
+} from "../../store/checkLoginSlice/checkLoginSlice";
 import { onUserStateChange } from "../../firebase";
 import { getAuth } from "firebase/auth";
 import { setAdminLogin } from "../../store/loginSlice/loginSlice";
+import { faR } from "@fortawesome/free-solid-svg-icons";
 
 function Layout(props) {
   const dispatch = useDispatch();
 
+  // nav navigate 구현-----------------------------------------------------
+  const apiRef = useTreeViewApiRef();
+  const [selectedItem, setSelectedItem] = React.useState({
+    id: "",
+    label: "",
+  });
+
+  const handleSelectedItemsChange = (event, itemId) => {
+    if (itemId == null) {
+      setSelectedItem(null);
+    } else {
+      const item = apiRef.current.getItem(itemId);
+      setSelectedItem(item);
+    }
+  };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (selectedItem && selectedItem.route) {
+      console.log("Selected Item:", selectedItem);
+      navigate(selectedItem.route);
+    }
+  }, [selectedItem, navigate]);
+
+  // 사용자 정보 header에 넘겨주기----------------------------------------------
+  const { checkLogin, isLoading } = useSelector(
+    (state) => state.checkLoginSlice
+  );
+  const address = useSelector((state) => state.mapAddrSlice.address);
+  const email = localStorage.getItem("email");
+  useEffect(() => {
+    if (email) {
+      const queryOptions = {
+        conditions: [
+          {
+            field: "email",
+            operator: "==",
+            value: email,
+          },
+        ],
+      };
+      dispatch(fetchLogin({ collectionName: "users", queryOptions }));
+    }
+  }, [dispatch, email]);
+
+  //=========농장 정보 가져오기==========================================
+  const { farmList, farmLoading } = useSelector(
+    (state) => state.checkLoginSlice
+  );
+  useEffect(() => {
+    if (email) {
+      const queryOptions = {
+        conditions: [
+          {
+            field: "email",
+            operator: "==",
+            value: email,
+          },
+        ],
+      };
+      dispatch(fetchFarmList({ collectionName: "farm", queryOptions }));
+    }
+  }, [dispatch, email]);
+
+  // 관리자계정인지 확인-------------------------------------------------------
+  const { adminLogin } = useSelector((state) => state.loginSlice);
+  useEffect(() => {
+    const { uid } = checkLogin;
+    if (uid !== undefined) {
+      dispatch(setAdminLogin(true));
+    } else {
+      dispatch(setAdminLogin(false));
+    }
+  }, [checkLogin, isLoading]);
+
+  const farmArr = farmList?.map((farm) => {
+    const { farmId, farmName } = farm;
+    return {
+      id: farmId,
+      label: farmName,
+      route: `/${farmId}`,
+    };
+  });
   // user nav list
   const USER_PRODUCTS = [
     {
       id: "My_Farm",
       label: "나의 축사",
-      children: [
-        { id: "My_Farm01", label: "축사 1(대전..)", route: "/My_Farm01" },
-        { id: "My_Farm02", label: "축사 2(경기도..)", route: "/My_Farm02" },
-        { id: "My_Farm03", label: "축사 3(대구...)", route: "/My_Farm03" },
-      ],
+      // children: [
+      //   { id: "My_Farm01", label: "축사 1(대전..)", route: "/My_Farm01" },
+      //   { id: "My_Farm02", label: "축사 2(경기도..)", route: "/My_Farm02" },
+      //   { id: "My_Farm03", label: "축사 3(대구...)", route: "/My_Farm03" },
+      // ],
+      children: farmArr,
     },
     {
       id: "My_Farm_Details",
@@ -82,75 +171,14 @@ function Layout(props) {
       route: "/My_Farm_MyPage",
     },
   ];
-
-  // 선택된 리스트(컴포넌트)의 id와 label 을 가져온다-----------------------
-  const apiRef = useTreeViewApiRef();
-  const [selectedItem, setSelectedItem] = React.useState({
-    id: "",
-    label: "",
-  });
-
-  const handleSelectedItemsChange = (event, itemId) => {
-    if (itemId == null) {
-      setSelectedItem(null);
-    } else {
-      const item = apiRef.current.getItem(itemId);
-      setSelectedItem(item);
-    }
-  };
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (selectedItem && selectedItem.route) {
-      console.log("Selected Item:", selectedItem);
-      navigate(selectedItem.route);
-    }
-  }, [selectedItem, navigate]);
-
-  // 사용자 정보 header에 넘겨주기----------------------------------------------
-  const { checkLogin, isLoading } = useSelector(
-    (state) => state.checkLoginSlice
-  );
-  const address = useSelector((state) => state.mapAddrSlice.address);
-  const email = localStorage.getItem("email");
-  useEffect(() => {
-    if (email) {
-      const queryOptions = {
-        conditions: [
-          {
-            field: "email",
-            operator: "==",
-            value: email,
-          },
-        ],
-      };
-      dispatch(fetchLogin({ collectionName: "users", queryOptions }));
-    }
-  }, [dispatch, email]);
-
-  const { adminLogin } = useSelector((state) => state.loginSlice);
-  useEffect(() => {
-    console.log("CheckLogin state:", checkLogin);
-    console.log("Loading state:", isLoading);
-    const { uid } = checkLogin;
-    console.log(uid);
-    if (uid !== undefined) {
-      dispatch(setAdminLogin(true));
-      console.log(adminLogin);
-    } else {
-      dispatch(setAdminLogin(false));
-    }
-  }, [checkLogin, isLoading]);
-
-  if (isLoading) return <div>로딩중</div>;
+  // --------------------------------------------------------------------------------------
   if (!checkLogin || Object.keys(checkLogin).length === 0)
     return <div>데이터가 없습니다</div>;
-  // --------------------------------------------------------------------------------------
-
   return (
     <>
-      {adminLogin ? (
+      {isLoading || farmLoading ? (
+        <>로딩중</>
+      ) : adminLogin ? (
         <Admin userInfo={checkLogin} address={address} />
       ) : (
         <div className={styles.layout}>

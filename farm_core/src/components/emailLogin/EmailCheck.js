@@ -1,31 +1,44 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { applyActionCode, getAuth } from "firebase/auth";
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
-function EmailCheck(props) {
-  const auth = getAuth();
-  const location = useLocation();
+function EmailCheck() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const actionCode = new URLSearchParams(location.search).get("oobCode");
+  const auth = getAuth();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (actionCode) {
-      applyActionCode(auth, actionCode)
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const oobCodeFromURL = searchParams.get("oobCode");
+    console.log("Query String:", queryString);
+    console.log("Search params:", urlParams.toString());
+    console.log("oobCode from URL:", oobCodeFromURL);
+
+    if (oobCodeFromURL) {
+      applyActionCode(auth, oobCodeFromURL)
         .then(() => {
+          setLoading(false); // 로딩 완료
           alert("이메일 인증이 완료되었습니다.");
-          navigate("/SignUp"); // 인증 후 로그인 페이지로 이동
+          navigate("/SignUp"); // 인증이 완료되면 회원가입 페이지로
         })
         .catch((error) => {
-          console.error("이메일 인증 실패: ", error);
-          alert("이메일 인증에 실패했습니다.");
+          setLoading(false); // 로딩 완료
+          console.error("이메일 인증 중 오류가 발생했습니다: ", error);
+          setError("이메일 인증에 실패했습니다. 다시 시도해주세요.");
         });
     }
-  }, [actionCode, auth, navigate]);
+  }, [navigate, searchParams]);
 
   return (
-    <div>
+    <div className="container">
       <h1>이메일 인증 중...</h1>
+      {loading && <p>인증 코드 확인 중입니다...</p>}
+      {error && <p>{error}</p>}
     </div>
   );
 }
+
 export default EmailCheck;

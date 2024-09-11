@@ -4,9 +4,11 @@ import { getData, getDatas } from "../../firebase";
 
 const initialState = {
   checkLogin: {},
+  farmList: [],
   userList: [],
   isLoading: false,
   userLoading: false,
+  farmLoading: false,
   error: "",
 };
 
@@ -36,6 +38,17 @@ const checkLoginSlice = createSlice({
       })
       .addCase(fetchUserList.rejected, (state, action) => {
         state.userLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchFarmList.pending, (state) => {
+        state.farmLoading = true;
+      })
+      .addCase(fetchFarmList.fulfilled, (state, action) => {
+        state.farmLoading = false;
+        state.farmList = action.payload;
+      })
+      .addCase(fetchFarmList.rejected, (state, action) => {
+        state.farmLoading = false;
         state.error = action.payload;
       });
   },
@@ -68,5 +81,18 @@ const fetchUserList = createAsyncThunk(
   }
 );
 
+// 농장 정보 가져오기
+const fetchFarmList = createAsyncThunk(
+  "farm/fetchFarmList",
+  async ({ collectionName, queryOptions }) => {
+    try {
+      const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 export default checkLoginSlice.reducer;
-export { fetchLogin, fetchUserList };
+export { fetchLogin, fetchUserList, fetchFarmList };
