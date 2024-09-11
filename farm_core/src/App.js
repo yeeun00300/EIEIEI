@@ -19,6 +19,7 @@ import MyLiveStock from "./components/MyLiveStock/MyLiveStock";
 import AddLiveStock from "./components/addLiveStock/AddLiveStock";
 import MyStockAddPage from "./pages/MyStockAddPage/MyStockAddPage";
 import EmailCheck from "./components/emailLogin/EmailCheck";
+import MyStockPage from "./components/MyStockPage/MyStockPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ function App() {
             {/* 가축 추가 */}
             <Route path="My_Farm_Add_stock" element={<MyStockAddPage />} />
             {/* 축사 관리하기 */}
-            {/* <Route path="My_Farm_Details_Disease" element={<MyStockAddPage />} /> */}
+            <Route path="My_Farm_Details_Disease" element={<MyStockPage />} />
             {/* 자유게시판 */}
             <Route path="My_Farm_Board_FreeBoard" element={<Community />} />
             <Route

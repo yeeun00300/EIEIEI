@@ -36,6 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadProfileImage } from "../../../store/profileImageSlice/profileImageSlice";
 import profileImageSlice from "./../../../store/profileImageSlice/profileImageSlice";
 import { joinUser } from "./../../../firebase";
+import kroDate from "../../../utils/korDate";
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -79,11 +80,11 @@ function SignUp() {
       // }, []);
     }
     const emailFromStorage = localStorage.getItem("email");
-    console.log("LocalStorage에서 가져온 이메일:", emailFromStorage);
+    // console.log("LocalStorage에서 가져온 이메일:", emailFromStorage);
     if (emailFromStorage) {
       dispatch(setEmail(emailFromStorage));
     } else {
-      console.log("LocalStorage에 이메일이 없습니다.");
+      // console.log("LocalStorage에 이메일이 없습니다.");
     }
   }, [dispatch]);
 
@@ -184,52 +185,52 @@ function SignUp() {
     const file = e.target.files[0];
 
     if (file) {
-      console.log("File Info:", file);
-      console.log("File Size:", file.size);
-      console.log("File Type:", file.type);
+      // console.log("File Info:", file);
+      // console.log("File Size:", file.size);
+      // console.log("File Type:", file.type);
       dispatch(uploadProfileImage(file));
     }
   };
-  const handlePhoneVerification = async () => {
-    if (!phone) {
-      alert("전화번호를 입력해주세요.");
-      return;
-    }
+  // const handlePhoneVerification = async () => {
+  //   if (!phone) {
+  //     alert("전화번호를 입력해주세요.");
+  //     return;
+  //   }
 
-    try {
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        `+${phone}`,
-        recaptchaVerifier
-      );
-      window.confirmationResult = confirmationResult;
-      dispatch(setPhoneVerificationStatus("인증 코드가 발송되었습니다."));
-    } catch (error) {
-      dispatch(
-        setPhoneVerificationStatus(`인증 코드 요청 실패: ${error.message}`)
-      );
-    }
-  };
+  //   try {
+  //     const confirmationResult = await signInWithPhoneNumber(
+  //       auth,
+  //       `+${phone}`,
+  //       recaptchaVerifier
+  //     );
+  //     window.confirmationResult = confirmationResult;
+  //     dispatch(setPhoneVerificationStatus("인증 코드가 발송되었습니다."));
+  //   } catch (error) {
+  //     dispatch(
+  //       setPhoneVerificationStatus(`인증 코드 요청 실패: ${error.message}`)
+  //     );
+  //   }
+  // };
 
-  // 인증 코드 확인
-  const handlePhoneVerificationSubmit = async () => {
-    if (!phoneVerificationCode) {
-      alert("인증 코드를 입력해주세요.");
-      return;
-    }
+  // // 인증 코드 확인
+  // const handlePhoneVerificationSubmit = async () => {
+  //   if (!phoneVerificationCode) {
+  //     alert("인증 코드를 입력해주세요.");
+  //     return;
+  //   }
 
-    try {
-      const result = await window.confirmationResult.confirm(
-        phoneVerificationCode
-      );
-      dispatch(setIsPhoneVerified(true));
-      dispatch(setPhoneVerificationStatus("전화번호 인증이 완료되었습니다."));
-    } catch (error) {
-      dispatch(
-        setPhoneVerificationStatus(`인증 코드 확인 실패: ${error.message}`)
-      );
-    }
-  };
+  //   try {
+  //     const result = await window.confirmationResult.confirm(
+  //       phoneVerificationCode
+  //     );
+  //     dispatch(setIsPhoneVerified(true));
+  //     dispatch(setPhoneVerificationStatus("전화번호 인증이 완료되었습니다."));
+  //   } catch (error) {
+  //     dispatch(
+  //       setPhoneVerificationStatus(`인증 코드 확인 실패: ${error.message}`)
+  //     );
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -260,17 +261,23 @@ function SignUp() {
         birthday,
         phone,
         profileImages: downloadURL,
-        createdAt: new Date(),
+        createdAt: kroDate(),
+        blackState: "green",
+        payDate: kroDate(),
+        registDate: kroDate(),
+        // payLog: [],
       };
 
-      console.log(`테스트용${userObj.detailedAddress}`);
+      // userObj.payLog.push({ registDate: kroDate(), cardId: "", price: "" });
+
+      // console.log(`테스트용${userObj.detailedAddress}`);
       // await addDatas("users", userObj);
       await addDatas("users", { ...userObj, email });
-      console.log(userObj);
+      // console.log(userObj);
       alert("회원가입에 성공했습니다.");
       navigate("/");
     } catch (error) {
-      console.error("회원가입 실패:", error);
+      // console.error("회원가입 실패:", error);
       alert(`회원가입 실패: ${error.message}`);
     }
   };
@@ -312,17 +319,17 @@ function SignUp() {
 
   const openAddressPopup = () => {
     dispatch(setAddressPopup(true));
-    console.log(addressPopup);
+    // console.log(addressPopup);
   };
 
   const handleKakaoLogin = () => {
     window.Kakao.Auth.login({
       success: function (authObj) {
-        console.log("카카오 로그인 성공:", authObj);
+        // console.log("카카오 로그인 성공:", authObj);
         window.Kakao.API.request({
           url: "/v2/user/me",
           success: function (response) {
-            console.log("사용자 정보:", response);
+            // console.log("사용자 정보:", response);
             // 카카오 로그인 성공 시 처리할 로직 추가
             // navigate("/");
           },

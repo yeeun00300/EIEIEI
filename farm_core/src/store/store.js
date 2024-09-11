@@ -13,7 +13,7 @@ import weatherSlice from "./weatherSlice/weatherSlice";
 import checkLoginSlice from "./checkLoginSlice/checkLoginSlice";
 import userSlice from "./userSlice/userSlice";
 import paymentSlice from "./myPageSlice/paymentSlice";
-import AddLiveStockSlice from "./addLiveStockSlice/addLiveStockSlice";
+import medicalSlice from "./medicalSlice/medicalSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -30,7 +30,7 @@ const store = configureStore({
     checkLoginSlice,
     // userSlice,
     paymentSlice,
-    AddLiveStockSlice,
+    medicalSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),
