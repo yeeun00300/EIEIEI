@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Avatar, styled } from "@mui/material";
 import Badge from "@mui/material/Badge";
 
-function ChatRoom({ message, setChatRoomName }) {
+function ChatRoom({ message, setChatRoomName, chatRoomName }) {
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
       backgroundColor: "#44b700",
@@ -42,7 +42,13 @@ function ChatRoom({ message, setChatRoomName }) {
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           variant="dot"
         >
-          <button onClick={(e) => setChatRoomName(e.target.alt)}>
+          <button
+            onClick={(e) =>
+              chatRoomName !== e.target.alt
+                ? setChatRoomName(e.target.alt)
+                : setChatRoomName("")
+            }
+          >
             <Avatar
               alt={message.name}
               src={message.img}

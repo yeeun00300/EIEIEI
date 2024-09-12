@@ -14,6 +14,7 @@ import checkLoginSlice from "./checkLoginSlice/checkLoginSlice";
 import userSlice from "./userSlice/userSlice";
 import paymentSlice from "./myPageSlice/paymentSlice";
 import medicalSlice from "./medicalSlice/medicalSlice";
+import chattingSlice from "./chattingSlice/chattingSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -31,6 +32,7 @@ const store = configureStore({
     // userSlice,
     paymentSlice,
     medicalSlice,
+    chattingSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

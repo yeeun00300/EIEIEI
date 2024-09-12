@@ -56,36 +56,62 @@ function Chatting() {
 
   return (
     <div className={styles.Chatting}>
-      <header>
-        <h4>채팅방</h4>
-      </header>
-      <nav>
-        <Stack direction="row" spacing={1}>
-          {chatBadge.map((item) => {
-            return (
-              <ChatRoom message={item} setChatRoomName={setChatRoomName} />
-            );
-          })}
-        </Stack>
-      </nav>
-      <section>
-        <main className={styles.message}>
-          {chatBadge.map((item) => {
-            if (item.name === chatRoomName) {
-              return <ChatMessage message={item} />;
-            }
-          })}
-        </main>
-        <form onSubmit={sendMessage}>
-          <input
-            onChange={(e) => setInputValue(e.target.value)}
-            value={inputValue}
-          />
-          <button disabled={!inputValue} type="submit">
-            <FaIcons.FaPaperPlane />
-          </button>
-        </form>
-      </section>
+      {chatRoomName ? (
+        <>
+          <header>
+            <h4>채팅방</h4>
+          </header>
+          <nav>
+            <Stack direction="row" spacing={1}>
+              {chatBadge.map((item) => {
+                return (
+                  <ChatRoom
+                    message={item}
+                    setChatRoomName={setChatRoomName}
+                    chatRoomName={chatRoomName}
+                  />
+                );
+              })}
+            </Stack>
+          </nav>
+          <section>
+            <main className={styles.message}>
+              {chatBadge.map((item) => {
+                if (item.name === chatRoomName) {
+                  return (
+                    <ChatMessage message={item} chatRoomName={chatRoomName} />
+                  );
+                }
+              })}
+            </main>
+            <form onSubmit={sendMessage}>
+              <input
+                onChange={(e) => setInputValue(e.target.value)}
+                value={inputValue}
+              />
+              <button disabled={!inputValue} type="submit">
+                <FaIcons.FaPaperPlane />
+              </button>
+            </form>
+          </section>
+        </>
+      ) : (
+        <div className={styles.Chatting}>
+          <nav className={styles.ChattingIcons}>
+            <Stack direction="row" spacing={1}>
+              {chatBadge.map((item) => {
+                return (
+                  <ChatRoom
+                    message={item}
+                    setChatRoomName={setChatRoomName}
+                    chatRoomName={chatRoomName}
+                  />
+                );
+              })}
+            </Stack>
+          </nav>
+        </div>
+      )}
     </div>
   );
 }

@@ -536,6 +536,26 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
   }
 }
 
+async function getSubCollection(collectionName, docId, subCollectionName) {
+  try {
+    // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
+    const userDocRef = doc(db, collectionName, docId);
+    // 2. 그 문서 안의 'orders' 서브컬렉션에 접근
+    const ordersCollectionRef = collection(userDocRef, subCollectionName);
+    // 3. 서브컬렉션 'orders'에서 모든 문서를 가져옴
+    const querySnapshot = await getDocs(ordersCollectionRef);
+    const docs = querySnapshot.docs;
+    const resultData = docs.map((doc) => {
+      // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
+      const result = { ...doc.data(), docId: doc.id };
+      return result;
+    });
+    return resultData;
+  } catch (error) {
+    console.error("Error getting subCollection documents: ", error);
+  }
+}
+
 export {
   db,
   addDatas,
@@ -553,6 +573,7 @@ export {
   getQuery,
   deleteDatas,
   addMessage,
+  getSubCollection,
   app,
   auth,
   storage,
