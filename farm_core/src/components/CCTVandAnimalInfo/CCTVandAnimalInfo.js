@@ -23,7 +23,7 @@ function CCTVandAnimalInfo(props) {
           <video src={cattle1} autoPlay loop muted className={styles.cctv} />
         </div>
       </div>
-      <div className={styles.liveStockInfoBox}>
+      {/* <div className={styles.liveStockInfoBox}>
         <div className={styles.dataBox}>
           <div>Data1: 소는 귀엽다</div>
           <div>Data2: 소는 잘먹는다</div>
@@ -44,7 +44,7 @@ function CCTVandAnimalInfo(props) {
         <div className={styles.cctvBox}>
           <video src={swine} autoPlay loop muted className={styles.cctv} />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

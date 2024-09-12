@@ -22,29 +22,29 @@
     width: 100%;
     padding: 20px 0;
   }
-}
 
-.name {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid black;
+  .name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
 
-  input {
+    input {
+      border: none;
+    }
+  }
+  .img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-bottom: none;
+  }
+  .button {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
     border: none;
   }
-}
-.img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  border-bottom: none;
-}
-.button {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  border: none;
 }
