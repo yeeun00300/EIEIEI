@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./NewBoardPage.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,7 +8,7 @@ import {
 } from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
 
-function NewBoardPage({}) {
+function NewBoardPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -16,11 +16,24 @@ function NewBoardPage({}) {
   const [livestockType, setLivestockType] = useState(""); // 축산 유형 상태
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { postData } = location.state || {}; // Retrieve postData from location state
 
   const userNickName =
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
-  // 축산 유형을 Firebase에 저장할 값으로 매핑하는 함수
+
+  useEffect(() => {
+    if (postData) {
+      setTitle(postData.title || "");
+      setContent(postData.content || "");
+      setImage(postData.imgUrl || null);
+      setSelectedBoard(postData.communityType || "freeboard");
+      setLivestockType(postData.stockType || "");
+    }
+  }, [postData]);
+
   const mapLivestockType = (type) => {
     switch (type) {
       case "한우":
@@ -52,13 +65,12 @@ function NewBoardPage({}) {
         declareReason: "",
         declareState: "",
         declareCount: 0,
-        stockType: mapLivestockType(livestockType), // 축산 유형 매핑
+        stockType: mapLivestockType(livestockType),
         notice: false,
         communityType: selectedBoard,
-        authorNickName: userNickName, // 사용자 닉네임 처리 필요
+        authorNickName: userNickName,
       };
 
-      // 선택한 게시판에 따라 데이터 전송
       await dispatch(
         createCommunityPost({
           collectionName: selectedBoard,
@@ -66,7 +78,6 @@ function NewBoardPage({}) {
         })
       ).unwrap();
 
-      // 데이터 전송 후 페이지를 리셋하거나 이동할 필요가 있을 경우 추가
       await dispatch(
         fetchCommunityPosts({
           communityType: selectedBoard,
@@ -77,10 +88,11 @@ function NewBoardPage({}) {
           },
         })
       );
+
       if (selectedBoard === "freeboard") {
-        navigate("/My_Farm_Board_FreeBoard"); // 자유게시판으로 이동
+        navigate("/My_Farm_Board_FreeBoard");
       } else if (selectedBoard === "livestock") {
-        navigate("/My_Farm_Board_Community"); // 축산 관리 커뮤니티로 이동
+        navigate("/My_Farm_Board_Community");
       }
 
       setTitle("");
@@ -149,7 +161,9 @@ function NewBoardPage({}) {
         <button type="submit" className="submitBtn">
           글 등록하기
         </button>
-        <button type="button">취소하기</button>
+        <button type="button" onClick={() => navigate(-1)}>
+          취소하기
+        </button>
       </form>
     </div>
   );
