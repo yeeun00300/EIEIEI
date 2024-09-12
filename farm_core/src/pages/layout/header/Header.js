@@ -30,7 +30,6 @@ function Header({ title, userInfo, address }) {
     orderBys: orderBys,
   });
   const [weatherInfo] = useCollectionData(q);
-  dispatch(setOnWeatherIssueAlarm(weatherInfo));
 
   // const address = useSelector((state) => state.mapAddrSlice.address);
   const hereAddress = address;
@@ -52,7 +51,9 @@ function Header({ title, userInfo, address }) {
     // );
   }, [dispatch]);
 
-  useEffect(() => {}, [weatherInfo, weatherIssueAlarm]);
+  useEffect(() => {
+    dispatch(setOnWeatherIssueAlarm(weatherInfo));
+  }, [weatherInfo, weatherIssueAlarm]);
 
   return (
     <div className={styles.header}>

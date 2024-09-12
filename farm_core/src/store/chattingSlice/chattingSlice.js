@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDatas, getSubCollection } from "../../firebase";
+import { getData, getDatas, getSubCollection } from "../../firebase";
 
 const createdAt = new Date();
-const message = { photoUrl: createdAt, photoUrl: "", text: "", uid: "" };
+const message = { createdAt: createdAt, photoUrl: "", text: "", uid: "" };
 
 const initialState = {
   messages: message,
-  chattingRoom: "",
+  chattingRoom: [],
   isLoading: false,
   error: null,
 };
@@ -28,15 +28,15 @@ const chattingSlice = createSlice({
       .addCase(fetchChattingMessage.rejected, (state, action) => {
         state.isLoading = false;
       })
-      .addCase(fetchChattingChattingRoom.pending, (state, action) => {
+      .addCase(fetchChattingRoom.pending, (state, action) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchChattingChattingRoom.fulfilled, (state, action) => {
+      .addCase(fetchChattingRoom.fulfilled, (state, action) => {
         state.chattingRoom = action.payload;
         state.isLoading = false;
       })
-      .addCase(fetchChattingChattingRoom.rejected, (state, action) => {
+      .addCase(fetchChattingRoom.rejected, (state, action) => {
         state.isLoading = false;
       });
   },
@@ -57,12 +57,14 @@ export const fetchChattingMessage = createAsyncThunk(
     }
   }
 );
-export const fetchChattingChattingRoom = createAsyncThunk(
-  "stock/fetchChattingChattingRoom",
+export const fetchChattingRoom = createAsyncThunk(
+  "stock/fetchChattingRoom",
   async ({ collectionName, queryOptions }) => {
     try {
+      const email = localStorage.getItem("email");
       const resultData = await getDatas(collectionName, queryOptions);
-      return resultData;
+      const filteredData = resultData.filter((item) => item.docId === email);
+      return filteredData[0];
     } catch (error) {
       console.error(error);
     }

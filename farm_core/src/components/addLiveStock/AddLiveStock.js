@@ -11,8 +11,8 @@ import {
 import {
   addField,
   addFarmData,
-  createSubCollection,
 } from "../../store/addLiveStockSlice/addLiveStockSlice";
+import kroDate from "../../utils/korDate";
 
 function AddLiveStock(props) {
   const dispatch = useDispatch();
@@ -96,29 +96,70 @@ function AddLiveStock(props) {
       saveLayout,
     };
 
+    const subCollections = {
+      farmCureList: [
+        {
+          symptom: "exampleSymptom",
+          symptomCount: 10,
+          fever: true,
+          feverMean: 37.5,
+          cough: false,
+          coughCount: 0,
+          diarrhea: true,
+          diarrheaCount: 2,
+          ventilation: "good",
+          lampCondition: "on",
+          feedSupply: "ample",
+        },
+      ],
+      ruinInfo: {
+        someDocId: {
+          stockId: "123",
+          stockCount: 10,
+          diseaseType: "exampleDisease",
+        },
+      },
+      vaccine: [
+        {
+          vaccineType: "exampleVaccine",
+          vaccineDate: kroDate(),
+        },
+      ],
+      disease: [
+        {
+          diseaseType: "exampleDisease",
+          diseaseDate: "kroDate()",
+          cure: "exampleCure",
+        },
+      ],
+    };
+
     try {
       const result = await dispatch(
-        addFarmData({ collectionName: "farm", addObj: farmData })
+        addFarmData({
+          collectionName: "farm",
+          addObj: farmData,
+          subcollections: subCollections,
+        })
       ).unwrap();
-      console.log("Farm data result:", result); // 로그 추가
-      await createSubCollection(result.docId); // 하위 컬렉션 생성
-      alert("축사 추가가 완료되었습니다");
+      console.log("result값 :", result);
+      console.log("Farm added with ID:", result.docId);
+      console.log("subCollections:", subCollections);
+      // Clear form fields
+      dispatch(addField({ fieldName: "farmName", fieldValue: "" }));
+      dispatch(addField({ fieldName: "farmId", fieldValue: "" }));
+      dispatch(addField({ fieldName: "farmScale", fieldValue: "" }));
+      dispatch(addField({ fieldName: "farm_stockType", fieldValue: "" }));
+      dispatch(addField({ fieldName: "farmBuild", fieldValue: "" }));
+      dispatch(addField({ fieldName: "farmCondition", fieldValue: "" }));
+      dispatch(addField({ fieldName: "facilities", fieldValue: "" }));
+      dispatch(addField({ fieldName: "insuranceDetail", fieldValue: "" }));
+      dispatch(addField({ fieldName: "note", fieldValue: "" }));
+      setDetailAddress(""); // Clear detail address
+      dispatch(setAddress("")); // Clear main address
     } catch (error) {
-      console.error("Failed to add farm data:", error);
+      console.error("Error adding farm:", error);
     }
-
-    // Clear form fields
-    dispatch(addField({ fieldName: "farmName", fieldValue: "" }));
-    dispatch(addField({ fieldName: "farmId", fieldValue: "" }));
-    dispatch(addField({ fieldName: "farmScale", fieldValue: "" }));
-    dispatch(addField({ fieldName: "farm_stockType", fieldValue: "" }));
-    dispatch(addField({ fieldName: "farmBuild", fieldValue: "" }));
-    dispatch(addField({ fieldName: "farmCondition", fieldValue: "" }));
-    dispatch(addField({ fieldName: "facilities", fieldValue: "" }));
-    dispatch(addField({ fieldName: "insuranceDetail", fieldValue: "" }));
-    dispatch(addField({ fieldName: "note", fieldValue: "" }));
-    setDetailAddress(""); // Clear detail address
-    dispatch(setAddress("")); // Clear main address
   };
 
   return (

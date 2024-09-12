@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import SignUp from "../Login/SignUp/SignUp";
 import styles from "./Intro.module.scss";
 import { Link, useNavigate } from "react-router-dom";
-import video from "../../video/video.mp4";
 import Login from "../Login/Login";
 import logoImg from "../../img/TitleLogo.png";
 
