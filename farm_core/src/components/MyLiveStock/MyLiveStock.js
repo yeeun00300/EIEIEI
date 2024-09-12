@@ -21,12 +21,14 @@ function MyLiveStock(props) {
       <div className={styles.container}>
         <div className={styles.myFarmInfoBox}>
           <div className={styles.selectDiv}>
+            <h3>축사 선택</h3>
             <select className={styles.selectBox}>
               <option>예은이네 1농장</option>
               <option>예은이네 2농장</option>
               <option>예은이네 3농장</option>
               <option>예은이네 4농장</option>
             </select>
+            <button>확인</button>
           </div>
           <div className={styles.cctv}>
             <CCTVandAnimalInfo />
@@ -34,6 +36,7 @@ function MyLiveStock(props) {
         </div>
         <div className={styles.farmInfoBox}>
           <div className={styles.farmListInfo}>
+            <h3>전체 평균 데이터</h3>
             <table className={styles.styledTable}>
               <thead>
                 <tr>
@@ -77,6 +80,7 @@ function MyLiveStock(props) {
             </table>
           </div>
           <div>
+            <h3>축사 데이터 확인</h3>
             <BiLineChart />
           </div>
         </div>
