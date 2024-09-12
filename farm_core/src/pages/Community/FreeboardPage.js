@@ -30,7 +30,7 @@ function FreeboardPage() {
       case "eggChicken":
         return "산란계";
       default:
-        return "정보 없음";
+        return "";
     }
   };
 
