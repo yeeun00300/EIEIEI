@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { addDatas, getDatas, getUserAuth } from "../../firebase";
+import { addDatas, addMessage, getDatas, getUserAuth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./Chatting.module.scss";
 import ChatRoom from "./ChatRoom";
@@ -42,7 +42,7 @@ function Chatting() {
       uid: uid,
     };
     // 데이터베이스에 객체를 저장한다.
-    addDatas(["chatting", `${email}`, `${now}`], addObj);
+    addMessage("chatting", email, chatRoomName, addObj);
 
     // inputValue 를 빈 문자열로 셋팅한다.
     setInputValue("");
