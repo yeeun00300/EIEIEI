@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styles from "./NewBoardPage.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { createCommunityPost } from "../../store/communitySlice/communitySlice";
+import {
+  createCommunityPost,
+  fetchCommunityPosts,
+} from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
 
 function NewBoardPage({ onCancel }) {
@@ -14,7 +17,7 @@ function NewBoardPage({ onCancel }) {
   const userNickName =
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
-
+  console.log(userNickName);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -40,6 +43,18 @@ function NewBoardPage({ onCancel }) {
         createCommunityPost({
           collectionName: selectedBoard,
           dataObj,
+        })
+      ).unwrap();
+
+      // 새로 작성된 데이터를 로드하도록 디스패치
+      dispatch(
+        fetchCommunityPosts({
+          communityType: selectedBoard,
+          queryOptions: {
+            conditions: [
+              { field: "communityType", operator: "==", value: selectedBoard },
+            ],
+          },
         })
       );
 
