@@ -527,7 +527,6 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
     console.error("Error adding subcollection document: ", error);
   }
 }
-
 async function getSubCollection(collectionName, docId, subCollectionName) {
   try {
     // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근

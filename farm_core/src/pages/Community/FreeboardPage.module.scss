@@ -4,6 +4,17 @@
   align-items: center;
   justify-content: center;
 }
+.stockType {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 1000;
+  font-size: 16px;
+}
 
 .content {
   background: white;
@@ -12,6 +23,7 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   width: 100%;
+  position: relative;
 }
 
 .image {

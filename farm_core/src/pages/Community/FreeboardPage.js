@@ -17,6 +17,23 @@ function FreeboardPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate(); // 수정: useNavigate 훅을 올바르게 사용
 
+  const getStockTypeInKorean = (type) => {
+    switch (type) {
+      case "koreanCow":
+        return "한우";
+      case "dairyCow":
+        return "낙농";
+      case "pork":
+        return "양돈";
+      case "chicken":
+        return "양계";
+      case "eggChicken":
+        return "산란계";
+      default:
+        return "정보 없음";
+    }
+  };
+
   // 커뮤니티 타입을 경로에 따라 결정
   const isFreeBoard = location.pathname.includes("My_Farm_Board_FreeBoard");
   const communityType = isFreeBoard ? "freeboard" : "livestock";
@@ -65,7 +82,6 @@ function FreeboardPage() {
       setPostData(post);
     }
   }, [id, communityContents, livestockContents, isFreeBoard]);
-  console.log(postData);
 
   const handleUpdate = () => {
     // 게시물 업데이트 로직
@@ -104,7 +120,11 @@ function FreeboardPage() {
   return (
     <div className="page">
       <div className={styles.wrapper}>
+        {/* stockType 텍스트를 왼쪽 위에 표시 */}
         <div className={styles.content}>
+          <div className={styles.stockType}>
+            {getStockTypeInKorean(postData.stockType)}
+          </div>
           {postData.imgUrl && (
             <img
               src={postData.imgUrl}

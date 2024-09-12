@@ -1,19 +1,43 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./NewBoardPage.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { createCommunityPost } from "../../store/communitySlice/communitySlice";
+import {
+  createCommunityPost,
+  fetchCommunityPosts,
+} from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
 
 function NewBoardPage({ onCancel }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
-  const [selectedBoard, setSelectedBoard] = useState("freeboard"); // 기본값은 자유게시판
+  const [selectedBoard, setSelectedBoard] = useState("freeboard");
+  const [livestockType, setLivestockType] = useState(""); // 축산 유형 상태
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userNickName =
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
+  console.log(userNickName);
+  // 축산 유형을 Firebase에 저장할 값으로 매핑하는 함수
+  const mapLivestockType = (type) => {
+    switch (type) {
+      case "한우":
+        return "koreanCow";
+      case "낙농":
+        return "dairyCow";
+      case "양돈":
+        return "pork";
+      case "양계":
+        return "chicken";
+      case "산란계":
+        return "eggChicken";
+      default:
+        return "";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,10 +53,10 @@ function NewBoardPage({ onCancel }) {
         declareReason: "",
         declareState: "",
         declareCount: 0,
-        stockType: "",
+        stockType: mapLivestockType(livestockType), // 축산 유형 매핑
         notice: false,
         communityType: selectedBoard,
-        authorNickName: userNickName,
+        authorNickName: userNickName, // 사용자 닉네임 처리 필요
       };
 
       // 선택한 게시판에 따라 데이터 전송
@@ -40,6 +64,18 @@ function NewBoardPage({ onCancel }) {
         createCommunityPost({
           collectionName: selectedBoard,
           dataObj,
+        })
+      ).unwrap();
+
+      // 데이터 전송 후 페이지를 리셋하거나 이동할 필요가 있을 경우 추가
+      await dispatch(
+        fetchCommunityPosts({
+          communityType: selectedBoard,
+          queryOptions: {
+            conditions: [
+              { field: "communityType", operator: "==", value: selectedBoard },
+            ],
+          },
         })
       );
 
@@ -68,6 +104,23 @@ function NewBoardPage({ onCancel }) {
             <option value="livestock">축산 관리 커뮤니티</option>
           </select>
         </div>
+        {selectedBoard === "livestock" && (
+          <div className={styles.group}>
+            <label htmlFor="livestockType">축산 업종 선택</label>
+            <select
+              id="livestockType"
+              value={livestockType}
+              onChange={(e) => setLivestockType(e.target.value)}
+              required
+            >
+              <option value="한우">한우</option>
+              <option value="낙농">낙농</option>
+              <option value="양돈">양돈</option>
+              <option value="양계">양계</option>
+              <option value="산란계">산란계</option>
+            </select>
+          </div>
+        )}
         <div className={styles.group}>
           <label htmlFor="title">제목</label>
           <input
