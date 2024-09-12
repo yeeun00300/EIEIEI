@@ -20,6 +20,7 @@ import AddLiveStock from "./components/addLiveStock/AddLiveStock";
 import MyStockAddPage from "./pages/MyStockAddPage/MyStockAddPage";
 import EmailCheck from "./components/emailLogin/EmailCheck";
 import MyStockPage from "./components/MyStockPage/MyStockPage";
+import NewBoardPage from "./pages/Community/NewBoardPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -80,6 +81,7 @@ function App() {
               path="My_Farm_Board_Community/:id"
               element={<FreeboardPage />}
             />
+            <Route path="My_Farm_Board_NewBoard" element={<NewBoardPage />} />
             {/* 마이페이지 */}
 
             <Route path="My_Farm_MyPage" element={<MyPage />} />

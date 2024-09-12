@@ -22,10 +22,12 @@ import {
   uploadBytes,
   uploadBytesResumable,
   ref,
+  deleteObject,
 } from "firebase/storage";
 import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
 import kroDate from "./utils/korDate";
+import { createPath } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",
@@ -476,11 +478,34 @@ async function addCommunityDatas(collectionName, dataObj) {
   }
 }
 // 게시글 업데이트
-export const updateCommunityDatas = async (id, updates) => {
+export const updateCommunityDatas = async (id, updates, imgUrl) => {
   try {
     const postRef = doc(db, "community", id);
+    const time = new Date().getTime();
+
+    // 이미지 파일을 변경했을 때
+    if (imgUrl && updates.imgUrl) {
+      const storage = getStorage();
+      const deleteRef = ref(storage, imgUrl);
+      await deleteObject(deleteRef);
+
+      // 변경한 사진을 스토리지에 저장
+      const url = await uploadImage(createPath("community/"), updates.imgUrl);
+      updates.imgUrl = url;
+    } else if (updates.imgUrl === null) {
+      // 사진 파일을 변경하지 않았거나 imgUrl이 null일 때
+      delete updates["imgUrl"];
+    }
+
+    // updatedAt 필드에 현재 시간 추가
+    updates.updatedAt = time;
+
+    // 문서 필드 데이터 수정
     await updateDoc(postRef, updates);
-    return { id, ...updates };
+    const docSnap = await getDoc(postRef);
+    const resultData = { ...docSnap.data(), id: docSnap.id };
+
+    return resultData;
   } catch (error) {
     console.error("Error updating community data:", error);
     throw new Error(error.message);

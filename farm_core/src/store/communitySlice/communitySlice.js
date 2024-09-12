@@ -59,7 +59,6 @@ const communitySlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-      // 게시글 업데이트
       .addCase(updateCommunityPost.pending, (state) => {
         state.isLoading = true;
       })
@@ -90,7 +89,7 @@ const communitySlice = createSlice({
       })
       .addCase(updateCommunityPost.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload; // rejectWithValue에서 반환한 오류 메시지 사용
       })
       // 게시글 삭제
       .addCase(deleteCommunityPost.pending, (state) => {
@@ -147,13 +146,13 @@ const createCommunityPost = createAsyncThunk(
 // 비동기 작업: 게시글 업데이트
 const updateCommunityPost = createAsyncThunk(
   "community/updateCommunityPost",
-  async ({ id, updates, communityType }) => {
+  async ({ id, updates, imgUrl, communityType }, { rejectWithValue }) => {
     try {
-      const updatedPost = await updateCommunityDatas(id, updates);
+      const updatedPost = await updateCommunityDatas(id, updates, imgUrl);
       return { ...updatedPost, communityType };
     } catch (error) {
       console.error("게시글 업데이트에 실패했습니다:", error);
-      throw error;
+      return rejectWithValue("UPDATE Error: " + error.message);
     }
   }
 );
