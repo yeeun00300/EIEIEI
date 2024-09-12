@@ -527,6 +527,68 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
     console.error("Error adding subcollection document: ", error);
   }
 }
+
+async function getSubCollection(collectionName, docId, subCollectionName) {
+  try {
+    // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
+    const userDocRef = doc(db, collectionName, docId);
+    // 2. 그 문서 안의 'orders' 서브컬렉션에 접근
+    const ordersCollectionRef = collection(userDocRef, subCollectionName);
+    // 3. 서브컬렉션 'orders'에서 모든 문서를 가져옴
+    const querySnapshot = await getDocs(ordersCollectionRef);
+    const docs = querySnapshot.docs;
+    const resultData = docs.map((doc) => {
+      // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
+      const result = { ...doc.data(), docId: doc.id };
+      return result;
+    });
+    return resultData;
+  } catch (error) {
+    console.error("Error getting subCollection documents: ", error);
+  }
+}
+
+const batch = writeBatch(db);
+
+const addFarmDataWithSubcollections = async (
+  farmId,
+  farmData,
+  subCollections
+) => {
+  try {
+    // Firestore의 farm 컬렉션에 farmId 문서 추가
+    const farmRef = doc(collection(db, "farm"), farmId);
+    await setDoc(farmRef, farmData);
+    console.log(farmRef);
+
+    // 하위 컬렉션 추가
+    const farmCureListRef = collection(farmRef, "farmCureList");
+    for (const item of subCollections.farmCureList) {
+      const docRef = doc(farmCureListRef);
+      await setDoc(docRef, item);
+    }
+
+    const ruinInfoRef = collection(farmRef, "ruinInfo");
+    await setDoc(doc(ruinInfoRef), subCollections.ruinInfo);
+
+    const vaccineRef = collection(farmRef, "vaccine");
+    for (const item of subCollections.vaccine) {
+      const docRef = doc(vaccineRef);
+      await setDoc(docRef, item);
+    }
+
+    const diseaseRef = collection(farmRef, "disease");
+    for (const item of subCollections.disease) {
+      const docRef = doc(diseaseRef);
+      await setDoc(docRef, item);
+    }
+
+    alert("Farm data and subcollections added successfully.");
+  } catch (error) {
+    console.error("Error adding farm data and subcollections:", error);
+  }
+};
+
 export {
   db,
   addDatas,
@@ -544,9 +606,11 @@ export {
   getQuery,
   deleteDatas,
   addMessage,
+  getSubCollection,
   app,
   auth,
   storage,
   uploadProfileImage,
+  addFarmDataWithSubcollections,
 };
 export default app;
