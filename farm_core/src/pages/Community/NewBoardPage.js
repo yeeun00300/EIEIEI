@@ -8,7 +8,7 @@ function NewBoardPage({ onCancel }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
-  const [selectedBoard, setSelectedBoard] = useState("community"); // 기본값은 자유게시판
+  const [selectedBoard, setSelectedBoard] = useState("freeboard"); // 기본값은 자유게시판
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -27,6 +27,7 @@ function NewBoardPage({ onCancel }) {
         declareCount: 0,
         stockType: "",
         notice: false,
+        communityType: selectedBoard,
       };
 
       // 선택한 게시판에 따라 데이터 전송
@@ -58,7 +59,7 @@ function NewBoardPage({ onCancel }) {
             onChange={(e) => setSelectedBoard(e.target.value)}
             required
           >
-            <option value="community">자유게시판</option>
+            <option value="freeboard">자유게시판</option>
             <option value="livestock">축산 관리 커뮤니티</option>
           </select>
         </div>

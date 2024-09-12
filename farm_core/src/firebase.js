@@ -14,6 +14,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -404,8 +405,12 @@ async function updateDatas(collectionName, docId, updateInfoObj) {
 }
 // 게시판
 async function getCommunityDatas(collectionName, queryOptions) {
+  // if (!collectionName) {
+  //   throw new Error("Collection name cannot be empty");
+  // }
+
   try {
-    const colRef = collection(db, collectionName);
+    const colRef = collection(db, "community");
     let q = query(colRef);
 
     if (queryOptions) {
@@ -443,7 +448,7 @@ async function getCommunityDatas(collectionName, queryOptions) {
     }));
     return data;
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching community data:", error);
     throw new Error(error.message);
   }
 }
@@ -494,7 +499,7 @@ async function addCommunityDatas(collectionName, dataObj) {
     dataObj.updatedAt = time;
 
     // Firestore에 게시글 추가
-    const collect = collection(db, collectionName);
+    const collect = collection(db, "community");
     const result = await addDoc(collect, dataObj);
     const docSnap = await getDoc(result);
 

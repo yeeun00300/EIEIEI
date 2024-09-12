@@ -21,24 +21,18 @@ function Livestock() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const queryOptions = {
-      conditions: [
-        {
-          field: "communityType",
-          operator: "==",
-          value: "livestock",
-        },
-      ],
-    };
-
     dispatch(
       fetchCommunityPosts({
-        collectionName: "livestock",
-        queryOptions,
+        communityType: "livestock", // 실제 사용 중인 커뮤니티 타입 확인
+        queryOptions: {
+          conditions: [
+            { field: "communityType", operator: "==", value: "livestock" },
+          ],
+        },
       })
     );
   }, [dispatch]);
-
+  console.log(livestockContents);
   useEffect(() => {
     let results = livestockContents;
 
@@ -50,12 +44,12 @@ function Livestock() {
       );
     }
 
+    let sortedResults = [...results]; // Create a copy of the array
     if (sortOption === "추천순") {
-      results = results.sort((a, b) => b.like - a.like);
+      sortedResults = sortedResults.sort((a, b) => b.like - a.like);
     } else if (sortOption === "최신순") {
-      results = results.sort((a, b) => b.createdAt - a.createdAt);
+      sortedResults = sortedResults.sort((a, b) => b.createdAt - a.createdAt);
     }
-
     setFilteredContents(results);
   }, [livestockContents, searchQuery, sortOption]);
 

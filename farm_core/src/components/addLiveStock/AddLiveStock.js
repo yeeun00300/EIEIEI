@@ -7,8 +7,12 @@ import {
   setZoneCode,
   toggleOpen,
 } from "../../store/myPageSlice/addressSlice";
-import { addField } from "../../store/addLiveStockSlice/addLiveStockSlice";
-import { addFarmData } from "../../store/addLiveStockSlice/addLiveStockSlice";
+
+import {
+  addField,
+  addFarmData,
+  createSubCollection,
+} from "../../store/addLiveStockSlice/addLiveStockSlice";
 
 function AddLiveStock(props) {
   const dispatch = useDispatch();
@@ -16,16 +20,16 @@ function AddLiveStock(props) {
     (state) => state.addressSlice
   );
   const {
-    farmName = "",
-    farmId = "",
-    farmScale = "",
-    farm_stockType = "",
-    farmBuild = "",
-    farmCondition = "",
-    facilities = "",
-    insuranceDetail = "",
-    note = "",
-  } = useSelector((state) => state.AddLiveStockSlice || {});
+    farmName,
+    farmId,
+    farmScale,
+    farm_stockType,
+    farmBuild,
+    farmCondition,
+    facilities,
+    insuranceDetail,
+    note,
+  } = useSelector((state) => state.AddLiveStockSlice);
 
   const [detailAddress, setDetailAddress] = useState("");
   const [formErrors, setFormErrors] = useState({});
@@ -66,16 +70,16 @@ function AddLiveStock(props) {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const email = localStorage.getItem("email");
-    const saveLayoutString = localStorage.getItem("userLayout");
-    const saveLayout = JSON.parse(saveLayoutString);
 
     if (!validateForm()) {
       return;
     }
+
+    const email = localStorage.getItem("email");
+    const saveLayoutString = localStorage.getItem("userLayout");
+    const saveLayout = JSON.parse(saveLayoutString);
 
     const farmData = {
       farmName,
@@ -92,8 +96,16 @@ function AddLiveStock(props) {
       saveLayout,
     };
 
-    dispatch(addFarmData({ collectionName: "farm", addObj: farmData }));
-    alert("축사 추가가 완료되었습니다");
+    try {
+      const result = await dispatch(
+        addFarmData({ collectionName: "farm", addObj: farmData })
+      ).unwrap();
+      console.log("Farm data result:", result); // 로그 추가
+      await createSubCollection(result.docId); // 하위 컬렉션 생성
+      alert("축사 추가가 완료되었습니다");
+    } catch (error) {
+      console.error("Failed to add farm data:", error);
+    }
 
     // Clear form fields
     dispatch(addField({ fieldName: "farmName", fieldValue: "" }));
