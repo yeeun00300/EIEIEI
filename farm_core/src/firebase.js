@@ -379,9 +379,6 @@ async function uploadExcelAndSaveData(file, collectionName) {
       // 이메일 필드를 추가
       convertedObject.email = email;
 
-      // 삭제 상태 필드 추가 (기본값은 삭제되지 않음, 즉 "Y")
-      convertedObject.deletionStatus = "Y"; // 또는 false로 설정 가능
-
       // Firestore에 전송하기 전에 데이터 확인
       console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
 
@@ -400,6 +397,7 @@ async function uploadExcelAndSaveData(file, collectionName) {
     console.error("엑셀 파일 업로드 및 Firestore 저장 중 오류 발생:", error);
   }
 }
+
 async function updateDatas(collectionName, docId, updateInfoObj) {
   const docRef = await doc(db, collectionName, docId);
   updateDoc(docRef, updateInfoObj);
@@ -518,6 +516,26 @@ const uploadProfileImage = async (file) => {
   return downloadURL;
 };
 
+async function addMessage(collectionName, docId, subCollectionName, addObj) {
+  try {
+    // 1. 먼저 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
+    const userDocRef = doc(db, collectionName, docId);
+
+    // 2. 그 문서 안에 'orders' 서브컬렉션을 생성하고 데이터를 추가
+    const ordersCollectionRef = collection(userDocRef, subCollectionName);
+
+    // 3. 서브컬렉션 'orders'에 새 문서를 생성하고 데이터 추가
+    await setDoc(doc(ordersCollectionRef), {
+      ...addObj,
+      createdAt: new Date(),
+    });
+
+    // console.log("서브컬렉션에 데이터 추가 완료!");
+  } catch (error) {
+    console.error("Error adding subcollection document: ", error);
+  }
+}
+
 export {
   db,
   addDatas,
@@ -534,6 +552,7 @@ export {
   uploadImage,
   getQuery,
   deleteDatas,
+  addMessage,
   app,
   auth,
   storage,
