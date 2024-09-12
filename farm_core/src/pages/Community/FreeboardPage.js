@@ -65,6 +65,7 @@ function FreeboardPage() {
       setPostData(post);
     }
   }, [id, communityContents, livestockContents, isFreeBoard]);
+  console.log(postData);
 
   const handleUpdate = () => {
     // 게시물 업데이트 로직
@@ -113,7 +114,7 @@ function FreeboardPage() {
           )}
           <h1 className={styles.title}>{postData.title}</h1>
           <p className={styles.contentText}>{postData.content}</p>
-          <p>{`작성자: ${postData.authorNickName || "닉네임 없음"}`}</p>
+          <p>{`작성자: ${postData.authorNickName}`}</p>
           <p>
             {`작성일: ${
               postData.createdAt

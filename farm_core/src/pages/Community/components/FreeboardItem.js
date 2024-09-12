@@ -10,9 +10,6 @@ function FreeBoardItem({ item, onItemClick }) {
     }
   };
 
-  const userNickName =
-    useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
-    "닉네임 없음";
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
@@ -23,7 +20,7 @@ function FreeBoardItem({ item, onItemClick }) {
           </a>
           <p className={styles.description}>{item.content}</p>
           <div></div>
-          <p>{`작성자: ${userNickName}`}</p>
+          <p>{`작성자: ${item.authorNickName}`}</p>
           <p>
             {`작성일: ${
               item.createdAt
