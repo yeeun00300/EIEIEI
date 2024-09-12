@@ -8,6 +8,7 @@ import {
   GaugeReferenceArc,
   GaugeValueArc,
 } from "@mui/x-charts";
+
 function CCTVandAnimalInfo(props) {
   return (
     <>

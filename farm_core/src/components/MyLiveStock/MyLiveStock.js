@@ -2,54 +2,30 @@ import React, { useState } from "react";
 import styles from "./MyLiveStock.module.scss";
 import Selected from "./Selected/Selected";
 import CCTVandAnimalInfo from "../CCTVandAnimalInfo/CCTVandAnimalInfo";
+import krCowIcon from "../../img/한우얼굴.png";
+import diaryIcon from "../../img/낙농얼굴.png";
+import pigIcon from "../../img/양돈얼굴.png";
+import chickenIcon from "../../img/양계얼굴.png";
+import henIcon from "../../img/산란계얼굴.png";
+
 function MyLiveStock(props) {
   return (
     <div className="page">
-      <Selected />
-      {/* <CCTVandAnimalInfo /> */}
-      {/* <div className={styles.boarder}>
-        <div>
-          <p>현재 온도 : 28.5</p>
-          <p>추천 세팅 : 31.5</p>
-          <button>적용</button>
+      <div className={styles.container}>
+        <div className={styles.icons}>
+          <img className={styles.icon} src={krCowIcon} alt="" />
+          <img className={styles.icon} src={diaryIcon} alt="" />
+          <img className={styles.icon} src={pigIcon} alt="" />
+          <img className={styles.icon} src={chickenIcon} alt="" />
+          <img className={styles.icon} src={henIcon} alt="" />
         </div>
-        <div>
-          <p>현재 습도 : 55%</p>
-          <p>추천 세팅 : 70%</p>
-          <button>적용</button>
+        <div className={styles.farmListInfo}>
+          {/* farmList 정보 넣어서 표 만들곳 */}
+          {/* 평균치 정보  */}
         </div>
-        <div>
-          <p>사료량 : 구역당 1kg</p>
-          <p>추천 세팅 : 1.2kg</p>
-          <button>적용</button>
-        </div>
-        <div>
-          <p>환기시스템 : off</p>
-          <p>추천 세팅 : on</p>
-          <button>적용</button>
-        </div>
-      </div> */}
-      {/* <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <button>축사 추가 하기</button>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <button>축사 삭제 하기</button>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br /> */}
+        <Selected />
+        <CCTVandAnimalInfo />
+      </div>
     </div>
   );
 }

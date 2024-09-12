@@ -170,7 +170,7 @@ function Main() {
           </ResponsiveGridLayout>
         </div>
         <div className={styles.sub}>
-          캘린더 들어갈 곳
+          <div className={styles.alarm}>날씨, 질병 정보 들어갈 곳</div>
           <MyCalendar />
           {edit ? (
             <button className={styles.button} onClick={fixedMode}>
