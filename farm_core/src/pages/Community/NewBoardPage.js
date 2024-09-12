@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./NewBoardPage.module.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createCommunityPost } from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
 
@@ -10,6 +10,10 @@ function NewBoardPage({ onCancel }) {
   const [image, setImage] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState("freeboard"); // 기본값은 자유게시판
   const dispatch = useDispatch();
+
+  const userNickName =
+    useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
+    "닉네임 없음";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +32,7 @@ function NewBoardPage({ onCancel }) {
         stockType: "",
         notice: false,
         communityType: selectedBoard,
+        authorNickName: userNickName,
       };
 
       // 선택한 게시판에 따라 데이터 전송

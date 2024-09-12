@@ -32,7 +32,6 @@ function Livestock() {
       })
     );
   }, [dispatch]);
-  console.log(livestockContents);
   useEffect(() => {
     let results = livestockContents;
 

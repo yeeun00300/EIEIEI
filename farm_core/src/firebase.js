@@ -515,28 +515,28 @@ async function addCommunityDatas(collectionName, dataObj) {
   }
 }
 // 게시글 업데이트
-// export const updateCommunityDatas = async (id, updates) => {
-//   try {
-//     const postRef = doc(db, "community", id);
-//     await updateDoc(postRef, updates);
-//     return { id, ...updates };
-//   } catch (error) {
-//     console.error("Error updating community data:", error);
-//     throw new Error(error.message);
-//   }
-// };
+export const updateCommunityDatas = async (id, updates) => {
+  try {
+    const postRef = doc(db, "community", id);
+    await updateDoc(postRef, updates);
+    return { id, ...updates };
+  } catch (error) {
+    console.error("Error updating community data:", error);
+    throw new Error(error.message);
+  }
+};
 
-// // 게시글 삭제 함수
-// export const deleteCommunityDatas = async (id) => {
-//   try {
-//     const postRef = doc(db, "community", id);
-//     await deleteDoc(postRef);
-//     return id;
-//   } catch (error) {
-//     console.error("Error deleting community data:", error);
-//     throw new Error(error.message);
-//   }
-// };
+// 게시글 삭제 함수
+export const deleteCommunityDatas = async (id) => {
+  try {
+    const postRef = doc(db, "community", id);
+    await deleteDoc(postRef);
+    return id;
+  } catch (error) {
+    console.error("Error deleting community data:", error);
+    throw new Error(error.message);
+  }
+};
 const uploadProfileImage = async (file) => {
   const storage = getStorage();
   const storageRef = ref(storage, `profile_images/${file.name}`);

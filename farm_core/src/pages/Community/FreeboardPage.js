@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import styles from "./FreeboardPage.module.scss";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import sirenImg from "../../img/신고하기.png";
 import CommentSection from "./components/CommentSection";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice"; // 액션 가져오기
+import {
+  deleteCommunityPost,
+  fetchCommunityPosts,
+  updateCommunityPost,
+} from "./../../store/communitySlice/communitySlice"; // 액션 가져오기
 
 function FreeboardPage() {
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // 수정: useNavigate 훅을 올바르게 사용
 
   // 커뮤니티 타입을 경로에 따라 결정
   const isFreeBoard = location.pathname.includes("My_Farm_Board_FreeBoard");
@@ -61,6 +66,29 @@ function FreeboardPage() {
     }
   }, [id, communityContents, livestockContents, isFreeBoard]);
 
+  const handleUpdate = () => {
+    // 게시물 업데이트 로직
+    const updatedPostData = {
+      /* 수정할 데이터 */
+    };
+    dispatch(
+      updateCommunityPost({ id, updates: updatedPostData, communityType })
+    );
+  };
+
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteCommunityPost({ id, communityType })).unwrap();
+      const redirectPath =
+        communityType === "freeboard"
+          ? "/My_Farm_Board_FreeBoard"
+          : "/My_Farm_Board_Community";
+      navigate(redirectPath); // 수정: navigate 호출을 함수가 아닌 훅으로 올바르게 변경
+    } catch (error) {
+      console.error("게시물 삭제에 실패했습니다:", error);
+    }
+  };
+
   // 로딩 상태 처리
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -85,7 +113,7 @@ function FreeboardPage() {
           )}
           <h1 className={styles.title}>{postData.title}</h1>
           <p className={styles.contentText}>{postData.content}</p>
-          <p>{`작성자: ${userNickName}`}</p>
+          <p>{`작성자: ${postData.authorNickName || "닉네임 없음"}`}</p>
           <p>
             {`작성일: ${
               postData.createdAt
@@ -100,8 +128,8 @@ function FreeboardPage() {
                 : "N/A"
             }`}
           </p>
-          <button>수정하기</button>
-          <button>삭제하기</button>
+          <button onClick={handleUpdate}>수정하기</button>
+          <button onClick={handleDelete}>삭제하기</button>
           <div className={styles.siren}>
             <button>
               <img src={sirenImg} alt="신고하기" />
