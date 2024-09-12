@@ -1,0 +1,35 @@
+.container {
+  height: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  input {
+    padding: 8px;
+    background-color: #fff;
+    outline: none;
+    border: 2px solid var(--main-color);
+    margin-top: 2px;
+    border-radius: 8px;
+    // margin: 4px 0;
+  }
+  .btns {
+    height: 20%;
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.8rem;
+    .btn {
+      width: 60%;
+      height: 100%;
+      button {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    button {
+      border: 2px solid #b1b1b1;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #eee;
+    }
+  }
+}

@@ -88,7 +88,7 @@ function getQuery(collectionName, queryOptions) {
   });
 
   orderBys.forEach((order) => {
-    q = query(q, orderBy(order.field, order.direction || "asc"));
+    q = query(q, orderBy(order.field, order.direction || "desc"));
   });
 
   q = query(q, limit(limits));
