@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   collection,
-  getDocs,
   doc,
+  getDocs,
+  query,
   updateDoc,
   where,
-  query,
 } from "firebase/firestore";
 import { db } from "../../firebase"; // Firebase 설정 파일
 import styles from "./StockAddfromExcel.module.scss";
@@ -49,7 +49,35 @@ function convertFieldNamesToKorean(dataObject) {
   return convertedObject;
 }
 
-// 필드명 순서 (삭제 유무와 삭제 이유는 여기에 포함되지 않음)
+// 필드명 순서
+const order = [
+  "가축 종류",
+  "가축 코드",
+  "품종",
+  "축사 번호",
+  "가축 개체번호",
+  "가축 주소",
+  "입고 날짜",
+  "성별",
+  "크기",
+  "무게",
+  "출생 날짜",
+  "섭취량",
+  "활동량",
+  "온도",
+  "격리 상태",
+  "발정기 여부",
+  "임신 날짜",
+  "백신 접종 데이터",
+  "질병 및 치료 데이터",
+  "출산 횟수",
+  "출산 날짜",
+  "출산 예정 날짜",
+  "우유 생산량",
+  "폐사 여부",
+  "산란량",
+];
+
 const fieldsToRender = [
   "가축 종류",
   "축사 번호",
@@ -68,11 +96,10 @@ const fieldsToRender = [
 function StockAddfromExcel() {
   const [items, setItems] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
-  const [deletionRows, setDeletionRows] = useState([]); // 삭제 폼을 열기 위한 상태
-  const [deleteReasons, setDeleteReasons] = useState({}); // 삭제 이유 저장
+  const [deletionRows, setDeletionRows] = useState([]);
+  const [deleteReasons, setDeleteReasons] = useState({});
   const email = localStorage.getItem("email");
 
-  console.log(items);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -120,26 +147,16 @@ function StockAddfromExcel() {
     const reason = deleteReasons[rowIndex];
     const stockItem = items[rowIndex];
 
-    // 디버깅: stockItem과 docRef 출력
-    console.log("stockItem:", stockItem);
-    console.log("Deleting stockId:", stockItem?.stockId);
-
     try {
-      // Firestore에서 문서 참조 생성
-      const docRef = doc(db, "stock", stockItem.id); // stockId를 이용해 참조
-      console.log("Document Reference:", docRef);
-
-      // Firestore 업데이트
+      const docRef = doc(db, "stock", stockItem.id);
       await updateDoc(docRef, {
-        deletionStatus: "N", // 삭제 상태를 "N"으로 업데이트
-        deletionReason: reason, // 삭제 이유 저장
+        deletionStatus: "N",
+        deletionReason: reason,
       });
 
-      // 삭제 처리 후 상태 업데이트
-      const updatedItems = items.filter((_, index) => index !== rowIndex); // 삭제된 항목 제외
+      const updatedItems = items.filter((_, index) => index !== rowIndex);
       setItems(updatedItems);
 
-      // 폼 닫기
       setDeletionRows(deletionRows.filter((index) => index !== rowIndex));
     } catch (error) {
       console.error("삭제 처리 중 오류 발생:", error);
@@ -196,10 +213,44 @@ function StockAddfromExcel() {
             </td>
           </tr>
 
+          {/* 상세보기 내용 */}
+          {expandedRows.includes(rowIndex) && (
+            <tr>
+              <td
+                colSpan={fieldsToRender.length + 2}
+                className={styles.details}
+              >
+                <table className={styles.detailsTable}>
+                  <thead>
+                    <tr>
+                      {order.map((key) => (
+                        <th key={key} className={styles.th}>
+                          {fieldNameMapping[key] || key}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {order.map((key) => (
+                        <td key={key} className={styles.td}>
+                          {item[key]?.toString() || "X"}
+                        </td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          )}
+
           {/* 삭제 폼 표시 */}
           {deletionRows.includes(rowIndex) && (
             <tr>
-              <td colSpan={fieldsToRender.length + 1}>
+              <td
+                colSpan={fieldsToRender.length + 2}
+                className={styles.deleteForm}
+              >
                 <div>
                   <input
                     type="text"

@@ -14,6 +14,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -518,6 +519,43 @@ const uploadProfileImage = async (file) => {
   return downloadURL;
 };
 
+// 하위컬렉션 만들기(farm)
+
+// async function subCollectionForFarm() {
+//   try {
+//     const farmCollectionRef = collection(db, "farm");
+//     const farmDocsSnapshot = await getDocs(farmCollectionRef);
+
+//     if (farmDocsSnapshot.empty) {
+//       console.log("No farm documents found.");
+//       return;
+//     }
+
+//     const batch = writeBatch(db);
+
+//     // 각 문서에 대해 하위 컬렉션 생성
+//     farmDocsSnapshot.forEach((farmDoc) => {
+//       const farmDocRef = doc(db, "farm", farmDoc.id);
+
+//       // 하위 컬렉션 이름 배열
+//       const subCollections = ["farmCureList", "ruinInfo", "vaccine", "disease"];
+
+//       // 각 하위 컬렉션을 문서 ID 자동 생성으로 생성
+//       subCollections.forEach((subCollection) => {
+//         const subCollectionRef = collection(farmDocRef, subCollection);
+//         const newDocRef = doc(subCollectionRef); // 문서 ID 자동 생성
+//         batch.set(newDocRef, {}); // 필드 값은 나중에 추가 예정
+//       });
+//     });
+
+//     // 모든 작업을 한 번에 커밋
+//     await batch.commit();
+//     console.log("Sub-collections created successfully.");
+//   } catch (error) {
+//     console.error("Error creating sub-collections: ", error);
+//   }
+// }
+
 export {
   db,
   addDatas,
@@ -538,5 +576,6 @@ export {
   auth,
   storage,
   uploadProfileImage,
+  subCollectionForFarm,
 };
 export default app;
