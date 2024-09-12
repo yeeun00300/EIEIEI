@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
-import Sort from "../Admin/components/Sort";
-import { codeDict } from "../../api/codeDict/codeDict";
 import styles from "./MyStcokDetails.module.scss";
+import Sort from "../Admin/components/Sort";
 import Search from "../Admin/components/Search";
 import DateRangePickerValue from "../Admin/components/DateRangePickerValue";
-import Table from "react-bootstrap/esm/Table";
-import { Button } from "@mui/material";
-import Collapse from "react-bootstrap/esm/Collapse";
+import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
+import Collapse from "react-bootstrap/Collapse";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import { codeDict } from "../../api/codeDict/codeDict";
+import { Button } from "@mui/material";
 
 function MyStockDetails(props) {
   const dispatch = useDispatch();
@@ -23,6 +23,55 @@ function MyStockDetails(props) {
     F: "암컷",
     M: "수컷",
   };
+  const [sortBy, setSortBy] = useState("stockId");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const email = localStorage.getItem("email");
+  const [filteredStock, setFilteredStock] = useState([]);
+
+  useEffect(() => {
+    if (email) {
+      const queryOptions = {
+        conditions: [{ field: "email", operator: "==", value: email }],
+      };
+      console.log("Fetching data for email:", email); // 이메일을 콘솔에 출력
+      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
+    } else {
+      console.error("Email is missing from localStorage");
+    }
+  }, [dispatch, email]);
+
+  useEffect(() => {
+    if (stock) {
+      const filtered = stock.filter((item) => item.email === email);
+      setFilteredStock(filtered);
+      if (filtered.length > 0) {
+        console.log("Filtered stock data:", filtered);
+      } else {
+        console.log("No matching stock data found for email:", email);
+      }
+    }
+  }, [stock, email]);
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+  const sortedStock = filteredStock
+    ? [...filteredStock].sort((a, b) => {
+        const valA = a[sortBy];
+        const valB = b[sortBy];
+
+        if (sortOrder === "asc") {
+          return valA > valB ? 1 : -1;
+        } else {
+          return valA < valB ? 1 : -1;
+        }
+      })
+    : [];
 
   const queryOptions1 = {
     conditions: [{ field: "stockCode", operator: "==", value: codeDict[sort] }],
@@ -113,19 +162,34 @@ function MyStockDetails(props) {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>축사번호</th>
-                <th>종류</th>
-                <th>등록일자</th>
-                <th>성별</th>
+                <th onClick={() => handleSort("stockId")}>
+                  축사번호{" "}
+                  {sortBy === "stockId" && (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
+                <th onClick={() => handleSort("stockType")}>
+                  종류{" "}
+                  {sortBy === "stockType" &&
+                    (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
+                <th onClick={() => handleSort("incomingDate")}>
+                  등록일자{" "}
+                  {sortBy === "incomingDate" &&
+                    (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
+                <th onClick={() => handleSort("sex")}>
+                  성별 {sortBy === "sex" && (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
                 <th>상세정보</th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
-                <div>No Data!!</div>
+                <tr>
+                  <td colSpan="5">No Data!!</td>
+                </tr>
               ) : (
                 <>
-                  {stock?.map((stockItem) => {
+                  {sortedStock?.map((stockItem) => {
                     const { stockId, stockType, incomingDate, sex } = stockItem;
                     return (
                       <tr key={stockId}>
@@ -139,7 +203,7 @@ function MyStockDetails(props) {
                             aria-controls="example-collapse-text1"
                             aria-expanded={open[stockId] || false}
                           >
-                            click
+                            상세보기
                           </Button>
                         </td>
                       </tr>
