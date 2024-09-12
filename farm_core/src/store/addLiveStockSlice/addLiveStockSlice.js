@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addDatas,
+  addFarmDataWithSubcollections,
   addFarmWithSubcollections,
   db,
   updateDatas,
@@ -74,19 +75,17 @@ const AddLiveStockSlice = createSlice({
 
 const addFarmData = createAsyncThunk(
   "livestock/addFarmData",
-  async ({ collectionName, addObj, subcollections }, { rejectWithValue }) => {
+  async ({ addObj, subcollections }, { rejectWithValue }) => {
     try {
-      const resultData = await addDatas(collectionName, addObj);
-
-      console.log(resultData);
-      return { docId: resultData, ...addObj };
+      await addFarmDataWithSubcollections(addObj, subcollections);
+      console.log(addObj);
+      return { ...addObj }; // 반환할 결과를 수정하세요
     } catch (error) {
-      console.error("Error adding farm:", error); // 에러를 콘솔에 출력
+      console.error("Error adding farm:", error);
       return rejectWithValue(error.message);
     }
   }
 );
-
 export default AddLiveStockSlice.reducer;
 export const { addField } = AddLiveStockSlice.actions;
 export { addFarmData };

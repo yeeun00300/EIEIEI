@@ -128,7 +128,7 @@ function AddLiveStock(props) {
       disease: [
         {
           diseaseType: "exampleDisease",
-          diseaseDate: "kroDate()",
+          diseaseDate: kroDate(),
           cure: "exampleCure",
         },
       ],
@@ -137,7 +137,6 @@ function AddLiveStock(props) {
     try {
       const result = await dispatch(
         addFarmData({
-          collectionName: "farm",
           addObj: farmData,
           subcollections: subCollections,
         })

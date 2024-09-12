@@ -547,39 +547,35 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
   }
 }
 
-const batch = writeBatch(db);
-
-const addFarmDataWithSubcollections = async (
-  farmId,
-  farmData,
-  subCollections
-) => {
+const addFarmDataWithSubcollections = async (farmData, subCollections) => {
   try {
-    // Firestore의 farm 컬렉션에 farmId 문서 추가
-    const farmRef = doc(collection(db, "farm"), farmId);
-    await setDoc(farmRef, farmData);
-    console.log(farmRef);
+    // Firestore의 farm 컬렉션에 문서 추가
+    const farmRef = await addDoc(collection(db, "farm"), farmData);
+    console.log("Farm document added with ID:", farmRef.id);
 
     // 하위 컬렉션 추가
+    // farmCureList 하위 컬렉션 추가
     const farmCureListRef = collection(farmRef, "farmCureList");
     for (const item of subCollections.farmCureList) {
-      const docRef = doc(farmCureListRef);
-      await setDoc(docRef, item);
+      await addDoc(farmCureListRef, item);
     }
 
+    // ruinInfo 하위 컬렉션 추가
     const ruinInfoRef = collection(farmRef, "ruinInfo");
-    await setDoc(doc(ruinInfoRef), subCollections.ruinInfo);
+    for (const [docId, data] of Object.entries(subCollections.ruinInfo)) {
+      await setDoc(doc(ruinInfoRef, docId), data);
+    }
 
+    // vaccine 하위 컬렉션 추가
     const vaccineRef = collection(farmRef, "vaccine");
     for (const item of subCollections.vaccine) {
-      const docRef = doc(vaccineRef);
-      await setDoc(docRef, item);
+      await addDoc(vaccineRef, item);
     }
 
+    // disease 하위 컬렉션 추가
     const diseaseRef = collection(farmRef, "disease");
     for (const item of subCollections.disease) {
-      const docRef = doc(diseaseRef);
-      await setDoc(docRef, item);
+      await addDoc(diseaseRef, item);
     }
 
     alert("Farm data and subcollections added successfully.");
