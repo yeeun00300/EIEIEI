@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  where,
+  query,
+} from "firebase/firestore";
 import { db } from "../../firebase"; // Firebase 설정 파일
 import styles from "./StockAddfromExcel.module.scss";
 
@@ -42,35 +49,7 @@ function convertFieldNamesToKorean(dataObject) {
   return convertedObject;
 }
 
-// 필드명 순서
-const order = [
-  "가축 종류",
-  "가축 코드",
-  "품종",
-  "축사 번호",
-  "가축 개체번호",
-  "가축 주소",
-  "입고 날짜",
-  "성별",
-  "크기",
-  "무게",
-  "출생 날짜",
-  "섭취량",
-  "활동량",
-  "온도",
-  "격리 상태",
-  "발정기 여부",
-  "임신 날짜",
-  "백신 접종 데이터",
-  "질병 및 치료 데이터",
-  "출산 횟수",
-  "출산 날짜",
-  "출산 예정 날짜",
-  "우유 생산량",
-  "폐사 여부",
-  "산란량",
-];
-
+// 필드명 순서 (삭제 유무와 삭제 이유는 여기에 포함되지 않음)
 const fieldsToRender = [
   "가축 종류",
   "축사 번호",
@@ -85,17 +64,28 @@ const fieldsToRender = [
   "백신 접종 데이터",
   "질병 및 치료 데이터",
 ];
+
 function StockAddfromExcel() {
   const [items, setItems] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
+  const [deletionRows, setDeletionRows] = useState([]); // 삭제 폼을 열기 위한 상태
+  const [deleteReasons, setDeleteReasons] = useState({}); // 삭제 이유 저장
+  const email = localStorage.getItem("email");
 
+  console.log(items);
   useEffect(() => {
     async function fetchData() {
       try {
-        const querySnapshot = await getDocs(collection(db, "stock"));
-        const data = querySnapshot.docs.map((doc) =>
-          convertFieldNamesToKorean(doc.data())
+        const querySnapshot = await getDocs(
+          query(collection(db, "stock"), where("email", "==", email))
         );
+        const data = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...convertFieldNamesToKorean(doc.data()),
+          }))
+          .filter((item) => item.deletionStatus !== "N"); // 삭제 상태가 "N"인 항목은 제외
+
         setItems(data);
       } catch (error) {
         console.error("Firestore에서 데이터를 가져오는 중 오류 발생:", error);
@@ -103,13 +93,56 @@ function StockAddfromExcel() {
     }
 
     fetchData();
-  }, []);
+  }, [email]);
 
   const handleToggleExpand = (rowIndex) => {
     if (expandedRows.includes(rowIndex)) {
       setExpandedRows(expandedRows.filter((index) => index !== rowIndex));
     } else {
       setExpandedRows([...expandedRows, rowIndex]);
+    }
+  };
+
+  const handleToggleDelete = (rowIndex) => {
+    if (deletionRows.includes(rowIndex)) {
+      setDeletionRows(deletionRows.filter((index) => index !== rowIndex));
+    } else {
+      setDeletionRows([...deletionRows, rowIndex]);
+    }
+  };
+
+  const handleDeleteReasonChange = (e, rowIndex) => {
+    const reason = e.target.value;
+    setDeleteReasons({ ...deleteReasons, [rowIndex]: reason });
+  };
+
+  const handleDelete = async (rowIndex) => {
+    const reason = deleteReasons[rowIndex];
+    const stockItem = items[rowIndex];
+
+    // 디버깅: stockItem과 docRef 출력
+    console.log("stockItem:", stockItem);
+    console.log("Deleting stockId:", stockItem?.stockId);
+
+    try {
+      // Firestore에서 문서 참조 생성
+      const docRef = doc(db, "stock", stockItem.id); // stockId를 이용해 참조
+      console.log("Document Reference:", docRef);
+
+      // Firestore 업데이트
+      await updateDoc(docRef, {
+        deletionStatus: "N", // 삭제 상태를 "N"으로 업데이트
+        deletionReason: reason, // 삭제 이유 저장
+      });
+
+      // 삭제 처리 후 상태 업데이트
+      const updatedItems = items.filter((_, index) => index !== rowIndex); // 삭제된 항목 제외
+      setItems(updatedItems);
+
+      // 폼 닫기
+      setDeletionRows(deletionRows.filter((index) => index !== rowIndex));
+    } catch (error) {
+      console.error("삭제 처리 중 오류 발생:", error);
     }
   };
 
@@ -121,8 +154,8 @@ function StockAddfromExcel() {
             {key}
           </th>
         ))}
-        <th className={styles.th}>상세보기</th>{" "}
-        {/* '상세보기' 버튼을 위한 헤더 */}
+        <th className={styles.th}>상세보기</th>
+        <th className={styles.th}>삭제하기</th>
       </tr>
     </thead>
   );
@@ -135,14 +168,11 @@ function StockAddfromExcel() {
             {fieldsToRender.map((key, columnIndex) => (
               <td
                 key={`${rowIndex}-${columnIndex}-${key}`}
-                className={`${styles.td} ${
-                  key === "발정기 여부" || key === "성별" ? styles.narrow : ""
-                }`}
+                className={styles.td}
               >
                 {Array.isArray(item[key]) ? (
                   <div>
                     {item[key].map((subItem, subIndex) => {
-                      // 객체의 key-value 쌍을 문자열로 변환
                       const subItemString = Object.entries(subItem)
                         .map(([subKey, subValue]) => `${subKey}: ${subValue}`)
                         .join(", ");
@@ -159,56 +189,28 @@ function StockAddfromExcel() {
                 {expandedRows.includes(rowIndex) ? "접기" : "상세보기"}
               </button>
             </td>
+            <td className={styles.td}>
+              <button onClick={() => handleToggleDelete(rowIndex)}>
+                삭제하기
+              </button>
+            </td>
           </tr>
 
-          {expandedRows.includes(rowIndex) && (
+          {/* 삭제 폼 표시 */}
+          {deletionRows.includes(rowIndex) && (
             <tr>
               <td colSpan={fieldsToRender.length + 1}>
-                <table className={styles.expandedTable}>
-                  <thead>
-                    <tr>
-                      {order.map((key) => (
-                        <th key={key} className={styles.th}>
-                          {key}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      {order.map((key, columnIndex) => (
-                        <td
-                          key={`${rowIndex}-expanded-${columnIndex}-${key}`}
-                          className={`${styles.td} ${
-                            key === "백신 접종 데이터" ||
-                            key === "질병 및 치료 데이터"
-                              ? styles.wide
-                              : ""
-                          }`}
-                        >
-                          {Array.isArray(item[key]) ? (
-                            <div>
-                              {item[key].map((subItem, subIndex) => {
-                                // 객체의 key-value 쌍을 문자열로 변환
-                                const subItemString = Object.entries(subItem)
-                                  .map(
-                                    ([subKey, subValue]) =>
-                                      `${subKey}: ${subValue}`
-                                  )
-                                  .join(", ");
-                                return (
-                                  <p key={subIndex}>{subItemString || "X"}</p>
-                                );
-                              })}
-                            </div>
-                          ) : (
-                            item[key]?.toString() || "X"
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  </tbody>
-                </table>
+                <div>
+                  <input
+                    type="text"
+                    value={deleteReasons[rowIndex] || ""}
+                    onChange={(e) => handleDeleteReasonChange(e, rowIndex)}
+                    placeholder="삭제 이유를 작성하세요"
+                  />
+                  <button onClick={() => handleDelete(rowIndex)}>
+                    삭제 제출
+                  </button>
+                </div>
               </td>
             </tr>
           )}

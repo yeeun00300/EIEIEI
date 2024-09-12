@@ -379,6 +379,9 @@ async function uploadExcelAndSaveData(file, collectionName) {
       // 이메일 필드를 추가
       convertedObject.email = email;
 
+      // 삭제 상태 필드 추가 (기본값은 삭제되지 않음, 즉 "Y")
+      convertedObject.deletionStatus = "Y"; // 또는 false로 설정 가능
+
       // Firestore에 전송하기 전에 데이터 확인
       console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
 
@@ -397,7 +400,6 @@ async function uploadExcelAndSaveData(file, collectionName) {
     console.error("엑셀 파일 업로드 및 Firestore 저장 중 오류 발생:", error);
   }
 }
-
 async function updateDatas(collectionName, docId, updateInfoObj) {
   const docRef = await doc(db, collectionName, docId);
   updateDoc(docRef, updateInfoObj);

@@ -32,18 +32,20 @@ function UserMenu(props) {
   return (
     <div className={styles.container}>
       <div>
-        Email:
+        Email
         <input type="text" value={email} readOnly />
       </div>
       <div>
-        농장수:
+        농장수
         <input />
       </div>
-      <div>
-        <Link to={"/userinfo"}>
+      <div className={styles.btns}>
+        <Link className={styles.btn} to={"/userinfo"}>
           <button>회원정보수정</button>
         </Link>
-        <button onClick={handleLogout}>로그아웃</button>
+        <button className={styles.logoutBtn} onClick={handleLogout}>
+          로그아웃
+        </button>
       </div>
     </div>
   );
