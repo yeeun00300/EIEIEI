@@ -8,7 +8,7 @@ import {
 } from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
 
-function NewBoardPage({ onCancel }) {
+function NewBoardPage({}) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -77,11 +77,15 @@ function NewBoardPage({ onCancel }) {
           },
         })
       );
+      if (selectedBoard === "freeboard") {
+        navigate("/My_Farm_Board_FreeBoard"); // 자유게시판으로 이동
+      } else if (selectedBoard === "livestock") {
+        navigate("/My_Farm_Board_Community"); // 축산 관리 커뮤니티로 이동
+      }
 
       setTitle("");
       setContent("");
       setImage(null);
-      onCancel();
     } catch (error) {
       console.error("새 글 등록 실패:", error);
     }
@@ -145,9 +149,7 @@ function NewBoardPage({ onCancel }) {
         <button type="submit" className="submitBtn">
           글 등록하기
         </button>
-        <button type="button" onClick={onCancel}>
-          취소하기
-        </button>
+        <button type="button">취소하기</button>
       </form>
     </div>
   );
