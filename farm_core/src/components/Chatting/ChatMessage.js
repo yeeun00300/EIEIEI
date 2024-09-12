@@ -9,7 +9,7 @@ function ChatMessage({ message, chatRoomName, send, photoUrl }) {
 
   return (
     <>
-      {/* {!send ? (
+      {!send ? (
         <div className={styles.received}>
           <img src={photoUrl} />
           <p>{message.text}</p>
@@ -21,7 +21,7 @@ function ChatMessage({ message, chatRoomName, send, photoUrl }) {
           <p>{message.text}</p>
           <span className="message-timestamp"></span>
         </div>
-      )} */}
+      )}
     </>
   );
 }

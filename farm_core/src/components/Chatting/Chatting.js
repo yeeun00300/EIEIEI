@@ -15,7 +15,7 @@ import {
 
 function Chatting() {
   const dispatch = useDispatch();
-
+  const [chatRoomName, setChatRoomName] = useState("");
   const { chattingRoom } = useSelector((state) => state.chattingSlice);
 
   const email = localStorage.getItem("email");
@@ -41,11 +41,18 @@ function Chatting() {
 
   return (
     <div className={styles.Chatting}>
-      <header>
-        <h4>채팅방</h4>
-      </header>
-      {}
-      <ChatRoom chattingRoom={chattingRoom} />
+      {chattingRoom ? (
+        <header>
+          <h4>채팅방</h4>
+        </header>
+      ) : (
+        <></>
+      )}
+      <ChatRoom
+        chattingRoom={chattingRoom}
+        chatRoomName={chatRoomName}
+        setChatRoomName={setChatRoomName}
+      />
     </div>
   );
 }

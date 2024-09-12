@@ -26,6 +26,7 @@
     justify-content: center;
     align-items: center;
     padding: 24px;
+    gap: 12px;
     button {
       padding: 0;
       border-radius: 50%;
@@ -117,21 +118,6 @@
     outline: none;
     border: none;
     padding: 0 15px;
-  }
-
-  .message {
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-    p {
-      padding: 10px 20px;
-      border-radius: 25px;
-      text-align: center;
-      margin: 0;
-      color: #262626;
-    }
   }
 }
 .ChattingIcons {

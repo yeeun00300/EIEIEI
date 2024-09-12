@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getData, getDatas, getSubCollection } from "../../firebase";
 
 const createdAt = new Date();
-const message = { createdAt: createdAt, photoUrl: "", text: "", uid: "" };
+const message = [{ createdAt: createdAt, photoUrl: "", text: "", uid: "" }];
 
 const initialState = {
   messages: message,
   chattingRoom: [],
+  chattingUser: [],
+  //   chattingUser: [{ chattingRoom: [{ userName: "", photoUrl: "" }], docId: "" }],
   isLoading: false,
   error: null,
 };
@@ -38,6 +40,17 @@ const chattingSlice = createSlice({
       })
       .addCase(fetchChattingRoom.rejected, (state, action) => {
         state.isLoading = false;
+      })
+      .addCase(fetchChattingUser.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchChattingUser.fulfilled, (state, action) => {
+        state.chattingUser = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchChattingUser.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
@@ -65,6 +78,17 @@ export const fetchChattingRoom = createAsyncThunk(
       const resultData = await getDatas(collectionName, queryOptions);
       const filteredData = resultData.filter((item) => item.docId === email);
       return filteredData[0];
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+export const fetchChattingUser = createAsyncThunk(
+  "stock/fetchChattingUser",
+  async ({ collectionName, queryOptions }) => {
+    try {
+      const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
     } catch (error) {
       console.error(error);
     }

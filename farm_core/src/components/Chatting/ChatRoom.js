@@ -5,20 +5,37 @@ import Stack from "@mui/material/Stack";
 import * as FaIcons from "react-icons/fa";
 import ChatMessage from "./ChatMessage";
 import styles from "./ChatRoom.module.scss";
-import { addMessage, getDatas, getUserAuth } from "../../firebase";
-import { serverTimestamp } from "firebase/firestore";
+import { addMessage, db, getUserAuth } from "../../firebase";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchChattingMessage } from "../../store/chattingSlice/chattingSlice";
+import {
+  fetchChattingMessage,
+  fetchChattingUser,
+} from "../../store/chattingSlice/chattingSlice";
 import someone from "../../img/person.png";
-function ChatRoom({ chattingRoom }) {
+import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+
+function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
   const dispatch = useDispatch();
   const auth = getUserAuth();
   const now = serverTimestamp();
   const [inputValue, setInputValue] = useState("");
-  const [chatRoomName, setChatRoomName] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
-  const { messages } = useSelector((state) => state.chattingSlice);
+  // const [chatRoomName, setChatRoomName] = useState("");
+
+  const [subCollectionData, setSubCollectionData] = useState([]);
+
   const { uid, email } = auth?.currentUser;
+  const { messages, chattingUser, isLoading } = useSelector(
+    (state) => state.chattingSlice
+  );
+  const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
       backgroundColor: "#44b700",
@@ -59,6 +76,7 @@ function ChatRoom({ chattingRoom }) {
     const addObj = {
       text: inputValue,
       createdAt: now,
+
       uid: uid,
     };
     addMessage("chatting", email, chatRoomName, addObj);
@@ -73,7 +91,43 @@ function ChatRoom({ chattingRoom }) {
         subCollectionName: chatRoomName,
       })
     );
-  }, [chatRoomName]);
+    dispatch(
+      fetchChattingUser({
+        collectionName: "chatting",
+        queryOptions: {},
+      })
+    );
+    dispatch(
+      fetchUser({
+        collectionName: "users",
+        queryOptions: {
+          conditions: [{ field: "email", operator: "==", value: email }],
+        },
+      })
+    );
+    const documentId = email;
+    const subCollectionName = chatRoomName;
+
+    // 서브컬렉션 참조 생성
+    const subCollectionRef = collection(
+      doc(db, "chatting", documentId),
+      subCollectionName
+    );
+
+    // 실시간 구독 설정
+    // const unsubscribe = onSnapshot(
+    //   subCollectionRef,
+    //   (snapshot) => {
+    //     const data = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setSubCollectionData(data);
+    //   },
+    //   (err) => {}
+    // );
+    // console.log(subCollectionData);
+  }, [chattingRoom]);
   return (
     <>
       <nav>
@@ -104,41 +158,60 @@ function ChatRoom({ chattingRoom }) {
           );
         })}
       </nav>
-      <section>
-        <main className={styles.message}>
-          {messages?.map((item, idx) => {
-            if (item.uid === uid) {
-              return (
-                <ChatMessage
-                  message={item}
-                  chatRoomName={chatRoomName}
-                  // photoUrl={someone}
-                  send
-                  key={idx}
-                />
-              );
-            } else {
-              return (
-                <ChatMessage
-                  message={item}
-                  // photoUrl={photoUrl}
-                  chatRoomName={chatRoomName}
-                  key={idx}
-                />
-              );
-            }
-          })}
-        </main>
-        <form onSubmit={sendMessage}>
-          <input
-            onChange={(e) => setInputValue(e.target.value)}
-            value={inputValue}
-          />
-          <button disabled={!inputValue} type="submit">
-            <FaIcons.FaPaperPlane />
-          </button>
-        </form>
-      </section>
+      {chatRoomName ? (
+        <section>
+          <main className={styles.message}>
+            {messages?.map((item, idx) => {
+              if (!chattingUser) {
+                <div></div>;
+              } else {
+                const myProfile = userInfo[0]?.profileImages;
+
+                const filteredData = chattingUser?.filter(
+                  (item) => item.docId == email
+                );
+                const filterUrl = filteredData[0]?.chattingRoom;
+                const selectData = filterUrl?.filter(
+                  (item) => item.userName == chatRoomName
+                );
+                const selectUrl = selectData[0]?.photoUrl;
+                if (item.uid === uid) {
+                  return (
+                    <ChatMessage
+                      message={item}
+                      chatRoomName={chatRoomName}
+                      photoUrl={myProfile ? myProfile : someone}
+                      send
+                      key={idx}
+                    />
+                  );
+                } else {
+                  return (
+                    <ChatMessage
+                      message={item}
+                      photoUrl={selectUrl ? selectUrl : someone}
+                      chatRoomName={chatRoomName}
+                      key={idx}
+                    />
+                  );
+                }
+              }
+            })}
+          </main>
+
+          <form onSubmit={sendMessage}>
+            <input
+              onChange={(e) => setInputValue(e.target.value)}
+              value={inputValue}
+            />
+            <button disabled={!inputValue} type="submit">
+              <FaIcons.FaPaperPlane />
+            </button>
+          </form>
+        </section>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

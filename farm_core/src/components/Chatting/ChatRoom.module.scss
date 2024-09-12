@@ -1,4 +1,7 @@
 .message {
+  display: flex;
+  flex-direction: column-reverse;
+
   img {
     width: 40px;
     height: 40px;

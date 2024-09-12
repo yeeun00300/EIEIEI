@@ -528,6 +528,7 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
   }
 }
 async function getSubCollection(collectionName, docId, subCollectionName) {
+  // const email = localStorage.getItem("email");
   try {
     // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
     const userDocRef = doc(db, collectionName, docId);
@@ -540,15 +541,19 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
       // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
       const result = { ...doc.data(), docId: doc.id };
       return result;
+      // const filteredData = result.filter((item) => item.docId === email);
+      // return filteredData[0];
     });
+
     return resultData;
   } catch (error) {
-    console.error("Error getting subCollection documents: ", error);
+    // console.error("Error getting subCollection documents: ", error);
   }
 }
 
 export {
   db,
+  getCollection,
   addDatas,
   getData,
   getDatas,
