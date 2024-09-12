@@ -19,20 +19,19 @@ function Community() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const queryOptions = {
-      conditions: [
-        {
-          field: "communityType",
-          operator: "==",
-          value: "community",
-        },
-      ],
-    };
-
     dispatch(
-      fetchCommunityPosts({ collectionName: "community", queryOptions })
+      fetchCommunityPosts({
+        collectionName: "community",
+        communityType: "freeboard", // 실제 사용 중인 커뮤니티 타입 확인
+        queryOptions: {
+          conditions: [
+            { field: "communityType", operator: "==", value: "freeboard" },
+          ],
+        },
+      })
     );
   }, [dispatch]);
+  console.log(communityContents);
 
   const handleNewBoardClick = () => {
     setIsWriting(true);
@@ -54,7 +53,6 @@ function Community() {
   if (openBoard && selectedItem) {
     return <FreeboardPage item={selectedItem} />;
   }
-
   return (
     <div className="page">
       <ListPage variant="freeBoard">

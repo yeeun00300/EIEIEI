@@ -27,7 +27,7 @@ const communitySlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchCommunityPosts.fulfilled, (state, action) => {
-        if (action.meta.arg.communityType === "community") {
+        if (action.meta.arg.communityType === "freeboard") {
           state.communityContents = action.payload;
         } else if (action.meta.arg.communityType === "livestock") {
           state.livestockContents = action.payload;
@@ -43,7 +43,7 @@ const communitySlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createCommunityPost.fulfilled, (state, action) => {
-        if (action.meta.arg.communityType === "community") {
+        if (action.meta.arg.communityType === "freeboard") {
           state.communityContents.push(action.payload);
         } else if (action.meta.arg.communityType === "livestock") {
           state.livestockContents.push(action.payload);

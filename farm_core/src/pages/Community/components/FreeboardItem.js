@@ -13,7 +13,6 @@ function FreeBoardItem({ item, onItemClick }) {
   const userNickName =
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
