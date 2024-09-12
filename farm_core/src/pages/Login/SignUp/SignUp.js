@@ -345,31 +345,31 @@ function SignUp() {
   };
 
   return (
-    <div className={styles.main}>
-      <img className={styles.logo} src={logoImg} />
-      <h2>Farm Core</h2>
-      <h3>회원가입</h3>
-      <form onSubmit={handleSubmit}>
-        {downloadURL ? (
-          <img src={downloadURL} alt="프로필 이미지" />
-        ) : (
-          <FaImage size={100} />
-        )}
-        <input
-          type="file"
-          accept="image/*"
-          id="profileImg"
-          name="imgFile"
-          required={true}
-          onChange={handleFileChange}
-          ref={imgRef}
-        />
-        <div>
-          이름
-          <div className={styles.name}>
-            <div className={styles.img}>
-              <FaRegUser />
-            </div>
+    <div className={styles.wrapper}>
+      <div className={styles.main}>
+        <h3>회원가입</h3>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.Inputs}>
+            <div>프로필 선택</div>
+            {downloadURL ? (
+              <img src={downloadURL} alt="프로필 이미지" />
+            ) : (
+              <FaImage size={90} />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              id="profileImg"
+              name="imgFile"
+              required={true}
+              onChange={handleFileChange}
+              ref={imgRef}
+            />
+          </div>
+
+          <div className={styles.Inputs}>
+            <div>이름</div>
+
             <input
               placeholder="이름을 입력해주세요."
               type="text"
@@ -379,86 +379,71 @@ function SignUp() {
               onChange={handleChange}
             />
           </div>
-        </div>
-        <div>
-          닉네임
-          <input
-            placeholder="닉네임을 입력해주세요"
-            type="text"
-            name="nickname"
-            required={true}
-            value={nickname}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          생년월일
-          <input
-            placeholder="YYYY-MM-DD"
-            type="date"
-            name="birthday"
-            required={true}
-            value={birthday}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          이메일
-          <input
-            placeholder="Email을 입력해주세요"
-            type="email"
-            name="email"
-            required={true}
-            value={email}
-            onChange={handleChange}
-            readOnly
-          />
-        </div>
-        <div>
-          핸드폰 번호
-          <input
-            placeholder="핸드폰번호를 입력해주세요"
-            type="tel"
-            required={true}
-            name="phone"
-            value={phone}
-            onChange={handleChange}
-            pattern="[0-9]*"
-          />
-        </div>
-        {/* <div>
-          <button type="button" onClick={handlePhoneVerification}>
-            인증 코드 발송
-          </button>
-          <div>
+          <div className={styles.Inputs}>
+            <div>닉네임</div>
             <input
-              placeholder="인증 코드를 입력해주세요"
+              placeholder="닉네임을 입력해주세요"
               type="text"
-              name="phoneVerificationCode"
-              value={phoneVerificationCode}
+              name="nickname"
+              required={true}
+              value={nickname}
               onChange={handleChange}
             />
-            <button type="button" onClick={handlePhoneVerificationSubmit}>
-              인증 코드 확인
-            </button>
           </div>
-          {phoneVerificationStatus && <p>{phoneVerificationStatus}</p>}
-        </div> */}
-        <div>
-          주소
-          <input
-            className="user_enroll_text"
-            placeholder="주소를 입력해주세요."
-            type="text"
-            required={true}
-            name="address"
-            onChange={handleChange}
-            value={address}
-          />
-          <button type="button" onClick={openAddressPopup}>
-            주소 찾기
-          </button>
-          <div>
+          <div className={styles.Inputs}>
+            <div>생년월일</div>
+            <input
+              placeholder="YYYY-MM-DD"
+              type="date"
+              name="birthday"
+              required={true}
+              value={birthday}
+              onChange={handleChange}
+            />
+          </div>
+          <div className={styles.Inputs}>
+            <div>이메일</div>
+            <input
+              placeholder="Email을 입력해주세요"
+              type="email"
+              name="email"
+              required={true}
+              value={email}
+              onChange={handleChange}
+              readOnly
+            />
+          </div>
+          <div className={styles.Inputs}>
+            <div>핸드폰 번호</div>
+            <input
+              placeholder="핸드폰번호를 입력해주세요"
+              type="tel"
+              required={true}
+              name="phone"
+              value={phone}
+              onChange={handleChange}
+              pattern="[0-9]*"
+            />
+          </div>
+
+          <div className={styles.Inputs}>
+            <div>주소</div>
+            <input
+              className="user_enroll_text"
+              placeholder="주소를 입력해주세요."
+              type="text"
+              required={true}
+              name="address"
+              onChange={handleChange}
+              value={address}
+            />
+            <button type="button" onClick={openAddressPopup}>
+              주소 찾기
+            </button>
+            {addressPopup && <Address setcompany={handleComplete} />}
+          </div>
+          <div className={styles.Inputs}>
+            <div></div>
             <input
               placeholder="상세주소를 입력해주세요."
               type="text"
@@ -467,26 +452,16 @@ function SignUp() {
               value={detailedAddress}
             />
           </div>
-          {addressPopup && <Address setcompany={handleComplete} />}
-        </div>
-        {/* <div>
-          축사 번호
-          <input
-            placeholder="축사 번호를 입력해주세요"
-            type="number"
-            name="farm"
-            value={farm}
-            onChange={handleChange}
-          />
-        </div> */}
-        <div className={styles.button}>
-          <button type="submit">완료</button>
-          <button type="button" onClick={() => navigate("/")}>
-            취소
-          </button>
-        </div>
-      </form>
-      <div id="recaptcha-container"></div>
+
+          <div className={styles.button}>
+            <button type="submit">완료</button>
+            <button type="button" onClick={() => navigate("/")}>
+              취소
+            </button>
+          </div>
+        </form>
+        {/* <div id="recaptcha-container"></div> */}
+      </div>
     </div>
   );
 }
