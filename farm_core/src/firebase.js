@@ -558,6 +558,5 @@ export {
   auth,
   storage,
   uploadProfileImage,
-  subCollectionForFarm,
 };
 export default app;
