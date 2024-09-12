@@ -380,9 +380,6 @@ async function uploadExcelAndSaveData(file, collectionName) {
       // 이메일 필드를 추가
       convertedObject.email = email;
 
-      // 삭제 상태 필드 추가 (기본값은 삭제되지 않음, 즉 "Y")
-      convertedObject.deletionStatus = "Y"; // 또는 false로 설정 가능
-
       // Firestore에 전송하기 전에 데이터 확인
       console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
 
@@ -401,6 +398,7 @@ async function uploadExcelAndSaveData(file, collectionName) {
     console.error("엑셀 파일 업로드 및 Firestore 저장 중 오류 발생:", error);
   }
 }
+
 async function updateDatas(collectionName, docId, updateInfoObj) {
   const docRef = await doc(db, collectionName, docId);
   updateDoc(docRef, updateInfoObj);
@@ -519,42 +517,25 @@ const uploadProfileImage = async (file) => {
   return downloadURL;
 };
 
-// 하위컬렉션 만들기(farm)
+async function addMessage(collectionName, docId, subCollectionName, addObj) {
+  try {
+    // 1. 먼저 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
+    const userDocRef = doc(db, collectionName, docId);
 
-// async function subCollectionForFarm() {
-//   try {
-//     const farmCollectionRef = collection(db, "farm");
-//     const farmDocsSnapshot = await getDocs(farmCollectionRef);
+    // 2. 그 문서 안에 'orders' 서브컬렉션을 생성하고 데이터를 추가
+    const ordersCollectionRef = collection(userDocRef, subCollectionName);
 
-//     if (farmDocsSnapshot.empty) {
-//       console.log("No farm documents found.");
-//       return;
-//     }
+    // 3. 서브컬렉션 'orders'에 새 문서를 생성하고 데이터 추가
+    await setDoc(doc(ordersCollectionRef), {
+      ...addObj,
+      createdAt: new Date(),
+    });
 
-//     const batch = writeBatch(db);
-
-//     // 각 문서에 대해 하위 컬렉션 생성
-//     farmDocsSnapshot.forEach((farmDoc) => {
-//       const farmDocRef = doc(db, "farm", farmDoc.id);
-
-//       // 하위 컬렉션 이름 배열
-//       const subCollections = ["farmCureList", "ruinInfo", "vaccine", "disease"];
-
-//       // 각 하위 컬렉션을 문서 ID 자동 생성으로 생성
-//       subCollections.forEach((subCollection) => {
-//         const subCollectionRef = collection(farmDocRef, subCollection);
-//         const newDocRef = doc(subCollectionRef); // 문서 ID 자동 생성
-//         batch.set(newDocRef, {}); // 필드 값은 나중에 추가 예정
-//       });
-//     });
-
-//     // 모든 작업을 한 번에 커밋
-//     await batch.commit();
-//     console.log("Sub-collections created successfully.");
-//   } catch (error) {
-//     console.error("Error creating sub-collections: ", error);
-//   }
-// }
+    // console.log("서브컬렉션에 데이터 추가 완료!");
+  } catch (error) {
+    console.error("Error adding subcollection document: ", error);
+  }
+}
 
 export {
   db,
@@ -572,6 +553,7 @@ export {
   uploadImage,
   getQuery,
   deleteDatas,
+  addMessage,
   app,
   auth,
   storage,

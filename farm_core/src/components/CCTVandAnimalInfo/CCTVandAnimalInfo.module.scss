@@ -7,7 +7,8 @@
   padding: 0;
   border: 1px solid black;
   margin-bottom: 1rem;
-  width: 50%; /* 화면의 반을 차지하도록 설정 */
+  width: 95%; /* 화면의 반을 차지하도록 설정 */
+  height: 80%;
 
   .dataBox {
     display: grid;
@@ -59,10 +60,13 @@
     align-items: center;
     justify-content: center;
     background-color: #000; /* CCTV 박스 배경색 (선택 사항) */
+    overflow: hidden;
+    margin: 0 auto;
   }
 
   .cctv {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
   }
 }
