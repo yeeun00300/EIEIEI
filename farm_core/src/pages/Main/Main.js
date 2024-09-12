@@ -18,6 +18,7 @@ import {
   Legend,
 } from "chart.js";
 import { useParams } from "react-router-dom";
+import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -81,7 +82,8 @@ function Main() {
         h: 6,
         minw: 1.5,
         maxh: 3,
-        children: <DiseaseMap />,
+        // children: <DiseaseMap />,
+        children: <CurrentMarker />,
       },
       {
         i: "3",
