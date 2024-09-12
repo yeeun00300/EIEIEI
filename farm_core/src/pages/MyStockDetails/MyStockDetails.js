@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import styles from "./AdminStock.module.scss";
-import Sort from "../../pages/Admin/components/Sort";
-import Search from "../../pages/Admin/components/Search";
-import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
-import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
-import Collapse from "react-bootstrap/Collapse";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import Sort from "../Admin/components/Sort";
 import { codeDict } from "../../api/codeDict/codeDict";
+import styles from "./MyStcokDetails.module.scss";
+import Search from "../Admin/components/Search";
+import DateRangePickerValue from "../Admin/components/DateRangePickerValue";
+import Table from "react-bootstrap/esm/Table";
 import { Button } from "@mui/material";
+import Collapse from "react-bootstrap/esm/Collapse";
+import Card from "react-bootstrap/Card";
 
-function AdminStock() {
+function MyStockDetails(props) {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
@@ -267,31 +267,31 @@ function AdminStock() {
         </div>
       )}
       {/* <div style={{ minHeight: "150px" }}>
-        <Collapse in={open["A024"] || false} dimension="width">
-          <div id="example-collapse-text1">
-            <Card body style={{ width: "400px" }}>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>Index</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>A024</td>
-                    <td>한우</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Card>
-          </div>
-        </Collapse>
+    <Collapse in={open["A024"] || false} dimension="width">
+      <div id="example-collapse-text1">
+        <Card body style={{ width: "400px" }}>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A024</td>
+                <td>한우</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Card>
+      </div>
+    </Collapse>
 
-   
-      </div> */}
+
+  </div> */}
     </div>
   );
 }
 
-export default AdminStock;
+export default MyStockDetails;
