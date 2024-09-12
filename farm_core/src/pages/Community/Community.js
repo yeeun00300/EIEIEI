@@ -5,7 +5,6 @@ import BoardList from "./components/BoardList";
 import ListPage from "./components/ListPage";
 import { useNavigate } from "react-router-dom";
 import NewBoardPage from "./NewBoardPage";
-import FreeboardPage from "./FreeboardPage";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice";
 
@@ -14,14 +13,11 @@ function Community() {
   const { communityContents } = useSelector((state) => state.communitySlice);
 
   const [isWriting, setIsWriting] = useState(false);
-  const [openBoard, setOpenBoard] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
       fetchCommunityPosts({
-        collectionName: "community",
         communityType: "freeboard", // 실제 사용 중인 커뮤니티 타입 확인
         queryOptions: {
           conditions: [
@@ -31,7 +27,6 @@ function Community() {
       })
     );
   }, [dispatch]);
-  console.log(communityContents);
 
   const handleNewBoardClick = () => {
     setIsWriting(true);
@@ -39,20 +34,16 @@ function Community() {
 
   const handleBackToList = () => {
     setIsWriting(false);
-    setOpenBoard(false);
   };
 
   const handleOpenBoard = (item) => {
-    setSelectedItem(item);
     navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
   };
 
   if (isWriting) {
     return <NewBoardPage onCancel={handleBackToList} />;
   }
-  if (openBoard && selectedItem) {
-    return <FreeboardPage item={selectedItem} />;
-  }
+
   return (
     <div className="page">
       <ListPage variant="freeBoard">

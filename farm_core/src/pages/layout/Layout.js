@@ -102,7 +102,7 @@ function Layout(props) {
     return {
       id: farmId,
       label: farmName,
-      route: `/My_Farm/:${farmId}`,
+      route: `/My_Farm/${farmId}`,
     };
   });
   // user nav list

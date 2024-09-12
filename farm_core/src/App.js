@@ -76,7 +76,12 @@ function App() {
             />
             {/* 축산 관리 커뮤니티 */}
             <Route path="My_Farm_Board_Community" element={<Livestock />} />
+            <Route
+              path="My_Farm_Board_Community/:id"
+              element={<FreeboardPage />}
+            />
             {/* 마이페이지 */}
+
             <Route path="My_Farm_MyPage" element={<MyPage />} />
             {/* 결제(라우트 옮길 예정) */}
             {/* <Route path="payment" element={<Payment />} /> */}

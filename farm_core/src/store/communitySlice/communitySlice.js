@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addCommunityDatas, getCommunityDatas } from "../../firebase";
+import {
+  addCommunityDatas,
+  deleteCommunityDatas,
+  getCommunityDatas,
+  updateCommunityDatas,
+} from "../../firebase";
 
 const initialState = {
   communityContents: [], // 커뮤니티 게시글 목록
@@ -28,9 +33,9 @@ const communitySlice = createSlice({
       })
       .addCase(fetchCommunityPosts.fulfilled, (state, action) => {
         if (action.meta.arg.communityType === "freeboard") {
-          state.communityContents = action.payload;
+          state.communityContents = action.payload; // 자유 게시판 데이터
         } else if (action.meta.arg.communityType === "livestock") {
-          state.livestockContents = action.payload;
+          state.livestockContents = action.payload; // 축산 관리 게시판 데이터
         }
         state.isLoading = false;
       })
@@ -44,13 +49,67 @@ const communitySlice = createSlice({
       })
       .addCase(createCommunityPost.fulfilled, (state, action) => {
         if (action.meta.arg.communityType === "freeboard") {
-          state.communityContents.push(action.payload);
+          state.communityContents.push(action.payload); // 자유 게시판에 게시물 추가
         } else if (action.meta.arg.communityType === "livestock") {
-          state.livestockContents.push(action.payload);
+          state.livestockContents.push(action.payload); // 축산 관리 게시판에 게시물 추가
         }
         state.isLoading = false;
       })
       .addCase(createCommunityPost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      // 게시글 업데이트
+      .addCase(updateCommunityPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCommunityPost.fulfilled, (state, action) => {
+        const { id, updates, communityType } = action.payload;
+        if (communityType === "freeboard") {
+          const index = state.communityContents.findIndex(
+            (post) => post.id === id
+          );
+          if (index !== -1) {
+            state.communityContents[index] = {
+              ...state.communityContents[index],
+              ...updates,
+            };
+          }
+        } else if (communityType === "livestock") {
+          const index = state.livestockContents.findIndex(
+            (post) => post.id === id
+          );
+          if (index !== -1) {
+            state.livestockContents[index] = {
+              ...state.livestockContents[index],
+              ...updates,
+            };
+          }
+        }
+        state.isLoading = false;
+      })
+      .addCase(updateCommunityPost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      // 게시글 삭제
+      .addCase(deleteCommunityPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCommunityPost.fulfilled, (state, action) => {
+        const { id, communityType } = action.payload;
+        if (communityType === "freeboard") {
+          state.communityContents = state.communityContents.filter(
+            (post) => post.id !== id
+          );
+        } else if (communityType === "livestock") {
+          state.livestockContents = state.livestockContents.filter(
+            (post) => post.id !== id
+          );
+        }
+        state.isLoading = false;
+      })
+      .addCase(deleteCommunityPost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
@@ -85,6 +144,37 @@ const createCommunityPost = createAsyncThunk(
     }
   }
 );
+// 비동기 작업: 게시글 업데이트
+const updateCommunityPost = createAsyncThunk(
+  "community/updateCommunityPost",
+  async ({ id, updates, communityType }) => {
+    try {
+      const updatedPost = await updateCommunityDatas(id, updates);
+      return { ...updatedPost, communityType };
+    } catch (error) {
+      console.error("게시글 업데이트에 실패했습니다:", error);
+      throw error;
+    }
+  }
+);
+// 비동기 작업: 게시글 삭제
+const deleteCommunityPost = createAsyncThunk(
+  "community/deleteCommunityPost",
+  async ({ id, communityType }) => {
+    try {
+      await deleteCommunityDatas(id);
+      return { id, communityType };
+    } catch (error) {
+      console.error("게시글 삭제에 실패했습니다:", error);
+      throw error;
+    }
+  }
+);
 
 export default communitySlice.reducer;
-export { fetchCommunityPosts, createCommunityPost };
+export {
+  fetchCommunityPosts,
+  createCommunityPost,
+  updateCommunityPost,
+  deleteCommunityPost,
+};

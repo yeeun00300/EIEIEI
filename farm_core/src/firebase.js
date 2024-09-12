@@ -25,6 +25,7 @@ import {
 } from "firebase/storage";
 import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
+import kroDate from "./utils/korDate";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",
@@ -133,47 +134,7 @@ async function getDataAll(collectionName) {
 
   return snapshot;
 }
-// async function addDisease(animalType, diseaseId, diseaseData) {
-//   try {
-//     const diseaseRef = collection(db, "disease", animalType, "disease");
-//     await setDoc(doc(diseaseRef, diseaseId), diseaseData);
-//     console.log("데이터가 성공적으로 추가되었습니다.");
-//   } catch (error) {
-//     console.error("데이터 추가 중 오류 발생:", error);
-//   }
-// }
 
-// async function getDisease(animalType, diseaseId) {
-//   try {
-//     const diseaseRef = doc(db, "disease", animalType, "disease");
-//     const docSnap = await getDoc(diseaseRef);
-
-// export const joinUser = async (uid, email) => {
-//   try {
-//     const userRef = doc(db, "users", uid);
-//     console.log(`Attempting to create or update user with UID: ${uid}`);
-//     await setDoc(
-//       userRef,
-//       {
-//         email: email,
-//         createdAt: new Date(),
-//       },
-//       { merge: true }
-//     );
-//     console.log(`${uid}`);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-//     if (docSnap.exists()) {
-//       return docSnap.data();
-//     } else {
-//       return;
-//     }
-//   } catch (error) {
-//     console.log("불러 올수 없습니다.", error);
-//   }
-// }
 export const uploadFiles = async (file) => {
   const storageRef = ref(storage, `admin01/profileImgs/${file.name}`);
   console.log(`프로필 이미지확인:${file.name}`);
@@ -404,6 +365,8 @@ async function updateDatas(collectionName, docId, updateInfoObj) {
   updateDoc(docRef, updateInfoObj);
 }
 // 게시판
+
+// 게시글 가져오기
 async function getCommunityDatas(collectionName, queryOptions) {
   // if (!collectionName) {
   //   throw new Error("Collection name cannot be empty");
@@ -452,6 +415,7 @@ async function getCommunityDatas(collectionName, queryOptions) {
     throw new Error(error.message);
   }
 }
+// 이미지 업로드
 async function uploadImage(path, file) {
   const storage = getStorage();
   const storageRef = ref(storage, path);
@@ -484,6 +448,7 @@ async function uploadImage(path, file) {
     );
   });
 }
+// 게시글 추가
 async function addCommunityDatas(collectionName, dataObj) {
   try {
     // 이미지가 있을 경우 업로드 후 URL 반환
@@ -510,7 +475,29 @@ async function addCommunityDatas(collectionName, dataObj) {
     return false;
   }
 }
+// 게시글 업데이트
+export const updateCommunityDatas = async (id, updates) => {
+  try {
+    const postRef = doc(db, "community", id);
+    await updateDoc(postRef, updates);
+    return { id, ...updates };
+  } catch (error) {
+    console.error("Error updating community data:", error);
+    throw new Error(error.message);
+  }
+};
 
+// 게시글 삭제 함수
+export const deleteCommunityDatas = async (id) => {
+  try {
+    const postRef = doc(db, "community", id);
+    await deleteDoc(postRef);
+    return id;
+  } catch (error) {
+    console.error("Error deleting community data:", error);
+    throw new Error(error.message);
+  }
+};
 const uploadProfileImage = async (file) => {
   const storage = getStorage();
   const storageRef = ref(storage, `profile_images/${file.name}`);
@@ -540,27 +527,6 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
     console.error("Error adding subcollection document: ", error);
   }
 }
-
-async function getSubCollection(collectionName, docId, subCollectionName) {
-  try {
-    // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
-    const userDocRef = doc(db, collectionName, docId);
-    // 2. 그 문서 안의 'orders' 서브컬렉션에 접근
-    const ordersCollectionRef = collection(userDocRef, subCollectionName);
-    // 3. 서브컬렉션 'orders'에서 모든 문서를 가져옴
-    const querySnapshot = await getDocs(ordersCollectionRef);
-    const docs = querySnapshot.docs;
-    const resultData = docs.map((doc) => {
-      // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
-      const result = { ...doc.data(), docId: doc.id };
-      return result;
-    });
-    return resultData;
-  } catch (error) {
-    console.error("Error getting subCollection documents: ", error);
-  }
-}
-
 export {
   db,
   addDatas,
@@ -578,7 +544,6 @@ export {
   getQuery,
   deleteDatas,
   addMessage,
-  getSubCollection,
   app,
   auth,
   storage,

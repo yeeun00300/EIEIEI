@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addDatas, db, updateDatas } from "../../firebase";
-import { collection, doc, writeBatch } from "firebase/firestore";
+import { addDatas, addFarmWithSubcollections } from "../../firebase";
 
 const initialState = {
   farmName: "",
@@ -19,7 +18,7 @@ const initialState = {
 };
 
 const AddLiveStockSlice = createSlice({
-  name: "liveStcok",
+  name: "liveStock",
   initialState,
   reducers: {
     addField: (state, action) => {
@@ -29,7 +28,7 @@ const AddLiveStockSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addFarmData.pending, (state, action) => {
+      .addCase(addFarmData.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
@@ -37,28 +36,21 @@ const AddLiveStockSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         state.docId = action.payload.docId;
-        const {
-          farmName,
-          farmId,
-          farmAddress,
-          farmScale,
-          farm_stockType,
-          farmBuild,
-          farmCondition,
-          facilities,
-          insuranceDetail,
-          note,
-        } = action.payload;
-        state.farmName = farmName;
-        state.farmId = farmId;
-        state.farmAddress = farmAddress;
-        state.farmScale = farmScale;
-        state.farm_stockType = farm_stockType;
-        state.farmBuild = farmBuild;
-        state.farmCondition = farmCondition;
-        state.facilities = facilities;
-        state.insuranceDetail = insuranceDetail;
-        state.note = note;
+
+        // 상태 업데이트는 state에 직접 반영하는 대신, 다른 방식으로 처리할 수 있습니다.
+        return {
+          ...state,
+          farmName: action.payload.farmName,
+          farmId: action.payload.farmId,
+          farmAddress: action.payload.farmAddress,
+          farmScale: action.payload.farmScale,
+          farm_stockType: action.payload.farm_stockType,
+          farmBuild: action.payload.farmBuild,
+          farmCondition: action.payload.farmCondition,
+          facilities: action.payload.facilities,
+          insuranceDetail: action.payload.insuranceDetail,
+          note: action.payload.note,
+        };
       })
       .addCase(addFarmData.rejected, (state, action) => {
         state.isLoading = false;
@@ -69,36 +61,17 @@ const AddLiveStockSlice = createSlice({
 
 const addFarmData = createAsyncThunk(
   "livestock/addFarmData",
-  async ({ collectionName, addObj }, { rejectWithValue }) => {
+  async ({ collectionName, addObj, subcollections }, { rejectWithValue }) => {
     try {
       const resultData = await addDatas(collectionName, addObj);
-      console.log("Farm data added, docId:", resultData.docId); // 로그 추가
-      await createSubCollection(resultData.docId); // 하위 컬렉션 생성
-      return { docId: resultData.docId, ...addObj };
+      return { docId: resultData, ...addObj };
     } catch (error) {
+      console.error("Error adding farm:", error); // 에러를 콘솔에 출력
       return rejectWithValue(error.message);
     }
   }
 );
 
-export async function createSubCollection(docId) {
-  try {
-    const farmDocRef = doc(db, "farm", docId);
-    const batch = writeBatch(db);
-    const subCollections = ["farmCureList", "ruinInfo", "vaccine", "disease"];
-
-    subCollections.forEach((subCollection) => {
-      const subCollectionRef = collection(farmDocRef, subCollection);
-      const newDocRef = doc(subCollectionRef);
-      batch.set(newDocRef, {}); // 빈 객체로 하위 컬렉션 문서 생성
-    });
-
-    await batch.commit();
-    console.log("Sub-collections created successfully.");
-  } catch (error) {
-    console.error("Error creating sub-collections: ", error);
-  }
-}
 export default AddLiveStockSlice.reducer;
 export const { addField } = AddLiveStockSlice.actions;
 export { addFarmData };

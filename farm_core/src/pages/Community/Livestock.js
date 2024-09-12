@@ -32,7 +32,6 @@ function Livestock() {
       })
     );
   }, [dispatch]);
-  console.log(livestockContents);
   useEffect(() => {
     let results = livestockContents;
 
@@ -63,8 +62,7 @@ function Livestock() {
   };
 
   const handleOpenBoard = (item) => {
-    setSelectedItem(item);
-    navigate(`/My_Farm_Board_Livestock/${item.id}`);
+    navigate(`/My_Farm_Board_Community/${item.id}`);
   };
 
   return (
