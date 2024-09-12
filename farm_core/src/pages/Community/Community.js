@@ -4,7 +4,6 @@ import searchImg from "../../img/돋보기.png";
 import BoardList from "./components/BoardList";
 import ListPage from "./components/ListPage";
 import { useNavigate } from "react-router-dom";
-import NewBoardPage from "./NewBoardPage";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice";
 
@@ -12,7 +11,8 @@ function Community() {
   const dispatch = useDispatch();
   const { communityContents } = useSelector((state) => state.communitySlice);
 
-  const [isWriting, setIsWriting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("추천순");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,35 +29,38 @@ function Community() {
   }, [dispatch]);
 
   const handleNewBoardClick = () => {
-    setIsWriting(true);
-  };
-
-  const handleBackToList = () => {
-    setIsWriting(false);
+    navigate("/My_Farm_Board_NewBoard");
   };
 
   const handleOpenBoard = (item) => {
     navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
   };
 
-  if (isWriting) {
-    return <NewBoardPage onCancel={handleBackToList} />;
-  }
-
   return (
     <div className="page">
       <ListPage variant="freeBoard">
         <form className={styles.form}>
-          <input placeholder="검색으로 게시글 찾기" />
+          <input
+            placeholder="검색으로 게시글 찾기"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <button className={styles.search}>
             <img src={searchImg} alt="검색" />
           </button>
-          <button className={styles.new} onClick={handleNewBoardClick}>
+          <button
+            className={styles.new}
+            type="button"
+            onClick={handleNewBoardClick}
+          >
             새 글 쓰기
           </button>
-          <select>
-            <option>추천순</option>
-            <option>최신순</option>
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="추천순">추천순</option>
+            <option value="최신순">최신순</option>
           </select>
         </form>
 

@@ -43,10 +43,6 @@ function FreeboardPage() {
     (state) => state.communitySlice
   );
 
-  const userNickName =
-    useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
-    "닉네임 없음";
-
   const [postData, setPostData] = useState(null);
 
   // 컴포넌트 마운트 시 게시물 로딩
@@ -84,13 +80,7 @@ function FreeboardPage() {
   }, [id, communityContents, livestockContents, isFreeBoard]);
 
   const handleUpdate = () => {
-    // 게시물 업데이트 로직
-    const updatedPostData = {
-      /* 수정할 데이터 */
-    };
-    dispatch(
-      updateCommunityPost({ id, updates: updatedPostData, communityType })
-    );
+    navigate(`/My_Farm_Board_NewBoard/${id}`, { state: { postData } }); // 수정 페이지로 이동하며 postData 전달
   };
 
   const handleDelete = async () => {

@@ -20,7 +20,6 @@ function NewBoardPage({ onCancel }) {
   const userNickName =
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
-  console.log(userNickName);
   // 축산 유형을 Firebase에 저장할 값으로 매핑하는 함수
   const mapLivestockType = (type) => {
     switch (type) {
