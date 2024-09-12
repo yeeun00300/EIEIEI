@@ -14,7 +14,7 @@ function NewBoardPage({ onCancel }) {
   const userNickName =
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
-
+  console.log(userNickName);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

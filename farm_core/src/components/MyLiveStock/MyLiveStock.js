@@ -8,20 +8,26 @@ import pigIcon from "../../img/양돈얼굴.png";
 import chickenIcon from "../../img/양계얼굴.png";
 import henIcon from "../../img/산란계얼굴.png";
 import BiLineChart from "../Chart/BiLineChart";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 function MyLiveStock(props) {
+  const [farm, setFarm] = useState("");
+
+  const handleChange = (event) => {
+    setFarm(event.target.value);
+  };
   return (
     <div className="page">
       <div className={styles.container}>
         <div className={styles.myFarmInfoBox}>
-          <div className={styles.icons}>
-            <img className={styles.icon} src={krCowIcon} alt="" />
-            <img className={styles.icon} src={diaryIcon} alt="" />
-            <img className={styles.icon} src={pigIcon} alt="" />
-            <img className={styles.icon} src={chickenIcon} alt="" />
-            <img className={styles.icon} src={henIcon} alt="" />
+          <div className={styles.selectDiv}>
+            <select className={styles.selectBox}>
+              <option>예은이네 1농장</option>
+              <option>예은이네 2농장</option>
+              <option>예은이네 3농장</option>
+              <option>예은이네 4농장</option>
+            </select>
           </div>
-          <Selected />
           <div className={styles.cctv}>
             <CCTVandAnimalInfo />
           </div>
