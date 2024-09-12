@@ -28,9 +28,9 @@ const communitySlice = createSlice({
       })
       .addCase(fetchCommunityPosts.fulfilled, (state, action) => {
         if (action.meta.arg.communityType === "freeboard") {
-          state.communityContents = action.payload;
+          state.communityContents = action.payload; // 자유 게시판 데이터
         } else if (action.meta.arg.communityType === "livestock") {
-          state.livestockContents = action.payload;
+          state.livestockContents = action.payload; // 축산 관리 게시판 데이터
         }
         state.isLoading = false;
       })
@@ -44,9 +44,9 @@ const communitySlice = createSlice({
       })
       .addCase(createCommunityPost.fulfilled, (state, action) => {
         if (action.meta.arg.communityType === "freeboard") {
-          state.communityContents.push(action.payload);
+          state.communityContents.push(action.payload); // 자유 게시판에 게시물 추가
         } else if (action.meta.arg.communityType === "livestock") {
-          state.livestockContents.push(action.payload);
+          state.livestockContents.push(action.payload); // 축산 관리 게시판에 게시물 추가
         }
         state.isLoading = false;
       })

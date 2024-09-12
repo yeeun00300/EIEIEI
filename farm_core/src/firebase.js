@@ -404,6 +404,8 @@ async function updateDatas(collectionName, docId, updateInfoObj) {
   updateDoc(docRef, updateInfoObj);
 }
 // 게시판
+
+// 게시글 가져오기
 async function getCommunityDatas(collectionName, queryOptions) {
   // if (!collectionName) {
   //   throw new Error("Collection name cannot be empty");
@@ -452,6 +454,7 @@ async function getCommunityDatas(collectionName, queryOptions) {
     throw new Error(error.message);
   }
 }
+// 이미지 업로드
 async function uploadImage(path, file) {
   const storage = getStorage();
   const storageRef = ref(storage, path);
@@ -484,6 +487,7 @@ async function uploadImage(path, file) {
     );
   });
 }
+// 게시글 추가
 async function addCommunityDatas(collectionName, dataObj) {
   try {
     // 이미지가 있을 경우 업로드 후 URL 반환
@@ -510,7 +514,29 @@ async function addCommunityDatas(collectionName, dataObj) {
     return false;
   }
 }
+// 게시글 업데이트
+// export const updateCommunityDatas = async (id, updates) => {
+//   try {
+//     const postRef = doc(db, "community", id);
+//     await updateDoc(postRef, updates);
+//     return { id, ...updates };
+//   } catch (error) {
+//     console.error("Error updating community data:", error);
+//     throw new Error(error.message);
+//   }
+// };
 
+// // 게시글 삭제 함수
+// export const deleteCommunityDatas = async (id) => {
+//   try {
+//     const postRef = doc(db, "community", id);
+//     await deleteDoc(postRef);
+//     return id;
+//   } catch (error) {
+//     console.error("Error deleting community data:", error);
+//     throw new Error(error.message);
+//   }
+// };
 const uploadProfileImage = async (file) => {
   const storage = getStorage();
   const storageRef = ref(storage, `profile_images/${file.name}`);

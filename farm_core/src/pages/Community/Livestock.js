@@ -63,8 +63,7 @@ function Livestock() {
   };
 
   const handleOpenBoard = (item) => {
-    setSelectedItem(item);
-    navigate(`/My_Farm_Board_Livestock/${item.id}`);
+    navigate(`/My_Farm_Board_Community/${item.id}`);
   };
 
   return (
