@@ -4,12 +4,12 @@ import Sort from "../../pages/Admin/components/Sort";
 import Search from "../../pages/Admin/components/Search";
 import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
 import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import { codeDict } from "../../api/codeDict/codeDict";
+import { Button } from "@mui/material";
 
 function AdminStock() {
   const dispatch = useDispatch();

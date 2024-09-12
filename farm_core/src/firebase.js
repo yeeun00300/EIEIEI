@@ -22,10 +22,12 @@ import {
   uploadBytes,
   uploadBytesResumable,
   ref,
+  deleteObject,
 } from "firebase/storage";
 import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
 import kroDate from "./utils/korDate";
+import { createPath } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",
@@ -476,11 +478,34 @@ async function addCommunityDatas(collectionName, dataObj) {
   }
 }
 // 게시글 업데이트
-export const updateCommunityDatas = async (id, updates) => {
+export const updateCommunityDatas = async (id, updates, imgUrl) => {
   try {
     const postRef = doc(db, "community", id);
+    const time = new Date().getTime();
+
+    // 이미지 파일을 변경했을 때
+    if (imgUrl && updates.imgUrl) {
+      const storage = getStorage();
+      const deleteRef = ref(storage, imgUrl);
+      await deleteObject(deleteRef);
+
+      // 변경한 사진을 스토리지에 저장
+      const url = await uploadImage(createPath("community/"), updates.imgUrl);
+      updates.imgUrl = url;
+    } else if (updates.imgUrl === null) {
+      // 사진 파일을 변경하지 않았거나 imgUrl이 null일 때
+      delete updates["imgUrl"];
+    }
+
+    // updatedAt 필드에 현재 시간 추가
+    updates.updatedAt = time;
+
+    // 문서 필드 데이터 수정
     await updateDoc(postRef, updates);
-    return { id, ...updates };
+    const docSnap = await getDoc(postRef);
+    const resultData = { ...docSnap.data(), id: docSnap.id };
+
+    return resultData;
   } catch (error) {
     console.error("Error updating community data:", error);
     throw new Error(error.message);
@@ -551,6 +576,43 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
   }
 }
 
+const addFarmDataWithSubcollections = async (farmData, subCollections) => {
+  try {
+    // Firestore의 farm 컬렉션에 문서 추가
+    const farmRef = await addDoc(collection(db, "farm"), farmData);
+    console.log("Farm document added with ID:", farmRef.id);
+
+    // 하위 컬렉션 추가
+    // farmCureList 하위 컬렉션 추가
+    const farmCureListRef = collection(farmRef, "farmCureList");
+    for (const item of subCollections.farmCureList) {
+      await addDoc(farmCureListRef, item);
+    }
+
+    // ruinInfo 하위 컬렉션 추가
+    const ruinInfoRef = collection(farmRef, "ruinInfo");
+    for (const [docId, data] of Object.entries(subCollections.ruinInfo)) {
+      await setDoc(doc(ruinInfoRef, docId), data);
+    }
+
+    // vaccine 하위 컬렉션 추가
+    const vaccineRef = collection(farmRef, "vaccine");
+    for (const item of subCollections.vaccine) {
+      await addDoc(vaccineRef, item);
+    }
+
+    // disease 하위 컬렉션 추가
+    const diseaseRef = collection(farmRef, "disease");
+    for (const item of subCollections.disease) {
+      await addDoc(diseaseRef, item);
+    }
+
+    alert("Farm data and subcollections added successfully.");
+  } catch (error) {
+    console.error("Error adding farm data and subcollections:", error);
+  }
+};
+
 export {
   db,
   getCollection,
@@ -574,5 +636,6 @@ export {
   auth,
   storage,
   uploadProfileImage,
+  addFarmDataWithSubcollections,
 };
 export default app;

@@ -20,6 +20,8 @@ import AddLiveStock from "./components/addLiveStock/AddLiveStock";
 import MyStockAddPage from "./pages/MyStockAddPage/MyStockAddPage";
 import EmailCheck from "./components/emailLogin/EmailCheck";
 import MyStockPage from "./components/MyStockPage/MyStockPage";
+import NewBoardPage from "./pages/Community/NewBoardPage";
+import MyStockDetails from "./pages/MyStockDetails/MyStockDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,7 +65,7 @@ function App() {
             {/* 축사추가 */}
             <Route path="My_Farm_Add" element={<AddLiveStock />} />
             {/* 가축 상세 현황 */}
-            {/* <Route path="My_Farm_Info_stock" element={<AddLiveStock />} /> */}
+            <Route path="My_Farm_Info_stock" element={<MyStockDetails />} />
             {/* 가축 추가 */}
             <Route path="My_Farm_Add_stock" element={<MyStockAddPage />} />
             {/* 축사 관리하기 */}
@@ -80,6 +82,7 @@ function App() {
               path="My_Farm_Board_Community/:id"
               element={<FreeboardPage />}
             />
+            <Route path="My_Farm_Board_NewBoard" element={<NewBoardPage />} />
             {/* 마이페이지 */}
 
             <Route path="My_Farm_MyPage" element={<MyPage />} />
