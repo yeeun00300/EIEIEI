@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addFarmData,
   addField,
 } from "../../store/addLiveStockSlice/addLiveStockSlice";
 import { getAuth } from "firebase/auth";
-
+import {
+  addFarmDataWithSubcollections,
+  getSubCollection,
+  useFetchCollectionData,
+} from "../../firebase";
+import userInfoEditSlice from "./../../store/userInfoEditSlice/UserInfoEditSlice";
+import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import stock from "../../store/stockSlice/stockSlice";
 function MedicalList(props) {
   const dispatch = useDispatch();
   const farmData = useSelector((state) => state.AddLiveStockSlice);
+  const { stock } = useSelector((state) => state.stockSlice);
+  console.log(stock);
+  console.log(farmData);
+  // const farmData = useSelector((state) => state.userInfoEditSlice);
+
+  // useFetchCollectionData("farm");
+  const email = localStorage.getItem("email");
+  useEffect(() => {
+    const queryOptions = {
+      conditions: [{ field: "email", operator: "==", value: email }],
+    };
+    dispatch(fetchExcelStock({ collectionName: "farm", queryOptions }));
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(addFarmData({ collectionName: "farm", queryOptions: {} }));
+  // }, []);
 
   const getStoredEmail = () => {
     return localStorage.getItem("email");
@@ -39,20 +63,36 @@ function MedicalList(props) {
         alert("저장된 사용자의 이메일이 없습니다.");
         return;
       }
-      const actionResult = await dispatch(
-        addFarmData({
-          subcollections: {
-            ...farmData,
+      // 폼 데이터와 하위 컬렉션 데이터 준비
+      const subCollections = {
+        farmCureList: [
+          {
+            symptom: farmData.symptom || "",
+            symptomCount: farmData.symptomCount || "",
+            fever: farmData.fever || "",
+            feverMean: farmData.feverMean || "",
+            cough: farmData.cough || "",
+            coughCount: farmData.coughCount || "",
+            diarrhea: farmData.diarrhea || "",
+            diarrheaCount: farmData.diarrheaCount || "",
+            ventilation: farmData.ventilation || "",
+            lampCondition: farmData.lampCondition || "",
+            feedSupply: farmData.feedSupply || "",
           },
-        })
+        ],
+        ruinInfo: {}, // ruinInfo 데이터 준비
+        vaccine: [], // vaccine 데이터 준비
+        disease: [], // disease 데이터 준비
+      };
+
+      const actionResult = await addFarmDataWithSubcollections(
+        farmData,
+        subCollections
       );
 
-      console.log("Dispatch result:", actionResult);
-
-      if (addFarmData.fulfilled.match(actionResult)) {
+      if (actionResult) {
         alert("데이터가 성공적으로 저장되었습니다!");
       } else {
-        console.error("Data save failed:", actionResult.payload);
         alert("데이터 저장에 실패했습니다.");
       }
     } catch (error) {

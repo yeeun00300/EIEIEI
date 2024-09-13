@@ -33,8 +33,8 @@ import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
 import kroDate from "./utils/korDate";
 import { createPath } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { fetchUser } from "./store/userInfoEditSlice/UserInfoEditSlice";
 
 const firebaseConfig = {
@@ -487,23 +487,24 @@ export const updateCommunityDatas = async (id, updates, imgUrl) => {
     const postRef = doc(db, "community", id);
     const time = new Date().getTime();
 
-    if (imgUrl && typeof imgUrl !== "string") {
-      // 기존 이미지가 있을 경우 삭제
-      if (updates.imgUrl) {
-        const storage = getStorage();
-        const deleteRef = ref(storage, updates.imgUrl);
-        await deleteObject(deleteRef);
-      }
+    // 이미지 파일을 변경했을 때
+    if (imgUrl && updates.imgUrl) {
+      const storage = getStorage();
+      const deleteRef = ref(storage, imgUrl);
+      await deleteObject(deleteRef);
 
-      // 새 이미지 업로드
-      const url = await uploadImage("community/", imgUrl); // File 객체로 새 이미지 업로드
-      updates.imgUrl = url; // 새 URL로 업데이트
-    } else if (imgUrl === null) {
-      // 이미지 제거
-      delete updates.imgUrl;
+      // 변경한 사진을 스토리지에 저장
+      const url = await uploadImage(createPath("community/"), updates.imgUrl);
+      updates.imgUrl = url;
+    } else if (updates.imgUrl === null) {
+      // 사진 파일을 변경하지 않았거나 imgUrl이 null일 때
+      delete updates["imgUrl"];
     }
 
+    // updatedAt 필드에 현재 시간 추가
     updates.updatedAt = time;
+
+    // 문서 필드 데이터 수정
     await updateDoc(postRef, updates);
     const docSnap = await getDoc(postRef);
     const resultData = { ...docSnap.data(), id: docSnap.id };
@@ -513,22 +514,15 @@ export const updateCommunityDatas = async (id, updates, imgUrl) => {
     throw new Error(error.message);
   }
 };
+
 // 게시글 삭제 함수
-export const deleteCommunityDatas = async (id, imgUrl) => {
+export const deleteCommunityDatas = async (id) => {
   try {
-    // Firestore에서 게시글 삭제
     const postRef = doc(db, "community", id);
     await deleteDoc(postRef);
-
-    // 이미지 삭제
-    if (imgUrl) {
-      const imageRef = ref(storage, imgUrl);
-      await deleteObject(imageRef);
-    }
-
     return id;
   } catch (error) {
-    console.error("게시글 또는 이미지 삭제에 실패했습니다:", error);
+    console.error("Error deleting community data:", error);
     throw new Error(error.message);
   }
 };
@@ -615,48 +609,33 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
 const addFarmDataWithSubcollections = async (farmData, subCollections) => {
   try {
     // Firestore의 farm 컬렉션에 문서 추가
-    const { userEmail } = farmData;
-
-    if (!userEmail) {
-      throw new Error("User email is required.");
-    }
-
-    // 이메일로 문서 찾기
-    const farmRef = query(
-      collection(db, "farm"),
-      where("email", "==", userEmail)
-    );
-    const querySnapshot = await getDocs(farmRef);
-
-    if (querySnapshot.empty) {
-      throw new Error("No document found with the provided email.");
-    }
-
-    // 첫 번째 문서 참조 얻기
-    const docRef = querySnapshot.docs[0].ref;
-    console.log("Farm document found with ID:", docRef.id);
+    const farmRef = await addDoc(collection(db, "farm"), farmData);
+    const farmDocId = farmRef.id; // farm 문서 ID 가져오기
+    console.log("Farm document added with ID:", farmDocId);
+    // 상위 문서 참조 생성
+    const farmDocRef = doc(db, "farm", farmDocId);
 
     // 하위 컬렉션 추가
     // farmCureList 하위 컬렉션 추가
-    const farmCureListRef = collection(farmRef, "farmCureList");
+    const farmCureListRef = collection(farmDocRef, "farmCureList");
     for (const item of subCollections.farmCureList) {
       await addDoc(farmCureListRef, item);
     }
 
     // ruinInfo 하위 컬렉션 추가
-    const ruinInfoRef = collection(farmRef, "ruinInfo");
+    const ruinInfoRef = collection(farmDocRef, "ruinInfo");
     for (const [docId, data] of Object.entries(subCollections.ruinInfo)) {
       await setDoc(doc(ruinInfoRef, docId), data);
     }
 
     // vaccine 하위 컬렉션 추가
-    const vaccineRef = collection(farmRef, "vaccine");
+    const vaccineRef = collection(farmDocRef, "vaccine");
     for (const item of subCollections.vaccine) {
       await addDoc(vaccineRef, item);
     }
 
     // disease 하위 컬렉션 추가
-    const diseaseRef = collection(farmRef, "disease");
+    const diseaseRef = collection(farmDocRef, "disease");
     for (const item of subCollections.disease) {
       await addDoc(diseaseRef, item);
     }
@@ -666,7 +645,6 @@ const addFarmDataWithSubcollections = async (farmData, subCollections) => {
     console.error("Error adding farm data and subcollections:", error);
   }
 };
-
 function useFetchCollectionData(collectionName) {
   const dispatch = useDispatch();
 

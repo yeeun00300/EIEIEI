@@ -13,6 +13,7 @@ import {
   addFarmData,
 } from "../../store/addLiveStockSlice/addLiveStockSlice";
 import kroDate from "../../utils/korDate";
+import { addFarmDataWithSubcollections } from "../../firebase";
 
 function AddLiveStock(props) {
   const dispatch = useDispatch();
@@ -99,50 +100,64 @@ function AddLiveStock(props) {
     const subCollections = {
       farmCureList: [
         {
-          symptom: "exampleSymptom",
-          symptomCount: 10,
-          fever: true,
-          feverMean: 37.5,
-          cough: false,
-          coughCount: 0,
-          diarrhea: true,
-          diarrheaCount: 2,
-          ventilation: "good",
-          lampCondition: "on",
-          feedSupply: "ample",
+          symptom: "",
+          symptomCount: "",
+          fever: "",
+          feverMean: "",
+          cough: "",
+          coughCount: "",
+          diarrhea: "",
+          diarrheaCount: "",
+          ventilation: "",
+          lampCondition: "",
+          feedSupply: "",
         },
       ],
       ruinInfo: {
         someDocId: {
-          stockId: "123",
-          stockCount: 10,
-          diseaseType: "exampleDisease",
+          stockId: "",
+          stockCount: "",
+          diseaseType: "",
         },
       },
       vaccine: [
         {
-          vaccineType: "exampleVaccine",
+          vaccineType: "",
           vaccineDate: kroDate(),
         },
       ],
       disease: [
         {
-          diseaseType: "exampleDisease",
+          diseaseType: "",
           diseaseDate: kroDate(),
-          cure: "exampleCure",
+          cure: "",
         },
       ],
     };
 
+    console.log("Farm Data:", farmData);
+    console.log("SubCollections:", subCollections);
+
     try {
-      const result = await dispatch(
-        addFarmData({
-          addObj: farmData,
-          subcollections: subCollections,
-        })
-      ).unwrap();
-      console.log("result값 :", result);
-      console.log("Farm added with ID:", result.docId);
+      // const farmDocId = await addFarmData(farmData);
+      // if (farmDocId) {
+      // 상위 문서의 ID를 사용하여 하위 컬렉션 추가
+      // await addFarmDataWithSubcollections(farmDocId, subCollections);
+      // console.log("farm added with ID:", farmDocId);
+
+      const farmDocId = await addFarmDataWithSubcollections(
+        // email,
+        farmData,
+        subCollections
+      );
+      // const result = await dispatch(
+      //   addFarmData({
+      //     addObj: farmData,
+      //     subcollections: subCollections,
+      //   })
+      // ).unwrap();
+      // console.log("result값 :", result);
+      console.log("Farm added with ID:", farmDocId);
       console.log("subCollections:", subCollections);
       // Clear form fields
       dispatch(addField({ fieldName: "farmName", fieldValue: "" }));
@@ -156,6 +171,7 @@ function AddLiveStock(props) {
       dispatch(addField({ fieldName: "note", fieldValue: "" }));
       setDetailAddress(""); // Clear detail address
       dispatch(setAddress("")); // Clear main address
+      // }
     } catch (error) {
       console.error("Error adding farm:", error);
     }
