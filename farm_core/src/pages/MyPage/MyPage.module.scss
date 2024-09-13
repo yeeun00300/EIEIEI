@@ -1,52 +1,63 @@
 .wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 0 auto;
-  // background-color: slategray;
-  margin-top: 4rem;
-  //   padding: 3rem 1rem;
+  width: 80%; /* 더 넓은 폭으로 설정 */
+  margin: 2rem auto; /* 전체 중앙 정렬 */
+  padding: 3rem; /* 패딩을 늘려 여백 추가 */
+  background-color: #f9f9f9; /* 부드러운 배경색 추가 */
   border-radius: 1rem;
-  border: 1px solid black;
-}
-.user {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 살짝 그림자 효과 추가 */
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  border-bottom: 1px solid black;
-  button {
-    border: none;
-    padding: 0.6rem 1rem;
-
-    border-radius: 1rem;
-    background-color: var(--second-color);
-    cursor: pointer;
-  }
 }
+
+.user {
+  margin-bottom: 3rem; /* 버튼과의 간격을 좀 더 여유 있게 설정 */
+  text-align: center;
+}
+
+.user h3 {
+  font-size: 2rem; /* 폰트 크기 키움 */
+  color: #333;
+  font-weight: bold;
+}
+
 .lists {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  div {
-    padding: 3rem 0.5rem;
-  }
-  a {
-    text-decoration: none;
-    color: black;
-    .click {
-      color: red;
-    }
-  }
+  grid-template-columns: 1fr 1fr; /* 2열 그리드로 정렬 */
+  gap: 2rem; /* 버튼 사이의 간격 조정 */
+  width: 100%; /* 전체 넓이로 설정 */
+}
 
-  button {
-    border: none;
-    background-color: transparent;
-    color: red;
-    font-size: 1.5rem;
-  }
-  //   padding: 2rem;
-  //   background-color: ;
+.listItem {
+  padding: 1.5rem;
+  border: 1px solid #fff; /* 더 눈에 띄는 파란 테두리 */
+  border-radius: 0.75rem;
+  background-color: white; /* 배경을 흰색으로 고정 */
+  text-align: center;
+  font-size: 1.25rem; /* 텍스트 크기 조정 */
+  font-weight: bold;
+  color: var(--second-color); /* 텍스트도 파란색으로 변경 */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.listItem:hover {
+  background-color: #a5d8ff;
+  color: white;
+}
+
+.listItem.active {
+  background-color: #74c0fc; /* 활성화된 버튼에 더 어두운 파란색 */
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: inherit; /* 링크 컬러를 부모 스타일에 맞춤 */
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }

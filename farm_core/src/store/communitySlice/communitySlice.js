@@ -145,23 +145,23 @@ const createCommunityPost = createAsyncThunk(
 );
 // 비동기 작업: 게시글 업데이트
 const updateCommunityPost = createAsyncThunk(
-  "community/updateCommunityPost",
-  async ({ id, updates, imgUrl, communityType }, { rejectWithValue }) => {
+  "community/updatePost",
+  async ({ id, updates, imgUrl, collectionName }, { rejectWithValue }) => {
     try {
-      const updatedPost = await updateCommunityDatas(id, updates, imgUrl);
-      return { ...updatedPost, communityType };
+      const updatedData = await updateCommunityDatas(id, updates, imgUrl);
+      return { id, updates: updatedData, communityType: collectionName };
     } catch (error) {
-      console.error("게시글 업데이트에 실패했습니다:", error);
-      return rejectWithValue("UPDATE Error: " + error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
+
 // 비동기 작업: 게시글 삭제
 const deleteCommunityPost = createAsyncThunk(
   "community/deleteCommunityPost",
-  async ({ id, communityType }) => {
+  async ({ id, communityType, imgUrl }) => {
     try {
-      await deleteCommunityDatas(id);
+      await deleteCommunityDatas(id, imgUrl);
       return { id, communityType };
     } catch (error) {
       console.error("게시글 삭제에 실패했습니다:", error);

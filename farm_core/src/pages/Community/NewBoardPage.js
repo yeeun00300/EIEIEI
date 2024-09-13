@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createCommunityPost,
   fetchCommunityPosts,
+  updateCommunityPost,
 } from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
+import { uploadImage } from "../../firebase";
 
 function NewBoardPage() {
   const [title, setTitle] = useState("");
@@ -28,7 +30,7 @@ function NewBoardPage() {
     if (postData) {
       setTitle(postData.title || "");
       setContent(postData.content || "");
-      setImage(postData.imgUrl || null);
+      setImage(postData.imgUrl || null); // 기존 이미지 URL을 설정
       setSelectedBoard(postData.communityType || "freeboard");
       setLivestockType(postData.stockType || "");
     }
@@ -53,31 +55,50 @@ function NewBoardPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 이미지가 File 객체가 아닌 경우 문자열 URL로 처리합니다.
+    const imageUrl =
+      typeof image === "string"
+        ? image
+        : (await uploadImage("community/", image)).url;
+
+    const dataObj = {
+      title,
+      content,
+      imgUrl: imageUrl || postData?.imgUrl, // 새 이미지가 없으면 기존 이미지 URL 사용
+      createdAt: postData?.createdAt || new Date().getTime(),
+      updatedAt: new Date().getTime(),
+      like: postData?.like || 0,
+      dislike: postData?.dislike || 0,
+      declareReason: postData?.declareReason || "",
+      declareState: postData?.declareState || "",
+      declareCount: postData?.declareCount || 0,
+      stockType: mapLivestockType(livestockType),
+      notice: postData?.notice || false,
+      communityType: selectedBoard,
+      authorNickName: userNickName,
+    };
+
     try {
-      const dataObj = {
-        title,
-        content,
-        imgUrl: image,
-        createdAt: new Date().getTime(),
-        updatedAt: new Date().getTime(),
-        like: 0,
-        dislike: 0,
-        declareReason: "",
-        declareState: "",
-        declareCount: 0,
-        stockType: mapLivestockType(livestockType),
-        notice: false,
-        communityType: selectedBoard,
-        authorNickName: userNickName,
-      };
+      if (postData) {
+        // 게시글 수정
+        await dispatch(
+          updateCommunityPost({
+            id: postData.id,
+            updates: dataObj,
+          })
+        ).unwrap();
+      } else {
+        // 새 게시글 추가
+        await dispatch(
+          createCommunityPost({
+            collectionName: selectedBoard,
+            dataObj,
+          })
+        ).unwrap();
+      }
 
-      await dispatch(
-        createCommunityPost({
-          collectionName: selectedBoard,
-          dataObj,
-        })
-      ).unwrap();
-
+      // 게시물 목록을 다시 가져와서 업데이트된 상태를 반영
       await dispatch(
         fetchCommunityPosts({
           communityType: selectedBoard,
@@ -95,17 +116,17 @@ function NewBoardPage() {
         navigate("/My_Farm_Board_Community");
       }
 
+      // 입력 필드 초기화
       setTitle("");
       setContent("");
       setImage(null);
     } catch (error) {
-      console.error("새 글 등록 실패:", error);
+      console.error("게시글 등록 또는 수정 실패:", error);
     }
   };
-
   return (
     <div className={styles.container}>
-      <h2>새 글 쓰기</h2>
+      <h2>{postData ? "게시물 수정하기" : "새 글 쓰기"}</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.group}>
           <label htmlFor="boardType">게시판 선택</label>
@@ -149,7 +170,10 @@ function NewBoardPage() {
         </div>
         <div className={styles.group}>
           <label htmlFor="content">내용</label>
-          <ImageUploader onImageUpload={(file) => setImage(file)} />
+          <ImageUploader
+            onImageUpload={(file) => setImage(file)}
+            existingImageUrl={postData?.imgUrl} // 기존 이미지 URL을 전달
+          />
           <textarea
             id="content"
             value={content}
@@ -159,7 +183,7 @@ function NewBoardPage() {
           ></textarea>
         </div>
         <button type="submit" className="submitBtn">
-          글 등록하기
+          {postData ? "수정하기" : "글 등록하기"}
         </button>
         <button type="button" onClick={() => navigate(-1)}>
           취소하기

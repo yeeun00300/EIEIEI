@@ -2,10 +2,9 @@ import React from "react";
 import styles from "./MyStockPage.module.scss";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-
 import MedicalList from "../medicalList/MedicalList";
 import StockCondition from "../medicalList/StockCondition";
-import MedicalListCheck from "../medicalList/MedicalListCheck";
+import MedicalListSave from "../medicalList/MedicalListSave";
 
 function MyStockPage(props) {
   return (
@@ -22,7 +21,7 @@ function MyStockPage(props) {
           </div>
         </Tab>
         <Tab eventKey="two" title="문진표 내역">
-          <MedicalListCheck />
+          <MedicalListSave />
         </Tab>
 
         <Tab eventKey="three" title="예방접종 신청">

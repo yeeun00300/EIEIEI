@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -28,6 +32,9 @@ import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
 import kroDate from "./utils/korDate";
 import { createPath } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchUser } from "./store/userInfoEditSlice/UserInfoEditSlice";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",
@@ -422,28 +429,29 @@ async function uploadImage(path, file) {
   const storage = getStorage();
   const storageRef = ref(storage, path);
 
-  // 파일의 MIME 타입을 설정하는 메타데이터
   const metadata = {
-    contentType: file.type, // 파일의 MIME 타입을 자동으로 설정
+    contentType: file.type,
   };
 
   return new Promise((resolve, reject) => {
-    const uploadTask = uploadBytesResumable(storageRef, file, metadata); // 메타데이터 추가
+    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        // 업로드 진행 상태를 처리할 수 있습니다 (필요한 경우)
+        // 업로드 진행 상태를 처리할 수 있습니다
       },
       (error) => {
+        console.error("Upload error:", error);
         reject(error);
       },
       async () => {
         try {
-          // 업로드가 완료되면 다운로드 URL을 반환
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          console.log("Upload successful, download URL:", downloadURL);
           resolve(downloadURL);
         } catch (error) {
+          console.error("Error getting download URL:", error);
           reject(error);
         }
       }
@@ -483,43 +491,50 @@ export const updateCommunityDatas = async (id, updates, imgUrl) => {
     const postRef = doc(db, "community", id);
     const time = new Date().getTime();
 
-    // 이미지 파일을 변경했을 때
-    if (imgUrl && updates.imgUrl) {
-      const storage = getStorage();
-      const deleteRef = ref(storage, imgUrl);
-      await deleteObject(deleteRef);
+    if (imgUrl && typeof imgUrl !== "string") {
+      // 기존 이미지가 있을 경우 삭제
+      if (updates.imgUrl) {
+        const storage = getStorage();
+        const deleteRef = ref(storage, updates.imgUrl);
+        await deleteObject(deleteRef);
+      }
 
-      // 변경한 사진을 스토리지에 저장
-      const url = await uploadImage(createPath("community/"), updates.imgUrl);
-      updates.imgUrl = url;
-    } else if (updates.imgUrl === null) {
-      // 사진 파일을 변경하지 않았거나 imgUrl이 null일 때
-      delete updates["imgUrl"];
+      // 새 이미지 업로드
+      const url = await uploadImage("community/", imgUrl); // File 객체로 새 이미지 업로드
+      updates.imgUrl = url; // 새 URL로 업데이트
+    } else if (imgUrl === null) {
+      // 이미지 제거
+      delete updates.imgUrl;
     }
 
-    // updatedAt 필드에 현재 시간 추가
     updates.updatedAt = time;
-
-    // 문서 필드 데이터 수정
     await updateDoc(postRef, updates);
     const docSnap = await getDoc(postRef);
     const resultData = { ...docSnap.data(), id: docSnap.id };
 
+    console.log("Updated community data:", resultData);
     return resultData;
   } catch (error) {
     console.error("Error updating community data:", error);
     throw new Error(error.message);
   }
 };
-
 // 게시글 삭제 함수
-export const deleteCommunityDatas = async (id) => {
+export const deleteCommunityDatas = async (id, imgUrl) => {
   try {
+    // Firestore에서 게시글 삭제
     const postRef = doc(db, "community", id);
     await deleteDoc(postRef);
+
+    // 이미지 삭제
+    if (imgUrl) {
+      const imageRef = ref(storage, imgUrl);
+      await deleteObject(imageRef);
+    }
+
     return id;
   } catch (error) {
-    console.error("Error deleting community data:", error);
+    console.error("게시글 또는 이미지 삭제에 실패했습니다:", error);
     throw new Error(error.message);
   }
 };
@@ -579,8 +594,26 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
 const addFarmDataWithSubcollections = async (farmData, subCollections) => {
   try {
     // Firestore의 farm 컬렉션에 문서 추가
-    const farmRef = await addDoc(collection(db, "farm"), farmData);
-    console.log("Farm document added with ID:", farmRef.id);
+    const { userEmail } = farmData;
+
+    if (!userEmail) {
+      throw new Error("User email is required.");
+    }
+
+    // 이메일로 문서 찾기
+    const farmRef = query(
+      collection(db, "farm"),
+      where("email", "==", userEmail)
+    );
+    const querySnapshot = await getDocs(farmRef);
+
+    if (querySnapshot.empty) {
+      throw new Error("No document found with the provided email.");
+    }
+
+    // 첫 번째 문서 참조 얻기
+    const docRef = querySnapshot.docs[0].ref;
+    console.log("Farm document found with ID:", docRef.id);
 
     // 하위 컬렉션 추가
     // farmCureList 하위 컬렉션 추가
@@ -613,6 +646,65 @@ const addFarmDataWithSubcollections = async (farmData, subCollections) => {
   }
 };
 
+function useFetchCollectionData(collectionName) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(getUserAuth(), (user) => {
+      if (user) {
+        const email = user.email;
+        const queryOptions = {
+          conditions: [
+            {
+              field: "email",
+              operator: "==",
+              value: email,
+            },
+          ],
+        };
+
+        dispatch(fetchUser({ collectionName, queryOptions }))
+          .then((resultAction) => {
+            if (fetchUser.fulfilled.match(resultAction)) {
+              const userData = resultAction.payload;
+              console.log("Fetched users with IDs from Redux: ", userData);
+
+              // 예: 첫 번째 사용자 문서 ID
+              if (userData.length > 0) {
+                const firstUserId = userData[0].docId; // 'docId'로 문서 ID 접근
+                console.log("First user document ID: ", firstUserId);
+              }
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch, collectionName]);
+}
+
+// 결제를 이력으로 남기기
+async function addPaymentHistory(collectionName, docId, paymentInfo) {
+  const docRef = doc(db, collectionName, docId);
+  const docSnapshot = await getDoc(docRef);
+
+  if (docSnapshot.exists()) {
+    const docData = docSnapshot.data();
+    const paymentHistory = docData.paymentHistory || [];
+
+    paymentHistory.push(paymentInfo);
+
+    await updateDoc(docRef, {
+      paymentHistory: paymentHistory,
+    });
+  } else {
+    console.error("문서가 존재하지 않습니다");
+  }
+}
+
 export {
   db,
   getCollection,
@@ -637,5 +729,7 @@ export {
   storage,
   uploadProfileImage,
   addFarmDataWithSubcollections,
+  useFetchCollectionData,
+  addPaymentHistory,
 };
 export default app;
