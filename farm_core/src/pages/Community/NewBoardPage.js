@@ -26,6 +26,8 @@ function NewBoardPage() {
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
 
+  const email = useSelector((state) => state.checkLoginSlice.checkLogin.email);
+
   useEffect(() => {
     if (postData) {
       setTitle(postData.title || "");
@@ -84,6 +86,7 @@ function NewBoardPage() {
       notice: postData?.notice || false,
       communityType: selectedBoard,
       authorNickName: userNickName,
+      email: email,
     };
 
     console.log("제출할 데이터 객체:", dataObj); // 데이터 객체 확인

@@ -16,6 +16,7 @@ import {
   orderBy,
   query,
   setDoc,
+  Timestamp,
   updateDoc,
   where,
   writeBatch,
@@ -531,6 +532,33 @@ export const deleteCommunityDatas = async (id, imgUrl) => {
     throw new Error(error.message);
   }
 };
+// 댓글 작성 파트
+// 댓글 추가
+export const addComment = async (postId, comment) => {
+  try {
+    const commentsRef = collection(db, "community", postId, "comments");
+    await addDoc(commentsRef, {
+      ...comment,
+      createdAt: Timestamp.fromDate(new Date()),
+    });
+  } catch (error) {
+    console.error("댓글 추가 실패:", error);
+  }
+};
+
+// 댓글 목록 가져오기
+export const getComments = async (postId) => {
+  try {
+    const commentsRef = collection(db, "community", postId, "comments");
+    const q = query(commentsRef, orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("댓글 목록 가져오기 실패:", error);
+    return [];
+  }
+};
+
 const uploadProfileImage = async (file) => {
   const storage = getStorage();
   const storageRef = ref(storage, `profile_images/${file.name}`);
