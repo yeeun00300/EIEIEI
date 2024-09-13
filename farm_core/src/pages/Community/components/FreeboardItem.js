@@ -9,7 +9,6 @@ function FreeBoardItem({ item, onItemClick }) {
       onItemClick(item);
     }
   };
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>

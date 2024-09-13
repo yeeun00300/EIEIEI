@@ -9,6 +9,9 @@ import chickenIcon from "../../img/양계얼굴.png";
 import henIcon from "../../img/산란계얼굴.png";
 import BiLineChart from "../Chart/BiLineChart";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import KoreaMap from "../KoreaMap/KoreaMap";
+import KoreaBubble from "../KoreaMap/KoreaBubble";
+import KoreaTest from "../KoreaMap/KoreaTest";
 
 function MyLiveStock(props) {
   const [farm, setFarm] = useState("");
@@ -81,7 +84,10 @@ function MyLiveStock(props) {
           </div>
           <div>
             <h3>축사 데이터 확인</h3>
-            <BiLineChart />
+            {/* <BiLineChart /> */}
+            {/* <KoreaMap /> */}
+            <KoreaBubble />
+            {/* <KoreaTest /> */}
           </div>
         </div>
       </div>

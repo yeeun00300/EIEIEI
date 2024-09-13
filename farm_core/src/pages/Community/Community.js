@@ -18,7 +18,7 @@ function Community() {
   useEffect(() => {
     dispatch(
       fetchCommunityPosts({
-        communityType: "freeboard", // 실제 사용 중인 커뮤니티 타입 확인
+        communityType: "freeboard",
         queryOptions: {
           conditions: [
             { field: "communityType", operator: "==", value: "freeboard" },
@@ -33,8 +33,23 @@ function Community() {
   };
 
   const handleOpenBoard = (item) => {
-    navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
+    console.log(item.id);
+    navigate(`/My_Farm_Board_FreeBoard/:${item.id}`);
   };
+
+  const getSortedContents = () => {
+    let sortedContents = [...communityContents];
+
+    if (sortOption === "추천순") {
+      sortedContents.sort((a, b) => b.like - a.like);
+    } else if (sortOption === "최신순") {
+      sortedContents.sort((a, b) => b.updatedAt - a.updatedAt);
+    }
+
+    return sortedContents;
+  };
+
+  const sortedContents = getSortedContents();
 
   return (
     <div className="page">
@@ -64,8 +79,8 @@ function Community() {
           </select>
         </form>
 
-        <p>총 {communityContents.length}개 게시물</p>
-        <BoardList items={communityContents} onItemClick={handleOpenBoard} />
+        <p>총 {sortedContents.length}개 게시물</p>
+        <BoardList items={sortedContents} onItemClick={handleOpenBoard} />
       </ListPage>
     </div>
   );

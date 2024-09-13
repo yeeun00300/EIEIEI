@@ -16,6 +16,7 @@ import paymentSlice from "./myPageSlice/paymentSlice";
 import medicalSlice from "./medicalSlice/medicalSlice";
 import chattingSlice from "./chattingSlice/chattingSlice";
 import AddLiveStockSlice from "./addLiveStockSlice/addLiveStockSlice";
+import formSlice from "./myPageSlice/formSlice";
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -35,6 +36,7 @@ const store = configureStore({
     medicalSlice,
     chattingSlice,
     AddLiveStockSlice,
+    formSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

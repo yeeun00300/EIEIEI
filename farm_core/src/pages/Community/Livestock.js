@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./Livestock.module.scss";
 import searchImg from "../../img/돋보기.png";
 import BoardList from "./components/BoardList";
@@ -15,7 +15,6 @@ function Livestock() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("최신순");
   const [filteredContents, setFilteredContents] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,19 +43,16 @@ function Livestock() {
 
     let sortedResults = [...results];
     if (sortOption === "추천순") {
-      sortedResults = sortedResults.sort((a, b) => b.like - a.like);
+      sortedResults.sort((a, b) => b.like - a.like);
     } else if (sortOption === "최신순") {
-      sortedResults = sortedResults.sort((a, b) => b.createdAt - a.createdAt);
+      sortedResults.sort((a, b) => b.updatedAt - a.updatedAt);
     }
+
     setFilteredContents(sortedResults);
   }, [livestockContents, searchQuery, sortOption]);
 
   const handleNewBoardClick = () => {
     navigate("/My_Farm_Board_NewBoard");
-  };
-
-  const handleBackToList = () => {
-    setSelectedItem(null);
   };
 
   const handleOpenBoard = (item) => {
