@@ -140,6 +140,7 @@ function Login() {
         } else {
           // 구글 최초 회원가입->추가정보입력페이지 이동
           console.log(`false확인용`);
+          localStorage.setItem("email", user.email);
           navigate("/SignUp");
         }
       })
