@@ -82,7 +82,12 @@ function App() {
               path="My_Farm_Board_Community/:id"
               element={<FreeboardPage />}
             />
+            {/* 커뮤니티 새 글 쓰기  */}
             <Route path="My_Farm_Board_NewBoard" element={<NewBoardPage />} />
+            <Route
+              path="/My_Farm_Board_NewBoard/:id"
+              element={<NewBoardPage />}
+            />
             {/* 마이페이지 */}
 
             <Route path="My_Farm_MyPage" element={<MyPage />} />
