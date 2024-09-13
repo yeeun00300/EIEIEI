@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./MyPage.module.scss";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { Link, Outlet, useParams } from "react-router-dom";
-import Card from "./Card/Card";
 import ListItem from "@mui/material/ListItem";
 import { useDispatch, useSelector } from "react-redux";
 import userInfoEditSlice, {
@@ -14,11 +13,12 @@ import Question from "./Question/Question";
 import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
 import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
+import { useFetchCollectionData, useFetchUser } from "../../firebase";
 const dataObj = {
-  UserInfo: { label: "회원정보수정", path: "UserInfo" },
-  myCommunity: { label: "내 게시글", path: "MyCommunity" },
-  question: { label: "1:1 문의하기", path: "question" },
-  payment: { label: "결제내역", path: "payment" },
+  UserInfo: { label: "회원정보수정" },
+  myCommunity: { label: "내 게시글" },
+  question: { label: "1:1 문의하기" },
+  payment: { label: "결제내역" },
 };
 
 function MyPage() {
@@ -26,22 +26,15 @@ function MyPage() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
   console.log(userInfo);
-  const email = localStorage.getItem("email");
-
-  useEffect(() => {
-    const queryOptions = {
-      conditions: [{ field: "email", operator: "==", value: email }],
-    };
-    dispatch(fetchUser({ collectionName: "users", queryOptions }));
-  }, []);
+  useFetchCollectionData("users");
 
   const handleComponentChange = (componentName) => {
-    if (activeComponent === componentName) {
-      setActiveComponent(null);
-    } else {
-      setActiveComponent(componentName);
-    }
+    // If the same component is clicked again, do nothing
+    if (activeComponent === componentName) return;
+
+    setActiveComponent(componentName);
   };
+
   console.log(userInfo[0]);
   return (
     <div className="page">
@@ -51,46 +44,21 @@ function MyPage() {
             <h3>{userInfo[0]?.name}님 환영합니다.</h3>
           </div>
           <div className={styles.lists}>
-            <Card>
-              회원정보 수정
-              <button onClick={() => handleComponentChange("UserInfo")}>
-                <span>
-                  <FaAngleDoubleRight className={styles.click} />
-                </span>
-              </button>
-            </Card>
-            <Card>
-              내 게시글
-              <button onClick={() => handleComponentChange("MyCommunity")}>
-                <span>
-                  <FaAngleDoubleRight className={styles.click} />
-                </span>
-              </button>
-            </Card>
-
-            <Card>
-              1:1 문의하기
-              <button onClick={() => handleComponentChange("Question")}>
-                <span>
-                  <FaAngleDoubleRight className={styles.click} />
-                </span>
-              </button>
-            </Card>
-
-            <Card>
-              결제 내역
-              <button onClick={() => handleComponentChange("Payment")}>
-                <span>
-                  <FaAngleDoubleRight className={styles.click} />
-                </span>
-              </button>
-            </Card>
+            {Object.keys(dataObj).map((key) => (
+              <div
+                key={key}
+                className={styles.listItem}
+                onClick={() => handleComponentChange(key)}
+              >
+                {dataObj[key].label}
+              </div>
+            ))}
           </div>
         </div>
         {activeComponent === "UserInfo" && <UserInfo />}
-        {activeComponent === "MyCommunity" && <MyCommunity />}
-        {activeComponent === "Question" && <Question />}
-        {activeComponent === "Payment" && <Payment />}
+        {activeComponent === "myCommunity" && <MyCommunity />}
+        {activeComponent === "question" && <Question />}
+        {activeComponent === "payment" && <Payment />}
       </div>
     </div>
   );

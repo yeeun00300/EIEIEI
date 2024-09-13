@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import styles from "./FreeboardPage.module.scss";
-import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import ReactionButton from "./components/ReactionButton";
 import sirenImg from "../../img/신고하기.png";
 import CommentSection from "./components/CommentSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteCommunityPost,
-  fetchCommunityPosts,
-  updateCommunityPost,
-} from "./../../store/communitySlice/communitySlice"; // 액션 가져오기
+  updatePostReactions,
+} from "../../store/communitySlice/communitySlice";
 
 function FreeboardPage() {
   const { id } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // 수정: useNavigate 훅을 올바르게 사용
+  const navigate = useNavigate();
+  const [userHasLiked, setUserHasLiked] = useState(false);
+  const [userHasDisliked, setUserHasDisliked] = useState(false);
 
   const getStockTypeInKorean = (type) => {
     switch (type) {
@@ -34,83 +35,129 @@ function FreeboardPage() {
     }
   };
 
-  // 커뮤니티 타입을 경로에 따라 결정
   const isFreeBoard = location.pathname.includes("My_Farm_Board_FreeBoard");
   const communityType = isFreeBoard ? "freeboard" : "livestock";
 
-  // 게시물과 로딩 상태 가져오기
-  const { communityContents, livestockContents, isLoading } = useSelector(
-    (state) => state.communitySlice
+  const contents = useSelector((state) =>
+    isFreeBoard
+      ? state.communitySlice.communityContents
+      : state.communitySlice.livestockContents
   );
 
-  const [postData, setPostData] = useState(null);
+  const postData = contents.find((post) => post.id === id);
 
-  // 컴포넌트 마운트 시 게시물 로딩
   useEffect(() => {
-    if (
-      (isFreeBoard && !communityContents.length) ||
-      (!isFreeBoard && !livestockContents.length)
-    ) {
-      dispatch(
-        fetchCommunityPosts({
-          communityType, // communityType에 따라 데이터 가져오기
-          queryOptions: {
-            conditions: [
-              { field: "communityType", operator: "==", value: communityType },
-            ],
-          },
-        })
-      );
-    }
-  }, [
-    dispatch,
-    communityType,
-    communityContents.length,
-    livestockContents.length,
-    isFreeBoard,
-  ]);
+    if (postData) {
+      const userEmail = localStorage.getItem("userEmail");
+      const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || {};
+      const dislikedPosts =
+        JSON.parse(localStorage.getItem("dislikedPosts")) || {};
 
-  // communityType에 따라 해당하는 게시물 리스트를 선택
-  useEffect(() => {
-    const contents = isFreeBoard ? communityContents : livestockContents;
-    if (contents.length) {
-      const post = contents.find((post) => post.id === id);
-      setPostData(post);
+      setUserHasLiked(likedPosts[id] === userEmail);
+      setUserHasDisliked(dislikedPosts[id] === userEmail);
     }
-  }, [id, communityContents, livestockContents, isFreeBoard]);
+  }, [postData]);
 
   const handleUpdate = () => {
-    navigate(`/My_Farm_Board_NewBoard/${id}`, { state: { postData } }); // 수정 페이지로 이동하며 postData 전달
+    navigate(`/My_Farm_Board_NewBoard/${id}`, { state: { postData } });
   };
 
   const handleDelete = async () => {
     try {
-      await dispatch(deleteCommunityPost({ id, communityType })).unwrap();
-      const redirectPath =
-        communityType === "freeboard"
-          ? "/My_Farm_Board_FreeBoard"
-          : "/My_Farm_Board_Community";
-      navigate(redirectPath); // 수정: navigate 호출을 함수가 아닌 훅으로 올바르게 변경
+      await dispatch(
+        deleteCommunityPost({ id, communityType, imgUrl: postData?.imgUrl })
+      ).unwrap();
+      const redirectPath = isFreeBoard
+        ? "/My_Farm_Board_FreeBoard"
+        : "/My_Farm_Board_Community";
+      navigate(redirectPath);
     } catch (error) {
       console.error("게시물 삭제에 실패했습니다:", error);
     }
   };
 
-  // 로딩 상태 처리
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
+  const handleLike = useCallback(async () => {
+    if (userHasLiked || userHasDisliked) return;
 
-  // 게시물 없을 때 처리
+    const userEmail = localStorage.getItem("userEmail");
+    const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || {};
+
+    if (likedPosts[id] === userEmail) {
+      alert("이미 좋아요를 누르셨습니다.");
+      return;
+    }
+
+    const updates = {
+      like: postData.like + 1,
+    };
+
+    try {
+      await dispatch(
+        updatePostReactions({ id, updates, communityType })
+      ).unwrap();
+      setUserHasLiked(true);
+      likedPosts[id] = userEmail;
+      localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+      if (userHasDisliked) {
+        await dispatch(
+          updatePostReactions({
+            id,
+            updates: { dislike: postData.dislike - 1 },
+            communityType,
+          })
+        ).unwrap();
+        setUserHasDisliked(false);
+      }
+    } catch (error) {
+      console.error("좋아요 업데이트 실패:", error);
+    }
+  }, [userHasLiked, userHasDisliked, postData, dispatch, id, communityType]);
+
+  const handleDislike = useCallback(async () => {
+    if (userHasDisliked || userHasLiked) return;
+
+    const userEmail = localStorage.getItem("userEmail");
+    const dislikedPosts =
+      JSON.parse(localStorage.getItem("dislikedPosts")) || {};
+
+    if (dislikedPosts[id] === userEmail) {
+      alert("이미 싫어요를 누르셨습니다.");
+      return;
+    }
+
+    const updates = {
+      dislike: postData.dislike + 1,
+    };
+
+    try {
+      await dispatch(
+        updatePostReactions({ id, updates, communityType })
+      ).unwrap();
+      setUserHasDisliked(true);
+      dislikedPosts[id] = userEmail;
+      localStorage.setItem("dislikedPosts", JSON.stringify(dislikedPosts));
+      if (userHasLiked) {
+        await dispatch(
+          updatePostReactions({
+            id,
+            updates: { like: postData.like - 1 },
+            communityType,
+          })
+        ).unwrap();
+        setUserHasLiked(false);
+      }
+    } catch (error) {
+      console.error("싫어요 업데이트 실패:", error);
+    }
+  }, [userHasLiked, userHasDisliked, postData, dispatch, id, communityType]);
+
   if (!postData) {
     return <div>게시물을 찾을 수 없습니다.</div>;
   }
 
-  // 게시물 렌더링
   return (
     <div className="page">
       <div className={styles.wrapper}>
-        {/* stockType 텍스트를 왼쪽 위에 표시 */}
         <div className={styles.content}>
           <div className={styles.stockType}>
             {getStockTypeInKorean(postData.stockType)}
@@ -148,10 +195,18 @@ function FreeboardPage() {
             <span>신고하기</span>
           </div>
           <div className={styles.reactions}>
-            <FaRegThumbsUp />
-            <span>{postData.like || 0}</span>
-            <FaRegThumbsDown />
-            <span>{postData.dislike || 0}</span>
+            <ReactionButton
+              type="like"
+              onClick={handleLike}
+              count={postData.like}
+              active={userHasLiked}
+            />
+            <ReactionButton
+              type="dislike"
+              onClick={handleDislike}
+              count={postData.dislike}
+              active={userHasDisliked}
+            />
           </div>
         </div>
         <CommentSection />

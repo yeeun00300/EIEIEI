@@ -27,98 +27,64 @@
     align-items: center;
     padding: 24px;
     gap: 12px;
-    button {
-      padding: 0;
-      border-radius: 50%;
-      cursor: pointer;
-      &:hover {
-        filter: brightness(0.6);
-      }
-    }
   }
-  section {
+}
+section {
+  background-color: #b2c7d9;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  overflow: hidden;
+}
+main {
+  flex: 1 1;
+  padding: 10px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 0.6rem;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-track {
     background-color: #b2c7d9;
-    display: flex;
-    flex-direction: column;
-    flex: 1 1;
-    overflow: hidden;
   }
-  main {
-    flex: 1 1;
-    padding: 10px;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      width: 0.6rem;
-      background-color: transparent;
-    }
-    &::-webkit-scrollbar-track {
-      background-color: #b2c7d9;
-    }
-    &::-webkit-scrollbar-thumb {
-      width: 8px;
-      background-color: #8b9aa6;
-    }
+  &::-webkit-scrollbar-thumb {
+    width: 8px;
+    background-color: #8b9aa6;
   }
+}
 
-  form {
-    background-color: #ffec42;
-    width: 100%;
-    height: 8vh;
-    max-width: 450px;
-    font-size: 1.5rem;
-    flex: none;
-    display: flex;
-    button {
-      background-color: #ffec42;
-      width: 20%;
-    }
+.sign-in {
+  color: gray;
+  background-color: white;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 15px;
+  border-radius: 25px;
+}
+.notice {
+  margin-top: 20px;
+  color: #72808b;
+}
+.sign-out {
+  border: none;
+  padding: 8px 15px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  border-radius: 25px;
+  &:hover {
+    color: #fff;
+    background-color: gray;
   }
-  button {
-    border: none;
-    border-radius: 9999px;
-    color: gray;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .sign-in {
-    color: gray;
-    background-color: white;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 15px;
-    border-radius: 25px;
-  }
-  .notice {
-    margin-top: 20px;
-    color: #72808b;
-  }
-  .sign-out {
-    border: none;
-    padding: 8px 15px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 0.8rem;
-    border-radius: 25px;
-    &:hover {
-      color: #fff;
-      background-color: gray;
-    }
-  }
-  form input {
-    width: 100%;
-    font-size: 1rem;
-    background-color: #fff;
-    color: #262626;
-    outline: none;
-    border: none;
-    padding: 0 15px;
-  }
+}
+form input {
+  width: 100%;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #262626;
+  outline: none;
+  border: none;
+  padding: 0 15px;
 }
 .ChattingIcons {
   border-radius: 9999px;

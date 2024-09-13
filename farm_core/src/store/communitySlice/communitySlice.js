@@ -111,6 +111,27 @@ const communitySlice = createSlice({
       .addCase(deleteCommunityPost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      // 좋아요 싫어요
+
+      .addCase(updatePostReactions.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePostReactions.fulfilled, (state, action) => {
+        const { id, updates, communityType } = action.payload;
+        const targetList =
+          communityType === "freeboard"
+            ? state.communityContents
+            : state.livestockContents;
+        const index = targetList.findIndex((post) => post.id === id);
+        if (index !== -1) {
+          targetList[index] = { ...targetList[index], ...updates };
+        }
+        state.isLoading = false;
+      })
+      .addCase(updatePostReactions.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -131,41 +152,52 @@ const fetchCommunityPosts = createAsyncThunk(
 
 // 비동기 작업: 게시글 생성
 const createCommunityPost = createAsyncThunk(
-  "community/createCommunityPost",
-  async ({ communityType, dataObj }) => {
+  "community/createPost",
+  async ({ communityType, dataObj }, { rejectWithValue }) => {
     try {
-      // collectionName을 communityType으로 변경
-      const data = await addCommunityDatas(communityType, dataObj);
-      return data;
+      const newPost = await addCommunityDatas(communityType, dataObj);
+      return newPost;
     } catch (error) {
-      console.error("커뮤니티 게시글 생성에 실패했습니다:", error);
-      throw error; // 에러를 다시 던져서 Redux가 실패 상태를 알 수 있게 처리
+      return rejectWithValue(error.message);
     }
   }
 );
 // 비동기 작업: 게시글 업데이트
 const updateCommunityPost = createAsyncThunk(
-  "community/updateCommunityPost",
-  async ({ id, updates, imgUrl, communityType }, { rejectWithValue }) => {
+  "community/updatePost",
+  async ({ id, updates, imgUrl }, { rejectWithValue }) => {
     try {
-      const updatedPost = await updateCommunityDatas(id, updates, imgUrl);
-      return { ...updatedPost, communityType };
+      const updatedData = await updateCommunityDatas(id, updates, imgUrl);
+      return { id, updates: updatedData };
     } catch (error) {
-      console.error("게시글 업데이트에 실패했습니다:", error);
-      return rejectWithValue("UPDATE Error: " + error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
+
 // 비동기 작업: 게시글 삭제
 const deleteCommunityPost = createAsyncThunk(
   "community/deleteCommunityPost",
-  async ({ id, communityType }) => {
+  async ({ id, communityType, imgUrl }) => {
     try {
-      await deleteCommunityDatas(id);
+      await deleteCommunityDatas(id, imgUrl);
       return { id, communityType };
     } catch (error) {
       console.error("게시글 삭제에 실패했습니다:", error);
       throw error;
+    }
+  }
+);
+// 좋아요 싫어요 구현
+
+const updatePostReactions = createAsyncThunk(
+  "community/updatePostReactions",
+  async ({ id, updates, communityType }, { rejectWithValue }) => {
+    try {
+      const updatedData = await updateCommunityDatas(id, updates);
+      return { id, updates: updatedData, communityType };
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -176,4 +208,5 @@ export {
   createCommunityPost,
   updateCommunityPost,
   deleteCommunityPost,
+  updatePostReactions,
 };

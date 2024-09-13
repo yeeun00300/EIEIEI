@@ -9,15 +9,14 @@ function FreeBoardItem({ item, onItemClick }) {
       onItemClick(item);
     }
   };
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.freeboardItem}>
         {item.imgUrl && <img src={item.imgUrl} alt="게시물" />}
         <div className={styles.content}>
-          <a className={styles.title} onClick={handleClick}>
+          <button className={styles.title} onClick={handleClick}>
             {item.title}
-          </a>
+          </button>
           <p className={styles.description}>{item.content}</p>
           <div></div>
           <p>{`작성자: ${item.authorNickName}`}</p>

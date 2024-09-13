@@ -5,12 +5,22 @@ import Stack from "@mui/material/Stack";
 import * as FaIcons from "react-icons/fa";
 import ChatMessage from "./ChatMessage";
 import styles from "./ChatRoom.module.scss";
-import { addMessage, db, getUserAuth } from "../../firebase";
+import {
+  addMessage,
+  db,
+  getCollection,
+  getQuery,
+  getUserAuth,
+} from "../../firebase";
 import {
   collection,
   doc,
+  limit,
   onSnapshot,
+  orderBy,
+  query,
   serverTimestamp,
+  where,
 } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,21 +30,53 @@ import {
 import someone from "../../img/person.png";
 import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import Button from "react-bootstrap/Button";
+import AddChatName from "./AddChatName";
 
-function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
+function ChatRoom({ chattingRoom }) {
   const dispatch = useDispatch();
   const auth = getUserAuth();
+  const { uid, email } = auth?.currentUser;
   const now = serverTimestamp();
   const [inputValue, setInputValue] = useState("");
-  // const [chatRoomName, setChatRoomName] = useState("");
-
-  const [subCollectionData, setSubCollectionData] = useState([]);
-
-  const { uid, email } = auth?.currentUser;
   const { messages, chattingUser, isLoading } = useSelector(
     (state) => state.chattingSlice
   );
+  const [chatRoomName, setChatRoomName] = useState("");
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+
+  // function getSubCollection(collectionName, docId, subCollection) {
+  //   const userDocRef = doc(db, collectionName, docId);
+  //   return collection(userDocRef, subCollection);
+  // }
+  // function getSubQuery(collectionName, docId, subCollection, queryOptions) {
+  //   const { conditions = [], orderBys = [], limits } = queryOptions;
+  //   const collect = getSubCollection(collectionName, docId, subCollection);
+  //   let q = query(collect);
+
+  //   conditions.forEach((condition) => {
+  //     q = query(q, where(condition.field, condition.operator, condition.value));
+  //   });
+
+  //   orderBys.forEach((order) => {
+  //     q = query(q, orderBy(order.field, order.direction || "desc"));
+  //   });
+
+  //   q = query(q, limit(limits));
+
+  //   return q;
+  // }
+
+  // const conditions = [];
+  // const orderBys = [{ field: "createdAt", direction: "desc" }];
+  // const LIMITS = 100;
+  // const q = getSubQuery("chatting", email, "Karina", {
+  //   conditions,
+  //   orderBys,
+  //   limit: LIMITS,
+  // });
+  // const abc = useCollectionData(q);
+  // const RTdata = abc[0];
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
@@ -76,7 +118,6 @@ function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
     const addObj = {
       text: inputValue,
       createdAt: now,
-
       uid: uid,
     };
     addMessage("chatting", email, chatRoomName, addObj);
@@ -105,32 +146,12 @@ function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
         },
       })
     );
-    const documentId = email;
-    const subCollectionName = chatRoomName;
+    // setSubCollectionData(RTdata);
+  }, []);
 
-    // 서브컬렉션 참조 생성
-    const subCollectionRef = collection(
-      doc(db, "chatting", documentId),
-      subCollectionName
-    );
-
-    // 실시간 구독 설정
-    // const unsubscribe = onSnapshot(
-    //   subCollectionRef,
-    //   (snapshot) => {
-    //     const data = snapshot.docs.map((doc) => ({
-    //       id: doc.id,
-    //       ...doc.data(),
-    //     }));
-    //     setSubCollectionData(data);
-    //   },
-    //   (err) => {}
-    // );
-    // console.log(subCollectionData);
-  }, [chattingRoom]);
   return (
     <>
-      <nav>
+      <nav className={styles.chatRoomNav}>
         {chattingRoom.chattingRoom?.map((item, idx) => {
           const { userName, photoUrl } = item;
           return (
@@ -141,6 +162,7 @@ function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
                 variant="dot"
               >
                 <button
+                  className={styles.BadgeBtn}
                   onClick={(e) => {
                     chatRoomName !== e.target.alt
                       ? setChatRoomName(e.target.alt)
@@ -157,6 +179,10 @@ function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
             </Stack>
           );
         })}
+        <AddChatName />
+        {/* <button className={styles.DarkBtn} onClick={addBadge}>
+          +
+        </button> */}
       </nav>
       {chatRoomName ? (
         <section>
@@ -166,7 +192,6 @@ function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
                 <div></div>;
               } else {
                 const myProfile = userInfo[0]?.profileImages;
-
                 const filteredData = chattingUser?.filter(
                   (item) => item.docId == email
                 );
@@ -199,7 +224,7 @@ function ChatRoom({ chattingRoom, chatRoomName, setChatRoomName }) {
             })}
           </main>
 
-          <form onSubmit={sendMessage}>
+          <form onSubmit={sendMessage} className={styles.sendForm}>
             <input
               onChange={(e) => setInputValue(e.target.value)}
               value={inputValue}

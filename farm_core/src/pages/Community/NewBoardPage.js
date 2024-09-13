@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createCommunityPost,
   fetchCommunityPosts,
+  updateCommunityPost,
 } from "../../store/communitySlice/communitySlice";
 import ImageUploader from "./components/ImageUploader";
+import { uploadImage } from "../../firebase";
 
 function NewBoardPage() {
   const [title, setTitle] = useState("");
@@ -24,11 +26,13 @@ function NewBoardPage() {
     useSelector((state) => state.checkLoginSlice.checkLogin.nickname) ||
     "닉네임 없음";
 
+  const email = useSelector((state) => state.checkLoginSlice.checkLogin.email);
+
   useEffect(() => {
     if (postData) {
       setTitle(postData.title || "");
       setContent(postData.content || "");
-      setImage(postData.imgUrl || null);
+      setImage(postData.imgUrl || null); // 기존 이미지 URL을 설정
       setSelectedBoard(postData.communityType || "freeboard");
       setLivestockType(postData.stockType || "");
     }
@@ -53,31 +57,61 @@ function NewBoardPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let imageUrl = postData?.imgUrl; // 기존 이미지를 우선 사용
+
+    // 이미지가 새로 선택된 경우에만 업로드
+    if (image && typeof image !== "string") {
+      try {
+        imageUrl = await uploadImage("community/", image);
+        console.log("업로드된 이미지 URL:", imageUrl); // 업로드된 이미지 URL 확인
+      } catch (error) {
+        console.error("이미지 업로드 실패:", error);
+        return; // 업로드 실패 시 함수 종료
+      }
+    }
+
+    const dataObj = {
+      title,
+      content,
+      imgUrl: imageUrl, // 새 이미지가 없으면 기존 이미지 URL 사용
+      createdAt: postData?.createdAt || new Date().getTime(),
+      updatedAt: new Date().getTime(),
+      like: postData?.like || 0,
+      dislike: postData?.dislike || 0,
+      declareReason: postData?.declareReason || "",
+      declareState: postData?.declareState || "",
+      declareCount: postData?.declareCount || 0,
+      stockType: mapLivestockType(livestockType),
+      notice: postData?.notice || false,
+      communityType: selectedBoard,
+      authorNickName: userNickName,
+      email: email,
+    };
+
+    console.log("제출할 데이터 객체:", dataObj); // 데이터 객체 확인
+
     try {
-      const dataObj = {
-        title,
-        content,
-        imgUrl: image,
-        createdAt: new Date().getTime(),
-        updatedAt: new Date().getTime(),
-        like: 0,
-        dislike: 0,
-        declareReason: "",
-        declareState: "",
-        declareCount: 0,
-        stockType: mapLivestockType(livestockType),
-        notice: false,
-        communityType: selectedBoard,
-        authorNickName: userNickName,
-      };
+      if (postData) {
+        // 기존 포스트 업데이트
+        await dispatch(
+          updateCommunityPost({
+            id: postData.id,
+            updates: dataObj,
+            imgUrl: imageUrl, // 업데이트된 이미지 URL 전달
+          })
+        ).unwrap();
+      } else {
+        // 새 포스트 생성
+        await dispatch(
+          createCommunityPost({
+            communityType: selectedBoard,
+            dataObj,
+          })
+        ).unwrap();
+      }
 
-      await dispatch(
-        createCommunityPost({
-          collectionName: selectedBoard,
-          dataObj,
-        })
-      ).unwrap();
-
+      // 포스트 목록 새로고침
       await dispatch(
         fetchCommunityPosts({
           communityType: selectedBoard,
@@ -89,23 +123,24 @@ function NewBoardPage() {
         })
       );
 
+      // 페이지 이동
       if (selectedBoard === "freeboard") {
         navigate("/My_Farm_Board_FreeBoard");
       } else if (selectedBoard === "livestock") {
         navigate("/My_Farm_Board_Community");
       }
 
+      // 상태 초기화
       setTitle("");
       setContent("");
       setImage(null);
     } catch (error) {
-      console.error("새 글 등록 실패:", error);
+      console.error("게시글 등록 또는 수정 실패:", error);
     }
   };
-
   return (
     <div className={styles.container}>
-      <h2>새 글 쓰기</h2>
+      <h2>{postData ? "게시물 수정하기" : "새 글 쓰기"}</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.group}>
           <label htmlFor="boardType">게시판 선택</label>
@@ -149,7 +184,10 @@ function NewBoardPage() {
         </div>
         <div className={styles.group}>
           <label htmlFor="content">내용</label>
-          <ImageUploader onImageUpload={(file) => setImage(file)} />
+          <ImageUploader
+            onImageUpload={(file) => setImage(file)}
+            existingImageUrl={postData?.imgUrl} // 기존 이미지 URL을 전달
+          />
           <textarea
             id="content"
             value={content}
@@ -159,7 +197,7 @@ function NewBoardPage() {
           ></textarea>
         </div>
         <button type="submit" className="submitBtn">
-          글 등록하기
+          {postData ? "수정하기" : "글 등록하기"}
         </button>
         <button type="button" onClick={() => navigate(-1)}>
           취소하기

@@ -1,0 +1,40 @@
+.AddChatName {
+  font-size: 12px;
+  .addBtn {
+    width: 54px;
+    height: 54px;
+    color: rgb(150, 150, 150);
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 50%;
+    background-color: transparent;
+    font-size: 24px;
+    &:hover {
+      color: white;
+      background-color: rgb(150, 150, 150);
+    }
+  }
+}
+.AddUser {
+  width: 40%;
+  position: absolute;
+  //   right: 0;
+  top: 90%;
+  left: 33%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  input {
+    width: 100%;
+  }
+  .serachBadge {
+    width: 100%;
+  }
+}
+.searchEmail {
+  display: flex;
+  word-break: keep-all;
+  button {
+    width: fit-content;
+  }
+}
