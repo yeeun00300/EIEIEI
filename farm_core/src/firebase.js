@@ -586,8 +586,26 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
 const addFarmDataWithSubcollections = async (farmData, subCollections) => {
   try {
     // Firestore의 farm 컬렉션에 문서 추가
-    const farmRef = await addDoc(collection(db, "farm"), farmData);
-    console.log("Farm document added with ID:", farmRef.id);
+    const { userEmail } = farmData;
+
+    if (!userEmail) {
+      throw new Error("User email is required.");
+    }
+
+    // 이메일로 문서 찾기
+    const farmRef = query(
+      collection(db, "farm"),
+      where("email", "==", userEmail)
+    );
+    const querySnapshot = await getDocs(farmRef);
+
+    if (querySnapshot.empty) {
+      throw new Error("No document found with the provided email.");
+    }
+
+    // 첫 번째 문서 참조 얻기
+    const docRef = querySnapshot.docs[0].ref;
+    console.log("Farm document found with ID:", docRef.id);
 
     // 하위 컬렉션 추가
     // farmCureList 하위 컬렉션 추가

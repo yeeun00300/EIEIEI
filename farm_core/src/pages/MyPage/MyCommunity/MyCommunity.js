@@ -13,6 +13,7 @@ import ExcelUpload from "../../../components/ExcelUpload/ExcelUpload";
 import StockAddfromExcel from "../../../components/StockAdd/StockAddfromExcel";
 import RegularPayment from "../../RegularPayment/RegularPayment";
 import styles from "./MyCommunity.module.scss";
+import MedicalList from "../../../components/medicalList/MedicalList";
 
 function MyCommunity() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function MyCommunity() {
         })}
       </div>
       {/* <PaymentPage /> */}
+
       <input type="date" />
     </div>
   );
