@@ -33,7 +33,8 @@ function Community() {
   };
 
   const handleOpenBoard = (item) => {
-    navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
+    console.log(item.id);
+    navigate(`/My_Farm_Board_FreeBoard/:${item.id}`);
   };
 
   return (
