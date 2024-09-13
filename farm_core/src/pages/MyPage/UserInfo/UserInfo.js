@@ -9,7 +9,12 @@ import {
   toggleOpen,
 } from "../../../store/myPageSlice/addressSlice";
 import { fetchUser } from "./../../../store/userInfoEditSlice/UserInfoEditSlice";
-import { updateDatas, uploadProfileImage } from "../../../firebase";
+import {
+  updateDatas,
+  uploadProfileImage,
+  useFetchCollectionData,
+  useFetchUser,
+} from "../../../firebase";
 import {
   setEmail,
   setName,
@@ -120,12 +125,7 @@ function UserInfo() {
       console.error("User ID가 없습니다.");
     }
   };
-  useEffect(() => {
-    const queryOptions = {
-      conditions: [{ field: "email", operator: "==", value: userEmail }],
-    };
-    dispatch(fetchUser({ collectionName: "users", queryOptions }));
-  }, [dispatch, userEmail]);
+  useFetchCollectionData("users");
 
   useEffect(() => {
     if (userInfo.length > 0) {

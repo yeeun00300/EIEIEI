@@ -6,7 +6,13 @@ import {
   db,
   updateDatas,
 } from "../../firebase";
-import { collection, doc, writeBatch } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+  writeBatch,
+} from "firebase/firestore";
 
 const initialState = {
   farmName: "",
@@ -69,6 +75,34 @@ const AddLiveStockSlice = createSlice({
       .addCase(addFarmData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        console.error("Data save failed:", action.payload);
+      })
+      .addCase(fetchFarmData.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchFarmData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.farmData = action.payload; // 가져온 데이터로 farmData를 설정
+        state.docId = action.meta.arg; // 가져온 문서의 docId 설정
+      })
+      .addCase(fetchFarmData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // updateFarmData 액션 핸들링
+      .addCase(updateFarmData.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateFarmData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.farmData = { ...state.farmData, ...action.payload }; // 업데이트된 데이터 반영
+      })
+      .addCase(updateFarmData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -86,6 +120,37 @@ const addFarmData = createAsyncThunk(
     }
   }
 );
+
+const fetchFarmData = createAsyncThunk(
+  "livestock/fetchFarmData",
+  async (docId, { rejectWithValue }) => {
+    try {
+      const docRef = doc(db, "farm", docId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data();
+      } else {
+        throw new Error("No such document!");
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const updateFarmData = createAsyncThunk(
+  "livestock/updateFarmData",
+  async ({ docId, updateData }, { rejectWithValue }) => {
+    try {
+      const docRef = doc(db, "farm", docId);
+      await updateDoc(docRef, updateData);
+      return updateData;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export default AddLiveStockSlice.reducer;
 export const { addField } = AddLiveStockSlice.actions;
-export { addFarmData };
+export { addFarmData, fetchFarmData, updateFarmData };
