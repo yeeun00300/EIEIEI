@@ -95,7 +95,7 @@ function Payment(props) {
   ];
 
   return (
-    <div className="container">
+    <div className="containerS">
       <div className={styles.dataGridContainer}>
         <div className={styles.dataGrid}>
           <DataGrid

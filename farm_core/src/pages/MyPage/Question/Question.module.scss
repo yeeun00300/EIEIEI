@@ -1,3 +1,9 @@
+h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
 .contact {
   display: flex;
   flex-direction: column;
@@ -8,7 +14,8 @@
   border-radius: 8px;
   background-color: #f9f9f9;
   width: 80%;
-  margin: 0 auto;
+  max-width: 800px;
+  margin: 2rem auto;
 
   h2 {
     font-size: 1.8rem;
@@ -34,6 +41,7 @@
       label {
         font-size: 1rem;
         margin-bottom: 0.5rem;
+        color: #333;
       }
 
       input,
@@ -65,13 +73,90 @@
       &:hover {
         background-color: #0056b3;
       }
-    }
 
-    button[type="submit"]:nth-child(2) {
-      background-color: #dc3545;
-      &:hover {
-        background-color: #c82333;
+      &:nth-child(2) {
+        background-color: #dc3545;
+        &:hover {
+          background-color: #c82333;
+        }
       }
     }
+  }
+}
+
+.listContainer {
+  width: 80%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.listHeader {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  .itemDetails {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .itemActions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .itemActions button {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+
+.addQuestionButton {
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--main-color);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+  display: block;
+  width: 80%;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+
+  &:hover {
+    background-color: #0056b3;
   }
 }
