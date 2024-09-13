@@ -17,49 +17,8 @@ import MedicalList from "../../../components/medicalList/MedicalList";
 
 function MyCommunity() {
   const dispatch = useDispatch();
-  const storage = getStorage(); // Firebase Storage 인스턴스 생성
-  const [downloadUrl, setDownloadUrl] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const communityContents = useSelector(
-    (state) => state.communitySlice?.communityContents || []
-  );
-
-  // useEffect(() => {
-  //   const fetchDownloadUrl = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const fileRef = ref(storage, "path/to/your/excel-template.xlsx");
-  //       const url = await getDownloadURL(fileRef);
-  //       setDownloadUrl(url);
-  //     } catch (error) {
-  //       console.error("Error fetching download URL:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   console.log(window);
-
-  //   fetchDownloadUrl();
-  // }, [storage]);
-
-  // useEffect(() => {
-  //   dispatch(fetchCommunity({ collectionName: "community", queryOptions: {} }));
-  // }, [dispatch]);
-
-  return (
-    <div className="page">
-      <div className={styles.communitybox}>
-        {communityContents.map((content, idx) => {
-          return <CommunityConents {...content} key={idx} />;
-        })}
-      </div>
-      {/* <PaymentPage /> */}
-
-      <input type="date" />
-    </div>
-  );
+  return <div className="page"></div>;
 }
 
 export default MyCommunity;

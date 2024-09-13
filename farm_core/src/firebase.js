@@ -662,7 +662,23 @@ function useFetchCollectionData(collectionName) {
             },
           ],
         };
-        dispatch(fetchUser({ collectionName, queryOptions }));
+
+        dispatch(fetchUser({ collectionName, queryOptions }))
+          .then((resultAction) => {
+            if (fetchUser.fulfilled.match(resultAction)) {
+              const userData = resultAction.payload;
+              console.log("Fetched users with IDs from Redux: ", userData);
+
+              // 예: 첫 번째 사용자 문서 ID
+              if (userData.length > 0) {
+                const firstUserId = userData[0].docId; // 'docId'로 문서 ID 접근
+                console.log("First user document ID: ", firstUserId);
+              }
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
       }
     });
 
