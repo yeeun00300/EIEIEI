@@ -425,48 +425,43 @@ async function getCommunityDatas(collectionName, queryOptions) {
   }
 }
 // 이미지 업로드
-async function uploadImage(path, file) {
-  const storage = getStorage();
-  const storageRef = ref(storage, path);
-
-  const metadata = {
-    contentType: file.type,
-  };
-
+const uploadImage = (folder, file) => {
   return new Promise((resolve, reject) => {
-    const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+    const storage = getStorage();
+    const fileName = `${folder}${uuidv4()}`; // 파일 이름에 UUID 추가
+    const storageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        // 업로드 진행 상태를 처리할 수 있습니다
+        // 진행 상태 모니터링
       },
       (error) => {
-        console.error("Upload error:", error);
         reject(error);
       },
-      async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          console.log("Upload successful, download URL:", downloadURL);
-          resolve(downloadURL);
-        } catch (error) {
-          console.error("Error getting download URL:", error);
-          reject(error);
-        }
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL) => {
+            resolve(downloadURL);
+          })
+          .catch((error) => {
+            reject(error);
+          });
       }
     );
   });
-}
+};
 // 게시글 추가
 async function addCommunityDatas(collectionName, dataObj) {
   try {
     // 이미지가 있을 경우 업로드 후 URL 반환
-    if (dataObj.imgUrl) {
-      const uuid = uuidv4(); // UUID로 고유 이미지 경로 생성
-      const url = await uploadImage(`community/${uuid}`, dataObj.imgUrl); // 고유 경로와 이미지 파일을 함께 업로드
-      dataObj.imgUrl = url; // 업로드한 이미지의 URL 할당
-    }
+    // if (dataObj.imgUrl) {
+    //   const uuid = uuidv4(); // UUID로 고유 이미지 경로 생성
+    //   const url = await uploadImage(`community/${uuid}`, dataObj.imgUrl); // 고유 경로와 이미지 파일을 함께 업로드
+    //   dataObj.imgUrl = url; // 업로드한 이미지의 URL 할당
+    // }
 
     // 타임스탬프 추가
     const time = new Date().getTime();
@@ -512,10 +507,8 @@ export const updateCommunityDatas = async (id, updates, imgUrl) => {
     const docSnap = await getDoc(postRef);
     const resultData = { ...docSnap.data(), id: docSnap.id };
 
-    console.log("Updated community data:", resultData);
     return resultData;
   } catch (error) {
-    console.error("Error updating community data:", error);
     throw new Error(error.message);
   }
 };

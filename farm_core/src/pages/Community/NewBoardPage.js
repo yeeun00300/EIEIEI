@@ -56,16 +56,23 @@ function NewBoardPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 이미지가 File 객체가 아닌 경우 문자열 URL로 처리합니다.
-    const imageUrl =
-      typeof image === "string"
-        ? image
-        : (await uploadImage("community/", image)).url;
+    let imageUrl = postData?.imgUrl; // 기존 이미지를 우선 사용
+
+    // 이미지가 새로 선택된 경우에만 업로드
+    if (image && typeof image !== "string") {
+      try {
+        imageUrl = await uploadImage("community/", image);
+        console.log("업로드된 이미지 URL:", imageUrl); // 업로드된 이미지 URL 확인
+      } catch (error) {
+        console.error("이미지 업로드 실패:", error);
+        return; // 업로드 실패 시 함수 종료
+      }
+    }
 
     const dataObj = {
       title,
       content,
-      imgUrl: imageUrl || postData?.imgUrl, // 새 이미지가 없으면 기존 이미지 URL 사용
+      imgUrl: imageUrl, // 새 이미지가 없으면 기존 이미지 URL 사용
       createdAt: postData?.createdAt || new Date().getTime(),
       updatedAt: new Date().getTime(),
       like: postData?.like || 0,
@@ -79,26 +86,29 @@ function NewBoardPage() {
       authorNickName: userNickName,
     };
 
+    console.log("제출할 데이터 객체:", dataObj); // 데이터 객체 확인
+
     try {
       if (postData) {
-        // 게시글 수정
+        // 기존 포스트 업데이트
         await dispatch(
           updateCommunityPost({
             id: postData.id,
             updates: dataObj,
+            imgUrl: imageUrl, // 업데이트된 이미지 URL 전달
           })
         ).unwrap();
       } else {
-        // 새 게시글 추가
+        // 새 포스트 생성
         await dispatch(
           createCommunityPost({
-            collectionName: selectedBoard,
+            communityType: selectedBoard,
             dataObj,
           })
         ).unwrap();
       }
 
-      // 게시물 목록을 다시 가져와서 업데이트된 상태를 반영
+      // 포스트 목록 새로고침
       await dispatch(
         fetchCommunityPosts({
           communityType: selectedBoard,
@@ -110,13 +120,14 @@ function NewBoardPage() {
         })
       );
 
+      // 페이지 이동
       if (selectedBoard === "freeboard") {
         navigate("/My_Farm_Board_FreeBoard");
       } else if (selectedBoard === "livestock") {
         navigate("/My_Farm_Board_Community");
       }
 
-      // 입력 필드 초기화
+      // 상태 초기화
       setTitle("");
       setContent("");
       setImage(null);
