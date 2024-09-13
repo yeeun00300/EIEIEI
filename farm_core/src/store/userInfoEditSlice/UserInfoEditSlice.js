@@ -32,7 +32,7 @@ const fetchUser = createAsyncThunk(
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getDatas(collectionName, queryOptions);
-      console.log("Fetched Data:", resultData); // 여러 사용자가 있는지 확인
+      // console.log("Fetched Data:", resultData); // 여러 사용자가 있는지 확인
       return resultData;
     } catch (error) {
       console.error(error);
