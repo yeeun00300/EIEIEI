@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { SiKakaotalk } from "react-icons/si";
 import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
-import { updateDatas } from "../../firebase";
+import { addPaymentHistory, updateDatas } from "../../firebase";
 import kroDate from "../../utils/korDate";
 
 function RegularPayment() {
@@ -50,9 +50,10 @@ function RegularPayment() {
       console.log(response);
       if (response && response.txId) {
         console.log("결제 성공:", payDate);
-        await updateDatas("users", docId, {
+        await addPaymentHistory("users", docId, {
           paymentDate: payDate,
           amount: 1000,
+          paymentId: response.paymentId,
         });
       } else {
         console.error("결제 날짜 없음 :");

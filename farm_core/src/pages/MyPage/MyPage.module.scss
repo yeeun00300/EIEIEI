@@ -1,52 +1,54 @@
 .wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 0 auto;
-  // background-color: slategray;
-  margin-top: 4rem;
-  //   padding: 3rem 1rem;
+  width: 50%;
+  margin: 4rem auto; /* 중앙 정렬 및 상단 여백 추가 */
+  padding: 2rem; /* 패딩 추가 */
   border-radius: 1rem;
   border: 1px solid black;
-}
-.user {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  border-bottom: 1px solid black;
-  button {
-    border: none;
-    padding: 0.6rem 1rem;
-
-    border-radius: 1rem;
-    background-color: var(--second-color);
-    cursor: pointer;
-  }
 }
+
+.user {
+  margin-bottom: 2rem; /* 버튼과의 간격 조정 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.user h3 {
+  font-size: 1.5rem; /* 폰트 크기 조정 */
+}
+
 .lists {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  div {
-    padding: 3rem 0.5rem;
-  }
-  a {
-    text-decoration: none;
-    color: black;
-    .click {
-      color: red;
-    }
-  }
+  gap: 1rem;
+  font-size: 1.2rem; /* 폰트 크기 조정 */
+}
 
-  button {
-    border: none;
-    background-color: transparent;
-    color: red;
-    font-size: 1.5rem;
-  }
-  //   padding: 2rem;
-  //   background-color: ;
+.listItem {
+  padding: 1rem;
+  border: 1px solid gray; /* 버튼 스타일 추가 */
+  border-radius: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+}
+
+.listItem:hover {
+  background-color: #f0f0f0; /* 호버 시 배경 색상 변경 */
+}
+
+.listItem.active {
+  background-color: #e0e0e0; /* 활성화된 버튼 스타일 */
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }

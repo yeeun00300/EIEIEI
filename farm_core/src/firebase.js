@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -28,6 +32,9 @@ import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
 import kroDate from "./utils/korDate";
 import { createPath } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchUser } from "./store/userInfoEditSlice/UserInfoEditSlice";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",
@@ -613,6 +620,49 @@ const addFarmDataWithSubcollections = async (farmData, subCollections) => {
   }
 };
 
+function useFetchCollectionData(collectionName) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(getUserAuth(), (user) => {
+      if (user) {
+        const email = user.email;
+        const queryOptions = {
+          conditions: [
+            {
+              field: "email",
+              operator: "==",
+              value: email,
+            },
+          ],
+        };
+        dispatch(fetchUser({ collectionName, queryOptions }));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch, collectionName]);
+}
+
+// 결제를 이력으로 남기기
+async function addPaymentHistory(collectionName, docId, paymentInfo) {
+  const docRef = doc(db, collectionName, docId);
+  const docSnapshot = await getDoc(docRef);
+
+  if (docSnapshot.exists()) {
+    const docData = docSnapshot.data();
+    const paymentHistory = docData.paymentHistory || [];
+
+    paymentHistory.push(paymentInfo);
+
+    await updateDoc(docRef, {
+      paymentHistory: paymentHistory,
+    });
+  } else {
+    console.error("문서가 존재하지 않습니다");
+  }
+}
+
 export {
   db,
   getCollection,
@@ -637,5 +687,7 @@ export {
   storage,
   uploadProfileImage,
   addFarmDataWithSubcollections,
+  useFetchCollectionData,
+  addPaymentHistory,
 };
 export default app;

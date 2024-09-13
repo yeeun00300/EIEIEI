@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import { codeDict } from "../../api/codeDict/codeDict";
 import { Button } from "@mui/material";
+import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
+import { useFetchCollectionData } from "../../firebase";
 
 function MyStockDetails(props) {
   const dispatch = useDispatch();
@@ -28,24 +30,25 @@ function MyStockDetails(props) {
   const email = localStorage.getItem("email");
   const [filteredStock, setFilteredStock] = useState([]);
 
-  useEffect(() => {
-    if (email) {
-      const queryOptions = {
-        conditions: [{ field: "email", operator: "==", value: email }],
-      };
-      console.log("Fetching data for email:", email); // 이메일을 콘솔에 출력
-      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
-    } else {
-      console.error("Email is missing from localStorage");
-    }
-  }, [dispatch, email]);
+  // useEffect(() => {
+  //   if (email) {
+  //     const queryOptions = {
+  //       conditions: [{ field: "email", operator: "==", value: email }],
+  //     };
+  //     console.log("Fetching data for email:", email); // 이메일을 콘솔에 출력
+  //     dispatch(fetchUser({ collectionName: "stock", queryOptions }));
+  //   } else {
+  //     console.error("Email is missing from localStorage");
+  //   }
+  // }, [dispatch, email]);
+
+  useFetchCollectionData("stock");
 
   useEffect(() => {
     if (stock) {
       const filtered = stock.filter((item) => item.email === email);
       setFilteredStock(filtered);
       if (filtered.length > 0) {
-        console.log("Filtered stock data:", filtered);
       } else {
         console.log("No matching stock data found for email:", email);
       }
