@@ -371,8 +371,13 @@ async function uploadExcelAndSaveData(file, collectionName) {
 }
 
 async function updateDatas(collectionName, docId, updateInfoObj) {
-  const docRef = await doc(db, collectionName, docId);
-  updateDoc(docRef, updateInfoObj);
+  try {
+    const docRef = doc(db, collectionName, docId);
+    await updateDoc(docRef, updateInfoObj);
+    console.log("Document successfully updated!");
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
 }
 // 게시판
 
