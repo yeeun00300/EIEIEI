@@ -44,7 +44,7 @@ function Layout(props) {
       // console.log("Selected Item:", selectedItem);
       navigate(selectedItem.route);
     }
-  }, [selectedItem, navigate]);
+  }, [selectedItem]);
 
   // 사용자 정보 header에 넘겨주기----------------------------------------------
   const { checkLogin, isLoading } = useSelector(

@@ -53,14 +53,16 @@ function FreeboardPage() {
     ) {
       dispatch(
         fetchCommunityPosts({
-          communityType, // communityType에 따라 데이터 가져오기
-          queryOptions: {
-            conditions: [
-              { field: "communityType", operator: "==", value: communityType },
-            ],
-          },
-        })
-      );
+      // dispatch(
+      //   fetchCommunityPosts({
+      //     communityType, // communityType에 따라 데이터 가져오기
+      //     queryOptions: {
+      //       conditions: [
+      //         { field: "communityType", operator: "==", value: communityType },
+      //       ],
+      //     },
+      //   })
+      // );
     }
   }, [
     dispatch,
