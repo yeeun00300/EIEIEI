@@ -493,7 +493,7 @@ export const updateCommunityDatas = async (id, updates, imgUrl) => {
     const time = new Date().getTime();
 
     // 이미지 파일을 변경했을 때
-    if (imgUrl && updates.imgUrl) {
+    if (imgUrl && updates.imgUrl && imgUrl !== updates.imgUrl) {
       const storage = getStorage();
       const deleteRef = ref(storage, imgUrl);
       await deleteObject(deleteRef);
