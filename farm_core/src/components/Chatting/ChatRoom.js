@@ -33,7 +33,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import Button from "react-bootstrap/Button";
 import AddChatName from "./AddChatName";
 
-function ChatRoom({ chattingRoom }) {
+function ChatRoom() {
   const dispatch = useDispatch();
   const auth = getUserAuth();
   const { uid, email } = auth?.currentUser;
@@ -42,8 +42,14 @@ function ChatRoom({ chattingRoom }) {
   const { messages, chattingUser, isLoading } = useSelector(
     (state) => state.chattingSlice
   );
+  // console.log(messages);
+
   const [chatRoomName, setChatRoomName] = useState("");
+
+  console.log(chatRoomName);
+
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+  // console.log(filteredUser, chatRoomName);
 
   // function getSubCollection(collectionName, docId, subCollection) {
   //   const userDocRef = doc(db, collectionName, docId);
@@ -118,6 +124,7 @@ function ChatRoom({ chattingRoom }) {
     const addObj = {
       text: inputValue,
       createdAt: now,
+      profileUrl: "",
       uid: uid,
     };
     addMessage("chatting", email, chatRoomName, addObj);
@@ -128,14 +135,17 @@ function ChatRoom({ chattingRoom }) {
     dispatch(
       fetchChattingMessage({
         collectionName: "chatting",
-        docId: email,
-        subCollectionName: chatRoomName,
+        // docId: email,
+        subCollectionName: "chattingRoom",
+        queryOptions: {},
       })
     );
     dispatch(
       fetchChattingUser({
         collectionName: "chatting",
-        queryOptions: {},
+        queryOptions: {
+          conditions: [{ field: "user2.email", operator: "==", value: email }],
+        },
       })
     );
     dispatch(
@@ -152,8 +162,8 @@ function ChatRoom({ chattingRoom }) {
   return (
     <>
       <nav className={styles.chatRoomNav}>
-        {chattingRoom.chattingRoom?.map((item, idx) => {
-          const { userName, photoUrl } = item;
+        {chattingUser?.map((item, idx) => {
+          const { name, photoUrl, email } = item.user1;
           return (
             <Stack direction="row" spacing={1} key={idx}>
               <StyledBadge
@@ -163,16 +173,23 @@ function ChatRoom({ chattingRoom }) {
               >
                 <button
                   className={styles.BadgeBtn}
-                  onClick={(e) => {
-                    chatRoomName !== e.target.alt
-                      ? setChatRoomName(e.target.alt)
-                      : setChatRoomName("");
-                  }}
+                  // onClick={(e) => {
+                  //   chatRoomName !== e.target.alt
+                  //     ? setChatRoomName(e.target.alt)
+                  //     : setChatRoomName("");
+                  // }}
                 >
                   <Avatar
-                    alt={userName}
+                    alt={email}
                     src={photoUrl}
                     sx={{ width: 56, height: 56 }}
+                    onClick={(e) => {
+                      console.log(e.target);
+
+                      chatRoomName !== e.target.alt
+                        ? setChatRoomName(e.target.alt)
+                        : setChatRoomName("");
+                    }}
                   />
                 </button>
               </StyledBadge>
@@ -180,11 +197,8 @@ function ChatRoom({ chattingRoom }) {
           );
         })}
         <AddChatName />
-        {/* <button className={styles.DarkBtn} onClick={addBadge}>
-          +
-        </button> */}
       </nav>
-      {chatRoomName ? (
+      {/* {chattingUser ? (
         <section>
           <main className={styles.message}>
             {messages?.map((item, idx) => {
@@ -236,7 +250,7 @@ function ChatRoom({ chattingRoom }) {
         </section>
       ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 }

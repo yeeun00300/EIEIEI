@@ -13,6 +13,7 @@ import {
   getDocs,
   getFirestore,
   limit,
+  onSnapshot,
   orderBy,
   query,
   setDoc,
@@ -66,6 +67,25 @@ async function addDatas(collectionName, userObj) {
     const docRef = await addDoc(collection(db, collectionName), userObj);
     // console.log("Document written with ID: ", docRef.id);
     return docRef.id; // 문서 ID 반환
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    throw new Error(error.message); // 에러 메시지 반환
+  }
+}
+// docID를 가지는 필드이름에 배열 중 마지막에 추가하는 함수
+async function addFieldArray(collectionName, docId, fieldName, userObj) {
+  try {
+    const Ref = doc(db, collectionName, docId);
+    const docSnap = await getDoc(Ref);
+    // 기존배열을 가져옴
+    const snapshot = docSnap.data()[`${fieldName}`];
+    // 기존배열에 새로운 객체 추가
+    snapshot.push(userObj);
+    const resultData = { [fieldName]: snapshot };
+    // 새로운 배열 업데이트
+    const docRef = await updateDatas(collectionName, docId, resultData);
+    // 새로운 하위 컬렉션(채팅방) 추가
+    // const ordersCollectionRef = collection(userDocRef, userObj.name);
   } catch (error) {
     console.error("Error adding document: ", error);
     throw new Error(error.message); // 에러 메시지 반환
@@ -620,15 +640,20 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
     console.error("Error adding subcollection document: ", error);
   }
 }
-async function getSubCollection(collectionName, docId, subCollectionName) {
+async function getSubCollection(
+  collectionName,
+  subCollectionName,
+  queryOptions
+) {
   // const email = localStorage.getItem("email");
   try {
     // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
-    const userDocRef = doc(db, collectionName, docId);
+    const userDocRef = doc(db, collectionName);
     // 2. 그 문서 안의 'orders' 서브컬렉션에 접근
     const ordersCollectionRef = collection(userDocRef, subCollectionName);
     // 3. 서브컬렉션 'orders'에서 모든 문서를 가져옴
     const querySnapshot = await getDocs(ordersCollectionRef);
+    // const querySnapshot = await getQuery(ordersCollectionRef, queryOptions);
     const docs = querySnapshot.docs;
     const resultData = docs.map((doc) => {
       // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
@@ -761,6 +786,7 @@ export {
   db,
   getCollection,
   addDatas,
+  addFieldArray,
   getData,
   getDatas,
   getDataAll,

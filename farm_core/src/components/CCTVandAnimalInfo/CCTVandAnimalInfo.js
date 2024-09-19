@@ -12,7 +12,7 @@ import {
 } from "@mui/x-charts";
 import krCowIcon from "../../img/한우얼굴.png";
 
-function CCTVandAnimalInfo(props) {
+function CCTVandAnimalInfo({ onClick }) {
   return (
     <>
       <div className={styles.liveStockInfoBox}>
@@ -25,13 +25,34 @@ function CCTVandAnimalInfo(props) {
             <img className={styles.icon} src={krCowIcon} alt="" />
           </div>
           <div>Data2: 농장 이름, 위치</div>
-          <div>Data3: 가축 수</div>
-          <div>Data4: 사료/물 소비량</div>
-          <div>Data5: 온도/습도</div>
-          <div>Data6: 생산량</div>
-          <div>Data7: 건강상태</div>
-          <div>Data8: 백신 및 접종기록</div>
-          <div>Data9: 폐사율</div>
+          <div>
+            Data3: 가축 수
+            <button onClick={() => onClick("chart1")}>차트 보기</button>
+          </div>
+          <div>
+            Data4: 사료/물 소비량
+            <button onClick={() => onClick("chart2")}>차트 보기</button>
+          </div>
+          <div>
+            Data5: 온도/습도
+            <button onClick={() => onClick("chart3")}>차트 보기</button>
+          </div>
+          <div>
+            Data6: 생산량
+            <button onClick={() => onClick("chart4")}>차트 보기</button>
+          </div>
+          <div>
+            Data7: 건강상태
+            <button onClick={() => onClick("chart5")}>차트 보기</button>
+          </div>
+          <div>
+            Data8: 백신 및 접종기록
+            <button onClick={() => onClick("chart6")}>차트 보기</button>
+          </div>
+          <div>
+            Data9: 폐사율
+            <button onClick={() => onClick("chart7")}>차트 보기</button>
+          </div>
         </div>
       </div>
     </>
