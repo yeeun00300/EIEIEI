@@ -55,7 +55,7 @@ function MyLiveStock(props) {
         {
           field: "farmId",
           operator: "==",
-          value: toString(selectedValue),
+          value: Number(selectedValue),
         },
       ],
     };

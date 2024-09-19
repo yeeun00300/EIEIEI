@@ -105,7 +105,7 @@ function MyCommunity() {
 
   return (
     <div className="page">
-      <div className={styles.page}>
+      <div className={styles.wrapper}>
         {isLoading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
         {!isLoading && !error && (
