@@ -2,6 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchMyPosts } from "../../../store/myPageSlice/mypostSlice";
 import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
   Table,
   TableBody,
   TableCell,
@@ -9,15 +19,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Typography,
 } from "@mui/material";
-import { Pagination } from "@mui/material";
 import styles from "./MyCommunity.module.scss";
+
 function MyCommunity() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
@@ -25,11 +29,47 @@ function MyCommunity() {
     (state) => state.myPostSlice
   );
   const [selectedPost, setSelectedPost] = useState(null);
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  console.log(myPosts);
-  const userEmail = userInfo?.[0]?.email; // 로그인한 사용자의 이메일 가져오기
-  console.log(userEmail);
+  const [selectedCategory, setSelectedCategory] = useState("freeboard");
+
+  const userEmail = userInfo?.[0]?.email;
+
+  const formatDateToKorean = (milliseconds) => {
+    if (!milliseconds) return "";
+
+    const date = new Date(milliseconds);
+    const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+    const kroDate = new Date(utc + KR_TIME_DIFF);
+
+    const padZero = (num) => String(num).padStart(2, "0");
+
+    return (
+      `${kroDate.getFullYear()}:${padZero(kroDate.getMonth() + 1)}:${padZero(
+        kroDate.getDate()
+      )} ` +
+      `${padZero(kroDate.getHours())}:${padZero(
+        kroDate.getMinutes()
+      )}:${padZero(kroDate.getSeconds())}`
+    );
+  };
+
+  const getStockTypeLabel = (type) => {
+    switch (type) {
+      case "koreanCow":
+        return "한우";
+      case "dairyCow":
+        return "낙농";
+      case "pork":
+        return "양돈";
+      case "chicken":
+        return "양계";
+      case "eggChicken":
+        return "산란계";
+      default:
+        return "";
+    }
+  };
+
   useEffect(() => {
     if (userEmail) {
       const queryOptions = {
@@ -37,25 +77,19 @@ function MyCommunity() {
           { field: "email", operator: "==", value: userEmail },
           {
             field: "communityType",
-            operator: "in",
-            value: ["freeboard", "livestock"],
+            operator: "==",
+            value: selectedCategory,
           },
         ],
       };
 
-      console.log("User Email:", userEmail); // 사용자 이메일 확인
-      console.log("Query Options:", queryOptions); // 쿼리 옵션 확인
-
       dispatch(fetchMyPosts({ collectionName: "community", queryOptions }))
-        .unwrap() //
-        .then((data) => {
-          console.log("Fetched Data:", data);
-        })
+        .unwrap()
         .catch((error) => {
           console.error("Error fetching posts:", error);
         });
     }
-  }, [dispatch, userEmail]);
+  }, [dispatch, userEmail, selectedCategory]);
 
   const handlePostClick = (post) => {
     setSelectedPost(post);
@@ -65,77 +99,136 @@ function MyCommunity() {
     setSelectedPost(null);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
   };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(1);
-  };
-
-  const paginatedPosts = myPosts.slice(
-    (page - 1) * rowsPerPage,
-    page * rowsPerPage
-  );
 
   return (
-    <div className={styles.page}>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {!isLoading && !error && (
-        <>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>번호</TableCell>
-                  <TableCell>제목</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {paginatedPosts.map((post, index) => (
-                  <TableRow
-                    key={post.docId}
-                    onClick={() => handlePostClick(post)}
-                    className={styles.tableRow}
-                  >
-                    <TableCell>
-                      {(page - 1) * rowsPerPage + index + 1}
-                    </TableCell>
-                    <TableCell>{post.title}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+    <div className="page">
+      <div className={styles.page}>
+        {isLoading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        {!isLoading && !error && (
+          <>
+            {/* 게시판 카테고리 선택 */}
+            <FormControl className={styles.select}>
+              <InputLabel>게시판</InputLabel>
+              <Select
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                label="게시판"
+                size="small"
+              >
+                <MenuItem value="freeboard">자유 게시판</MenuItem>
+                <MenuItem value="livestock">축산 게시판</MenuItem>
+              </Select>
+            </FormControl>
 
-          <Pagination
-            count={Math.ceil(myPosts.length / rowsPerPage)}
-            page={page}
-            onChange={handleChangePage}
-            className={styles.pagination}
-          />
-          <Dialog open={Boolean(selectedPost)} onClose={handleCloseDetail}>
-            <DialogTitle>{selectedPost?.title}</DialogTitle>
-            <DialogContent>
-              <Typography variant="body1">{selectedPost?.content}</Typography>
-              {selectedPost?.imageUrl && (
-                <img
-                  src={selectedPost.imageUrl}
-                  alt="게시글 이미지"
-                  className={styles.image}
-                />
-              )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDetail} color="primary">
-                닫기
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      )}
+            {/* 게시판 목록 */}
+            <TableContainer component={Paper} className={styles.tableContainer}>
+              <Table>
+                <TableHead className={styles.tableHead}>
+                  <TableRow>
+                    <TableCell className={styles.tableCellHeader}>
+                      번호
+                    </TableCell>
+                    <TableCell className={styles.tableCellHeader}>
+                      제목
+                    </TableCell>
+                    <TableCell className={styles.tableCellHeader}>
+                      사진 미리보기
+                    </TableCell>
+                    <TableCell className={styles.tableCellHeader}>
+                      최근 수정 시간
+                    </TableCell>
+                    <TableCell className={styles.tableCellHeader}>
+                      타입
+                    </TableCell>{" "}
+                    {/* 게시글 타입 추가 */}
+                    {selectedCategory === "livestock" && (
+                      <TableCell className={styles.tableCellHeader}>
+                        가축 유형
+                      </TableCell> // 가축 유형 열 추가
+                    )}
+                    <TableCell className={styles.tableCellHeader}>
+                      상세 보기
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {myPosts.map((post, index) => (
+                    <TableRow key={post.docId}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{post.title}</TableCell>
+                      <TableCell>
+                        {post.imgUrl && (
+                          <img
+                            src={post.imgUrl}
+                            alt="미리보기"
+                            className={styles.imagePreview}
+                          />
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {formatDateToKorean(post.createdAt)}
+                      </TableCell>
+                      <TableCell>
+                        {post.communityType === "freeboard"
+                          ? "자유 게시판"
+                          : "축산 게시판"}
+                      </TableCell>
+                      {selectedCategory === "livestock" && (
+                        <TableCell>
+                          {getStockTypeLabel(post.stockType)}
+                        </TableCell>
+                      )}
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          className={styles.button}
+                          onClick={() => handlePostClick(post)}
+                        >
+                          자세히 보기
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            {/* 게시글 상세보기 다이얼로그 */}
+            <Dialog
+              open={Boolean(selectedPost)}
+              onClose={handleCloseDetail}
+              className={styles.dialog}
+            >
+              <DialogTitle className={styles.dialogTitle}>
+                {selectedPost?.title}
+              </DialogTitle>
+              <DialogContent className={styles.dialogContent}>
+                <Typography variant="body1">{selectedPost?.content}</Typography>
+                {selectedPost?.imgUrl && (
+                  <img
+                    src={selectedPost.imgUrl}
+                    alt="게시글 이미지"
+                    className={styles.image}
+                  />
+                )}
+              </DialogContent>
+              <DialogActions className={styles.dialogActions}>
+                <Button
+                  onClick={handleCloseDetail}
+                  color="primary"
+                  className={styles.button}
+                >
+                  닫기
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        )}
+      </div>
     </div>
   );
 }
