@@ -669,45 +669,41 @@ async function getSubCollection(
   }
 }
 
-const addFarmDataWithSubcollections = async (
-  docId,
-  farmData,
-  subCollections
-) => {
+const addFarmDataWithSubcollections = async (farmData, subCollections) => {
   try {
-    // 기존 문서 참조 생성
-    const farmDocRef = doc(db, "farm", docId);
+    // 새 문서 추가
+    const farmDocRef = doc(collection(db, "farm")); // 새로운 문서 생성
+    const docId = farmDocRef.id; // 새로 생성된 문서의 ID
 
-    // 기존 문서 업데이트 (기존 문서가 존재할 때만 업데이트됨)
+    // 문서 데이터 설정
     await setDoc(farmDocRef, farmData, { merge: true });
+
     // 하위 컬렉션 추가
-    // farmCureList 하위 컬렉션 추가
     const farmCureListRef = collection(farmDocRef, "farmCureList");
     for (const item of subCollections.farmCureList) {
       await addDoc(farmCureListRef, item);
     }
 
-    // ruinInfo 하위 컬렉션 추가
     const ruinInfoRef = collection(farmDocRef, "ruinInfo");
     for (const [docId, data] of Object.entries(subCollections.ruinInfo)) {
       await setDoc(doc(ruinInfoRef, docId), data);
     }
 
-    // vaccine 하위 컬렉션 추가
     const vaccineRef = collection(farmDocRef, "vaccine");
     for (const item of subCollections.vaccine) {
       await addDoc(vaccineRef, item);
     }
 
-    // disease 하위 컬렉션 추가
     const diseaseRef = collection(farmDocRef, "disease");
     for (const item of subCollections.disease) {
       await addDoc(diseaseRef, item);
     }
+
     alert("Farm data and subcollections added successfully.");
-    return docId;
+    return docId; // 새로운 문서의 ID 반환
   } catch (error) {
     console.error("Error adding farm data and subcollections:", error);
+    throw error; // 오류를 throw 하여 호출 측에서 처리
   }
 };
 
