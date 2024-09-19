@@ -17,7 +17,9 @@ function FreeBoardItem({ item, onItemClick }) {
           <button className={styles.title} onClick={handleClick}>
             {item.title}
           </button>
-          <p className={styles.description}>{item.content}</p>
+          <p className={styles.description} onClick={handleClick}>
+            {item.content}
+          </p>
           <div></div>
           <p>{`작성자: ${item.authorNickName}`}</p>
 
