@@ -8,21 +8,27 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchChattingMessage,
   fetchChattingRoom,
+  fetchChattingUser,
 } from "../../store/chattingSlice/chattingSlice";
 
 function Chatting() {
   const dispatch = useDispatch();
-  const { chattingRoom, isLoading } = useSelector(
+  const { chattingRoom, isLoading, chattingUser } = useSelector(
     (state) => state.chattingSlice
   );
   const email = localStorage.getItem("email");
 
+  // 사용자 이메일 선별 (선별된 데이터 :filteredUser )
+  // const filteredUser = chattingUser.filter(
+  //   (item) => item.user2.email === email
+  // );
+  // filterUserArr.push(filteredUser);
   useEffect(() => {
     dispatch(
-      fetchChattingRoom({
+      fetchChattingUser({
         collectionName: "chatting",
         queryOptions: {
-          condition: {},
+          conditions: [{ field: "user2.email", operator: "==", value: email }],
         },
       })
     );
@@ -33,7 +39,8 @@ function Chatting() {
       <header>
         <h4>채팅방</h4>
       </header>
-      <ChatRoom chattingRoom={chattingRoom} />
+      {/* <ChatRoom chattingUser={chattingUser} /> */}
+      <ChatRoom />
     </div>
   );
 }

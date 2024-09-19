@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getData, getDatas, getSubCollection } from "../../firebase";
+import { addDatas, getData, getDatas, getSubCollection } from "../../firebase";
 
 const createdAt = new Date();
 const message = [{ createdAt: createdAt, photoUrl: "", text: "", uid: "" }];
@@ -51,6 +51,17 @@ const chattingSlice = createSlice({
       })
       .addCase(fetchChattingUser.rejected, (state, action) => {
         state.isLoading = false;
+      })
+      .addCase(fetchAddUser.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchAddUser.fulfilled, (state, action) => {
+        state.chattingUser = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchAddUser.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
@@ -88,6 +99,17 @@ export const fetchChattingUser = createAsyncThunk(
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+export const fetchAddUser = createAsyncThunk(
+  "stock/fetchAddUser",
+  async ({ collectionName, userObj }) => {
+    try {
+      const resultData = await addDatas(collectionName, userObj);
       return resultData;
     } catch (error) {
       console.error(error);
