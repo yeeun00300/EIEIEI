@@ -28,6 +28,7 @@ const initialState = {
   isLoading: false,
   error: null,
   docId: "",
+  farmData: {},
 };
 
 const AddLiveStockSlice = createSlice({
@@ -37,6 +38,10 @@ const AddLiveStockSlice = createSlice({
     addField: (state, action) => {
       const { fieldName, fieldValue } = action.payload;
       state[fieldName] = fieldValue;
+    },
+    updateFields: (state, action) => {
+      const { fields } = action.payload;
+      Object.assign(state, fields);
     },
   },
   extraReducers: (builder) => {
@@ -49,28 +54,18 @@ const AddLiveStockSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         state.docId = action.payload.docId;
-        const {
-          farmName,
-          farmId,
-          farmAddress,
-          farmScale,
-          farm_stockType,
-          farmBuild,
-          farmCondition,
-          facilities,
-          insuranceDetail,
-          note,
-        } = action.payload;
-        state.farmName = farmName;
-        state.farmId = farmId;
-        state.farmAddress = farmAddress;
-        state.farmScale = farmScale;
-        state.farm_stockType = farm_stockType;
-        state.farmBuild = farmBuild;
-        state.farmCondition = farmCondition;
-        state.facilities = facilities;
-        state.insuranceDetail = insuranceDetail;
-        state.note = note;
+        state.farmData = {
+          farmName: action.payload.farmName,
+          farmId: action.payload.farmId,
+          farmAddress: action.payload.farmAddress,
+          farmScale: action.payload.farmScale,
+          farm_stockType: action.payload.farm_stockType,
+          farmBuild: action.payload.farmBuild,
+          farmCondition: action.payload.farmCondition,
+          facilities: action.payload.facilities,
+          insuranceDetail: action.payload.insuranceDetail,
+          note: action.payload.note,
+        };
       })
       .addCase(addFarmData.rejected, (state, action) => {
         state.isLoading = false;
@@ -151,5 +146,5 @@ const updateFarmData = createAsyncThunk(
 );
 
 export default AddLiveStockSlice.reducer;
-export const { addField } = AddLiveStockSlice.actions;
+export const { addField, updateFields } = AddLiveStockSlice.actions;
 export { addFarmData, fetchFarmData, updateFarmData };

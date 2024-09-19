@@ -52,7 +52,7 @@ function AddLiveStock() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "detailedAddress") {
-      dispatch(setDetailedAddress(value)); // Update detail address
+      dispatch(setDetailedAddress(value)); // Update detailed address
     } else {
       dispatch(addField({ fieldName: name, fieldValue: value }));
     }
@@ -85,7 +85,7 @@ function AddLiveStock() {
     const farmData = {
       farmName,
       farmId,
-      farmAddress: address + " " + detailedAddress,
+      farmAddress: `${address} ${detailedAddress}`,
       farmScale,
       farm_stockType,
       farmBuild,
@@ -135,9 +135,6 @@ function AddLiveStock() {
       ],
     };
 
-    console.log("Farm Data:", farmData);
-    console.log("SubCollections:", subCollections);
-
     try {
       const farmDocId = await addFarmDataWithSubcollections(
         farmData,
@@ -146,15 +143,20 @@ function AddLiveStock() {
       console.log("Farm added with ID:", farmDocId);
 
       // Clear form fields
-      dispatch(addField({ fieldName: "farmName", fieldValue: "" }));
-      dispatch(addField({ fieldName: "farmId", fieldValue: "" }));
-      dispatch(addField({ fieldName: "farmScale", fieldValue: "" }));
-      dispatch(addField({ fieldName: "farm_stockType", fieldValue: "" }));
-      dispatch(addField({ fieldName: "farmBuild", fieldValue: "" }));
-      dispatch(addField({ fieldName: "farmCondition", fieldValue: "" }));
-      dispatch(addField({ fieldName: "facilities", fieldValue: "" }));
-      dispatch(addField({ fieldName: "insuranceDetail", fieldValue: "" }));
-      dispatch(addField({ fieldName: "note", fieldValue: "" }));
+      const fieldsToClear = [
+        "farmName",
+        "farmId",
+        "farmScale",
+        "farm_stockType",
+        "farmBuild",
+        "farmCondition",
+        "facilities",
+        "insuranceDetail",
+        "note",
+      ];
+      fieldsToClear.forEach((field) =>
+        dispatch(addField({ fieldName: field, fieldValue: "" }))
+      );
       dispatch(setAddress("")); // Clear main address
       dispatch(setDetailedAddress("")); // Clear detailed address
     } catch (error) {
