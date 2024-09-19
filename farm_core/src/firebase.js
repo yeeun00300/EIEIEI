@@ -711,6 +711,7 @@ const addFarmDataWithSubcollections = async (
   }
 };
 
+<<<<<<< Updated upstream
 export const fetchFarmDocumentByEmail = async (email) => {
   const q = query(collection(db, "farm"), where("email", "==", email));
   const querySnapshot = await getDocs(q);
@@ -721,6 +722,8 @@ export const fetchFarmDocumentByEmail = async (email) => {
   throw new Error("No document found with the given email");
 };
 
+=======
+>>>>>>> Stashed changes
 function useFetchCollectionData(collectionName) {
   const dispatch = useDispatch();
 
