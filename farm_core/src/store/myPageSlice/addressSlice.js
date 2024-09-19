@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   address: "",
-  zoneCode: "",
+  detailedAddress: "",
   isOpen: false,
 };
 
@@ -13,8 +13,8 @@ const addressSlice = createSlice({
     setAddress: (state, action) => {
       state.address = action.payload;
     },
-    setZoneCode: (state, action) => {
-      state.zoneCode = action.payload;
+    setDetailedAddress: (state, action) => {
+      state.detailedAddress = action.payload;
     },
     toggleOpen: (state) => {
       state.isOpen = !state.isOpen;
@@ -22,6 +22,7 @@ const addressSlice = createSlice({
   },
 });
 
-export const { setAddress, setZoneCode, toggleOpen } = addressSlice.actions;
+export const { setAddress, setDetailedAddress, toggleOpen } =
+  addressSlice.actions;
 
 export default addressSlice.reducer;

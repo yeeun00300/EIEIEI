@@ -38,9 +38,9 @@ function AddLiveStock(props) {
   const open = useDaumPostcodePopup();
 
   const completeHandler = (data) => {
-    const { address: selectedAddress, zonecode } = data;
+    const { address: selectedAddress, detailAddress } = data;
     dispatch(setAddress(selectedAddress));
-    dispatch(setZoneCode(zonecode));
+    dispatch(setDetailAddress(detailAddress));
     dispatch(toggleOpen());
     setDetailAddress(""); // Clear the detail address after selecting
   };

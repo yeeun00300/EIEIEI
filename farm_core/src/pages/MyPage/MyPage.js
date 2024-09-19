@@ -25,17 +25,18 @@ function MyPage() {
   const [activeComponent, setActiveComponent] = useState(null);
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
-  console.log(userInfo);
-  useFetchCollectionData("users");
+
+  useFetchCollectionData("users"); // 데이터 로딩
 
   const handleComponentChange = (componentName) => {
-    // If the same component is clicked again, do nothing
     if (activeComponent === componentName) return;
-
     setActiveComponent(componentName);
   };
 
-  console.log(userInfo[0]);
+  if (!userInfo || userInfo.length === 0) {
+    return <div>로딩 중...</div>; // 데이터가 로딩될 때까지 대기
+  }
+
   return (
     <div className="page">
       <div>

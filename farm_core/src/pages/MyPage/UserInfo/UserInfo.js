@@ -5,38 +5,56 @@ import DaumPostcode from "react-daum-postcode";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAddress,
-  setZoneCode,
+  setDetailedAddress,
   toggleOpen,
 } from "../../../store/myPageSlice/addressSlice";
-import { fetchUser } from "./../../../store/userInfoEditSlice/UserInfoEditSlice";
 import {
   updateDatas,
   uploadProfileImage,
   useFetchCollectionData,
-  useFetchUser,
 } from "../../../firebase";
 import {
-  setEmail,
   setName,
+  setEmail,
   setTel,
   setUserNickname,
-} from "./../../../store/myPageSlice/userEditSlice";
-import { setProfileImage } from "../../../store/loginSlice/loginSlice";
+  setProfileImage,
+} from "../../../store/userInfoEditSlice/UserInfoEditSlice";
+import { fetchUser } from "../../../store/userInfoEditSlice/UserInfoEditSlice";
 
 function UserInfo() {
+  useFetchCollectionData("users");
   const dispatch = useDispatch();
-  const { address, zoneCode, isOpen } = useSelector(
+  const { address, detailedAddress, isOpen } = useSelector(
     (state) => state.addressSlice
   );
-  const { name, email, profileImages, nickname, phone } = useSelector(
-    (state) => state.userEditSlice.userInfo
+  const { userInfo, name, email, nickname, phone, profileImages } = useSelector(
+    (state) => state.userInfoEditSlice
   );
+
   const [file, setFile] = useState(null);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(profileImages);
+  const [previewUrl, setPreviewUrl] = useState(img);
+  const [isEditing, setIsEditing] = useState(true);
+  useEffect(() => {
+    if (!initialDataLoaded) {
+      dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
+      setInitialDataLoaded(true);
+    }
+  }, [dispatch, initialDataLoaded]);
 
-  const { userInfo } = useSelector((state) => state.userInfoEditSlice);
-  const userEmail = localStorage.getItem("email");
+  useEffect(() => {
+    if (userInfo.length > 0) {
+      const user = userInfo[0];
+      dispatch(setName(user.name || ""));
+      dispatch(setEmail(user.email || ""));
+      dispatch(setUserNickname(user.nickname || ""));
+      dispatch(setTel(user.phone || ""));
+      dispatch(setAddress(user.address || ""));
+      dispatch(setDetailedAddress(user.detailedAddress || ""));
+      setPreviewUrl(user.profileImages || img);
+    }
+  }, [userInfo, dispatch]);
 
   const themeObj = {
     bgColor: "#FFFFFF",
@@ -51,9 +69,9 @@ function UserInfo() {
   };
 
   const completeHandler = (data) => {
-    const { address, zonecode } = data;
+    const { address, detailedAddress } = data;
     dispatch(setAddress(address));
-    dispatch(setZoneCode(zonecode));
+    dispatch(setDetailedAddress(detailedAddress));
     dispatch(toggleOpen());
   };
 
@@ -93,31 +111,32 @@ function UserInfo() {
         break;
     }
   };
+
   const handleSave = async () => {
     const userId = userInfo[0]?.docId;
     if (userId) {
       try {
-        let profileImageUrl = profileImages;
+        let profileImageUrl = profileImages || img;
 
-        // 파일이 선택된 경우, Firebase Storage에 업로드
         if (file) {
           profileImageUrl = await uploadProfileImage(file);
-          dispatch(setProfileImage(profileImageUrl)); // 프로필 이미지 URL 업데이트
-          console.log("Profile Image URL after dispatch:", profileImageUrl); // 콘솔에 출력
+          dispatch(setProfileImage(profileImageUrl));
         }
 
-        // Firestore에 사용자 데이터 업데이트
-        await updateDatas("users", userId, {
+        const updateObj = {
           name,
           email,
-          profileImages: profileImageUrl, // 업데이트된 프로필 이미지 URL
+          profileImages: profileImageUrl,
           nickname,
           phone,
-          address,
-          zoneCode,
-        });
+          address: address || userInfo[0].address,
+          detailedAddress: detailedAddress || userInfo[0].detailedAddress,
+        };
+
+        await updateDatas("users", userId, updateObj);
 
         alert("저장 완료");
+        setIsEditing(false);
       } catch (error) {
         console.error("저장 실패:", error);
       }
@@ -125,22 +144,6 @@ function UserInfo() {
       console.error("User ID가 없습니다.");
     }
   };
-  useFetchCollectionData("users");
-
-  useEffect(() => {
-    if (userInfo.length > 0) {
-      const user = userInfo[0];
-      dispatch(setName(user.name));
-      dispatch(setEmail(user.email));
-      dispatch(setUserNickname(user.nickname));
-      dispatch(setTel(user.phone));
-      // dispatch(setFarm(user.farm));
-      dispatch(setAddress(user.address));
-      dispatch(setZoneCode(user.zoneCode));
-      setPreviewUrl(user.profileImages || img); // 초기 프로필 이미지 URL 설정
-      setInitialDataLoaded(true);
-    }
-  }, [userInfo, dispatch]);
 
   if (!initialDataLoaded) {
     return <div>로딩 중...</div>;
@@ -148,9 +151,9 @@ function UserInfo() {
 
   return (
     <div className="page">
-      <div className={styles.wrapper}>
-        <h1>My Page</h1>
-        <hr />
+      <h1>My Page</h1>
+      <hr />
+      <div className="container">
         <div className={styles.wrapper}>
           <div className={styles.userInfo}>
             <div className={styles.profile}>
@@ -192,15 +195,6 @@ function UserInfo() {
                 onChange={handleChange}
               />
             </div>
-            {/* <div>
-              <span>축사번호 :</span>
-              <input
-                name="farm"
-                type="number"
-                value={farm || ""}
-                onChange={handleChange}
-              />
-            </div> */}
             <div className={styles.addr}>
               <span>주소 :</span>
               <div className={styles.addrInputs}>
@@ -210,34 +204,36 @@ function UserInfo() {
                   onChange={(e) => dispatch(setAddress(e.target.value))}
                   className={styles.addrIP}
                 />
-                <input
-                  placeholder="우편번호"
-                  type="number"
-                  disabled
-                  value={zoneCode || ""}
-                  className={styles.addrZone}
-                />
               </div>
+
               <input
                 placeholder="상세주소를 작성해주세요"
                 className={styles.addr2}
+                value={detailedAddress || ""}
+                onChange={(e) => dispatch(setDetailedAddress(e.target.value))}
               />
-              <button onClick={toggleHandler} className={styles.addrBtn}>
-                주소 찾기
-              </button>
             </div>
-            {isOpen && (
-              <DaumPostcode
-                onComplete={completeHandler}
-                theme={themeObj}
-                style={postCodeStyle}
-                onClose={closeHandler}
-              />
-            )}
-            <div className={styles.buttons}>
-              <button className={styles.google} onClick={handleSave}>
-                저장하기
-              </button>
+            <div className={styles.btnWrap}>
+              {isEditing ? (
+                <>
+                  <button className={styles.editBtn} onClick={handleSave}>
+                    저장
+                  </button>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() => setIsEditing(false)}
+                  >
+                    취소
+                  </button>
+                </>
+              ) : (
+                <button
+                  className={styles.editBtn}
+                  onClick={() => setIsEditing(true)}
+                >
+                  수정
+                </button>
+              )}
             </div>
           </div>
         </div>

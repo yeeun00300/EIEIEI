@@ -709,6 +709,21 @@ async function addPaymentHistory(collectionName, docId, paymentInfo) {
   }
 }
 
+const testUploadImg = async (file) => {
+  const storage = getStorage();
+  const fileName = `${Date.now()}_${file.name}`; // 고유한 파일 이름 생성
+  const storageRef = ref(storage, `profile_images/${fileName}`);
+
+  try {
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  } catch (error) {
+    console.error("파일 업로드 실패:", error);
+    throw error; // 오류 발생 시 호출자에게 전달
+  }
+};
+
 export {
   db,
   getCollection,
@@ -735,5 +750,6 @@ export {
   addFarmDataWithSubcollections,
   useFetchCollectionData,
   addPaymentHistory,
+  testUploadImg,
 };
 export default app;

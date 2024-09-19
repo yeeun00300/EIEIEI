@@ -138,6 +138,18 @@ h2 {
       background-color: #0056b3;
     }
   }
+  .imagePreview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100px;
+      max-height: 100px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+  }
 }
 
 .addQuestionButton {
@@ -159,10 +171,4 @@ h2 {
   &:hover {
     background-color: #0056b3;
   }
-}
-.imagePreview img {
-  max-width: 100px; /* 원하는 크기로 조정 */
-  max-height: 100px; /* 원하는 크기로 조정 */
-  object-fit: cover; /* 이미지가 영역을 넘지 않도록 */
-  margin-right: 10px;
 }
