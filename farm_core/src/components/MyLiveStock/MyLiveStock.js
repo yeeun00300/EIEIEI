@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./MyLiveStock.module.scss";
 import Selected from "./Selected/Selected";
 import CCTVandAnimalInfo from "../CCTVandAnimalInfo/CCTVandAnimalInfo";
@@ -12,13 +12,76 @@ import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import KoreaMap from "../KoreaMap/KoreaMap";
 import KoreaBubble from "../KoreaMap/KoreaBubble";
 import KoreaTest from "../KoreaMap/KoreaTest";
+import { useDispatch, useSelector } from "react-redux";
+import StockNum from "./charts/StockNum";
+import Vaccine from "./charts/Vaccine";
+import StockProduct from "./charts/StockProduct";
+import FeedAndWater from "./charts/FeedAndWater";
+import HealthCondition from "./charts/HealthCondition";
+import MortalityRate from "./charts/MortalityRate";
+import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import { useParams } from "react-router-dom";
 
 function MyLiveStock(props) {
+  const dispatch = useDispatch();
+  const email = localStorage.getItem("email");
   const [farm, setFarm] = useState("");
 
   const handleChange = (event) => {
     setFarm(event.target.value);
   };
+  const { stock, isLoading } = useSelector((state) => state.stockSlice);
+  const [selectedChart, setSelectedChart] = useState(null); // 현재 선택된 차트를 저장할 상태
+
+  // 버튼 클릭 시 차트를 변경하는 함수
+  const handleChartChange = (chartId) => {
+    setSelectedChart(chartId);
+    // console.log(selectedChart);
+  };
+  useEffect(() => {
+    if (selectedChart) {
+      const queryOptions = {
+        conditions: [
+          {
+            field: "email",
+            operator: "==",
+            value: email,
+          },
+        ],
+      };
+      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
+    }
+  }, [selectedChart]);
+
+  // 선택된 차트에 따라 다른 차트를 렌더링하는 함수
+  const renderChart = () => {
+    switch (selectedChart) {
+      // 가축 수
+      case "chart1":
+        return <StockNum stock={stock} />;
+      // 사료 물 소비량
+      case "chart2":
+        return <FeedAndWater />;
+      // 온도 습도
+      case "chart3":
+        return <StockProduct />;
+      // 생산량
+      case "chart4":
+        return <StockProduct />;
+      // 건강상태
+      case "chart5":
+        return <HealthCondition />;
+      // 백신 및 접종 기록
+      case "chart6":
+        return <Vaccine />;
+      // 폐사율
+      case "chart7":
+        return <MortalityRate />;
+      default:
+        return <div>확인할 차트를 선택해주세요</div>; // 기본적으로 KoreaMap을 보여줌
+    }
+  };
+
   return (
     <div className="page">
       <div className={styles.container}>
@@ -34,7 +97,7 @@ function MyLiveStock(props) {
             <button>확인</button>
           </div>
           <div className={styles.cctv}>
-            <CCTVandAnimalInfo />
+            <CCTVandAnimalInfo onClick={handleChartChange} />
           </div>
         </div>
         <div className={styles.farmInfoBox}>
@@ -86,8 +149,11 @@ function MyLiveStock(props) {
             <h3>축사 데이터 확인</h3>
             {/* <BiLineChart /> */}
             {/* <KoreaMap /> */}
-            <KoreaBubble />
+            {/* <KoreaBubble /> */}
             {/* <KoreaTest /> */}
+            <div className={styles.chartContainer}>
+              {isLoading ? <div>로딩중</div> : renderChart()}
+            </div>
           </div>
         </div>
       </div>
