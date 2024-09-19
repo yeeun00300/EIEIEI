@@ -33,8 +33,7 @@ function Community() {
   };
 
   const handleOpenBoard = (item) => {
-    console.log(item.id);
-    navigate(`/My_Farm_Board_FreeBoard/:${item.id}`);
+    navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
   };
 
   const getSortedContents = () => {
