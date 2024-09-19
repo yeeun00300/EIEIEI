@@ -39,8 +39,8 @@ function Chatting() {
       <header>
         <h4>채팅방</h4>
       </header>
-      {/* <ChatRoom chattingUser={chattingUser} /> */}
-      <ChatRoom />
+      <ChatRoom chattingUser={chattingUser} />
+      {/* <ChatRoom /> */}
     </div>
   );
 }

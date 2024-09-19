@@ -33,56 +33,22 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import Button from "react-bootstrap/Button";
 import AddChatName from "./AddChatName";
 
-function ChatRoom() {
+function ChatRoom({ chattingUser }) {
   const dispatch = useDispatch();
   const auth = getUserAuth();
   const { uid, email } = auth?.currentUser;
   const now = serverTimestamp();
   const [inputValue, setInputValue] = useState("");
-  const { messages, chattingUser, isLoading } = useSelector(
-    (state) => state.chattingSlice
-  );
-  // console.log(messages);
-
   const [chatRoomName, setChatRoomName] = useState("");
-
-  console.log(chatRoomName);
+  // const { messages, chattingUser, isLoading } = useSelector(
+  const { messages, isLoading } = useSelector((state) => state.chattingSlice);
+  // 상대 이메일 선별 (선별된 데이터 :filteredUser )
+  const filteredUser = chattingUser.filter(
+    (item) => item.user1.email === chatRoomName
+  );
+  const selectDocId = chatRoomName && filteredUser[0].docId;
 
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
-  // console.log(filteredUser, chatRoomName);
-
-  // function getSubCollection(collectionName, docId, subCollection) {
-  //   const userDocRef = doc(db, collectionName, docId);
-  //   return collection(userDocRef, subCollection);
-  // }
-  // function getSubQuery(collectionName, docId, subCollection, queryOptions) {
-  //   const { conditions = [], orderBys = [], limits } = queryOptions;
-  //   const collect = getSubCollection(collectionName, docId, subCollection);
-  //   let q = query(collect);
-
-  //   conditions.forEach((condition) => {
-  //     q = query(q, where(condition.field, condition.operator, condition.value));
-  //   });
-
-  //   orderBys.forEach((order) => {
-  //     q = query(q, orderBy(order.field, order.direction || "desc"));
-  //   });
-
-  //   q = query(q, limit(limits));
-
-  //   return q;
-  // }
-
-  // const conditions = [];
-  // const orderBys = [{ field: "createdAt", direction: "desc" }];
-  // const LIMITS = 100;
-  // const q = getSubQuery("chatting", email, "Karina", {
-  //   conditions,
-  //   orderBys,
-  //   limit: LIMITS,
-  // });
-  // const abc = useCollectionData(q);
-  // const RTdata = abc[0];
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
@@ -116,18 +82,15 @@ function ChatRoom() {
     },
   }));
 
-  const sendMessage = async (e) => {
+  const sendMessage = (e) => {
     e.preventDefault();
-    const queryOptions = {
-      conditions: [{ field: "email", operator: "==", value: email }],
-    };
     const addObj = {
+      // createdAt: now,
+      profileUrl: chatRoomName && filteredUser[0].user2.photoUrl,
       text: inputValue,
-      createdAt: now,
-      profileUrl: "",
       uid: uid,
     };
-    addMessage("chatting", email, chatRoomName, addObj);
+    addMessage("chatting", selectDocId, "chattingRoom", addObj);
     setInputValue("");
   };
 
@@ -135,29 +98,12 @@ function ChatRoom() {
     dispatch(
       fetchChattingMessage({
         collectionName: "chatting",
-        // docId: email,
+        docId: selectDocId,
         subCollectionName: "chattingRoom",
-        queryOptions: {},
-      })
-    );
-    dispatch(
-      fetchChattingUser({
-        collectionName: "chatting",
-        queryOptions: {
-          conditions: [{ field: "user2.email", operator: "==", value: email }],
-        },
-      })
-    );
-    dispatch(
-      fetchUser({
-        collectionName: "users",
-        queryOptions: {
-          conditions: [{ field: "email", operator: "==", value: email }],
-        },
       })
     );
     // setSubCollectionData(RTdata);
-  }, []);
+  }, [chatRoomName]);
 
   return (
     <>
@@ -171,21 +117,12 @@ function ChatRoom() {
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 variant="dot"
               >
-                <button
-                  className={styles.BadgeBtn}
-                  // onClick={(e) => {
-                  //   chatRoomName !== e.target.alt
-                  //     ? setChatRoomName(e.target.alt)
-                  //     : setChatRoomName("");
-                  // }}
-                >
+                <button className={styles.BadgeBtn}>
                   <Avatar
                     alt={email}
                     src={photoUrl}
                     sx={{ width: 56, height: 56 }}
                     onClick={(e) => {
-                      console.log(e.target);
-
                       chatRoomName !== e.target.alt
                         ? setChatRoomName(e.target.alt)
                         : setChatRoomName("");
@@ -198,22 +135,22 @@ function ChatRoom() {
         })}
         <AddChatName />
       </nav>
-      {/* {chattingUser ? (
+      {chatRoomName ? (
         <section>
           <main className={styles.message}>
             {messages?.map((item, idx) => {
               if (!chattingUser) {
                 <div></div>;
               } else {
-                const myProfile = userInfo[0]?.profileImages;
-                const filteredData = chattingUser?.filter(
-                  (item) => item.docId == email
-                );
-                const filterUrl = filteredData[0]?.chattingRoom;
-                const selectData = filterUrl?.filter(
-                  (item) => item.userName == chatRoomName
-                );
-                const selectUrl = selectData[0]?.photoUrl;
+                const myProfile = item?.profileUrl;
+                // const filteredData = chattingUser?.filter(
+                //   (item) => item.docId == email
+                // );
+                // const filterUrl = filteredData[0]?.chattingRoom;
+                // const selectData = filterUrl?.filter(
+                //   (item) => item.userName == chatRoomName
+                // );
+                // const selectUrl = selectData[0]?.photoUrl;
                 if (item.uid === uid) {
                   return (
                     <ChatMessage
@@ -228,7 +165,7 @@ function ChatRoom() {
                   return (
                     <ChatMessage
                       message={item}
-                      photoUrl={selectUrl ? selectUrl : someone}
+                      photoUrl={myProfile ? myProfile : someone}
                       chatRoomName={chatRoomName}
                       key={idx}
                     />
@@ -250,7 +187,7 @@ function ChatRoom() {
         </section>
       ) : (
         <></>
-      )} */}
+      )}
     </>
   );
 }
