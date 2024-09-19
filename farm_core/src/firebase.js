@@ -640,20 +640,15 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
     console.error("Error adding subcollection document: ", error);
   }
 }
-async function getSubCollection(
-  collectionName,
-  subCollectionName,
-  queryOptions
-) {
+async function getSubCollection(collectionName, docId, subCollectionName) {
   // const email = localStorage.getItem("email");
   try {
     // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
-    const userDocRef = doc(db, collectionName);
+    const userDocRef = doc(db, collectionName, docId);
     // 2. 그 문서 안의 'orders' 서브컬렉션에 접근
     const ordersCollectionRef = collection(userDocRef, subCollectionName);
     // 3. 서브컬렉션 'orders'에서 모든 문서를 가져옴
     const querySnapshot = await getDocs(ordersCollectionRef);
-    // const querySnapshot = await getQuery(ordersCollectionRef, queryOptions);
     const docs = querySnapshot.docs;
     const resultData = docs.map((doc) => {
       // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
@@ -662,7 +657,6 @@ async function getSubCollection(
       // const filteredData = result.filter((item) => item.docId === email);
       // return filteredData[0];
     });
-
     return resultData;
   } catch (error) {
     // console.error("Error getting subCollection documents: ", error);
