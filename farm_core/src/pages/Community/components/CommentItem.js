@@ -3,12 +3,14 @@ import styles from "./CommentItem.module.scss";
 import { updateComment, deleteComment } from "../../../firebase"; // 수정, 삭제 함수 import
 import { useParams } from "react-router-dom";
 
-function CommentItem({ id, nickname, subContent, refreshComments }) {
+function CommentItem({ id, nickname, subContent, email, refreshComments }) {
   const { id: postId } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(subContent);
 
-  // 댓글 수정 기능
+  const localEmail = localStorage.getItem("email"); // 로컬 스토리지에서 이메일 가져오기
+  console.log("로컬 스토리지 이메일:", localEmail); // 디버깅을 위한 콘솔 로그 추가
+
   const handleUpdate = async () => {
     if (!updatedContent.trim()) return;
 
@@ -23,11 +25,12 @@ function CommentItem({ id, nickname, subContent, refreshComments }) {
     }
   };
 
-  // 댓글 삭제 기능
   const handleDelete = async () => {
     await deleteComment(postId, id);
     refreshComments(); // 댓글 목록 새로고침
   };
+
+  console.log("댓글 작성자 이메일:", email); // 디버깅을 위한 콘솔 로그 추가
 
   return (
     <div className={styles.container}>
@@ -46,11 +49,13 @@ function CommentItem({ id, nickname, subContent, refreshComments }) {
       ) : (
         <>
           <p>{subContent}</p>
-          <button onClick={() => setIsEditing(true)}>수정하기</button>
+          {localEmail === email && (
+            <button onClick={() => setIsEditing(true)}>수정하기</button>
+          )}
         </>
       )}
 
-      <button onClick={handleDelete}>삭제하기</button>
+      {localEmail === email && <button onClick={handleDelete}>삭제하기</button>}
     </div>
   );
 }

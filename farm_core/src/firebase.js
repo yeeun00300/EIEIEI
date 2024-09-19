@@ -562,6 +562,7 @@ export const addComment = async (postId, comment) => {
       subContent: comment.subContent, // 새로운 필드 이름
       subCreatedAt: Timestamp.fromDate(new Date()), // 생성 시간
       nickname: comment.nickname, // 사용자 닉네임
+      email: comment.email,
     });
   } catch (error) {
     console.error("댓글 추가 실패:", error);

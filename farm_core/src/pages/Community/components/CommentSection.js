@@ -13,6 +13,7 @@ function CommentSection() {
   const nickname = useSelector(
     (state) => state.checkLoginSlice.checkLogin.nickname
   );
+  const email = useSelector((state) => state.checkLoginSlice.checkLogin.email);
 
   const fetchComments = async () => {
     const fetchedComments = await getComments(id);
@@ -29,6 +30,7 @@ function CommentSection() {
     const comment = {
       nickname: nickname, // 사용자 닉네임
       subContent: newComment,
+      email: email,
     };
 
     await addComment(id, comment);

@@ -10,6 +10,7 @@ function CommentList({ comments, refreshComments }) {
           id={comment.id}
           nickname={comment.nickname}
           subContent={comment.subContent}
+          email={comment.email}
           refreshComments={refreshComments} // 새로고침 함수 전달
         />
       ))}
