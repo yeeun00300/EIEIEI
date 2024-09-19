@@ -29,6 +29,7 @@ const initialState = {
   error: null,
   docId: "",
   farmData: {},
+  diseaseType: "",
 };
 
 const AddLiveStockSlice = createSlice({

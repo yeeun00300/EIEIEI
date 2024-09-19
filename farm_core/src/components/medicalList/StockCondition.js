@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { addMessage, fetchFarmDocumentByEmail } from "../../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { addField } from "../../store/addLiveStockSlice/addLiveStockSlice";
+import kroDate from "../../utils/korDate";
 
 const CommonFields = () => (
   <>
@@ -104,8 +108,79 @@ const SpecificFields = ({ animalType }) => {
 
 function StockCondition(props) {
   const [animalType, setAnimalType] = useState("");
+  const dispatch = useDispatch();
+  const farmData = useSelector((state) => state.AddLiveStockSlice);
+  console.log(farmData);
+
+  const [docId, setDocId] = useState(""); // docId 상태 추가
+  console.log(docId);
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+
+    if (email) {
+      const fetchData = async () => {
+        try {
+          // 이메일로 문서 검색
+          const document = await fetchFarmDocumentByEmail(email);
+          if (document) {
+            setDocId(document.id); // 문서의 docId를 설정
+          }
+        } catch (error) {
+          console.error("문서 검색 실패:", error.message || error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [dispatch]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(addField({ fieldName: name, fieldValue: value }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    dispatch(addField({ fieldName: name, fieldValue: checked }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log("Submitting farm data:", farmData);
+
+      // 폼 데이터와 하위 컬렉션 데이터 준비
+      const subCollections = {
+        farmCureList: [],
+        ruinInfo: {}, // ruinInfo 데이터 준비
+        vaccine: [
+          {
+            vaccineType: farmData.vaccine, // farmData에서 백신 정보 가져오기
+            vaccineDate: kroDate(),
+          },
+        ], // vaccine 데이터 준비
+        disease: [
+          {
+            diseaseType: farmData.diseaseType, // farmData에서 질병 정보 가져오기
+            diagnosisDate: farmData.diagnosisDate, // 여기에 실제 진단일 추가
+            cure: "",
+          },
+        ], // disease 데이터 준비
+      };
+
+      console.log("SubCollections data:", subCollections);
+
+      await addMessage("farm", docId, "vaccine", subCollections.vaccine);
+      await addMessage("farm", docId, "disease", subCollections.disease);
+
+      alert("데이터가 성공적으로 저장되었습니다!");
+    } catch (error) {
+      console.error("데이터 저장 실패:", error.message || error);
+      alert("데이터 저장에 실패했습니다.");
+    }
+  };
+
   return (
-    <form id="surveyForm">
+    <form id="surveyForm" onSubmit={handleSubmit}>
       <div className="form-group">
         <label htmlFor="animalType">가축 종류</label>
         <select
@@ -141,20 +216,37 @@ function StockCondition(props) {
       </div>
       <div className="form-group">
         <label htmlFor="vaccine">백신 접종 (형식: 백신명(접종일))</label>
-        <input type="text" id="vaccine" name="vaccine" />
+        <input
+          type="text"
+          id="vaccine"
+          name="vaccine"
+          onChange={handleChange}
+        />
       </div>
       <div className="form-group">
-        <label htmlFor="disease">
+        <label htmlFor="diseaseType">
           질병 및 치료 (형식: 질병명(진단일): 치료일)
         </label>
-        <input type="text" id="disease" name="disease" />
+        <input
+          type="text"
+          id="diseaseType"
+          name="diseaseType"
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="diagnosisDate">진단일</label>
+        <input
+          type="date"
+          id="diagnosisDate"
+          name="diagnosisDate"
+          onChange={handleChange}
+        />
       </div>
 
       <SpecificFields animalType={animalType} />
 
-      <div className="form-group">
-        <button type="submit">제출</button>
-      </div>
+      <button type="submit">제출</button>
     </form>
   );
 }
