@@ -28,13 +28,10 @@ import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();
-  const email = localStorage.getItem("email");
 
   const { farmList, farmLoading } = useSelector(
     (state) => state.checkLoginSlice
   );
-
-  // console.log(farmList);
 
   const { selectedStock, selectLoading } = useSelector(
     (state) => state.stockSlice
@@ -44,6 +41,24 @@ function MyLiveStock(props) {
     farmList.length > 0 ? farmList[0].farmId : ""
   );
   const [farmInfo, setFarmInfo] = useState(null);
+
+  useEffect(() => {
+    if (farmList.length > 0) {
+      const defaultFarmId = farmList[0].farmId;
+      const queryOptions = {
+        conditions: [
+          {
+            field: "farmId",
+            operator: "==",
+            value: Number(defaultFarmId),
+          },
+        ],
+      };
+      dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
+      setSelectedValue(defaultFarmId); // 기본적으로 첫 번째 farmId 설정
+    }
+  }, [farmList, dispatch]);
+
   const handleChange = (event) => {
     setSelectedValue(event.target.value); // 선택된 option의 value 가져오기
     console.log(selectedValue);
@@ -82,22 +97,22 @@ function MyLiveStock(props) {
         return <StockNum stock={selectedStock} />;
       // 사료 물 소비량
       case "chart2":
-        return <FeedAndWater />;
+        return <FeedAndWater stock={selectedStock} />;
       // 온도 습도
       case "chart3":
         return <StockProduct />;
       // 생산량
       case "chart4":
-        return <StockProduct />;
+        return <StockProduct stock={selectedStock} />;
       // 건강상태
       case "chart5":
-        return <HealthCondition />;
+        return <HealthCondition stock={selectedStock} />;
       // 백신 및 접종 기록
       case "chart6":
-        return <Vaccine />;
+        return <Vaccine stock={selectedStock} />;
       // 폐사율
       case "chart7":
-        return <MortalityRate />;
+        return <MortalityRate stock={selectedStock} />;
       default:
         return <div>확인할 차트를 선택해주세요</div>; // 기본적으로 KoreaMap을 보여줌
     }
