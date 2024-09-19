@@ -1,54 +1,56 @@
-// src/components/Question/Question.js
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import styles from "./Question.module.scss";
 import {
-  fetchQuestions,
-  addQuestion,
-  updateQuestion,
-  deleteQuestion,
-  startEditing,
-  stopEditing,
-} from "../../../store/myPageSlice/questionSlice";
-import { useSelector as useReduxSelector } from "react-redux";
-import { Button, List, ListItem, ListItemText } from "@mui/material";
-import kroDate from "../../../utils/korDate";
+  addDatas,
+  updateDatas,
+  deleteDatas,
+  uploadImage,
+  useFetchCollectionData,
+  getDatas,
+} from "../../../firebase";
+import { useSelector } from "react-redux";
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Box,
+  Typography,
+  TextField,
+  MenuItem,
+} from "@mui/material";
 
-function Question() {
-  const dispatch = useDispatch();
-  const { questions, isEditing, editingQuestion } = useSelector(
-    (state) => state.questions
-  );
-  const users =
-    useReduxSelector((state) => state.userInfoEditSlice.userInfo) || [];
-
-  const INITIALDATA = {
-    stockType: "koreaCow",
+function UserInfo() {
+  const users = useSelector((state) => state.userInfoEditSlice.userInfo);
+  const [formData, setFormData] = useState({
+    stockType: "koreanCow",
     nickname: users[0]?.nickname || "",
     message: "",
     file: null,
     filePreview: null,
     isEditing: false,
-  };
-
-  const [formData, setFormData] = useState(INITIALDATA);
-
-  useEffect(() => {
-    dispatch(fetchQuestions());
-  }, [dispatch]);
+  });
+  const [questions, setQuestions] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
-    if (isEditing && editingQuestion) {
-      setFormData({
-        stockType: editingQuestion.stockType,
-        nickname: editingQuestion.nickname,
-        message: editingQuestion.message,
-        file: null,
-        filePreview: editingQuestion.imageUrl || null,
-        isEditing: true,
-      });
-    }
-  }, [isEditing, editingQuestion]);
+    const fetchQuestions = async () => {
+      const queryOptions = {
+        conditions: [
+          { field: "communityType", operator: "==", value: "question" },
+        ],
+      };
+      const fetchedQuestions = await getDatas("community", queryOptions);
+      const rowsWithId = fetchedQuestions.map((question) => ({
+        ...question,
+        id: question.docId,
+      }));
+      setQuestions(rowsWithId);
+    };
+    fetchQuestions();
+  }, []);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -68,52 +70,74 @@ function Question() {
     });
   };
 
-  const handleEdit = (question) => {
-    dispatch(startEditing(question));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!users[0]?.docId) {
-      console.error("User DocID is missing.");
-      alert("사용자 정보를 확인할 수 없습니다.");
-      return;
-    }
-
     try {
+      let fileUrl = "";
+      if (formData.file) {
+        fileUrl = await uploadImage(
+          `images/${formData.file.name}`,
+          formData.file
+        );
+      }
+
       const addObj = {
         stockType: formData.stockType,
         nickname: formData.nickname,
         message: formData.message,
-        docId: users[0]?.docId,
-        userEmail: users[0]?.email,
-        userPhoneNumber: users[0]?.phone,
-        createdAt: kroDate(),
+        docId: users[0].docId,
+        userEmail: users[0].email,
+        userPhoneNumber: users[0].phone,
+        createdAt: new Date().toLocaleDateString(), // Modify with your date function
         communityType: "question",
-        imageUrl: formData.filePreview,
-        file: formData.file,
+        imageUrl: fileUrl,
       };
 
-      if (formData.isEditing) {
-        await dispatch(updateQuestion({ ...addObj, id: editingQuestion.id }));
+      if (isEditing) {
+        await updateDatas("community", editingQuestion.docId, addObj);
         alert("문의 사항이 성공적으로 수정되었습니다");
       } else {
-        await dispatch(addQuestion(addObj));
+        await addDatas("community", addObj);
         alert("문의 사항이 성공적으로 저장되었습니다");
       }
 
-      setFormData(INITIALDATA);
-      dispatch(stopEditing());
+      setFormData({
+        stockType: "koreanCow",
+        nickname: users[0]?.nickname || "",
+        message: "",
+        file: null,
+        filePreview: null,
+        isEditing: false,
+      });
+      setIsEditing(false);
+      setEditingQuestion(null);
+      setIsAdding(false);
     } catch (error) {
       console.error("Error adding or updating document: ", error);
       alert("문의사항 저장 또는 수정에 실패했습니다.");
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleEdit = (question) => {
+    setEditingQuestion(question);
+    setFormData({
+      stockType: question.stockType,
+      nickname: question.nickname,
+      message: question.message,
+      file: null,
+      filePreview: question.imageUrl || null,
+      isEditing: true,
+    });
+    setIsEditing(true);
+  };
+
+  const handleDelete = async (docId) => {
     try {
-      await dispatch(deleteQuestion(id));
+      await deleteDatas("community", docId);
+      setQuestions((prevQuestions) =>
+        prevQuestions.filter((question) => question.id !== docId)
+      );
       alert("문의 사항이 성공적으로 삭제되었습니다");
     } catch (error) {
       console.error("Error deleting document: ", error);
@@ -121,149 +145,152 @@ function Question() {
     }
   };
 
+  const handleAddClick = () => {
+    setFormData({
+      stockType: "koreanCow",
+      nickname: users[0]?.nickname || "",
+      message: "",
+      file: null,
+      filePreview: null,
+      isEditing: false,
+    });
+    setIsAdding(true);
+  };
+
   return (
-    <div className="page">
-      {isEditing ? (
-        <div className={styles.contact}>
-          <h2>문의 수정</h2>
+    <div className={styles.page}>
+      {(isAdding || isEditing) && (
+        <Box className={styles.contact}>
+          <Typography variant="h2">
+            {isEditing ? "문의 수정" : "문의 추가"}
+          </Typography>
           <form onSubmit={handleSubmit}>
-            <div className="category-name-container">
-              <div>
-                <label htmlFor="stockType">가축 종류 :</label>
-                <select
-                  id="stockType"
-                  name="stockType"
-                  value={formData.stockType}
-                  onChange={handleChange}
-                >
-                  <option value="koreanCow">한우</option>
-                  <option value="dairyCow">낙농</option>
-                  <option value="eggChicken">산란계</option>
-                  <option value="chicken">육계</option>
-                  <option value="pork">양돈</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="nickname">닉네임 :</label>
-                <input
-                  type="text"
-                  id="nickname"
-                  name="nickname"
-                  value={formData.nickname}
-                  onChange={handleChange}
-                  readOnly
-                />
-              </div>
-            </div>
-            <div className={styles.box}>
-              <label htmlFor="message">문의 내용:</label>
-              <textarea
+            <Box className={styles.box}>
+              <TextField
+                select
+                id="stockType"
+                name="stockType"
+                label="가축 종류"
+                value={formData.stockType}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+              >
+                <MenuItem value="koreanCow">한우</MenuItem>
+                <MenuItem value="dairyCow">낙농</MenuItem>
+                <MenuItem value="eggChicken">산란계</MenuItem>
+                <MenuItem value="chicken">육계</MenuItem>
+                <MenuItem value="pork">양돈</MenuItem>
+              </TextField>
+            </Box>
+            <Box className={styles.box}>
+              <TextField
+                id="nickname"
+                name="nickname"
+                label="닉네임"
+                value={formData.nickname}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                InputProps={{ readOnly: true }}
+              />
+            </Box>
+            <Box className={styles.box}>
+              <TextField
                 id="message"
                 name="message"
+                label="문의 내용"
+                multiline
+                rows={4}
                 value={formData.message}
                 onChange={handleChange}
-              ></textarea>
-            </div>
-            <div>
-              <label htmlFor="image">사진 업로드 :</label>
+                fullWidth
+                variant="outlined"
+              />
+            </Box>
+            <Box className={styles.box}>
               <input
                 type="file"
-                id="image"
+                id="file"
+                name="file"
                 accept="image/*"
                 onChange={handleFileChange}
+                style={{ display: "none" }}
               />
+              <label htmlFor="file">
+                <Button variant="contained" component="span">
+                  첨부파일
+                </Button>
+              </label>
               {formData.filePreview && (
-                <div>
-                  <img
-                    src={formData.filePreview}
-                    alt="Preview"
-                    width="100"
-                    height="100"
-                  />
-                </div>
+                <Box className={styles.imagePreview}>
+                  <img src={formData.filePreview} alt="Preview" />
+                </Box>
               )}
-            </div>
-            <button type="submit">저장</button>
+            </Box>
+            <Box className={styles.box}>
+              <Button type="submit" variant="contained" color="primary">
+                {formData.isEditing ? "수정하기" : "저장하기"}
+              </Button>
+              {formData.isEditing && (
+                <Button
+                  type="button"
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setIsAdding(false)}
+                >
+                  취소하기
+                </Button>
+              )}
+            </Box>
           </form>
-        </div>
-      ) : (
-        <div>
-          <h2>문의사항 리스트</h2>
+        </Box>
+      )}
+      {!isAdding && !isEditing && (
+        <Box className={styles.listContainer}>
+          <Typography variant="h2" className={styles.listHeader}>
+            문의 목록
+          </Typography>
           <List>
             {questions.map((question) => (
-              <ListItem key={question.id}>
-                <ListItemText primary={question.message} />
-                <Button onClick={() => handleEdit(question)}>수정</Button>
-                <Button onClick={() => handleDelete(question.id)}>삭제</Button>
+              <ListItem key={question.id} className={styles.listItem}>
+                <Box className={styles.itemDetails}>
+                  <ListItemText
+                    primary={`${question.stockType} - ${question.message}`}
+                    secondary={`작성일: ${question.createdAt}`}
+                  />
+                </Box>
+                <Box className={styles.itemActions}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => handleEdit(question)}
+                  >
+                    수정
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleDelete(question.id)}
+                  >
+                    삭제
+                  </Button>
+                </Box>
               </ListItem>
             ))}
           </List>
-          <div className={styles.contact}>
-            <h2>문의사항 추가</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="category-name-container">
-                <div>
-                  <label htmlFor="stockType">가축 종류 :</label>
-                  <select
-                    id="stockType"
-                    name="stockType"
-                    value={formData.stockType}
-                    onChange={handleChange}
-                  >
-                    <option value="koreanCow">한우</option>
-                    <option value="dairyCow">낙농</option>
-                    <option value="eggChicken">산란계</option>
-                    <option value="chicken">육계</option>
-                    <option value="pork">양돈</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="nickname">닉네임 :</label>
-                  <input
-                    type="text"
-                    id="nickname"
-                    name="nickname"
-                    value={formData.nickname}
-                    onChange={handleChange}
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div className={styles.box}>
-                <label htmlFor="message">문의 내용:</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
-              <div>
-                <label htmlFor="image">사진 업로드 :</label>
-                <input
-                  type="file"
-                  id="image"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-                {formData.filePreview && (
-                  <div>
-                    <img
-                      src={formData.filePreview}
-                      alt="Preview"
-                      width="100"
-                      height="100"
-                    />
-                  </div>
-                )}
-              </div>
-              <button type="submit">저장</button>
-            </form>
-          </div>
-        </div>
+          <Button
+            variant="contained"
+            color="primary"
+            className={styles.addQuestionButton}
+            onClick={handleAddClick}
+          >
+            새 문의하기
+          </Button>
+        </Box>
       )}
     </div>
   );
 }
 
-export default Question;
+export default UserInfo;
