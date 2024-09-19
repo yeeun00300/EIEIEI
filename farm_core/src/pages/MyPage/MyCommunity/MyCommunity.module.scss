@@ -1,2 +1,47 @@
-.communitybox {
+.postList {
+  list-style: none;
+  padding: 0;
+}
+
+.postItem {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.postItem:hover {
+  background-color: #f0f0f0;
+}
+
+.postDetail {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.closeButton {
+  background-color: #f44;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+.closeButton:hover {
+  background-color: #d33;
+}
+
+.imageContainer {
+  margin-top: 20px;
+}
+
+.postImage {
+  max-width: 100%;
+  height: auto;
 }

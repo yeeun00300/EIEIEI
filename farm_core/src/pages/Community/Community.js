@@ -12,7 +12,7 @@ function Community() {
   const { communityContents } = useSelector((state) => state.communitySlice);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOption, setSortOption] = useState("추천순");
+  const [sortOption, setSortOption] = useState("최신순");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,17 +33,16 @@ function Community() {
   };
 
   const handleOpenBoard = (item) => {
-    console.log(item.id);
-    navigate(`/My_Farm_Board_FreeBoard/:${item.id}`);
+    navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
   };
 
   const getSortedContents = () => {
     let sortedContents = [...communityContents];
 
-    if (sortOption === "추천순") {
-      sortedContents.sort((a, b) => b.like - a.like);
-    } else if (sortOption === "최신순") {
+    if (sortOption === "최신순") {
       sortedContents.sort((a, b) => b.updatedAt - a.updatedAt);
+    } else if (sortOption === "추천순") {
+      sortedContents.sort((a, b) => b.like - a.like);
     }
 
     return sortedContents;
@@ -74,8 +73,8 @@ function Community() {
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
-            <option value="추천순">추천순</option>
             <option value="최신순">최신순</option>
+            <option value="추천순">추천순</option>
           </select>
         </form>
 

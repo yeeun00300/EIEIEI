@@ -13,6 +13,7 @@ const loginSlice = createSlice({
     adminLogin: false,
     isLoading: false,
     error: null,
+    profileImage: "",
   },
   reducers: {
     setUsername: (state, action) => {
@@ -47,6 +48,7 @@ const loginSlice = createSlice({
       state.adminLogin = false;
       state.isLoading = false;
       state.error = null;
+      state.profileImage = "";
     },
   },
 

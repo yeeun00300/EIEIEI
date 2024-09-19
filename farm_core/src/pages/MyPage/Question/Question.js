@@ -136,6 +136,7 @@ function Question() {
   };
 
   const handleEdit = (question) => {
+    console.log(question);
     setEditingQuestion(question);
     setFormData({
       stockType: question.stockType,
@@ -145,6 +146,7 @@ function Question() {
       filePreview: null,
       isEditing: true,
     });
+    setIsEditing(question);
   };
 
   const handleDelete = async (docId) => {
@@ -232,7 +234,7 @@ function Question() {
               />
               {formData.filePreview && (
                 <div className={styles.imagePreview}>
-                  <img src={formData.filePreview} alt="Preview" />
+                  <img src={formData.filePreview} />
                 </div>
               )}
             </div>
@@ -258,6 +260,12 @@ function Question() {
                     secondary={`작성일: ${question.createdAt}`}
                   />
                 </div>
+                {question.imageUrl && (
+                  <div className={styles.imagePreview}>
+                    <img src={question.imageUrl} />
+                  </div>
+                )}
+
                 <div className={styles.itemActions}>
                   <Button onClick={() => handleEdit(question)}>수정</Button>
                   <Button onClick={() => handleDelete(question.id)}>

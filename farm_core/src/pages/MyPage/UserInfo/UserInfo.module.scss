@@ -1,139 +1,136 @@
 .wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   font-size: 1rem;
-  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-.profileBtn {
-  margin: 0;
-  display: flex;
-  button {
-    margin: 0;
-  }
-}
 .userInfo {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-  margin-top: 3rem;
-  width: 60%;
-  padding: 3rem 2rem;
-  border-radius: 1rem;
-  align-items: flex-start;
-  input {
-    margin: 0;
-  }
-  span {
-    width: 30%;
-  }
-  div {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 70%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+  border-radius: 0.8rem;
+  width: 100%;
+  max-width: 800px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  cursor: pointer;
+
+  .personImg {
+    width: 6rem;
+    height: 6rem;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--main-color);
   }
 
-  button {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    border: none;
-    padding: 10px;
-    border-radius: 1rem;
-    cursor: pointer;
-    margin-left: 5rem;
+  .hidden {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
+
+  p {
+    margin-left: 1rem;
+    color: var(--main-color);
+    font-weight: bold;
+    font-size: 1rem;
+  }
+}
+
+.userInfo > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  span {
+    flex: 0 0 30%;
+    font-weight: bold;
+    color: var(--main-color);
+    font-size: 1rem;
+  }
+
   input {
-    padding: 5px 15px;
-    margin-left: 20px;
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: #333;
   }
-  .profile {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
-    position: relative;
-    cursor: pointer;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0.7rem;
-    width: 100%;
-    max-width: 300px;
-    p {
-      cursor: pointer;
-    }
-    .personImg {
-      width: 100%;
-      height: 100%;
-      object-position: center;
-      object-fit: contain;
-      border-radius: 50%;
-    }
-    .hidden {
-      position: absolute;
-      opacity: 0;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    p {
-      width: 100%;
-    }
+}
+
+.addr {
+  span {
+    font-weight: bold;
+    color: var(--main-color);
+    font-size: 1rem;
   }
-  .addr {
-    margin: 0;
+
+  .addrInputs {
     display: flex;
-    justify-content: flex-start;
-    flex: 1 1;
-    flex-wrap: wrap;
-    width: 100%;
+    flex-direction: column;
     gap: 10px;
-    span {
-      width: 10%;
+
+    input {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      color: #333;
     }
-    .addrInputs {
-      display: flex;
-    }
+
     .addrIP {
-      width: 50%;
+      width: 100%;
     }
-    .addrZone {
-      width: 50%;
-    }
+
     .addr2 {
-      margin-left: 16%;
-      width: 50%;
-    }
-    p {
-      margin: 0;
-    }
-    button {
-      width: 15%;
-      font-size: 0.8rem;
-      margin: 0;
+      width: 100%;
     }
   }
-  .buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    button {
-      border: none;
-      padding: 1rem;
-      border-radius: 1rem;
-      cursor: pointer;
-      margin: 0;
-    }
-    .naver {
-      background-color: var(--main-color);
-    }
+}
+
+.btnWrap {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+
+  button {
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: var(--main-color);
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: var(--second-color);
+  }
+
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
 }
