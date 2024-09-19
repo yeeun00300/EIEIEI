@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addCommunityDatas,
+  db,
   deleteCommunityDatas,
   getCommunityDatas,
   updateCommunityDatas,
 } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const initialState = {
   communityContents: [], // 커뮤니티 게시글 목록
@@ -132,6 +134,27 @@ const communitySlice = createSlice({
       .addCase(updatePostReactions.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      // 게시글 신고
+      .addCase(reportPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(reportPost.fulfilled, (state, action) => {
+        const { id, updates } = action.payload;
+        const targetList = state.communityContents.find(
+          (post) => post.id === id
+        )
+          ? state.communityContents
+          : state.livestockContents;
+        const index = targetList.findIndex((post) => post.id === id);
+        if (index !== -1) {
+          targetList[index] = { ...targetList[index], ...updates };
+        }
+        state.isLoading = false;
+      })
+      .addCase(reportPost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload; // rejectWithValue에서 반환한 오류 메시지 사용
       });
   },
 });
@@ -202,6 +225,43 @@ const updatePostReactions = createAsyncThunk(
   }
 );
 
+// 비동기 작업: 게시글 신고
+const reportPost = createAsyncThunk(
+  "community/reportPost",
+  async ({ id, reason }, { rejectWithValue }) => {
+    try {
+      const postRef = doc(db, "community", id);
+
+      // Firestore에서 현재 게시물의 데이터를 가져옵니다.
+      const docSnap = await getDoc(postRef);
+      const postData = docSnap.data();
+
+      // 기존 신고 사유 배열을 가져오거나 빈 배열을 초기값으로 설정
+      const existingReasons = postData?.declareReason || [];
+
+      // 새로운 사유를 배열에 추가
+      const updatedReasons = [...existingReasons, reason];
+
+      // 현재 신고 횟수를 읽어와서 1을 추가
+      const updatedCount = (postData?.declareCount || 0) + 1;
+
+      // 업데이트할 데이터
+      const updates = {
+        declareReason: updatedReasons, // 배열로 업데이트
+        declareState: "reported",
+        declareCount: updatedCount, // 카운트 업데이트
+      };
+
+      // 문서 필드 데이터 수정
+      await updateCommunityDatas(id, updates);
+
+      return { id, updates };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export default communitySlice.reducer;
 export {
   fetchCommunityPosts,
@@ -209,4 +269,5 @@ export {
   updateCommunityPost,
   deleteCommunityPost,
   updatePostReactions,
+  reportPost,
 };
