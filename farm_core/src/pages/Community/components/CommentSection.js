@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { addComment, getComments } from "../../../firebase";
+import { useSelector } from "react-redux";
+import CommentList from "./CommentList";
+import checkLoginSlice from "./../../../store/checkLoginSlice/checkLoginSlice";
 
 function CommentSection() {
   const { id } = useParams();
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const fetchedComments = await getComments(id);
-      setComments(fetchedComments);
-    };
+  const nickname = useSelector(
+    (state) => state.checkLoginSlice.checkLogin.nickname
+  );
 
+  const fetchComments = async () => {
+    const fetchedComments = await getComments(id);
+    setComments(fetchedComments);
+  };
+
+  useEffect(() => {
     fetchComments();
   }, [id]);
 
@@ -20,28 +27,22 @@ function CommentSection() {
     if (!newComment.trim()) return;
 
     const comment = {
-      author: "User Email", // 실제 사용자 이메일로 변경
-      content: newComment,
+      nickname: nickname, // 사용자 닉네임
+      subContent: newComment,
     };
 
     await addComment(id, comment);
     setNewComment("");
-    const updatedComments = await getComments(id);
-    setComments(updatedComments);
+    fetchComments();
   };
+  console.log(comments);
 
   return (
     <div>
       <h2>댓글</h2>
-      <div>
-        {comments.map((comment) => (
-          <div key={comment.id}>
-            <p>
-              <strong>{comment.author}</strong>: {comment.content}
-            </p>
-          </div>
-        ))}
-      </div>
+      {/* CommentList에 comments와 refreshComments 전달 */}
+      <CommentList comments={comments} refreshComments={fetchComments} />
+
       <textarea
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}

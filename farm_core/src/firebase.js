@@ -493,7 +493,7 @@ export const updateCommunityDatas = async (id, updates, imgUrl) => {
     const time = new Date().getTime();
 
     // 이미지 파일을 변경했을 때
-    if (imgUrl && updates.imgUrl) {
+    if (imgUrl && updates.imgUrl && imgUrl !== updates.imgUrl) {
       const storage = getStorage();
       const deleteRef = ref(storage, imgUrl);
       await deleteObject(deleteRef);
@@ -535,26 +535,59 @@ export const deleteCommunityDatas = async (id) => {
 // 댓글 추가
 export const addComment = async (postId, comment) => {
   try {
+    console.log("댓글 추가 데이터:", comment); // 로그 추가
+
     const commentsRef = collection(db, "community", postId, "comments");
     await addDoc(commentsRef, {
-      ...comment,
-      createdAt: Timestamp.fromDate(new Date()),
+      subContent: comment.subContent, // 새로운 필드 이름
+      subCreatedAt: Timestamp.fromDate(new Date()), // 생성 시간
+      nickname: comment.nickname, // 사용자 닉네임
     });
   } catch (error) {
     console.error("댓글 추가 실패:", error);
   }
 };
-
 // 댓글 목록 가져오기
 export const getComments = async (postId) => {
   try {
     const commentsRef = collection(db, "community", postId, "comments");
-    const q = query(commentsRef, orderBy("createdAt", "desc"));
+    const q = query(commentsRef, orderBy("subCreatedAt", "desc"));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error("댓글 목록 가져오기 실패:", error);
     return [];
+  }
+};
+export const updateComment = async (postId, commentId, updatedContent) => {
+  try {
+    // 전달된 인자 로그
+    console.log(
+      "postId:",
+      postId,
+      "commentId:",
+      commentId,
+      "updatedContent:",
+      updatedContent
+    );
+
+    // 경로를 올바르게 설정했는지 확인
+    const commentRef = doc(db, "community", postId, "comments", commentId);
+    await updateDoc(commentRef, {
+      subContent: updatedContent,
+      subUpdatedAt: Timestamp.fromDate(new Date()), // 'subUpdatedAt' 필드 추가
+    });
+    console.log("댓글 수정 성공!");
+  } catch (error) {
+    console.error("댓글 수정 실패:", error);
+  }
+};
+export const deleteComment = async (postId, commentId) => {
+  try {
+    const commentRef = doc(db, "community", postId, "comments", commentId);
+    await deleteDoc(commentRef);
+  } catch (error) {
+    console.error("댓글 삭제 실패:", error);
   }
 };
 
