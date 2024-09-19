@@ -11,8 +11,10 @@ function Community() {
   const dispatch = useDispatch();
   const { communityContents } = useSelector((state) => state.communitySlice);
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("최신순");
+  const [keyword, setKeyword] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(6); // 한 번에 보여줄 게시글 수
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,50 +38,92 @@ function Community() {
     navigate(`/My_Farm_Board_FreeBoard/${item.id}`);
   };
 
-  const getSortedContents = () => {
-    let sortedContents = [...communityContents];
-
-    if (sortOption === "최신순") {
-      sortedContents.sort((a, b) => b.updatedAt - a.updatedAt);
-    } else if (sortOption === "추천순") {
-      sortedContents.sort((a, b) => b.like - a.like);
-    }
-
-    return sortedContents;
+  const handleKeywordChange = (e) => {
+    setKeyword(e.target.value);
   };
 
-  const sortedContents = getSortedContents();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchTerm(keyword);
+  };
+
+  const getFilteredAndSortedContents = () => {
+    let filteredContents = [...communityContents];
+
+    // 검색어에 따른 필터링
+    if (searchTerm) {
+      filteredContents = filteredContents.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.content.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // 정렬
+    if (sortOption === "최신순") {
+      filteredContents.sort((a, b) => b.createdAt - a.createdAt);
+    } else if (sortOption === "추천순") {
+      filteredContents.sort((a, b) => b.like - a.like);
+    }
+
+    return filteredContents;
+  };
+
+  const filteredAndSortedContents = getFilteredAndSortedContents();
+
+  // 보여줄 게시글을 제한
+  const visibleContents = filteredAndSortedContents.slice(0, visibleCount);
+
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 6); // 게시글 6개씩 더 보기
+  };
 
   return (
     <div className="page">
       <ListPage variant="freeBoard">
-        <form className={styles.form}>
-          <input
-            placeholder="검색으로 게시글 찾기"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button className={styles.search}>
-            <img src={searchImg} alt="검색" />
-          </button>
+        <div className={styles.controls}>
+          <form className={styles.form} onSubmit={handleSearch}>
+            <input
+              placeholder="검색으로 게시글 찾기"
+              value={keyword}
+              onChange={handleKeywordChange}
+            />
+            <button className={styles.searchButton} type="submit">
+              <img src={searchImg} alt="검색" />
+            </button>
+          </form>
           <button
-            className={styles.new}
+            className={styles.newButton}
             type="button"
             onClick={handleNewBoardClick}
           >
             새 글 쓰기
           </button>
           <select
+            className={styles.sortSelect}
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
             <option value="최신순">최신순</option>
             <option value="추천순">추천순</option>
           </select>
-        </form>
+        </div>
 
-        <p>총 {sortedContents.length}개 게시물</p>
-        <BoardList items={sortedContents} onItemClick={handleOpenBoard} />
+        <p className={styles.postCount}>
+          총 {filteredAndSortedContents.length}개 게시물
+        </p>
+
+        <BoardList
+          items={visibleContents} // 보여줄 게시글 제한
+          onItemClick={handleOpenBoard}
+        />
+
+        {/* 더보기 버튼 */}
+        {visibleCount < filteredAndSortedContents.length && (
+          <button className={styles.showMoreButton} onClick={handleShowMore}>
+            더보기
+          </button>
+        )}
       </ListPage>
     </div>
   );

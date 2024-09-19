@@ -34,7 +34,7 @@ function FreeboardPage() {
       case "eggChicken":
         return "산란계";
       default:
-        return "";
+        return null;
     }
   };
 
@@ -51,7 +51,7 @@ function FreeboardPage() {
 
   useEffect(() => {
     if (postData) {
-      const userEmail = localStorage.getItem("userEmail");
+      const userEmail = localStorage.getItem("email");
       const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || {};
       const dislikedPosts =
         JSON.parse(localStorage.getItem("dislikedPosts")) || {};
@@ -82,7 +82,7 @@ function FreeboardPage() {
   const handleLike = useCallback(async () => {
     if (userHasLiked || userHasDisliked) return;
 
-    const userEmail = localStorage.getItem("userEmail");
+    const userEmail = localStorage.getItem("email");
     const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || {};
 
     if (likedPosts[id] === userEmail) {
@@ -119,7 +119,7 @@ function FreeboardPage() {
   const handleDislike = useCallback(async () => {
     if (userHasDisliked || userHasLiked) return;
 
-    const userEmail = localStorage.getItem("userEmail");
+    const userEmail = localStorage.getItem("email");
     const dislikedPosts =
       JSON.parse(localStorage.getItem("dislikedPosts")) || {};
 
@@ -177,61 +177,83 @@ function FreeboardPage() {
     return <div>게시물을 찾을 수 없습니다.</div>;
   }
 
+  const isAuthor = postData.email === localStorage.getItem("email"); // 작성자 확인
+
   return (
-    <div className="page">
+    <div className={styles.page}>
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          <div className={styles.stockType}>
-            {getStockTypeInKorean(postData.stockType)}
-          </div>
-          {postData.imgUrl && (
-            <img
-              src={postData.imgUrl}
-              alt={postData.title}
-              className={styles.image}
-            />
-          )}
-          <h1 className={styles.title}>{postData.title}</h1>
-          <p className={styles.contentText}>{postData.content}</p>
-          <p>{`작성자: ${postData.authorNickName}`}</p>
-          <p>
-            {`작성일: ${
-              postData.createdAt
-                ? new Date(postData.createdAt).toLocaleDateString()
-                : "N/A"
-            }`}
-          </p>
-          <p>
-            {`수정일: ${
-              postData.updatedAt
-                ? new Date(postData.updatedAt).toLocaleDateString()
-                : "N/A"
-            }`}
-          </p>
-          <button onClick={handleUpdate}>수정하기</button>
-          <button onClick={handleDelete}>삭제하기</button>
-          <div className={styles.siren}>
-            <button onClick={handleDeclareClick}>
-              <img src={sirenImg} alt="신고하기" />
-            </button>
-            <span>신고하기</span>
-          </div>
-          <div className={styles.reactions}>
-            <ReactionButton
-              type="like"
-              onClick={handleLike}
-              count={postData.like}
-              active={userHasLiked}
-            />
-            <ReactionButton
-              type="dislike"
-              onClick={handleDislike}
-              count={postData.dislike}
-              active={userHasDisliked}
-            />
+          <div className={styles.details}>
+            {postData.stockType && ( // stockType이 있을 때만 렌더링
+              <div className={styles.stockType}>
+                축산 관리 커뮤니티 &gt;{" "}
+                {getStockTypeInKorean(postData.stockType)}
+              </div>
+            )}
+            {postData.imgUrl && (
+              <img
+                src={postData.imgUrl}
+                alt={postData.title}
+                className={styles.image}
+              />
+            )}
+            <h1 className={styles.title}>{postData.title}</h1>
+            <p className={styles.contentText}>{postData.content}</p>
+            <p
+              className={styles.metadata}
+            >{`작성자: ${postData.authorNickName}`}</p>
+            <p className={styles.metadata}>
+              {`작성일: ${
+                postData.createdAt
+                  ? new Date(postData.createdAt).toLocaleDateString()
+                  : "N/A"
+              }`}
+            </p>
+            <p className={styles.metadata}>
+              {`수정일: ${
+                postData.updatedAt
+                  ? new Date(postData.updatedAt).toLocaleDateString()
+                  : "N/A"
+              }`}
+            </p>
+            {isAuthor && ( // 작성자일 때만 수정 및 삭제 버튼 표시
+              <div className={styles.buttonGroup}>
+                <button className={styles.button} onClick={handleUpdate}>
+                  수정하기
+                </button>
+                <button className={styles.button} onClick={handleDelete}>
+                  삭제하기
+                </button>
+              </div>
+            )}
+            <div className={styles.siren}>
+              <button
+                className={styles.reportButton}
+                onClick={handleDeclareClick}
+              >
+                <img src={sirenImg} alt="신고하기" />
+              </button>
+              <span className={styles.reportText}>신고하기</span>
+            </div>
+            <div className={styles.reactions}>
+              <ReactionButton
+                type="like"
+                onClick={handleLike}
+                count={postData.like}
+                active={userHasLiked}
+              />
+              <ReactionButton
+                type="dislike"
+                onClick={handleDislike}
+                count={postData.dislike}
+                active={userHasDisliked}
+              />
+            </div>
           </div>
         </div>
-        <CommentSection />
+        <div className={styles.commentSectionWrapper}>
+          <CommentSection postId={id} />
+        </div>
         {isDeclareModalOpen && (
           <DeclareModal
             onClose={() => setIsDeclareModalOpen(false)}
