@@ -3,11 +3,54 @@ import { useNavigate } from "react-router-dom";
 import styles from "./MedicalListSave.module.scss";
 import kroDate from "../../utils/korDate";
 import MedicalListEdit from "./MedicalListEdit";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebase";
 
 function MedicalListSave({ email, authorizedEmail }) {
   const [showDetail, setShowDetail] = useState(false);
   const [editing, setEditing] = useState(false);
   const [medicalData, setMedicalData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 1. farm 컬렉션에서 이메일로 문서 찾기
+        const farmQuery = query(
+          collection(db, "farm"),
+          where("email", "==", email)
+        );
+        const querySnapshot = await getDocs(farmQuery);
+
+        if (!querySnapshot.empty) {
+          const farmDoc = querySnapshot.docs[0]; // 첫 번째 일치하는 문서 선택
+
+          // 2. 하위 컬렉션에서 데이터 불러오기
+          const subCollectionRef = collection(
+            db,
+            "farm",
+            farmDoc.id,
+            "farmCureList"
+          );
+          const subCollectionSnapshot = await getDocs(subCollectionRef);
+
+          if (!subCollectionSnapshot.empty) {
+            const subCollectionData = subCollectionSnapshot.docs.map((doc) =>
+              doc.data()
+            );
+            setMedicalData(subCollectionData[0]); // 첫 번째 하위 문서 데이터 설정
+          } else {
+            console.log("하위 컬렉션에 데이터가 없습니다.");
+          }
+        } else {
+          console.log("이메일에 해당하는 문서를 찾을 수 없습니다.");
+        }
+      } catch (error) {
+        console.error("데이터를 불러오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchData();
+  }, [email]);
 
   const toggleDetail = () => {
     setShowDetail(!showDetail);

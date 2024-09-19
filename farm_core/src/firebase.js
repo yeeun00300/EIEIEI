@@ -611,15 +611,17 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
   }
 }
 
-const addFarmDataWithSubcollections = async (farmData, subCollections) => {
+const addFarmDataWithSubcollections = async (
+  docId,
+  farmData,
+  subCollections
+) => {
   try {
-    // Firestore의 farm 컬렉션에 문서 추가
-    const farmRef = await addDoc(collection(db, "farm"), farmData);
-    const farmDocId = farmRef.id; // farm 문서 ID 가져오기
-    console.log("Farm document added with ID:", farmDocId);
-    // 상위 문서 참조 생성
-    const farmDocRef = doc(db, "farm", farmDocId);
+    // 기존 문서 참조 생성
+    const farmDocRef = doc(db, "farm", docId);
 
+    // 기존 문서 업데이트 (기존 문서가 존재할 때만 업데이트됨)
+    await setDoc(farmDocRef, farmData, { merge: true });
     // 하위 컬렉션 추가
     // farmCureList 하위 컬렉션 추가
     const farmCureListRef = collection(farmDocRef, "farmCureList");
@@ -644,12 +646,23 @@ const addFarmDataWithSubcollections = async (farmData, subCollections) => {
     for (const item of subCollections.disease) {
       await addDoc(diseaseRef, item);
     }
-
     alert("Farm data and subcollections added successfully.");
+    return docId;
   } catch (error) {
     console.error("Error adding farm data and subcollections:", error);
   }
 };
+
+export const fetchFarmDocumentByEmail = async (email) => {
+  const q = query(collection(db, "farm"), where("email", "==", email));
+  const querySnapshot = await getDocs(q);
+  if (!querySnapshot.empty) {
+    const document = querySnapshot.docs[0];
+    return { id: document.id, ...document.data() };
+  }
+  throw new Error("No document found with the given email");
+};
+
 function useFetchCollectionData(collectionName) {
   const dispatch = useDispatch();
 

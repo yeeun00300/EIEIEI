@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import styles from "./MedicalList.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addFarmData,
@@ -7,6 +8,7 @@ import {
 import { getAuth } from "firebase/auth";
 import {
   addFarmDataWithSubcollections,
+  fetchFarmDocumentByEmail,
   getSubCollection,
   useFetchCollectionData,
 } from "../../firebase";
@@ -22,25 +24,27 @@ function MedicalList(props) {
   // const farmData = useSelector((state) => state.userInfoEditSlice);
 
   // useFetchCollectionData("farm");
-  const email = localStorage.getItem("email");
+  const [docId, setDocId] = useState(""); // docId 상태 추가
+  console.log(docId);
   useEffect(() => {
-    const queryOptions = {
-      conditions: [{ field: "email", operator: "==", value: email }],
-    };
-    dispatch(fetchExcelStock({ collectionName: "farm", queryOptions }));
+    const email = localStorage.getItem("email");
+
+    if (email) {
+      const fetchData = async () => {
+        try {
+          // 이메일로 문서 검색
+          const document = await fetchFarmDocumentByEmail(email);
+          if (document) {
+            setDocId(document.id); // 문서의 docId를 설정
+          }
+        } catch (error) {
+          console.error("문서 검색 실패:", error.message || error);
+        }
+      };
+
+      fetchData();
+    }
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(addFarmData({ collectionName: "farm", queryOptions: {} }));
-  // }, []);
-
-  const getStoredEmail = () => {
-    return localStorage.getItem("email");
-  };
-
-  console.log("Current farmData:", farmData);
-  // Ensure medicalData is properly initialized
-  const medicalData = farmData || {};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,12 +61,6 @@ function MedicalList(props) {
     try {
       console.log("Submitting farm data:", farmData);
 
-      const userEmail = getStoredEmail();
-
-      if (!userEmail) {
-        alert("저장된 사용자의 이메일이 없습니다.");
-        return;
-      }
       // 폼 데이터와 하위 컬렉션 데이터 준비
       const subCollections = {
         farmCureList: [
@@ -85,12 +83,17 @@ function MedicalList(props) {
         disease: [], // disease 데이터 준비
       };
 
-      const actionResult = await addFarmDataWithSubcollections(
+      console.log("SubCollections data:", subCollections);
+
+      const farmDocId = await addFarmDataWithSubcollections(
+        docId,
         farmData,
         subCollections
       );
 
-      if (actionResult) {
+      if (farmDocId) {
+        setDocId(farmDocId);
+        console.log("Farm document ID set:", farmDocId);
         alert("데이터가 성공적으로 저장되었습니다!");
       } else {
         alert("데이터 저장에 실패했습니다.");
@@ -102,7 +105,7 @@ function MedicalList(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.container}>
       <h2>축사 문진표</h2>
 
       <div className="form-section">
@@ -115,7 +118,7 @@ function MedicalList(props) {
             name="name"
             placeholder="의뢰인 성명을 입력하세요"
             onChange={handleChange}
-            value={medicalData.name || ""}
+            value={farmData.name || ""}
           />
         </div>
         <div className="field-group">
@@ -126,7 +129,7 @@ function MedicalList(props) {
             name="phone"
             placeholder="의뢰인 전화번호를 입력하세요"
             onChange={handleChange}
-            value={medicalData.phone || ""}
+            value={farmData.phone || ""}
           />
         </div>
         <div className="field-group">
@@ -137,7 +140,7 @@ function MedicalList(props) {
             name="address"
             placeholder="축사 주소를 입력하세요"
             onChange={handleChange}
-            value={medicalData.address || ""}
+            value={farmData.address || ""}
           />
         </div>
       </div>
@@ -152,7 +155,7 @@ function MedicalList(props) {
             name="barnType"
             placeholder="예: 소 축사, 돼지 축사"
             onChange={handleChange}
-            value={medicalData.barnType || ""}
+            value={farmData.barnType || ""}
           />
         </div>
         <div className="field-group">
@@ -163,7 +166,7 @@ function MedicalList(props) {
             name="numberOfAnimals"
             placeholder="예: 50마리"
             onChange={handleChange}
-            value={medicalData.numberOfAnimals || ""}
+            value={farmData.numberOfAnimals || ""}
           />
         </div>
       </div>
@@ -177,7 +180,7 @@ function MedicalList(props) {
             name="symptoms"
             placeholder="가축들이 보이는 공통 증상을 기재하세요"
             onChange={handleChange}
-            value={medicalData.symptoms || ""}
+            value={farmData.symptoms || ""}
           ></textarea>
         </div>
         <div className="field-group">
@@ -188,7 +191,7 @@ function MedicalList(props) {
             name="affectedAnimals"
             placeholder="영향을 받은 가축의 수를 입력하세요"
             onChange={handleChange}
-            value={medicalData.affectedAnimals || ""}
+            value={farmData.affectedAnimals || ""}
           />
         </div>
       </div>
@@ -202,7 +205,7 @@ function MedicalList(props) {
               type="checkbox"
               id="feverYes"
               name="fever"
-              checked={medicalData.fever === true}
+              checked={farmData.fever === true}
               onChange={handleCheckboxChange}
             />{" "}
             예
@@ -210,21 +213,21 @@ function MedicalList(props) {
               type="checkbox"
               id="feverNo"
               name="fever"
-              checked={medicalData.fever === false}
+              checked={farmData.fever === false}
               onChange={handleCheckboxChange}
             />{" "}
             아니요
           </span>
         </div>
         <div className="field-group">
-          <label htmlFor="temperature">평균 체온 (°C):</label>
+          <label htmlFor="feverMean">평균 체온 (°C):</label>
           <input
             type="text"
-            id="temperature"
-            name="temperature"
+            id="feverMean"
+            name="feverMean"
             placeholder="예: 39°C"
             onChange={handleChange}
-            value={medicalData.temperature || ""}
+            value={farmData.feverMean || ""}
           />
         </div>
 
@@ -235,7 +238,7 @@ function MedicalList(props) {
               type="checkbox"
               id="coughYes"
               name="cough"
-              checked={medicalData.cough === true}
+              checked={farmData.cough === true}
               onChange={handleCheckboxChange}
             />{" "}
             예
@@ -243,21 +246,21 @@ function MedicalList(props) {
               type="checkbox"
               id="coughNo"
               name="cough"
-              checked={medicalData.cough === false}
+              checked={farmData.cough === false}
               onChange={handleCheckboxChange}
             />{" "}
             아니요
           </span>
         </div>
         <div className="field-group">
-          <label htmlFor="coughFrequency">기침 빈도:</label>
+          <label htmlFor="coughCount">기침 빈도:</label>
           <input
             type="text"
-            id="coughFrequency"
-            name="coughFrequency"
+            id="coughCount"
+            name="coughCount"
             placeholder="예: 하루 3회"
             onChange={handleChange}
-            value={medicalData.coughFrequency || ""}
+            value={farmData.coughCount || ""}
           />
         </div>
 
@@ -268,7 +271,7 @@ function MedicalList(props) {
               type="checkbox"
               id="diarrheaYes"
               name="diarrhea"
-              checked={medicalData.diarrhea === true}
+              checked={farmData.diarrhea === true}
               onChange={handleCheckboxChange}
             />{" "}
             예
@@ -276,21 +279,21 @@ function MedicalList(props) {
               type="checkbox"
               id="diarrheaNo"
               name="diarrhea"
-              checked={medicalData.diarrhea === false}
+              checked={farmData.diarrhea === false}
               onChange={handleCheckboxChange}
             />{" "}
             아니요
           </span>
         </div>
         <div className="field-group">
-          <label htmlFor="diarrheaFrequency">설사 횟수:</label>
+          <label htmlFor="diarrheaCount">설사 횟수:</label>
           <input
             type="text"
-            id="diarrheaFrequency"
-            name="diarrheaFrequency"
+            id="diarrheaCount"
+            name="diarrheaCount"
             placeholder="예: 하루 5회"
             onChange={handleChange}
-            value={medicalData.diarrheaFrequency || ""}
+            value={farmData.diarrheaCount || ""}
           />
         </div>
       </div>
@@ -305,7 +308,7 @@ function MedicalList(props) {
             name="ventilation"
             placeholder="환기 상태를 입력하세요"
             onChange={handleChange}
-            value={medicalData.ventilation || ""}
+            value={farmData.ventilation || ""}
           />
         </div>
         <div className="field-group">
@@ -316,7 +319,7 @@ function MedicalList(props) {
             name="lighting"
             placeholder="조명 상태를 입력하세요"
             onChange={handleChange}
-            value={medicalData.lighting || ""}
+            value={farmData.lighting || ""}
           />
         </div>
         <div className="field-group">
@@ -327,7 +330,7 @@ function MedicalList(props) {
             name="feed"
             placeholder="사료 공급 상태를 입력하세요"
             onChange={handleChange}
-            value={medicalData.feed || ""}
+            value={farmData.feed || ""}
           />
         </div>
       </div>

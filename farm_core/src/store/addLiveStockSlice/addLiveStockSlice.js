@@ -27,7 +27,7 @@ const initialState = {
   note: "",
   isLoading: false,
   error: null,
-  docId: null,
+  docId: "",
 };
 
 const AddLiveStockSlice = createSlice({
@@ -111,9 +111,8 @@ const addFarmData = createAsyncThunk(
   "livestock/addFarmData",
   async ({ addObj, subcollections }, { rejectWithValue }) => {
     try {
-      await addFarmDataWithSubcollections(addObj, subcollections);
-      console.log(addObj);
-      return { ...addObj }; // 반환할 결과를 수정하세요
+      const docId = await addFarmDataWithSubcollections(addObj, subcollections); // docId 반환
+      return { ...addObj, docId }; // 반환할 결과를 수정하세요
     } catch (error) {
       console.error("Error adding farm:", error);
       return rejectWithValue(error.message);
