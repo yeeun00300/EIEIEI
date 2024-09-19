@@ -30,4 +30,41 @@
 .stockCard {
   position: absolute;
   top: 0;
+  td {
+    .tdDiv {
+      display: flex;
+      // flex-direction: column;
+      align-items: center;
+      width: 100%;
+      button {
+        display: block;
+        // width: fit-content;
+        padding: 0;
+        text-align: left;
+      }
+      div {
+        // display: inline-block;
+        padding: 0 4px;
+        font-size: 10px;
+      }
+    }
+  }
+}
+.editStockBtn {
+  background-color: #007bff;
+  width: 100%;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: #007bff50;
+    color: #007bffcb;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  }
 }

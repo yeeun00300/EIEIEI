@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import { codeDict } from "../../api/codeDict/codeDict";
 import { Button } from "@mui/material";
+import { useFetchCollectionData } from "../../firebase";
+// import Button from "react-bootstrap/Button";
 
 function AdminStock() {
   const dispatch = useDispatch();
@@ -23,7 +25,47 @@ function AdminStock() {
     F: "암컷",
     M: "수컷",
   };
+  const [sortBy, setSortBy] = useState("stockId");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const email = localStorage.getItem("email");
+  const [filteredStock, setFilteredStock] = useState([]);
 
+  const [vaccineOpen, setVaccineOpen] = useState(true);
+  const [diseaseOpen, setDiseaseOpen] = useState(true);
+  useFetchCollectionData("stock");
+
+  useEffect(() => {
+    if (stock) {
+      // const filtered = stock.filter((item) => item.email === email);
+      // setFilteredStock(filtered);
+      setFilteredStock(stock);
+      if (stock.length > 0) {
+      } else {
+        console.log("No matching stock data found for email:", email);
+      }
+    }
+  }, [stock, email]);
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+  const sortedStock = filteredStock
+    ? [...filteredStock].sort((a, b) => {
+        const valA = a[sortBy];
+        const valB = b[sortBy];
+
+        if (sortOrder === "asc") {
+          return valA > valB ? 1 : -1;
+        } else {
+          return valA < valB ? 1 : -1;
+        }
+      })
+    : [];
   const queryOptions1 = {
     conditions: [{ field: "stockCode", operator: "==", value: codeDict[sort] }],
     orderBys: [{ field: "stockCode", direction: "desc" }],
@@ -113,10 +155,23 @@ function AdminStock() {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>축사번호</th>
-                <th>종류</th>
-                <th>등록일자</th>
-                <th>성별</th>
+                <th onClick={() => handleSort("stockId")}>
+                  축사번호{" "}
+                  {sortBy === "stockId" && (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
+                <th onClick={() => handleSort("stockType")}>
+                  종류{" "}
+                  {sortBy === "stockType" &&
+                    (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
+                <th onClick={() => handleSort("incomingDate")}>
+                  등록일자{" "}
+                  {sortBy === "incomingDate" &&
+                    (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
+                <th onClick={() => handleSort("sex")}>
+                  성별 {sortBy === "sex" && (sortOrder === "asc" ? "🔺" : "🔻")}
+                </th>
                 <th>상세정보</th>
               </tr>
             </thead>
@@ -125,7 +180,27 @@ function AdminStock() {
                 <div>No Data!!</div>
               ) : (
                 <>
-                  {stock?.map((stockItem) => {
+                  {sortedStock?.map((stockItem) => {
+                    const { stockId, stockType, incomingDate, sex } = stockItem;
+                    return (
+                      <tr key={stockId}>
+                        <td>{stockId}</td>
+                        <td>{stockType}</td>
+                        <td>{incomingDate}</td>
+                        <td>{stockSexual[sex]}</td>
+                        <td>
+                          <Button
+                            onClick={() => toggleOpen(stockId)} // ID에 따라 상태 관리
+                            aria-controls="example-collapse-text1"
+                            aria-expanded={open[stockId] || false}
+                          >
+                            상세보기
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {/* {stock?.map((stockItem) => {
                     const { stockId, stockType, incomingDate, sex } = stockItem;
                     return (
                       <tr key={stockId}>
@@ -144,7 +219,7 @@ function AdminStock() {
                         </td>
                       </tr>
                     );
-                  })}
+                  })} */}
                 </>
               )}
             </tbody>
@@ -167,6 +242,8 @@ function AdminStock() {
               sex,
               weight,
               size,
+              disease,
+              vaccine,
               breedCount,
               breedDate,
               pregnantDate,
@@ -222,11 +299,57 @@ function AdminStock() {
                           </tr>
                           <tr>
                             <td>질병이력</td>
-                            <td>{stockType}</td>
+                            <td>
+                              {disease.map((item, idx) => {
+                                const keyName = Object.keys(item);
+                                const text = item[keyName];
+                                return (
+                                  <div className={styles.tdDiv}>
+                                    <Button
+                                      onClick={() =>
+                                        setDiseaseOpen(!diseaseOpen)
+                                      }
+                                      aria-controls="example-collapse-text"
+                                      aria-expanded={diseaseOpen}
+                                    >
+                                      {keyName}
+                                    </Button>
+                                    <Collapse in={diseaseOpen}>
+                                      <div id="example-collapse-text">
+                                        {text}
+                                      </div>
+                                    </Collapse>
+                                  </div>
+                                );
+                              })}
+                            </td>
                           </tr>
                           <tr>
                             <td>예방접종</td>
-                            <td>{stockType}</td>
+                            <td>
+                              {vaccine.map((item, idx) => {
+                                const keyName = Object.keys(item);
+                                const text = item[keyName];
+                                return (
+                                  <div className={styles.tdDiv}>
+                                    <Button
+                                      onClick={() =>
+                                        setVaccineOpen(!vaccineOpen)
+                                      }
+                                      aria-controls="example-collapse-text"
+                                      aria-expanded={vaccineOpen}
+                                    >
+                                      {keyName}
+                                    </Button>
+                                    <Collapse in={vaccineOpen}>
+                                      <div id="example-collapse-text">
+                                        {text}
+                                      </div>
+                                    </Collapse>
+                                  </div>
+                                );
+                              })}
+                            </td>
                           </tr>
                           <tr>
                             <td>건강상태</td>
@@ -258,6 +381,7 @@ function AdminStock() {
                           </tr>
                         </tbody>
                       </Table>
+                      <button className={styles.editStockBtn}>수정하기</button>
                     </Card>
                   </div>
                 </Collapse>

@@ -19,9 +19,9 @@ function Chatting() {
   const email = localStorage.getItem("email");
 
   // 사용자 이메일 선별 (선별된 데이터 :filteredUser )
-  // const filteredUser = chattingUser.filter(
-  //   (item) => item.user2.email === email
-  // );
+  const filteredUser = chattingUser.filter(
+    (item) => item.user1.email === email
+  );
   // filterUserArr.push(filteredUser);
   useEffect(() => {
     dispatch(
