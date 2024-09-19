@@ -12,7 +12,7 @@ import {
 } from "@mui/x-charts";
 import krCowIcon from "../../img/한우얼굴.png";
 
-function CCTVandAnimalInfo({ onClick }) {
+function CCTVandAnimalInfo({ onClick, farmData }) {
   return (
     <>
       <div className={styles.liveStockInfoBox}>
