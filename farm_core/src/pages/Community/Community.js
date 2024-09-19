@@ -87,6 +87,7 @@ function Community() {
               placeholder="검색으로 게시글 찾기"
               value={keyword}
               onChange={handleKeywordChange}
+              className={styles.searchInput}
             />
             <button className={styles.searchButton} type="submit">
               <img src={searchImg} alt="검색" />
