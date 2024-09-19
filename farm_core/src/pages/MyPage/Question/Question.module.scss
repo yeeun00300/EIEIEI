@@ -160,3 +160,9 @@ h2 {
     background-color: #0056b3;
   }
 }
+.imagePreview img {
+  max-width: 100px; /* 원하는 크기로 조정 */
+  max-height: 100px; /* 원하는 크기로 조정 */
+  object-fit: cover; /* 이미지가 영역을 넘지 않도록 */
+  margin-right: 10px;
+}
