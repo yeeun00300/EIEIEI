@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setCardInfo } from "../../store/myPageSlice/paymentSlice";
-import styles from "./RegularPayment.module.scss";
+import React from "react";
 import { MdPayment } from "react-icons/md";
-import logoImg from "../../img/TitleLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
-import { SiKakaotalk } from "react-icons/si";
-import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
-import { addPaymentHistory, updateDatas } from "../../firebase";
+import logoImg from "../../img/TitleLogo.png";
+import styles from "./RegularPayment.module.scss";
+import { useSelector } from "react-redux";
+import { addPaymentHistory } from "../../firebase";
 import kroDate from "../../utils/korDate";
+import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
 
 function RegularPayment() {
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
 
-  console.log(kroDate());
   const requestPayment = async () => {
     if (PortOne && userInfo && userInfo.length > 0) {
       const customerEmail = userInfo[0].email;
@@ -22,15 +19,8 @@ function RegularPayment() {
       const customerphone = userInfo[0].phone;
       const uniquePaymentId = `test-${Date.now()}`;
       const payDate = kroDate();
-      console.log(payDate);
-
       const docId = userInfo[0].docId;
 
-      console.log("결제 요청 - 이메일:", customerEmail);
-      console.log("결제 요청 - 이름:", customerName);
-      console.log("결제 요청 - 폰:", customerphone);
-
-      // window.PortOne.requestPayment({
       const response = await PortOne.requestPayment({
         storeId: "store-8ead5501-fb96-4f25-a67c-2c9f4d8fed3a",
         paymentId: uniquePaymentId,
@@ -47,104 +37,74 @@ function RegularPayment() {
         redirectURL: "localhost:3000/",
       });
 
-      console.log(response);
       if (response && response.txId) {
-        console.log("결제 성공:", payDate);
         await addPaymentHistory("users", docId, {
           paymentDate: payDate,
           amount: 1000,
           paymentId: response.paymentId,
         });
       } else {
-        console.error("결제 날짜 없음 :");
+        console.error("결제 실패");
       }
     } else {
       console.error("PortOne SDK is not loaded or userInfo is missing.");
     }
   };
 
-  // const requestKakaoPay = () => {
-  //   if (PortOne && userInfo && userInfo.length > 0) {
-  //     const customerEmail = userInfo[0].email;
-  //     const customerName = userInfo[0].name;
-  //     const customerphone = userInfo[0].phone;
-  //     const uniquePaymentId = `test-${Date.now()}`;
-
-  //     console.log("결제 요청 - 이메일:", customerEmail);
-  //     console.log("결제 요청 - 이름:", customerName);
-  //     console.log("결제 요청 - 폰:", customerphone);
-
-  //     PortOne.requestPayment({
-  //       storeId: "store-8ead5501-fb96-4f25-a67c-2c9f4d8fed3a",
-  //       paymentId: uniquePaymentId,
-  //       orderName: "EIEIEI 프로그램 정기구독",
-  //       totalAmount: 1000,
-  //       currency: "KRW",
-  //       channelKey: "channel-key-350b5e06-e6cb-4058-8bed-6ceb73c3db04",
-  //       payMethod: "EASY_PAY",
-  //       easyPay: {},
-  //       customer: {
-  //         phoneNumber: customerphone,
-  //         fullName: customerName,
-  //         email: customerEmail,
-  //       },
-  //       redirectURL: "localhost:3000/",
-  //       onSuccess: (response) => {
-  //         console.log("카카오페이 결제 성공 응답:", response);
-  //         setResponse(response);
-  //         if (response && response.cardNumber) {
-  //           dispatch(
-  //             setCardInfo({
-  //               cardNumber: response.cardNumber,
-  //               cardType: response.cardType,
-  //             })
-  //           );
-  //         } else {
-  //           console.error("카드 정보가 응답에 없습니다:", response);
-  //         }
-  //       },
-  //       onFailure: (error) => {
-  //         console.error("카카오페이 결제 실패 응답:", error);
-  //       },
-  //     });
-  //   }
-  // };
-
   return (
     <div className="page">
-      <div className={styles.mainbox}>
-        <div className={styles.logoImgBox}>
-          <img src={logoImg} className={styles.logoImg} />
-          <h1>FarmCore</h1>
-        </div>
+      <div className={styles.wrapper}>
+        <header className={styles.header}>
+          <img src={logoImg} className={styles.logoImg} alt="FarmCore Logo" />
+          <h1 className={styles.logoTitle}>FarmCore</h1>
+        </header>
 
-        <h1 className={styles.title}>정기 구독 서비스</h1>
-        <div className={styles.fcContent}>
-          <h2>
-            FarmCore의 모든 것을
-            <br /> 간단한 조작으로 즐기세요.
-          </h2>
-        </div>
-        <div>
-          <h2>
-            내 안에 작은 기계. FarmCore의 Aplication을 통해
-            <br />
-            원터치로 축사에 모든 장비를 관리하세요.{" "}
-          </h2>
-        </div>
-        <div className={styles.subscriptionOptions}>
-          <div className={styles.option}>
-            <div className={styles.iconTextBox}>
-              <MdPayment />
-              <h2>기본 패키지</h2>
+        <div className={styles.mainbox}>
+          <h1 className={styles.title}>스마트팜 구독 서비스</h1>
+          <p className={styles.subtitle}>
+            축사 관리 자동화의 혁신, FarmCore와 함께 하세요!
+          </p>
+
+          <div className={styles.subscriptionOptions}>
+            <div className={styles.option}>
+              <div className={styles.iconTextBox}>
+                <MdPayment size={30} />
+                <h2 className={styles.optionTitle}>기본 구독 패키지</h2>
+              </div>
+              <p className={styles.price}>₩10,000 / 월</p>
+              <p className={styles.description}>
+                실시간 환경 모니터링, 자동화 시스템 연동, 알림 서비스 제공
+              </p>
+              <button onClick={requestPayment} className={styles.button}>
+                <FontAwesomeIcon icon={faCreditCard} /> 결제하기
+              </button>
             </div>
-            <p className={styles.price}>₩10,000 / 월</p>
-            <p className={styles.description}>
-              기본 패키지 설명: 기본적인 모든 기능을 포함합니다.
-            </p>
-            <button onClick={requestPayment} className={styles.button}>
-              <FontAwesomeIcon icon={faCreditCard} /> PortOne 결제
-            </button>
+
+            <div className={styles.benefits}>
+              <h3>구독 혜택:</h3>
+              <ul className={styles.benefitsList}>
+                <li className={styles.benefitItem}>
+                  <span className={styles.bulletPoint}>•</span> 실시간 축사 환경
+                  모니터링
+                </li>
+                <li className={styles.benefitItem}>
+                  <span className={styles.bulletPoint}>•</span> 자동 급이/급수
+                  시스템 연동
+                </li>
+                <li className={styles.benefitItem}>
+                  <span className={styles.bulletPoint}>•</span> 온도, 습도, 환기
+                  제어
+                </li>
+                <li className={styles.benefitItem}>
+                  <span className={styles.bulletPoint}>•</span> 이상 상황 알림
+                  서비스
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles.footnote}>
+            <p>언제든 구독을 취소할 수 있습니다.</p>
           </div>
         </div>
       </div>

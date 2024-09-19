@@ -1,41 +1,39 @@
 import React, { useEffect, useState } from "react";
 import styles from "./UserInfo.module.scss";
 import img from "../../../img/person.png";
-import DaumPostcode from "react-daum-postcode";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setAddress,
-  setDetailedAddress,
-  toggleOpen,
-} from "../../../store/myPageSlice/addressSlice";
 import {
   updateDatas,
   uploadProfileImage,
   useFetchCollectionData,
 } from "../../../firebase";
 import {
-  setName,
-  setEmail,
-  setTel,
-  setUserNickname,
-  setProfileImage,
+  updateUserInfo,
+  fetchUser,
 } from "../../../store/userInfoEditSlice/UserInfoEditSlice";
-import { fetchUser } from "../../../store/userInfoEditSlice/UserInfoEditSlice";
+import { toggleOpen } from "../../../store/myPageSlice/addressSlice";
+import { useDaumPostcodePopup } from "react-daum-postcode";
 
 function UserInfo() {
   useFetchCollectionData("users");
   const dispatch = useDispatch();
-  const { address, detailedAddress, isOpen } = useSelector(
-    (state) => state.addressSlice
-  );
-  const { userInfo, name, email, nickname, phone, profileImages } = useSelector(
-    (state) => state.userInfoEditSlice
-  );
+  const {
+    name,
+    email,
+    nickname,
+    phone,
+    address,
+    detailedAddress,
+    profileImages,
+    userInfo,
+  } = useSelector((state) => state.userInfoEditSlice);
 
   const [file, setFile] = useState(null);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(img);
   const [isEditing, setIsEditing] = useState(true);
+
+  const open = useDaumPostcodePopup();
 
   useEffect(() => {
     if (!initialDataLoaded) {
@@ -47,41 +45,35 @@ function UserInfo() {
   useEffect(() => {
     if (userInfo.length > 0) {
       const user = userInfo[0];
-      dispatch(setName(user.name || ""));
-      dispatch(setEmail(user.email || ""));
-      dispatch(setUserNickname(user.nickname || ""));
-      dispatch(setTel(user.phone || ""));
-      dispatch(setAddress(user.address || ""));
-      dispatch(setDetailedAddress(user.detailedAddress || ""));
+      dispatch(
+        updateUserInfo({
+          name: user.name || "",
+          email: user.email || "",
+          nickname: user.nickname || "",
+          phone: user.phone || "",
+          address: user.address || "",
+          detailedAddress: user.detailedAddress || "",
+          profileImages: user.profileImages || img,
+        })
+      );
       setPreviewUrl(user.profileImages || img);
     }
   }, [userInfo, dispatch]);
 
-  const themeObj = {
-    bgColor: "#FFFFFF",
-    pageBgColor: "#FFFFFF",
-    postcodeTextColor: "#C05850",
-    emphTextColor: "#222222",
-  };
-
-  const postCodeStyle = {
-    width: "360px",
-    height: "480px",
-  };
-
   const completeHandler = (data) => {
-    const { address, detailedAddress } = data;
-    dispatch(setAddress(address));
-    dispatch(setDetailedAddress(detailedAddress));
+    console.log("Address Data:", data); // 확인
+    const address = `${data.address}`;
+    const detailedAddress = `${data.bname} ${
+      data.buildingName ? data.buildingName : ""
+    }`;
+    dispatch(updateUserInfo({ address, detailedAddress }));
     dispatch(toggleOpen());
   };
 
-  const closeHandler = () => {
-    dispatch(toggleOpen());
-  };
-
-  const toggleHandler = () => {
-    dispatch(toggleOpen());
+  const openAddressPopup = () => {
+    open({
+      onComplete: completeHandler,
+    });
   };
 
   const handleFileChange = (e) => {
@@ -95,22 +87,7 @@ function UserInfo() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "name":
-        dispatch(setName(value));
-        break;
-      case "email":
-        dispatch(setEmail(value));
-        break;
-      case "nickname":
-        dispatch(setUserNickname(value));
-        break;
-      case "phone":
-        dispatch(setTel(value));
-        break;
-      default:
-        break;
-    }
+    dispatch(updateUserInfo({ [name]: value }));
   };
 
   const handleSave = async () => {
@@ -121,7 +98,7 @@ function UserInfo() {
 
         if (file) {
           profileImageUrl = await uploadProfileImage(file);
-          dispatch(setProfileImage(profileImageUrl));
+          dispatch(updateUserInfo({ profileImages: profileImageUrl }));
         }
 
         const updateObj = {
@@ -136,18 +113,16 @@ function UserInfo() {
 
         await updateDatas("users", userId, updateObj);
 
+        // 페이지를 새로고침
         alert("저장 완료");
         setIsEditing(false);
+        window.location.reload(); // 페이지 새로고침
       } catch (error) {
         console.error("저장 실패:", error);
       }
     } else {
       console.error("User ID가 없습니다.");
     }
-  };
-
-  const openAddressPopup = () => {
-    dispatch(toggleOpen());
   };
 
   if (!initialDataLoaded) {
@@ -205,7 +180,9 @@ function UserInfo() {
               <input
                 placeholder="주소"
                 value={address || ""}
-                onChange={(e) => dispatch(setAddress(e.target.value))}
+                onChange={(e) =>
+                  dispatch(updateUserInfo({ address: e.target.value }))
+                }
                 className={styles.addrIP}
               />
             </div>
@@ -215,20 +192,15 @@ function UserInfo() {
                 placeholder="상세주소를 작성해주세요"
                 className={styles.addr2}
                 value={detailedAddress || ""}
-                onChange={(e) => dispatch(setDetailedAddress(e.target.value))}
+                onChange={(e) =>
+                  dispatch(updateUserInfo({ detailedAddress: e.target.value }))
+                }
               />
               <button className={styles.addrBtn} onClick={openAddressPopup}>
                 주소 검색
               </button>
             </div>
 
-            {isOpen && (
-              <DaumPostcode
-                style={postCodeStyle}
-                onComplete={completeHandler}
-                theme={themeObj}
-              />
-            )}
             <div className={styles.btnWrap}>
               {isEditing ? (
                 <>
@@ -236,7 +208,7 @@ function UserInfo() {
                     저장
                   </button>
                   <button
-                    className={styles.editBtn}
+                    className={styles.cancelBtn}
                     onClick={() => setIsEditing(false)}
                   >
                     취소

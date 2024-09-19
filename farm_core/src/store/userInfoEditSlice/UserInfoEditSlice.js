@@ -16,26 +16,23 @@ const userInfoEditSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setName(state, action) {
-      state.name = action.payload;
-    },
-    setEmail(state, action) {
-      state.email = action.payload;
-    },
-    setUserNickname(state, action) {
-      state.nickname = action.payload;
-    },
-    setTel(state, action) {
-      state.phone = action.payload;
-    },
-    setAddress(state, action) {
-      state.address = action.payload;
-    },
-    setDetailedAddress(state, action) {
-      state.detailedAddress = action.payload;
-    },
-    setProfileImage(state, action) {
-      state.profileImages = action.payload;
+    updateUserInfo(state, action) {
+      const {
+        name,
+        email,
+        nickname,
+        phone,
+        address,
+        detailedAddress,
+        profileImages,
+      } = action.payload;
+      state.name = name || state.name;
+      state.email = email || state.email;
+      state.nickname = nickname || state.nickname;
+      state.phone = phone || state.phone;
+      state.address = address || state.address;
+      state.detailedAddress = detailedAddress || state.detailedAddress;
+      state.profileImages = profileImages || state.profileImages;
     },
   },
   extraReducers: (builder) => {
@@ -77,12 +74,4 @@ const fetchUser = createAsyncThunk(
 
 export default userInfoEditSlice.reducer;
 export { fetchUser };
-export const {
-  setName,
-  setEmail,
-  setUserNickname,
-  setTel,
-  setAddress,
-  setDetailedAddress,
-  setProfileImage,
-} = userInfoEditSlice.actions;
+export const { updateUserInfo } = userInfoEditSlice.actions;

@@ -8,6 +8,7 @@ import {
 import { getAuth } from "firebase/auth";
 import {
   addFarmDataWithSubcollections,
+  addMessage,
   fetchFarmDocumentByEmail,
   getSubCollection,
   useFetchCollectionData,
@@ -85,19 +86,14 @@ function MedicalList(props) {
 
       console.log("SubCollections data:", subCollections);
 
-      const farmDocId = await addFarmDataWithSubcollections(
+      const farmDocId = await addMessage(
+        "farm",
         docId,
-        farmData,
-        subCollections
+        "farmCureList",
+        subCollections.farmCureList
       );
 
-      if (farmDocId) {
-        setDocId(farmDocId);
-        console.log("Farm document ID set:", farmDocId);
-        alert("데이터가 성공적으로 저장되었습니다!");
-      } else {
-        alert("데이터 저장에 실패했습니다.");
-      }
+      alert("데이터가 성공적으로 저장되었습니다!");
     } catch (error) {
       console.error("데이터 저장 실패:", error.message || error);
       alert("데이터 저장에 실패했습니다.");
@@ -174,24 +170,24 @@ function MedicalList(props) {
       <div className="form-section">
         <h3>가축 건강 상태</h3>
         <div className="field-group">
-          <label htmlFor="symptoms">공통 증상:</label>
+          <label htmlFor="symptom">공통 증상:</label>
           <textarea
-            id="symptoms"
-            name="symptoms"
+            id="symptom"
+            name="symptom"
             placeholder="가축들이 보이는 공통 증상을 기재하세요"
             onChange={handleChange}
-            value={farmData.symptoms || ""}
+            value={farmData.symptom || ""}
           ></textarea>
         </div>
         <div className="field-group">
-          <label htmlFor="affectedAnimals">영향을 받은 가축 수:</label>
+          <label htmlFor="symptomCount">영향을 받은 가축 수:</label>
           <input
             type="text"
-            id="affectedAnimals"
-            name="affectedAnimals"
+            id="symptomCount"
+            name="symptomCount"
             placeholder="영향을 받은 가축의 수를 입력하세요"
             onChange={handleChange}
-            value={farmData.affectedAnimals || ""}
+            value={farmData.symptomCount || ""}
           />
         </div>
       </div>
@@ -312,25 +308,25 @@ function MedicalList(props) {
           />
         </div>
         <div className="field-group">
-          <label htmlFor="lighting">조명 상태:</label>
+          <label htmlFor="lampCondition">조명 상태:</label>
           <input
             type="text"
-            id="lighting"
-            name="lighting"
+            id="lampCondition"
+            name="lampCondition"
             placeholder="조명 상태를 입력하세요"
             onChange={handleChange}
-            value={farmData.lighting || ""}
+            value={farmData.lampCondition || ""}
           />
         </div>
         <div className="field-group">
           <label htmlFor="feed">사료 공급 상태:</label>
           <input
             type="text"
-            id="feed"
-            name="feed"
+            id="feedSupply"
+            name="feedSupply"
             placeholder="사료 공급 상태를 입력하세요"
             onChange={handleChange}
-            value={farmData.feed || ""}
+            value={farmData.feedSupply || ""}
           />
         </div>
       </div>

@@ -1,30 +1,11 @@
-// Payment.js
-
-import React, { useEffect } from "react";
+import React from "react";
+import { Card, CardContent, Typography } from "@mui/material";
 import styles from "./Payment.module.scss";
 import RegularPayment from "./../../RegularPayment/RegularPayment";
-import { useDispatch, useSelector } from "react-redux";
-import { DataGrid } from "@mui/x-data-grid";
-import userInfoEditSlice, {
-  fetchUser,
-} from "./../../../store/userInfoEditSlice/UserInfoEditSlice";
-import checkLoginSlice, {
-  fetchUserList,
-} from "./../../../store/checkLoginSlice/checkLoginSlice";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getUserAuth, useFetchCollectionData } from "../../../firebase";
+import { useSelector } from "react-redux";
 
-function Payment(props) {
-  useFetchCollectionData("users");
-  const dispatch = useDispatch();
+function Payment() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
-  // const userInfo = user[0];
-  // console.log(userInfo);
-
-  // const rows = [
-  //   { id: 1, payEmail: "email", paymentDate: "2024-09-01", amount: 10000 },
-  //   { id: 2, paymentDate: "2024-08-15", amount: 50000 },
-  // ];
 
   const formatPhoneNumber = (phoneNumber) => {
     if (!phoneNumber) return "N/A";
@@ -33,80 +14,54 @@ function Payment(props) {
 
   const formatAmount = (amount) => {
     if (amount === undefined || amount === null) return "₩0";
-    return `₩${amount.toLocaleString()}`; // 숫자를 천 단위로 구분하여 문자열로 변환
+    return `₩${amount.toLocaleString()}`;
   };
 
-  const rows = users.flatMap((user, idx) =>
-    user.paymentHistory.map((payment, paymentIdx) => ({
-      id: `${idx + 1}`, // 유니크 ID
-      payEmail: user.email,
-      paymentDate: payment.paymentDate || "N/A",
-      amount: formatAmount(payment.amount) || 0,
-      paymentId: payment.paymentId || "N/A",
-      phone: formatPhoneNumber(user.phone) || "N/A",
-    }))
-  );
-
-  console.log(rows);
-
-  const columns = [
-    {
-      field: "id",
-      headerName: "회차",
-      width: 70,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "payEmail",
-      headerName: "결제 이메일",
-      width: 200,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "paymentDate",
-      headerName: "결제일",
-      width: 250,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "amount",
-      headerName: "결제 금액",
-      width: 130,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "paymentId",
-      headerName: "결제 아이디",
-      width: 130,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "phone",
-      headerName: "결제 핸드폰 번호",
-      width: 200,
-      headerAlign: "center",
-      align: "center",
-    },
-  ];
-
   return (
-    <div className="containerS">
-      <div className={styles.dataGridContainer}>
-        <div className={styles.dataGrid}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={5}
-            sortingOrder={["asc", "desc"]}
-          />
-        </div>
-      </div>
-      {/* <RegularPayment /> */}
+    <div className={styles.cardContainer}>
+      {" "}
+      {/* 스타일 적용 */}
+      {users.map((user) =>
+        user.paymentHistory.map((payment, idx) => (
+          <Card key={idx} className={styles.customCard}>
+            {" "}
+            {/* customCard 스타일 적용 */}
+            <CardContent className={styles.cardContent}>
+              {" "}
+              {/* cardContent 스타일 적용 */}
+              <Typography variant="h6" className={styles.cardTitle}>
+                {" "}
+                {/* cardTitle 스타일 적용 */}
+                결제 이메일: {user.email}
+              </Typography>
+              <Typography variant="body1">
+                결제일: {payment.paymentDate || "N/A"}
+              </Typography>
+              <Typography variant="body1" className={styles.cardPrice}>
+                {" "}
+                {/* cardPrice 스타일 적용 */}
+                결제 금액: {formatAmount(payment.amount)}
+              </Typography>
+              <Typography variant="body1">
+                결제 아이디: {payment.paymentId || "N/A"}
+              </Typography>
+              <Typography variant="body1">
+                핸드폰 번호: {formatPhoneNumber(user.phone) || "N/A"}
+              </Typography>
+            </CardContent>
+            <div className={styles.cardActions}>
+              {" "}
+              {/* cardActions 스타일 적용 */}
+              <button className={styles.subscribeButton}>
+                {" "}
+                {/* subscribeButton 스타일 적용 */}
+                정기 결제 구독
+              </button>
+            </div>
+          </Card>
+        ))
+      )}
+      <RegularPayment />
     </div>
   );
 }
