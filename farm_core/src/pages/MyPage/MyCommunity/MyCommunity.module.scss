@@ -116,6 +116,8 @@
 /* 다이얼로그 내용 */
 .dialogContent {
   padding: 1rem;
+  max-height: 60vh; /* 다이얼로그 내용 최대 높이 설정 */
+  overflow-y: auto; /* 내용이 길어질 경우 스크롤 가능 */
 }
 
 /* 다이얼로그 액션 */
@@ -124,14 +126,33 @@
   border-top: 1px solid #ddd;
 }
 
-/* 버튼 */
-.button {
-  border-color: var(--main-color);
-  color: #007bff;
-  font-weight: 600;
+/* 제목과 내용 레이블 */
+.dialogLabel {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
-.button:hover {
-  border-color: var(--main-color);
-  color: #0056b3;
+/* 제목 및 내용 */
+.dialogContentItem {
+  margin-bottom: 1rem;
 }
+
+/* 이미지 크기 조정 */
+.dialogImage {
+  max-width: 100%; /* 이미지를 컨테이너의 최대 너비로 조정 */
+  height: auto; /* 이미지의 높이는 자동 조정 */
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+/* 버튼 */
+// .button {
+//   border-color: var(--main-color);
+//   color: #007bff;
+//   font-weight: 600;
+// }
+
+// .button:hover {
+//   border-color: var(--main-color);
+//   color: #0056b3;
+// }

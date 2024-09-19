@@ -1,12 +1,57 @@
-.dataGridContainer {
-  height: 100vh; /* 전체 화면 높이 */
-  width: 100%;
+.cardContainer {
   display: flex;
-  flex-direction: column;
-  overflow: hidden; /* 스크롤바 숨기기 */
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.dataGrid {
-  flex: 1; /* 컨테이너의 나머지 공간을 차지하도록 설정 */
-  overflow: hidden; /* 스크롤바 숨기기 */
+.customCard {
+  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  background-color: #ffffff;
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.cardTitle {
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.cardContent {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.cardPrice {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00796b;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+.subscribeButton {
+  background-color: #00796b;
+  color: white;
+  border-radius: 6px;
+  padding: 10px 20px;
+  text-transform: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #004d40;
+  }
 }

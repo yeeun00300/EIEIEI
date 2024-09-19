@@ -196,7 +196,6 @@ function MyCommunity() {
                 </TableBody>
               </Table>
             </TableContainer>
-
             {/* 게시글 상세보기 다이얼로그 */}
             <Dialog
               open={Boolean(selectedPost)}
@@ -207,13 +206,25 @@ function MyCommunity() {
                 {selectedPost?.title}
               </DialogTitle>
               <DialogContent className={styles.dialogContent}>
-                <Typography variant="body1">{selectedPost?.content}</Typography>
+                <div className={styles.dialogContentItem}>
+                  <Typography className={styles.dialogLabel}>제목:</Typography>
+                  <Typography>{selectedPost?.title}</Typography>
+                </div>
+                <div className={styles.dialogContentItem}>
+                  <Typography className={styles.dialogLabel}>내용:</Typography>
+                  <Typography>{selectedPost?.content}</Typography>
+                </div>
                 {selectedPost?.imgUrl && (
-                  <img
-                    src={selectedPost.imgUrl}
-                    alt="게시글 이미지"
-                    className={styles.image}
-                  />
+                  <div className={styles.dialogContentItem}>
+                    <Typography className={styles.dialogLabel}>
+                      이미지:
+                    </Typography>
+                    <img
+                      src={selectedPost.imgUrl}
+                      alt="게시글 이미지"
+                      className={styles.dialogImage}
+                    />
+                  </div>
                 )}
               </DialogContent>
               <DialogActions className={styles.dialogActions}>
