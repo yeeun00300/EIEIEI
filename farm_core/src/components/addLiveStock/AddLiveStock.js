@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import {
   setAddress,
+  setDetailedAddress,
   setZoneCode,
   toggleOpen,
 } from "../../store/myPageSlice/addressSlice";
@@ -17,7 +18,7 @@ import { addFarmDataWithSubcollections } from "../../firebase";
 
 function AddLiveStock(props) {
   const dispatch = useDispatch();
-  const { zoneCode, address, isOpen } = useSelector(
+  const { zoneCode, address, isOpen, detailedAddress } = useSelector(
     (state) => state.addressSlice
   );
   const {
@@ -32,17 +33,18 @@ function AddLiveStock(props) {
     note,
   } = useSelector((state) => state.AddLiveStockSlice);
 
-  const [detailAddress, setDetailAddress] = useState("");
+  // const [detailAddress, setDetailAddress] = useState("");
   const [formErrors, setFormErrors] = useState({});
 
   const open = useDaumPostcodePopup();
 
   const completeHandler = (data) => {
-    const { address: selectedAddress, detailAddress } = data;
+    const { address: selectedAddress, detailedAddress } = data;
+    console.log("Selected Address:", selectedAddress);
     dispatch(setAddress(selectedAddress));
-    dispatch(setDetailAddress(detailAddress));
+    dispatch(setDetailedAddress(detailedAddress));
     dispatch(toggleOpen());
-    setDetailAddress(""); // Clear the detail address after selecting
+    setDetailedAddress(""); // Clear the detail address after selecting
   };
 
   const openPostcodePopup = () => {
@@ -53,8 +55,8 @@ function AddLiveStock(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "detailAddress") {
-      setDetailAddress(value); // Update detail address
+    if (name === "detailedAddress") {
+      setDetailedAddress(value); // Update detail address
     } else {
       dispatch(addField({ fieldName: name, fieldValue: value }));
     }
@@ -65,7 +67,7 @@ function AddLiveStock(props) {
     if (!farmName) errors.farmName = "축사 이름은 필수입니다.";
     if (!farmId) errors.farmId = "축사 번호는 필수입니다.";
     if (!address) errors.address = "축사 위치는 필수입니다.";
-    if (!detailAddress) errors.detailAddress = "상세 주소는 필수입니다.";
+    if (!detailedAddress) errors.detailedAddress = "상세 주소는 필수입니다.";
     if (!farm_stockType) errors.farm_stockType = "축사 유형은 필수입니다.";
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -75,8 +77,10 @@ function AddLiveStock(props) {
     e.preventDefault();
 
     if (!validateForm()) {
+      console.log("Form Errors:", formErrors);
       return;
     }
+    console.log("Validation passed");
 
     const email = localStorage.getItem("email");
     const saveLayoutString = localStorage.getItem("userLayout");
@@ -85,7 +89,7 @@ function AddLiveStock(props) {
     const farmData = {
       farmName,
       farmId,
-      farmAddress: address + " " + detailAddress,
+      farmAddress: address + " " + detailedAddress,
       farmScale,
       farm_stockType,
       farmBuild,
@@ -169,7 +173,7 @@ function AddLiveStock(props) {
       dispatch(addField({ fieldName: "facilities", fieldValue: "" }));
       dispatch(addField({ fieldName: "insuranceDetail", fieldValue: "" }));
       dispatch(addField({ fieldName: "note", fieldValue: "" }));
-      setDetailAddress(""); // Clear detail address
+      setDetailedAddress(""); // Clear detail address
       dispatch(setAddress("")); // Clear main address
       // }
     } catch (error) {
@@ -225,17 +229,17 @@ function AddLiveStock(props) {
             )}
           </div>
           <div>
-            <label htmlFor="detailAddress">상세 주소:</label>
+            <label htmlFor="detailedAddress">상세 주소:</label>
             <input
-              name="detailAddress"
+              name="detailedAddress"
               type="text"
-              value={detailAddress}
+              value={detailedAddress}
               onChange={handleChange}
               placeholder="상세 주소를 입력해주세요"
               required
             />
-            {formErrors.detailAddress && (
-              <p className={styles.error}>{formErrors.detailAddress}</p>
+            {formErrors.detailedAddress && (
+              <p className={styles.error}>{formErrors.detailedAddress}</p>
             )}
           </div>
           <div>
