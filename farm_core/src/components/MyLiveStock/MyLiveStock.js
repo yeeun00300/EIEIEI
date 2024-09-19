@@ -19,38 +19,59 @@ import StockProduct from "./charts/StockProduct";
 import FeedAndWater from "./charts/FeedAndWater";
 import HealthCondition from "./charts/HealthCondition";
 import MortalityRate from "./charts/MortalityRate";
-import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import {
+  fetchExcelStock,
+  fetchSelectedStock,
+} from "../../store/stockSlice/stockSlice";
 import { useParams } from "react-router-dom";
+import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();
   const email = localStorage.getItem("email");
-  const [farm, setFarm] = useState("");
 
-  const handleChange = (event) => {
-    setFarm(event.target.value);
-  };
-  const { stock, isLoading } = useSelector((state) => state.stockSlice);
+  const { farmList, farmLoading } = useSelector(
+    (state) => state.checkLoginSlice
+  );
+
+  // console.log(farmList);
+
+  const { selectedStock, selectLoading } = useSelector(
+    (state) => state.stockSlice
+  );
   const [selectedChart, setSelectedChart] = useState(null); // 현재 선택된 차트를 저장할 상태
+  const [selectedValue, setSelectedValue] = useState(
+    farmList.length > 0 ? farmList[0].farmId : ""
+  );
+  const [farmInfo, setFarmInfo] = useState(null);
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value); // 선택된 option의 value 가져오기
+    console.log(selectedValue);
+  };
+  const handleButtonClick = () => {
+    // farmList에서 선택된 farmId에 해당하는 정보를 찾아서 업데이트
+    const queryOptions = {
+      conditions: [
+        {
+          field: "farmId",
+          operator: "==",
+          value: toString(selectedValue),
+        },
+      ],
+    };
+    dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
+    console.log(selectedStock);
+  };
 
   // 버튼 클릭 시 차트를 변경하는 함수
   const handleChartChange = (chartId) => {
     setSelectedChart(chartId);
     // console.log(selectedChart);
   };
+
   useEffect(() => {
-    if (selectedChart) {
-      const queryOptions = {
-        conditions: [
-          {
-            field: "email",
-            operator: "==",
-            value: email,
-          },
-        ],
-      };
-      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
-    }
+    // if (selectedChart) {
+    // }
   }, [selectedChart]);
 
   // 선택된 차트에 따라 다른 차트를 렌더링하는 함수
@@ -58,7 +79,7 @@ function MyLiveStock(props) {
     switch (selectedChart) {
       // 가축 수
       case "chart1":
-        return <StockNum stock={stock} />;
+        return <StockNum stock={selectedStock} />;
       // 사료 물 소비량
       case "chart2":
         return <FeedAndWater />;
@@ -88,16 +109,26 @@ function MyLiveStock(props) {
         <div className={styles.myFarmInfoBox}>
           <div className={styles.selectDiv}>
             <h3>축사 선택</h3>
-            <select className={styles.selectBox}>
-              <option>예은이네 1농장</option>
-              <option>예은이네 2농장</option>
-              <option>예은이네 3농장</option>
-              <option>예은이네 4농장</option>
+            <select
+              className={styles.selectBox}
+              value={selectedValue}
+              onChange={handleChange}
+            >
+              {farmList.map((farm, idx) => {
+                return (
+                  <option key={idx} value={farm.farmId}>
+                    {farm.farmName}
+                  </option>
+                );
+              })}
             </select>
-            <button>확인</button>
+            <button onClick={handleButtonClick}>확인</button>
           </div>
           <div className={styles.cctv}>
-            <CCTVandAnimalInfo onClick={handleChartChange} />
+            <CCTVandAnimalInfo
+              onClick={handleChartChange}
+              farmData={selectedStock}
+            />
           </div>
         </div>
         <div className={styles.farmInfoBox}>
@@ -152,7 +183,7 @@ function MyLiveStock(props) {
             {/* <KoreaBubble /> */}
             {/* <KoreaTest /> */}
             <div className={styles.chartContainer}>
-              {isLoading ? <div>로딩중</div> : renderChart()}
+              {selectLoading ? <div>로딩중</div> : renderChart()}
             </div>
           </div>
         </div>
