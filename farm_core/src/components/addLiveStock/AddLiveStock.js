@@ -4,45 +4,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import {
   setAddress,
-  setZoneCode,
+  setDetailedAddress,
   toggleOpen,
 } from "../../store/myPageSlice/addressSlice";
-
-import {
-  addField,
-  addFarmData,
-} from "../../store/addLiveStockSlice/addLiveStockSlice";
+import { addField } from "../../store/addLiveStockSlice/addLiveStockSlice";
 import kroDate from "../../utils/korDate";
 import { addFarmDataWithSubcollections } from "../../firebase";
 
-function AddLiveStock(props) {
+function AddLiveStock() {
   const dispatch = useDispatch();
-  const { zoneCode, address, isOpen } = useSelector(
-    (state) => state.addressSlice
-  );
   const {
-    farmName,
-    farmId,
-    farmScale,
-    farm_stockType,
-    farmBuild,
-    farmCondition,
-    facilities,
-    insuranceDetail,
-    note,
+    zoneCode,
+    address = "",
+    isOpen,
+    detailedAddress = "",
+  } = useSelector((state) => state.addressSlice);
+  const {
+    farmName = "",
+    farmId = "",
+    farmScale = "",
+    farm_stockType = "",
+    farmBuild = "",
+    farmCondition = "",
+    facilities = "",
+    insuranceDetail = "",
+    note = "",
   } = useSelector((state) => state.AddLiveStockSlice);
 
-  const [detailAddress, setDetailAddress] = useState("");
   const [formErrors, setFormErrors] = useState({});
 
   const open = useDaumPostcodePopup();
 
   const completeHandler = (data) => {
-    const { address: selectedAddress, detailAddress } = data;
+    const { address: selectedAddress, detailedAddress: selectedDetailAddress } =
+      data;
     dispatch(setAddress(selectedAddress));
-    dispatch(setDetailAddress(detailAddress));
+    dispatch(setDetailedAddress(selectedDetailAddress));
     dispatch(toggleOpen());
-    setDetailAddress(""); // Clear the detail address after selecting
   };
 
   const openPostcodePopup = () => {
@@ -53,8 +51,8 @@ function AddLiveStock(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "detailAddress") {
-      setDetailAddress(value); // Update detail address
+    if (name === "detailedAddress") {
+      dispatch(setDetailedAddress(value)); // Update detail address
     } else {
       dispatch(addField({ fieldName: name, fieldValue: value }));
     }
@@ -65,7 +63,7 @@ function AddLiveStock(props) {
     if (!farmName) errors.farmName = "축사 이름은 필수입니다.";
     if (!farmId) errors.farmId = "축사 번호는 필수입니다.";
     if (!address) errors.address = "축사 위치는 필수입니다.";
-    if (!detailAddress) errors.detailAddress = "상세 주소는 필수입니다.";
+    if (!detailedAddress) errors.detailedAddress = "상세 주소는 필수입니다.";
     if (!farm_stockType) errors.farm_stockType = "축사 유형은 필수입니다.";
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -75,8 +73,10 @@ function AddLiveStock(props) {
     e.preventDefault();
 
     if (!validateForm()) {
+      console.log("Form Errors:", formErrors);
       return;
     }
+    console.log("Validation passed");
 
     const email = localStorage.getItem("email");
     const saveLayoutString = localStorage.getItem("userLayout");
@@ -85,7 +85,7 @@ function AddLiveStock(props) {
     const farmData = {
       farmName,
       farmId,
-      farmAddress: address + " " + detailAddress,
+      farmAddress: address + " " + detailedAddress,
       farmScale,
       farm_stockType,
       farmBuild,
@@ -139,26 +139,12 @@ function AddLiveStock(props) {
     console.log("SubCollections:", subCollections);
 
     try {
-      // const farmDocId = await addFarmData(farmData);
-      // if (farmDocId) {
-      // 상위 문서의 ID를 사용하여 하위 컬렉션 추가
-      // await addFarmDataWithSubcollections(farmDocId, subCollections);
-      // console.log("farm added with ID:", farmDocId);
-
       const farmDocId = await addFarmDataWithSubcollections(
-        // email,
         farmData,
         subCollections
       );
-      // const result = await dispatch(
-      //   addFarmData({
-      //     addObj: farmData,
-      //     subcollections: subCollections,
-      //   })
-      // ).unwrap();
-      // console.log("result값 :", result);
       console.log("Farm added with ID:", farmDocId);
-      console.log("subCollections:", subCollections);
+
       // Clear form fields
       dispatch(addField({ fieldName: "farmName", fieldValue: "" }));
       dispatch(addField({ fieldName: "farmId", fieldValue: "" }));
@@ -169,9 +155,8 @@ function AddLiveStock(props) {
       dispatch(addField({ fieldName: "facilities", fieldValue: "" }));
       dispatch(addField({ fieldName: "insuranceDetail", fieldValue: "" }));
       dispatch(addField({ fieldName: "note", fieldValue: "" }));
-      setDetailAddress(""); // Clear detail address
       dispatch(setAddress("")); // Clear main address
-      // }
+      dispatch(setDetailedAddress("")); // Clear detailed address
     } catch (error) {
       console.error("Error adding farm:", error);
     }
@@ -225,17 +210,17 @@ function AddLiveStock(props) {
             )}
           </div>
           <div>
-            <label htmlFor="detailAddress">상세 주소:</label>
+            <label htmlFor="detailedAddress">상세 주소:</label>
             <input
-              name="detailAddress"
+              name="detailedAddress"
               type="text"
-              value={detailAddress}
+              value={detailedAddress}
               onChange={handleChange}
               placeholder="상세 주소를 입력해주세요"
               required
             />
-            {formErrors.detailAddress && (
-              <p className={styles.error}>{formErrors.detailAddress}</p>
+            {formErrors.detailedAddress && (
+              <p className={styles.error}>{formErrors.detailedAddress}</p>
             )}
           </div>
           <div>
@@ -283,35 +268,36 @@ function AddLiveStock(props) {
             />
           </div>
           <div>
-            <label htmlFor="facilities">설치 시설:</label>
+            <label htmlFor="facilities">시설:</label>
             <input
               type="text"
               name="facilities"
               value={facilities}
-              placeholder="예: 급수기, 환풍기"
+              placeholder="예: 축사 내부 온도 조절기, 자동 급수기"
               onChange={handleChange}
             />
           </div>
           <div>
-            <label htmlFor="insuranceDetail">가입한 보험 번호:</label>
+            <label htmlFor="insuranceDetail">보험 세부사항:</label>
             <input
               type="text"
               name="insuranceDetail"
               value={insuranceDetail}
-              placeholder="보험 번호를 입력하세요"
+              placeholder="예: 농업재해보험, 축산재해보험"
               onChange={handleChange}
             />
           </div>
           <div>
-            <label htmlFor="note">기타 메모:</label>
-            <textarea
+            <label htmlFor="note">비고:</label>
+            <input
+              type="text"
               name="note"
               value={note}
-              placeholder="추가 정보를 입력하세요"
+              placeholder="특이사항을 적어주세요"
               onChange={handleChange}
             />
           </div>
-          <button type="submit">저장하기</button>
+          <button type="submit">저장</button>
         </form>
       </div>
     </div>

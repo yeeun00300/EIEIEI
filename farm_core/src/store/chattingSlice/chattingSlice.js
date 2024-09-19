@@ -8,7 +8,6 @@ const initialState = {
   messages: message,
   chattingRoom: [],
   chattingUser: [],
-  //   chattingUser: [{ chattingRoom: [{ userName: "", photoUrl: "" }], docId: "" }],
   isLoading: false,
   error: null,
 };

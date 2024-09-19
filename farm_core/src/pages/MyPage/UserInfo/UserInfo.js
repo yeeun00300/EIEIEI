@@ -36,6 +36,7 @@ function UserInfo() {
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(img);
   const [isEditing, setIsEditing] = useState(true);
+
   useEffect(() => {
     if (!initialDataLoaded) {
       dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
@@ -145,6 +146,10 @@ function UserInfo() {
     }
   };
 
+  const openAddressPopup = () => {
+    dispatch(toggleOpen());
+  };
+
   if (!initialDataLoaded) {
     return <div>로딩 중...</div>;
   }
@@ -197,22 +202,33 @@ function UserInfo() {
             </div>
             <div className={styles.addr}>
               <span>주소 :</span>
-              <div className={styles.addrInputs}>
-                <input
-                  placeholder="주소"
-                  value={address || ""}
-                  onChange={(e) => dispatch(setAddress(e.target.value))}
-                  className={styles.addrIP}
-                />
-              </div>
+              <input
+                placeholder="주소"
+                value={address || ""}
+                onChange={(e) => dispatch(setAddress(e.target.value))}
+                className={styles.addrIP}
+              />
+            </div>
 
+            <div className={styles.addr2Wrapper}>
               <input
                 placeholder="상세주소를 작성해주세요"
                 className={styles.addr2}
                 value={detailedAddress || ""}
                 onChange={(e) => dispatch(setDetailedAddress(e.target.value))}
               />
+              <button className={styles.addrBtn} onClick={openAddressPopup}>
+                주소 검색
+              </button>
             </div>
+
+            {isOpen && (
+              <DaumPostcode
+                style={postCodeStyle}
+                onComplete={completeHandler}
+                theme={themeObj}
+              />
+            )}
             <div className={styles.btnWrap}>
               {isEditing ? (
                 <>
