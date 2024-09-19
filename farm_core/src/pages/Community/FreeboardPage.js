@@ -9,6 +9,8 @@ import {
   deleteCommunityPost,
   updatePostReactions,
 } from "../../store/communitySlice/communitySlice";
+import { updateCommunityDatas } from "../../firebase";
+import DeclareModal from "./components/DeclareModal";
 
 function FreeboardPage() {
   const { id } = useParams();
@@ -17,6 +19,7 @@ function FreeboardPage() {
   const navigate = useNavigate();
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [userHasDisliked, setUserHasDisliked] = useState(false);
+  const [isDeclareModalOpen, setIsDeclareModalOpen] = useState(false);
 
   const getStockTypeInKorean = (type) => {
     switch (type) {
@@ -151,6 +154,25 @@ function FreeboardPage() {
     }
   }, [userHasLiked, userHasDisliked, postData, dispatch, id, communityType]);
 
+  const handleDeclareClick = () => {
+    setIsDeclareModalOpen(true);
+  };
+
+  const handleDeclareSubmit = async (reason) => {
+    const updates = {
+      declareReason: reason,
+      declareState: "reported",
+      declareCount: (postData.declareCount || 0) + 1,
+    };
+    try {
+      await updateCommunityDatas(id, updates);
+      alert("신고가 접수되었습니다.");
+    } catch (error) {
+      console.error("신고 처리 실패:", error);
+    }
+    setIsDeclareModalOpen(false);
+  };
+
   if (!postData) {
     return <div>게시물을 찾을 수 없습니다.</div>;
   }
@@ -189,7 +211,7 @@ function FreeboardPage() {
           <button onClick={handleUpdate}>수정하기</button>
           <button onClick={handleDelete}>삭제하기</button>
           <div className={styles.siren}>
-            <button>
+            <button onClick={handleDeclareClick}>
               <img src={sirenImg} alt="신고하기" />
             </button>
             <span>신고하기</span>
@@ -210,6 +232,12 @@ function FreeboardPage() {
           </div>
         </div>
         <CommentSection />
+        {isDeclareModalOpen && (
+          <DeclareModal
+            onClose={() => setIsDeclareModalOpen(false)}
+            onSubmit={handleDeclareSubmit}
+          />
+        )}
       </div>
     </div>
   );

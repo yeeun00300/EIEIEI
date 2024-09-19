@@ -1,5 +1,5 @@
 import React from "react";
-import { KoreaBubbleMap, KoreaMapData } from "@tenqube/react-korea-bubble-map";
+import { KoreaBubbleMap } from "@tenqube/react-korea-bubble-map";
 
 function KoreaBubble(props) {
   const data = {

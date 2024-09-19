@@ -13,6 +13,7 @@ import {
   getDocs,
   getFirestore,
   limit,
+  onSnapshot,
   orderBy,
   query,
   setDoc,
@@ -66,6 +67,25 @@ async function addDatas(collectionName, userObj) {
     const docRef = await addDoc(collection(db, collectionName), userObj);
     // console.log("Document written with ID: ", docRef.id);
     return docRef.id; // 문서 ID 반환
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    throw new Error(error.message); // 에러 메시지 반환
+  }
+}
+// docID를 가지는 필드이름에 배열 중 마지막에 추가하는 함수
+async function addFieldArray(collectionName, docId, fieldName, userObj) {
+  try {
+    const Ref = doc(db, collectionName, docId);
+    const docSnap = await getDoc(Ref);
+    // 기존배열을 가져옴
+    const snapshot = docSnap.data()[`${fieldName}`];
+    // 기존배열에 새로운 객체 추가
+    snapshot.push(userObj);
+    const resultData = { [fieldName]: snapshot };
+    // 새로운 배열 업데이트
+    const docRef = await updateDatas(collectionName, docId, resultData);
+    // 새로운 하위 컬렉션(채팅방) 추가
+    // const ordersCollectionRef = collection(userDocRef, userObj.name);
   } catch (error) {
     console.error("Error adding document: ", error);
     throw new Error(error.message); // 에러 메시지 반환
@@ -493,7 +513,7 @@ export const updateCommunityDatas = async (id, updates, imgUrl) => {
     const time = new Date().getTime();
 
     // 이미지 파일을 변경했을 때
-    if (imgUrl && updates.imgUrl) {
+    if (imgUrl && updates.imgUrl && imgUrl !== updates.imgUrl) {
       const storage = getStorage();
       const deleteRef = ref(storage, imgUrl);
       await deleteObject(deleteRef);
@@ -535,26 +555,59 @@ export const deleteCommunityDatas = async (id) => {
 // 댓글 추가
 export const addComment = async (postId, comment) => {
   try {
+    console.log("댓글 추가 데이터:", comment); // 로그 추가
+
     const commentsRef = collection(db, "community", postId, "comments");
     await addDoc(commentsRef, {
-      ...comment,
-      createdAt: Timestamp.fromDate(new Date()),
+      subContent: comment.subContent, // 새로운 필드 이름
+      subCreatedAt: Timestamp.fromDate(new Date()), // 생성 시간
+      nickname: comment.nickname, // 사용자 닉네임
     });
   } catch (error) {
     console.error("댓글 추가 실패:", error);
   }
 };
-
 // 댓글 목록 가져오기
 export const getComments = async (postId) => {
   try {
     const commentsRef = collection(db, "community", postId, "comments");
-    const q = query(commentsRef, orderBy("createdAt", "desc"));
+    const q = query(commentsRef, orderBy("subCreatedAt", "desc"));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error("댓글 목록 가져오기 실패:", error);
     return [];
+  }
+};
+export const updateComment = async (postId, commentId, updatedContent) => {
+  try {
+    // 전달된 인자 로그
+    console.log(
+      "postId:",
+      postId,
+      "commentId:",
+      commentId,
+      "updatedContent:",
+      updatedContent
+    );
+
+    // 경로를 올바르게 설정했는지 확인
+    const commentRef = doc(db, "community", postId, "comments", commentId);
+    await updateDoc(commentRef, {
+      subContent: updatedContent,
+      subUpdatedAt: Timestamp.fromDate(new Date()), // 'subUpdatedAt' 필드 추가
+    });
+    console.log("댓글 수정 성공!");
+  } catch (error) {
+    console.error("댓글 수정 실패:", error);
+  }
+};
+export const deleteComment = async (postId, commentId) => {
+  try {
+    const commentRef = doc(db, "community", postId, "comments", commentId);
+    await deleteDoc(commentRef);
+  } catch (error) {
+    console.error("댓글 삭제 실패:", error);
   }
 };
 
@@ -587,15 +640,20 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
     console.error("Error adding subcollection document: ", error);
   }
 }
-async function getSubCollection(collectionName, docId, subCollectionName) {
+async function getSubCollection(
+  collectionName,
+  subCollectionName,
+  queryOptions
+) {
   // const email = localStorage.getItem("email");
   try {
     // 1. 부모 컬렉션 'users'의 특정 문서 'userId'에 접근
-    const userDocRef = doc(db, collectionName, docId);
+    const userDocRef = doc(db, collectionName);
     // 2. 그 문서 안의 'orders' 서브컬렉션에 접근
     const ordersCollectionRef = collection(userDocRef, subCollectionName);
     // 3. 서브컬렉션 'orders'에서 모든 문서를 가져옴
     const querySnapshot = await getDocs(ordersCollectionRef);
+    // const querySnapshot = await getQuery(ordersCollectionRef, queryOptions);
     const docs = querySnapshot.docs;
     const resultData = docs.map((doc) => {
       // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
@@ -722,10 +780,26 @@ async function addPaymentHistory(collectionName, docId, paymentInfo) {
   }
 }
 
+const testUploadImg = async (file) => {
+  const storage = getStorage();
+  const fileName = `${Date.now()}_${file.name}`; // 고유한 파일 이름 생성
+  const storageRef = ref(storage, `profile_images/${fileName}`);
+
+  try {
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    return downloadURL;
+  } catch (error) {
+    console.error("파일 업로드 실패:", error);
+    throw error; // 오류 발생 시 호출자에게 전달
+  }
+};
+
 export {
   db,
   getCollection,
   addDatas,
+  addFieldArray,
   getData,
   getDatas,
   getDataAll,
@@ -748,5 +822,6 @@ export {
   addFarmDataWithSubcollections,
   useFetchCollectionData,
   addPaymentHistory,
+  testUploadImg,
 };
 export default app;

@@ -20,20 +20,7 @@ function FreeBoardItem({ item, onItemClick }) {
           <p className={styles.description}>{item.content}</p>
           <div></div>
           <p>{`작성자: ${item.authorNickName}`}</p>
-          <p>
-            {`작성일: ${
-              item.createdAt
-                ? new Date(item.createdAt).toLocaleDateString()
-                : "N/A"
-            }`}
-          </p>
-          <p>
-            {`수정일: ${
-              item.updatedAt
-                ? new Date(item.updatedAt).toLocaleDateString()
-                : "N/A"
-            }`}
-          </p>
+
           <div className={styles.reactions}>
             <FaRegThumbsUp />
             <span>{item.like || 0}</span>

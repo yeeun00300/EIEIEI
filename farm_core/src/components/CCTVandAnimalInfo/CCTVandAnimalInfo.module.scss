@@ -26,6 +26,9 @@
       // position: relative;
       box-sizing: border-box;
       background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       .icon {
         width: 90%;
         height: 90%;
