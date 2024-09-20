@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDatas } from "../../../firebase";
+import { deleteDatas, getDatas } from "../../../firebase";
 import { DataGrid } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 
