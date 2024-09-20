@@ -3,6 +3,8 @@ import { Card, CardContent, Typography } from "@mui/material";
 import styles from "./Payment.module.scss";
 import RegularPayment from "./../../RegularPayment/RegularPayment";
 import { useSelector } from "react-redux";
+import AddLiveStock from "../../../components/addLiveStock/AddLiveStock";
+import MyStockAddPage from "./../../MyStockAddPage/MyStockAddPage";
 
 function Payment() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
@@ -64,6 +66,8 @@ function Payment() {
         )}
       </div>
       {/* <RegularPayment /> */}
+      <AddLiveStock />
+      <MyStockAddPage />
     </div>
   );
 }
