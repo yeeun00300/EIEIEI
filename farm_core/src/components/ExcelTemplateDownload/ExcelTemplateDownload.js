@@ -16,12 +16,12 @@ function ExcelTemplateDownload(props) {
       "가축 주소",
       "입고 날짜",
       "성별",
-      "크기",
-      "무게",
+      "크기(cm)",
+      "무게(kg)",
       "출생 날짜",
-      "섭취량",
+      "섭취량(kg)",
       "활동량",
-      "온도",
+      "온도(도)",
       "격리 상태",
       "발정기 여부",
       "임신 날짜",
@@ -32,9 +32,9 @@ function ExcelTemplateDownload(props) {
       "출산 횟수",
       "출산 날짜",
       "출산 예정 날짜",
-      "우유 생산량",
+      "우유 생산량(L)",
       "폐사 여부",
-      "산란량",
+      "산란량(개)",
     ]);
 
     for (let col = 1; col <= 27; col++) {
@@ -137,7 +137,7 @@ function ExcelTemplateDownload(props) {
       formula1: "0",
       showInputMessage: true,
       promptTitle: "크기 입력",
-      prompt: "크기를 OO cm로 입력해 주세요.",
+      prompt: "크기를 숫자만 입력해 주세요.",
     };
 
     worksheet.getCell("J2:J31").dataValidation = {
@@ -146,7 +146,7 @@ function ExcelTemplateDownload(props) {
       formula1: "0",
       showInputMessage: true,
       promptTitle: "무게 입력",
-      prompt: "무게를 OO kg으로 입력해 주세요.",
+      prompt: "무게를 숫자만 입력해 주세요.",
     };
 
     worksheet.getCell("L2:L31").dataValidation = {
@@ -156,7 +156,7 @@ function ExcelTemplateDownload(props) {
       formula2: "100",
       showInputMessage: true,
       promptTitle: "섭취량 입력",
-      prompt: "섭취량을 OOkg / L로 입력해 주세요.",
+      prompt: "섭취량을 숫자만 입력해 주세요.",
     };
 
     worksheet.getCell("M2:M31").dataValidation = {
@@ -184,7 +184,7 @@ function ExcelTemplateDownload(props) {
       formula2: "1000000",
       showInputMessage: true,
       promptTitle: "우유 생산량 입력",
-      prompt: "우유 생산량을 일 OO ml로 입력해 주세요.",
+      prompt: "우유 생산량을 일 OO으로 숫자만 입력해 주세요.",
     };
 
     worksheet.getCell("AA2:AA31").dataValidation = {
@@ -194,7 +194,7 @@ function ExcelTemplateDownload(props) {
       formula2: "10000",
       showInputMessage: true,
       promptTitle: "산란량 입력",
-      prompt: "산란량을 일 OO 개로 입력해 주세요.",
+      prompt: "산란량을 일 OO 개로 숫자만 입력해 주세요.",
     };
 
     const buffer = await workbook.xlsx.writeBuffer();

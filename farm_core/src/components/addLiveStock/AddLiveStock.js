@@ -113,26 +113,6 @@ function AddLiveStock() {
           feedSupply: "",
         },
       ],
-      ruinInfo: {
-        someDocId: {
-          stockId: "",
-          stockCount: "",
-          diseaseType: "",
-        },
-      },
-      vaccine: [
-        {
-          vaccineType: "",
-          vaccineDate: kroDate(),
-        },
-      ],
-      disease: [
-        {
-          diseaseType: "",
-          diseaseDate: kroDate(),
-          cure: "",
-        },
-      ],
     };
 
     try {

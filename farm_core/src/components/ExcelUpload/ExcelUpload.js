@@ -17,7 +17,7 @@ function ExcelUpload(props) {
     setError(null);
     try {
       await uploadExcelAndSaveData(file, "stock");
-      alert("파일이 성공적으로 업로드9ㅅ ㅠ ,8 및 저장 되었습니다.");
+      alert("파일이 성공적으로 업로드 및 저장 되었습니다.");
     } catch (error) {
       console.error("파일 업로드 중 오류 발생 : ", error);
       alert("파일 업로드 중 오류 발생");

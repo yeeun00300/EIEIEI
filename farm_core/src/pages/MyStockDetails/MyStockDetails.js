@@ -132,12 +132,14 @@ function MyStockDetails(props) {
         })
       );
     }
+
     // dispatch(
     //   fetchExcelStock({
     //     collectionName: "stock",
     //     queryOptions: startDay !== "" ? queryOptions2 : {},
     //   })
     // );
+    console.log();
   }, [sort, startDay, codeDict]);
   const toggleOpen = (id) => {
     setOpen((prev) => (prev === id ? "" : id));

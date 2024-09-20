@@ -267,7 +267,7 @@ const fieldNameMapping = {
   활동량: "activity",
   온도: "temp",
   "격리 상태": "isolation",
-  "발정기 여부": "mating(bool)",
+  "발정기 여부": "mating",
   "임신 날짜": "pregnantDate",
   "백신 접종 데이터": "vaccine",
   "질병 및 치료 데이터": "disease",
@@ -275,7 +275,7 @@ const fieldNameMapping = {
   "출산 날짜": "breedDate",
   "출산 예정 날짜": "breedDueDate",
   "우유 생산량": "milk",
-  "폐사 여부": "deceased(bool)",
+  "폐사 여부": "deceased",
   산란량: "eggProduction",
 };
 
@@ -294,9 +294,12 @@ function convertFieldNamesToEnglish(dataObject) {
 
 // 특수 필드의 값을 배열로 처리하는 함수
 function processSpecialFields(dataObject) {
-  const specialFields = ["vaccine", "disease"];
+  const specialFieldsMapping = {
+    vaccine: ["vaccineType", "vaccineDate"],
+    disease: ["diseaseType", "diseaseDate"],
+  };
 
-  specialFields.forEach((field) => {
+  Object.keys(specialFieldsMapping).forEach((field) => {
     if (dataObject[field] && typeof dataObject[field] === "string") {
       // 문자열을 객체 배열로 변환
       const entries = dataObject[field]
@@ -305,16 +308,22 @@ function processSpecialFields(dataObject) {
         .filter((entry) => entry);
 
       dataObject[field] = entries.map((entry) => {
-        const [type, details] = entry.split("(");
-        const detailsPart = details ? details.replace(")", "") : "";
-        return { [type.trim()]: detailsPart };
+        const [type, date] = entry.split("(");
+        const datePart = date ? date.replace(")", "").trim() : null;
+        return {
+          [specialFieldsMapping[field][0]]: type.trim(), // vaccineType or diseaseType
+          [specialFieldsMapping[field][1]]: datePart, // vaccineDate or diseaseDate
+        };
       });
     } else if (dataObject[field] && Array.isArray(dataObject[field])) {
       // 이미 배열일 경우 변환
       dataObject[field] = dataObject[field].map((item) => {
-        const [type, details] = item.split("(");
-        const detailsPart = details ? details.replace(")", "") : "";
-        return { [type.trim()]: detailsPart };
+        const [type, date] = item.split("(");
+        const datePart = date ? date.replace(")", "").trim() : null;
+        return {
+          [specialFieldsMapping[field][0]]: type.trim(), // vaccineType or diseaseType
+          [specialFieldsMapping[field][1]]: datePart, // vaccineDate or diseaseDate
+        };
       });
     } else {
       dataObject[field] = [];

@@ -27,7 +27,7 @@ const fieldNameMapping = {
   activity: "활동량",
   temp: "온도",
   isolation: "격리 상태",
-  "mating(bool)": "발정기 여부",
+  mating: "발정기 여부",
   pregnantDate: "임신 날짜",
   vaccine: "백신 접종 데이터",
   disease: "질병 및 치료 데이터",
@@ -35,7 +35,7 @@ const fieldNameMapping = {
   breedDate: "출산 날짜",
   breedDueDate: "출산 예정 날짜",
   milk: "우유 생산량",
-  "deceased(bool)": "폐사 여부",
+  deceased: "폐사 여부",
   eggProduction: "산란량",
 };
 
