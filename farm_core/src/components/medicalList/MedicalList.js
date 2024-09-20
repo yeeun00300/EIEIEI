@@ -15,18 +15,19 @@ import {
 } from "../../firebase";
 import userInfoEditSlice from "./../../store/userInfoEditSlice/UserInfoEditSlice";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
-import stock from "../../store/stockSlice/stockSlice";
+
 function MedicalList(props) {
   const dispatch = useDispatch();
   const farmData = useSelector((state) => state.AddLiveStockSlice);
-  const { stock } = useSelector((state) => state.stockSlice);
-  console.log(stock);
+
   console.log(farmData);
   // const farmData = useSelector((state) => state.userInfoEditSlice);
 
   // useFetchCollectionData("farm");
   const [docId, setDocId] = useState(""); // docId 상태 추가
+  const [farmIdList, setFarmIdList] = useState([]);
   console.log(docId);
+
   useEffect(() => {
     const email = localStorage.getItem("email");
 
@@ -35,8 +36,15 @@ function MedicalList(props) {
         try {
           // 이메일로 문서 검색
           const document = await fetchFarmDocumentByEmail(email);
+          console.log(document);
           if (document) {
             setDocId(document.id); // 문서의 docId를 설정
+
+            // 문서에서 축사 번호 목록 가져오기
+            if (document.farmId) {
+              setFarmIdList([document.farmId]); // farmId를 배열로 설정
+              console.log(document.farmId);
+            }
           }
         } catch (error) {
           console.error("문서 검색 실패:", error.message || error);
@@ -45,16 +53,30 @@ function MedicalList(props) {
 
       fetchData();
     }
-  }, [dispatch]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     dispatch(addField({ fieldName: name, fieldValue: value }));
   };
 
+  const handleSelectChange = (e) => {
+    const selectedFarmId = e.target.value;
+    dispatch(addField({ fieldName: "farmNumber", fieldValue: selectedFarmId }));
+  };
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    dispatch(addField({ fieldName: name, fieldValue: checked }));
+
+    // 'Yes' 체크박스는 'true'로, 'No' 체크박스는 'false'로 설정
+    const isYesCheckbox = name.includes("Yes");
+
+    dispatch(
+      addField({
+        fieldName: name.replace("Yes", "").replace("No", ""),
+        fieldValue: isYesCheckbox ? checked : !checked,
+      })
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -66,6 +88,7 @@ function MedicalList(props) {
       const subCollections = {
         farmCureList: [
           {
+            farmNumber: farmData.farmNumber || "",
             symptom: farmData.symptom || "",
             symptomCount: farmData.symptomCount || "",
             fever: farmData.fever || "",
@@ -106,65 +129,19 @@ function MedicalList(props) {
 
       <div className="form-section">
         <h3>의뢰인 정보</h3>
-        <div className="field-group">
-          <label htmlFor="name">성명:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="의뢰인 성명을 입력하세요"
-            onChange={handleChange}
-            value={farmData.name || ""}
-          />
-        </div>
-        <div className="field-group">
-          <label htmlFor="phone">전화번호:</label>
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            placeholder="의뢰인 전화번호를 입력하세요"
-            onChange={handleChange}
-            value={farmData.phone || ""}
-          />
-        </div>
-        <div className="field-group">
-          <label htmlFor="address">주소:</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            placeholder="축사 주소를 입력하세요"
-            onChange={handleChange}
-            value={farmData.address || ""}
-          />
-        </div>
-      </div>
-
-      <div className="form-section">
-        <h3>축사 정보</h3>
-        <div className="field-group">
-          <label htmlFor="barnType">축사 유형:</label>
-          <input
-            type="text"
-            id="barnType"
-            name="barnType"
-            placeholder="예: 소 축사, 돼지 축사"
-            onChange={handleChange}
-            value={farmData.barnType || ""}
-          />
-        </div>
-        <div className="field-group">
-          <label htmlFor="numberOfAnimals">가축 수:</label>
-          <input
-            type="text"
-            id="numberOfAnimals"
-            name="numberOfAnimals"
-            placeholder="예: 50마리"
-            onChange={handleChange}
-            value={farmData.numberOfAnimals || ""}
-          />
-        </div>
+        <span>축사 번호</span>
+        <select
+          name="farmNumber"
+          value={farmData.farmNumber || ""}
+          onChange={handleSelectChange}
+        >
+          <option value="">축사 번호를 선택해주세요</option>
+          {farmIdList.map((farmId, index) => (
+            <option key={index} value={farmId}>
+              {farmId}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="form-section">
@@ -200,7 +177,7 @@ function MedicalList(props) {
             <input
               type="checkbox"
               id="feverYes"
-              name="fever"
+              name="feverYes"
               checked={farmData.fever === true}
               onChange={handleCheckboxChange}
             />{" "}
@@ -208,7 +185,7 @@ function MedicalList(props) {
             <input
               type="checkbox"
               id="feverNo"
-              name="fever"
+              name="feverNo"
               checked={farmData.fever === false}
               onChange={handleCheckboxChange}
             />{" "}
@@ -233,7 +210,7 @@ function MedicalList(props) {
             <input
               type="checkbox"
               id="coughYes"
-              name="cough"
+              name="coughYes"
               checked={farmData.cough === true}
               onChange={handleCheckboxChange}
             />{" "}
@@ -241,7 +218,7 @@ function MedicalList(props) {
             <input
               type="checkbox"
               id="coughNo"
-              name="cough"
+              name="coughNo"
               checked={farmData.cough === false}
               onChange={handleCheckboxChange}
             />{" "}
@@ -266,7 +243,7 @@ function MedicalList(props) {
             <input
               type="checkbox"
               id="diarrheaYes"
-              name="diarrhea"
+              name="diarrheaYes"
               checked={farmData.diarrhea === true}
               onChange={handleCheckboxChange}
             />{" "}
@@ -274,7 +251,7 @@ function MedicalList(props) {
             <input
               type="checkbox"
               id="diarrheaNo"
-              name="diarrhea"
+              name="diarrheaNo"
               checked={farmData.diarrhea === false}
               onChange={handleCheckboxChange}
             />{" "}
