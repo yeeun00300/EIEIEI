@@ -103,7 +103,7 @@ const AddLiveStockSlice = createSlice({
       })
       // 삭제
       .addCase(deleteFarmData.pending, (state, action) => {
-        state.isLoading = ture;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(deleteFarmData.fulfilled, (state, action) => {
