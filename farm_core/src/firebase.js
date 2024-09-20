@@ -506,10 +506,14 @@ async function addCommunityDatas(collectionName, dataObj) {
     // Firestore에 게시글 추가
     const collect = collection(db, "community");
     const result = await addDoc(collect, dataObj);
+
     const docSnap = await getDoc(result);
 
+    const postId = docSnap.id;
+    dataObj.postId = postId;
+
     // 생성된 문서의 데이터 반환
-    return { ...docSnap.data(), docId: docSnap.id };
+    return { ...docSnap.data(), docId: docSnap.id, postId: docSnap.id };
   } catch (error) {
     console.error(error);
     return false;
@@ -595,21 +599,10 @@ export const getComments = async (postId) => {
 };
 export const updateComment = async (postId, commentId, updatedContent) => {
   try {
-    // 전달된 인자 로그
-    console.log(
-      "postId:",
-      postId,
-      "commentId:",
-      commentId,
-      "updatedContent:",
-      updatedContent
-    );
-
-    // 경로를 올바르게 설정했는지 확인
     const commentRef = doc(db, "community", postId, "comments", commentId);
     await updateDoc(commentRef, {
       subContent: updatedContent,
-      subUpdatedAt: Timestamp.fromDate(new Date()), // 'subUpdatedAt' 필드 추가
+      subUpdatedAt: Timestamp.fromDate(new Date()),
     });
     console.log("댓글 수정 성공!");
   } catch (error) {

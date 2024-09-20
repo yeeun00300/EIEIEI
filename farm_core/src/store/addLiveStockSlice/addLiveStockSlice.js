@@ -112,7 +112,7 @@ const AddLiveStockSlice = createSlice({
           return data.docId !== action.payload;
         });
       })
-      .addCase(deleteFarmData.pending, (state, action) => {
+      .addCase(deleteFarmData.rejected, (state, action) => {
         state.isLoading = false;
       });
   },
