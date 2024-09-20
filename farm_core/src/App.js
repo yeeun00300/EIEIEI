@@ -60,16 +60,16 @@ function App() {
             <Route index element={<Main />} />
             {/* 나의 축사(농장수 만큼 반복예정 path추가하기) */}
             <Route path="/My_Farm/:farmId" element={<Main />} />
-            {/* 축사현황 */}
+            {/* 축사 데이터 */}
             <Route path="My_Farm_Details_Farm" element={<MyLiveStock />} />
             {/* 축사추가 */}
             <Route path="My_Farm_Add" element={<AddLiveStock />} />
-            {/* 가축 상세 현황 */}
+            {/* 축사 정보 및 제어 */}
+            <Route path="My_Farm_Details_Disease" element={<MyStockPage />} />
+            {/* 가축 현황 및 관리 */}
             <Route path="My_Farm_Info_stock" element={<MyStockDetails />} />
             {/* 가축 추가 */}
             <Route path="My_Farm_Add_stock" element={<MyStockAddPage />} />
-            {/* 축사 관리하기 */}
-            <Route path="My_Farm_Details_Disease" element={<MyStockPage />} />
             {/* 자유게시판 */}
             <Route path="My_Farm_Board_FreeBoard" element={<Community />} />
             <Route

@@ -241,7 +241,7 @@ function MyCommunity() {
           </>
         )}
       </div>
-      <RegularPayment />
+      {/* <RegularPayment /> */}
     </div>
   );
 }

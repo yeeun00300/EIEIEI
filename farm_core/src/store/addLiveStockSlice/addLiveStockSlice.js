@@ -4,6 +4,7 @@ import {
   addFarmDataWithSubcollections,
   addFarmWithSubcollections,
   db,
+  deleteDatas,
   updateDatas,
 } from "../../firebase";
 import {
@@ -99,6 +100,20 @@ const AddLiveStockSlice = createSlice({
       .addCase(updateFarmData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      // 삭제
+      .addCase(deleteFarmData.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteFarmData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.farmData = state.farmData.filter((data) => {
+          return data.docId !== action.payload;
+        });
+      })
+      .addCase(deleteFarmData.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
@@ -142,6 +157,18 @@ const updateFarmData = createAsyncThunk(
       return updateData;
     } catch (error) {
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+const deleteFarmData = createAsyncThunk(
+  "livestock/deleteFarmData",
+  async ({ collectionName, docId }) => {
+    try {
+      const resultData = await deleteDatas(collectionName, docId);
+      return docId;
+    } catch (error) {
+      console.error("Delete_Error", error);
     }
   }
 );

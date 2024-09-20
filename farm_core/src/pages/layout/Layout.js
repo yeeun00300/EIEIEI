@@ -6,7 +6,7 @@ import Footer from "./footer/Footer";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { alpha, Box, Collapse, styled } from "@mui/material";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Admin from "../Admin/Admin";
 import {
@@ -17,6 +17,42 @@ import { onUserStateChange } from "../../firebase";
 import { getAuth } from "firebase/auth";
 import { setAdminLogin } from "../../store/loginSlice/loginSlice";
 import { faR } from "@fortawesome/free-solid-svg-icons";
+import { useSpring, animated } from "@react-spring/web";
+import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
+
+// nav 애니메이션
+function TransitionComponent(props) {
+  const style = useSpring({
+    to: {
+      opacity: props.in ? 1 : 0,
+      transform: `translate3d(${props.in ? 0 : 20}px,0,0)`,
+    },
+  });
+
+  return (
+    <animated.div style={style}>
+      <Collapse {...props} />
+    </animated.div>
+  );
+}
+
+//nav 색상 custom
+const CustomTreeItem = styled(TreeItem)(({ theme }) => ({
+  color: theme.palette.grey[200],
+  [`& .${treeItemClasses.content}`]: {
+    borderRadius: theme.spacing(0.5),
+    padding: theme.spacing(0.5, 1),
+    margin: theme.spacing(0.2, 0),
+    [`& .${treeItemClasses.label}`]: {
+      fontSize: "1rem",
+      fontFamily: "PTBandocheB",
+    },
+  },
+
+  ...theme.applyStyles("light", {
+    color: theme.palette.grey[800],
+  }),
+}));
 
 function Layout(props) {
   const dispatch = useDispatch();
@@ -168,6 +204,7 @@ function Layout(props) {
   // --------------------------------------------------------------------------------------
   if (!checkLogin || Object.keys(checkLogin).length === 0)
     return <div>데이터가 없습니다</div>;
+
   return (
     <>
       {isLoading || farmLoading ? (
@@ -181,6 +218,10 @@ function Layout(props) {
             <div className={styles.nav}>
               <Box sx={{ minHeight: 352, minWidth: 180 }}>
                 <RichTreeView
+                  slotProps={{
+                    item: { slots: { groupTransition: TransitionComponent } },
+                  }}
+                  slots={{ item: CustomTreeItem }}
                   items={USER_PRODUCTS}
                   apiRef={apiRef}
                   selectedItems={selectedItem?.id ?? null}

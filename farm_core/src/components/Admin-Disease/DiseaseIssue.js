@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-  cattle_diagnosis,
-  swine_diagnosis,
-  poultry_diagnosis,
+  cow_diagnosis,
+  pork_diagnosis,
+  chicken_diagnosis,
 } from "../../utils/Disease";
 import DiseaseIssueItem from "./DiseaseIssueItem/DiseaseIssueItem";
 import styles from "./DiseaseIssue.module.scss";
@@ -14,9 +14,9 @@ function DiseaseIssue() {
   return (
     <div className={styles.DiseaseIssue}>
       <Search setSearch={setSearch} />
-      <DiseaseIssueItem itemArr={cattle_diagnosis} />
-      <DiseaseIssueItem itemArr={swine_diagnosis} />
-      <DiseaseIssueItem itemArr={poultry_diagnosis} />
+      <DiseaseIssueItem itemArr={cow_diagnosis} />
+      <DiseaseIssueItem itemArr={chicken_diagnosis} />
+      <DiseaseIssueItem itemArr={pork_diagnosis} />
     </div>
   );
 }
