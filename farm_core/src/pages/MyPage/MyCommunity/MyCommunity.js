@@ -21,6 +21,7 @@ import {
   Paper,
 } from "@mui/material";
 import styles from "./MyCommunity.module.scss";
+import RegularPayment from "../../RegularPayment/RegularPayment";
 
 function MyCommunity() {
   const dispatch = useDispatch();
@@ -240,6 +241,7 @@ function MyCommunity() {
           </>
         )}
       </div>
+      <RegularPayment />
     </div>
   );
 }
