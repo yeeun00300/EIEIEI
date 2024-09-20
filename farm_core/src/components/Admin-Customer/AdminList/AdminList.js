@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AdminList.module.scss";
-import Search from "../../../pages/Admin/components/Search";
-function AdminList({ title, description }) {
+import FilterGrid from "../../Grid/FilterGrid";
+function AdminList({ title, columns, rows }) {
   // const [search, setSearch] = useState("");
   // useEffect(() => {}, [search]);
   return (
     <>
-      {/* <Search setSearch={setSearch} /> */}
-      <div className={styles.AdminList}>
-        <h2>{title}</h2>
-        <ul>
+      {/* <div className={styles.AdminList}> */}
+      <h2>{title}</h2>
+      {/* <ul>
           <li>{description}</li>
         </ul>
-      </div>
+      </div> */}
+      <FilterGrid rows={rows} columns={columns} height={800} pageSize={13} />
     </>
   );
 }
