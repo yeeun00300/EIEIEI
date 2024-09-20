@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styles from "./DiseaseUser.module.scss";
 import {
-  cattle_diagnosis,
-  poultry_diagnosis,
-  swine_diagnosis,
+  cow_diagnosis,
+  chicken_diagnosis,
+  pork_diagnosis,
 } from "../../utils/Disease";
 import Accordion from "react-bootstrap/Accordion";
 import Sort from "../../pages/Admin/components/Sort";
 
 function DiseaseUser() {
   const [sort, setSort] = useState("소");
-  const [stockType, setStockType] = useState(cattle_diagnosis);
+  const [stockType, setStockType] = useState(cow_diagnosis);
 
   useEffect(() => {
     if (sort == "소") {
-      setStockType(cattle_diagnosis);
+      setStockType(cow_diagnosis);
     } else if (sort == "돼지") {
-      setStockType(poultry_diagnosis);
+      setStockType(pork_diagnosis);
     } else if (sort == "닭") {
-      setStockType(swine_diagnosis);
+      setStockType(chicken_diagnosis);
     }
   }, [stockType, sort]);
   return (

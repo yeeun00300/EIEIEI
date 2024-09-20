@@ -5,6 +5,7 @@ import Tabs from "react-bootstrap/Tabs";
 import MedicalList from "../medicalList/MedicalList";
 import StockCondition from "../medicalList/StockCondition";
 import MedicalListSave from "../medicalList/MedicalListSave";
+import DiseaseInfo from "../diseaseInfo/DiseaseInfo";
 
 function MyStockPage(props) {
   return (
