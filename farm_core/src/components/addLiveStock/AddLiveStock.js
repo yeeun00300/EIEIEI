@@ -217,6 +217,13 @@ function AddLiveStock() {
           </div>
           <div>
             <label htmlFor="farm_stockType">축사 유형:</label>
+            <select value={farm_stockType}>
+              <option value="한우">한우</option>
+              <option value="낙농">낙농</option>
+              <option value="산란계">산란계</option>
+              <option value="양돈">양돈</option>
+              <option value="육계">육계</option>
+            </select>
             <input
               type="text"
               name="farm_stockType"

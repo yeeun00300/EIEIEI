@@ -32,7 +32,7 @@ function MyStockPage(props) {
             <MedicalListSave />
           </Tab>
           <Tab eventKey="six" title="질병 정보">
-            Tab content for Home
+            <DiseaseInfo />
           </Tab>
         </Tabs>
       </div>
