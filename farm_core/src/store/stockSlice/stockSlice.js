@@ -57,7 +57,6 @@ export const fetchSelectedStock = createAsyncThunk(
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getDatas(collectionName, queryOptions);
-      console.log(resultData);
       return resultData;
     } catch (error) {
       console.error(error);

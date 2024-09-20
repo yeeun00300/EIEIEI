@@ -23,11 +23,13 @@ import {
   fetchExcelStock,
   fetchSelectedStock,
 } from "../../store/stockSlice/stockSlice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
+import TempControl from "../ControlPanels/TempControl";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { farmList, farmLoading } = useSelector(
     (state) => state.checkLoginSlice
@@ -40,7 +42,7 @@ function MyLiveStock(props) {
   const [selectedValue, setSelectedValue] = useState(
     farmList.length > 0 ? farmList[0].farmId : ""
   );
-  const [farmInfo, setFarmInfo] = useState(null);
+  const [selectedFarm, setSelectedFarm] = useState(farmList[0]);
 
   useEffect(() => {
     if (farmList.length > 0) {
@@ -60,22 +62,33 @@ function MyLiveStock(props) {
   }, [farmList, dispatch]);
 
   const handleChange = (event) => {
-    setSelectedValue(event.target.value); // 선택된 option의 value 가져오기
-    console.log(selectedValue);
+    const selectedFarmId = event.target.value; // 선택된 farmId 가져오기
+    setSelectedValue(selectedFarmId); // 선택된 값으로 상태 업데이트
+
+    // farmList에서 선택된 farmId에 해당하는 farm 객체 찾기
+    const farm = farmList.find((f) => f.farmId == selectedFarmId);
+    setSelectedFarm(farm); // 선택된 farm 객체 상태 업데이트
   };
   const handleButtonClick = () => {
     // farmList에서 선택된 farmId에 해당하는 정보를 찾아서 업데이트
-    const queryOptions = {
-      conditions: [
-        {
-          field: "farmId",
-          operator: "==",
-          value: Number(selectedValue),
-        },
-      ],
-    };
-    dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
-    console.log(selectedStock);
+    if (selectedFarm) {
+      const queryOptions = {
+        conditions: [
+          {
+            field: "farmId",
+            operator: "==",
+            value: Number(selectedValue),
+          },
+        ],
+      };
+      dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
+      console.log(`선택된 농장 정보`, selectedFarm);
+    }
+  };
+
+  // 추가 버튼 클릭 시 축사 추가 페이지로 이동
+  const handleAddClick = () => {
+    navigate(`/My_Farm_Add`);
   };
 
   // 버튼 클릭 시 차트를 변경하는 함수
@@ -100,7 +113,7 @@ function MyLiveStock(props) {
         return <FeedAndWater stock={selectedStock} />;
       // 온도 습도
       case "chart3":
-        return <StockProduct />;
+        return <TempControl />;
       // 생산량
       case "chart4":
         return <StockProduct stock={selectedStock} />;
@@ -114,7 +127,7 @@ function MyLiveStock(props) {
       case "chart7":
         return <MortalityRate stock={selectedStock} />;
       default:
-        return <div>확인할 차트를 선택해주세요</div>; // 기본적으로 KoreaMap을 보여줌
+        return <div>확인할 차트를 선택해주세요</div>; // 기본
     }
   };
 
@@ -138,11 +151,13 @@ function MyLiveStock(props) {
               })}
             </select>
             <button onClick={handleButtonClick}>확인</button>
+            <button onClick={handleAddClick}>추가</button>
           </div>
           <div className={styles.cctv}>
             <CCTVandAnimalInfo
               onClick={handleChartChange}
-              farmData={selectedStock}
+              farmData={selectedFarm}
+              stockData={selectedStock}
             />
           </div>
         </div>

@@ -12,7 +12,9 @@ import {
 } from "@mui/x-charts";
 import krCowIcon from "../../img/한우얼굴.png";
 
-function CCTVandAnimalInfo({ onClick, farmData }) {
+function CCTVandAnimalInfo({ onClick, farmData, stockData }) {
+  const { farmAddress, farmName, farm_stockType } = farmData;
+  // console.log(farmName);
   return (
     <>
       <div className={styles.liveStockInfoBox}>
@@ -24,9 +26,15 @@ function CCTVandAnimalInfo({ onClick, farmData }) {
           <div>
             <img className={styles.icon} src={krCowIcon} alt="" />
           </div>
-          <div>Data2: 농장 이름, 위치</div>
           <div>
-            Data3: 가축 수
+            <p>{farmName}</p>
+            <p>{farmAddress}</p>
+          </div>
+          <div>
+            <p>
+              가축 수<br />
+              {stockData.length}
+            </p>
             <button onClick={() => onClick("chart1")}>차트 보기</button>
           </div>
           <div>

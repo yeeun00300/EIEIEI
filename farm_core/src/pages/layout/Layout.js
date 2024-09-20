@@ -106,10 +106,14 @@ function Layout(props) {
     };
   });
   // user nav list
+  //축사 관리
+  //-축사 데이터
+  //-축사 정보 & 제어
+  //-가축 현황 및 관리
   const USER_PRODUCTS = [
     {
       id: "My_Farm",
-      label: "나의 축사",
+      label: "축사 대시보드",
       // children: [
       //   { id: "My_Farm01", label: "축사 1(대전..)", route: "/My_Farm01" },
       //   { id: "My_Farm02", label: "축사 2(경기도..)", route: "/My_Farm02" },
@@ -119,33 +123,23 @@ function Layout(props) {
     },
     {
       id: "My_Farm_Details",
-      label: "축사 정보",
+      label: "축사 관리하기",
       children: [
         {
           id: "My_Farm_Details_Farm",
-          label: "축사 현황",
+          label: "축사 데이터",
           route: "/My_Farm_Details_Farm",
-        },
-        {
-          id: "My_Farm_Add",
-          label: "+ 축사 추가",
-          route: "/My_Farm_Add",
-        },
-        {
-          id: "My_Farm_Info_stock",
-          label: "가축 상세 현황",
-          route: "/My_Farm_Info_stock",
-        },
-        {
-          id: "My_Farm_Add_stock",
-          label: "+ 가축 추가",
-          route: "/My_Farm_Add_stock",
         },
 
         {
           id: "My_Farm_Details_Disease",
-          label: "축사 관리하기",
+          label: "축사 정보 & 제어",
           route: "/My_Farm_Details_Disease",
+        },
+        {
+          id: "My_Farm_Info_stock",
+          label: "가축 현황 & 관리",
+          route: "/My_Farm_Info_stock",
         },
       ],
     },
