@@ -58,8 +58,6 @@ function MyLiveStock(props) {
       };
       dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
       setSelectedValue(defaultFarmId); // 기본적으로 첫 번째 farmId 설정
-    } else {
-      return <button onClick={handleAddClick}>농장을 추가해주세요</button>;
     }
   }, [farmList, dispatch]);
 
@@ -135,91 +133,95 @@ function MyLiveStock(props) {
 
   return (
     <div className="page">
-      <div className={styles.container}>
-        <div className={styles.myFarmInfoBox}>
-          <div className={styles.selectDiv}>
-            <h3>축사 선택</h3>
-            <select
-              className={styles.selectBox}
-              value={selectedValue}
-              onChange={handleChange}
-            >
-              {farmList.map((farm, idx) => {
-                return (
-                  <option key={idx} value={farm.farmId}>
-                    {farm.farmName}
-                  </option>
-                );
-              })}
-            </select>
-            <button onClick={handleButtonClick}>확인</button>
-            <button onClick={handleAddClick}>추가</button>
+      {farmList.length == 0 ? (
+        <button onClick={handleAddClick}>축사를 추가해주세요</button>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.myFarmInfoBox}>
+            <div className={styles.selectDiv}>
+              <h3>축사 선택</h3>
+              <select
+                className={styles.selectBox}
+                value={selectedValue}
+                onChange={handleChange}
+              >
+                {farmList.map((farm, idx) => {
+                  return (
+                    <option key={idx} value={farm.farmId}>
+                      {farm.farmName}
+                    </option>
+                  );
+                })}
+              </select>
+              <button onClick={handleButtonClick}>확인</button>
+              <button onClick={handleAddClick}>추가</button>
+            </div>
+            <div className={styles.cctv}>
+              <CCTVandAnimalInfo
+                onClick={handleChartChange}
+                farmData={selectedFarm}
+                stockData={selectedStock}
+              />
+            </div>
           </div>
-          <div className={styles.cctv}>
-            <CCTVandAnimalInfo
-              onClick={handleChartChange}
-              farmData={selectedFarm}
-              stockData={selectedStock}
-            />
-          </div>
-        </div>
-        <div className={styles.farmInfoBox}>
-          <div className={styles.farmListInfo}>
-            <h3>전체 평균 데이터</h3>
-            <table className={styles.styledTable}>
-              <thead>
-                <tr>
-                  <th>농장 이름</th>
-                  <th>총 개체 수</th>
-                  <th>평균 무게</th>
-                  <th>질병 발생 비율(1달)</th>
-                  <th>격리 개체 수</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>예은이네 1농장</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                </tr>
-                <tr>
-                  <td>예은이네 2농장</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                </tr>
-                <tr>
-                  <td>예은이네 3농장</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                  <td>6000</td>
-                </tr>
-                <tr className={styles.active}>
-                  <td>총 합계</td>
-                  <td>5150</td>
-                  <td>5150</td>
-                  <td>5150</td>
-                  <td>5150</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div>
-            <h3>축사 데이터 확인</h3>
-            {/* <BiLineChart /> */}
-            {/* <KoreaMap /> */}
-            {/* <KoreaBubble /> */}
-            {/* <KoreaTest /> */}
-            <div className={styles.chartContainer}>
-              {selectLoading ? <div>로딩중</div> : renderChart()}
+          <div className={styles.farmInfoBox}>
+            <div className={styles.farmListInfo}>
+              <h3>전체 평균 데이터</h3>
+              <table className={styles.styledTable}>
+                <thead>
+                  <tr>
+                    <th>농장 이름</th>
+                    <th>총 개체 수</th>
+                    <th>평균 무게</th>
+                    <th>질병 발생 비율(1달)</th>
+                    <th>격리 개체 수</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>예은이네 1농장</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                  </tr>
+                  <tr>
+                    <td>예은이네 2농장</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                  </tr>
+                  <tr>
+                    <td>예은이네 3농장</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                    <td>6000</td>
+                  </tr>
+                  <tr className={styles.active}>
+                    <td>총 합계</td>
+                    <td>5150</td>
+                    <td>5150</td>
+                    <td>5150</td>
+                    <td>5150</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <h3>축사 데이터 확인</h3>
+              {/* <BiLineChart /> */}
+              {/* <KoreaMap /> */}
+              {/* <KoreaBubble /> */}
+              {/* <KoreaTest /> */}
+              <div className={styles.chartContainer}>
+                {selectLoading ? <div>로딩중</div> : renderChart()}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
