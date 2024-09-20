@@ -225,6 +225,8 @@ function MyStockDetails(props) {
       ) : (
         <div className={styles.stockCards}>
           {stock?.map((stockItem, idx) => {
+            // console.log(stock);
+
             const {
               stockId,
               stockType,
@@ -237,6 +239,20 @@ function MyStockDetails(props) {
               breedCount,
               breedDate,
               pregnantDate,
+              activity,
+              deceased,
+              disease,
+              eggProduction,
+              email,
+              farmAddress,
+              farmId,
+              feed,
+              isolation,
+              mating,
+              milk,
+              stockCode,
+              temp,
+              vaccine,
             } = stockItem;
             return (
               <div
@@ -250,8 +266,8 @@ function MyStockDetails(props) {
                       <Table striped bordered hover>
                         <thead>
                           <tr>
-                            <th>Index</th>
-                            <th>Value</th>
+                            <th>목록</th>
+                            <th>가축 데이터</th>
                           </tr>
                         </thead>
                         <tbody>

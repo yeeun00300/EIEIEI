@@ -130,7 +130,7 @@ function UserInfo() {
   }
 
   return (
-    <div className="page">
+    <div className="container">
       <h1>My Page</h1>
       <hr />
       <div className="container">

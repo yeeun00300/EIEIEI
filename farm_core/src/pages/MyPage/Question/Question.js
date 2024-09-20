@@ -5,7 +5,6 @@ import {
   updateDatas,
   deleteDatas,
   uploadImage,
-  useFetchCollectionData,
   getDatas,
 } from "../../../firebase";
 import { useSelector } from "react-redux";
@@ -89,7 +88,7 @@ function UserInfo() {
         docId: users[0].docId,
         userEmail: users[0].email,
         userPhoneNumber: users[0].phone,
-        createdAt: new Date().toLocaleDateString(), // Modify with your date function
+        createdAt: new Date().toLocaleDateString(),
         communityType: "question",
         imageUrl: fileUrl,
       };
@@ -158,7 +157,7 @@ function UserInfo() {
   };
 
   return (
-    <div className={styles.page}>
+    <div className="container">
       {(isAdding || isEditing) && (
         <Box className={styles.contact}>
           <Typography variant="h2">
@@ -218,60 +217,66 @@ function UserInfo() {
                 style={{ display: "none" }}
               />
               <label htmlFor="file">
-                <Button variant="contained" component="span">
+                <Button
+                  variant="contained"
+                  component="span"
+                  className={styles.addFileBtn}
+                >
                   첨부파일
                 </Button>
               </label>
               {formData.filePreview && (
                 <Box className={styles.imagePreview}>
-                  <img src={formData.filePreview} alt="Preview" />
+                  <img src={formData.filePreview} alt="미리보기" />
                 </Box>
               )}
             </Box>
             <Box className={styles.box}>
-              <Button type="submit" variant="contained" color="primary">
-                {formData.isEditing ? "수정하기" : "저장하기"}
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={styles.addFileBtn}
+              >
+                {isEditing ? "수정하기" : "문의하기"}
               </Button>
-              {formData.isEditing && (
-                <Button
-                  type="button"
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => setIsAdding(false)}
-                >
-                  취소하기
-                </Button>
-              )}
             </Box>
           </form>
         </Box>
       )}
       {!isAdding && !isEditing && (
         <Box className={styles.listContainer}>
-          <Typography variant="h2" className={styles.listHeader}>
-            문의 목록
+          <Typography variant="h4" className={styles.listHeader}>
+            문의 사항 목록
           </Typography>
           <List>
             {questions.map((question) => (
               <ListItem key={question.id} className={styles.listItem}>
-                <Box className={styles.itemDetails}>
-                  <ListItemText
-                    primary={`${question.stockType} - ${question.message}`}
-                    secondary={`작성일: ${question.createdAt}`}
-                  />
-                </Box>
+                <ListItemText
+                  primary={`${question.nickname} 님의 문의`}
+                  secondary={question.message}
+                />
                 <Box className={styles.itemActions}>
+                  {question.imageUrl && (
+                    <img
+                      src={question.imageUrl}
+                      alt="첨부 이미지"
+                      className={styles.imagePreviewSmall}
+                    />
+                  )}
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     color="primary"
                     onClick={() => handleEdit(question)}
+                    className={styles.editDeleteBtn}
                   >
                     수정
                   </Button>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     color="secondary"
                     onClick={() => handleDelete(question.id)}
+                    className={styles.editDeleteBtn}
                   >
                     삭제
                   </Button>
@@ -282,10 +287,10 @@ function UserInfo() {
           <Button
             variant="contained"
             color="primary"
-            className={styles.addQuestionButton}
+            className={styles.questionAddBtn}
             onClick={handleAddClick}
           >
-            새 문의하기
+            문의 추가
           </Button>
         </Box>
       )}

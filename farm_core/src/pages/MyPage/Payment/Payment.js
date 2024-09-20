@@ -18,50 +18,52 @@ function Payment() {
   };
 
   return (
-    <div className={styles.cardContainer}>
-      {" "}
-      {/* 스타일 적용 */}
-      {users.map((user) =>
-        user.paymentHistory.map((payment, idx) => (
-          <Card key={idx} className={styles.customCard}>
-            {" "}
-            {/* customCard 스타일 적용 */}
-            <CardContent className={styles.cardContent}>
+    <div className="container">
+      <div className={styles.cardContainer}>
+        {" "}
+        {/* 스타일 적용 */}
+        {users.map((user) =>
+          user.paymentHistory.map((payment, idx) => (
+            <Card key={idx} className={styles.customCard}>
               {" "}
-              {/* cardContent 스타일 적용 */}
-              <Typography variant="h6" className={styles.cardTitle}>
+              {/* customCard 스타일 적용 */}
+              <CardContent className={styles.cardContent}>
                 {" "}
-                {/* cardTitle 스타일 적용 */}
-                결제 이메일: {user.email}
-              </Typography>
-              <Typography variant="body1">
-                결제일: {payment.paymentDate || "N/A"}
-              </Typography>
-              <Typography variant="body1" className={styles.cardPrice}>
+                {/* cardContent 스타일 적용 */}
+                <Typography variant="h6" className={styles.cardTitle}>
+                  {" "}
+                  {/* cardTitle 스타일 적용 */}
+                  결제 이메일: {user.email}
+                </Typography>
+                <Typography variant="body1">
+                  결제일: {payment.paymentDate || "N/A"}
+                </Typography>
+                <Typography variant="body1" className={styles.cardPrice}>
+                  {" "}
+                  {/* cardPrice 스타일 적용 */}
+                  결제 금액: {formatAmount(payment.amount)}
+                </Typography>
+                <Typography variant="body1">
+                  결제 아이디: {payment.paymentId || "N/A"}
+                </Typography>
+                <Typography variant="body1">
+                  핸드폰 번호: {formatPhoneNumber(user.phone) || "N/A"}
+                </Typography>
+              </CardContent>
+              <div className={styles.cardActions}>
                 {" "}
-                {/* cardPrice 스타일 적용 */}
-                결제 금액: {formatAmount(payment.amount)}
-              </Typography>
-              <Typography variant="body1">
-                결제 아이디: {payment.paymentId || "N/A"}
-              </Typography>
-              <Typography variant="body1">
-                핸드폰 번호: {formatPhoneNumber(user.phone) || "N/A"}
-              </Typography>
-            </CardContent>
-            <div className={styles.cardActions}>
-              {" "}
-              {/* cardActions 스타일 적용 */}
-              <button className={styles.subscribeButton}>
-                {" "}
-                {/* subscribeButton 스타일 적용 */}
-                정기 결제 구독
-              </button>
-            </div>
-          </Card>
-        ))
-      )}
-      <RegularPayment />
+                {/* cardActions 스타일 적용 */}
+                <button className={styles.subscribeButton}>
+                  {" "}
+                  {/* subscribeButton 스타일 적용 */}
+                  정기 결제 구독
+                </button>
+              </div>
+            </Card>
+          ))
+        )}
+      </div>
+      {/* <RegularPayment /> */}
     </div>
   );
 }
