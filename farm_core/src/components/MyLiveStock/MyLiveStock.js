@@ -134,7 +134,7 @@ function MyLiveStock(props) {
   return (
     <div className="page">
       {farmList.length == 0 ? (
-        <button>축사를 추가해주세요</button>
+        <button onClick={handleAddClick}>축사를 추가해주세요</button>
       ) : (
         <div className={styles.container}>
           <div className={styles.myFarmInfoBox}>
