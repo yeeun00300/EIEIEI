@@ -15,7 +15,6 @@ function Community() {
   const [keyword, setKeyword] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleCount, setVisibleCount] = useState(6); // 한 번에 보여줄 게시글 수
-  const [reportBoard, setReportBoard] = useState("report");
   const navigate = useNavigate();
 
   useEffect(() => {

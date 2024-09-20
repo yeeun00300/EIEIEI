@@ -572,6 +572,10 @@ export const addComment = async (postId, comment) => {
       subCreatedAt: Timestamp.fromDate(new Date()), // 생성 시간
       nickname: comment.nickname, // 사용자 닉네임
       email: comment.email,
+      profileImage: comment.profileImage,
+      subDeclareReason: comment.subDeclareReason, // 추가된 필드
+      subDeclareCount: comment.subDeclareCount, // 추가된 필드
+      subDeclareState: comment.subDeclareState, // 추가된 필드
     });
   } catch (error) {
     console.error("댓글 추가 실패:", error);

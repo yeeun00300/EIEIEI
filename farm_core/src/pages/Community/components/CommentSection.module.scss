@@ -4,6 +4,8 @@
   border-radius: 8px;
   background-color: #f9f9f9;
   width: 100%;
+  overflow-y: hidden;
+  overflow: scroll;
 
   .commentSection h2 {
     margin-bottom: 10px;
@@ -17,7 +19,7 @@
     flex-direction: column;
   }
 
-  textarea {
+  .commentText {
     width: 100%;
     height: 100px;
     padding: 10px;
@@ -28,7 +30,7 @@
     margin-bottom: 10px;
   }
 
-  button {
+  .addComment {
     align-self: flex-end;
     padding: 10px 20px;
     border: none;

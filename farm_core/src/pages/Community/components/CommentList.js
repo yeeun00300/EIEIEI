@@ -6,12 +6,17 @@ function CommentList({ comments, refreshComments }) {
     <div>
       {comments.map((comment) => (
         <CommentItem
-          key={comment.id}
+          key={comment.docId}
           id={comment.id}
           nickname={comment.nickname}
           subContent={comment.subContent}
           email={comment.email}
-          refreshComments={refreshComments} // 새로고침 함수 전달
+          profileImage={comment.profileImage}
+          subCreatedAt={comment.subCreatedAt}
+          subDeclareReason={comment.subDeclareReason}
+          subDeclareCount={comment.subDeclareCount}
+          subDeclareState={comment.subDeclareState}
+          refreshComments={refreshComments}
         />
       ))}
     </div>

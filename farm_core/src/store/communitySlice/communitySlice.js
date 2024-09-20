@@ -4,6 +4,8 @@ import {
   db,
   deleteCommunityDatas,
   getCommunityDatas,
+  reportCommentDatas,
+  updateComment,
   updateCommunityDatas,
 } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -155,6 +157,32 @@ const communitySlice = createSlice({
       .addCase(reportPost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload; // rejectWithValue에서 반환한 오류 메시지 사용
+      })
+      // 댓글 신고 처리
+      .addCase(reportComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(reportComment.fulfilled, (state, action) => {
+        const { postId, commentId, updates } = action.payload;
+
+        // 해당 게시글의 댓글을 찾아 업데이트
+        const post = state.communityContents.find((post) => post.id === postId);
+        if (post) {
+          const commentIndex = post.comments.findIndex(
+            (comment) => comment.id === commentId
+          );
+          if (commentIndex !== -1) {
+            post.comments[commentIndex] = {
+              ...post.comments[commentIndex],
+              ...updates,
+            };
+          }
+        }
+        state.isLoading = false;
+      })
+      .addCase(reportComment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -261,6 +289,44 @@ const reportPost = createAsyncThunk(
     }
   }
 );
+// 비동기 작업: 댓글 신고
+const reportComment = createAsyncThunk(
+  "community/reportComment",
+  async ({ postId, commentId, reason }, { rejectWithValue }) => {
+    try {
+      // Firebase Firestore에서 해당 게시글의 댓글 문서 경로 설정
+      const commentRef = doc(db, "community", postId, "comments", commentId);
+
+      // Firestore에서 현재 댓글 데이터를 가져옵니다.
+      const commentSnap = await getDoc(commentRef);
+      const commentData = commentSnap.data();
+
+      // 기존 신고 사유 배열을 가져오거나 빈 배열을 초기값으로 설정
+      const existingReasons = commentData?.declareReasons || [];
+
+      // 새로운 사유를 배열에 추가
+      const updatedReasons = [...existingReasons, reason];
+
+      // 현재 신고 횟수를 읽어와서 1을 추가
+      const updatedCount = (commentData?.declareCount || 0) + 1;
+
+      // 업데이트할 데이터 준비
+      const updates = {
+        declareReasons: updatedReasons, // 신고 사유 배열 업데이트
+        declareState: "reported", // 신고 상태 업데이트
+        declareCount: updatedCount, // 신고 횟수 업데이트
+      };
+
+      // Firestore에서 해당 댓글 문서 업데이트
+      await updateComment(commentRef, updates);
+
+      // 업데이트된 데이터를 리턴
+      return { postId, commentId, updates };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export default communitySlice.reducer;
 export {
@@ -270,4 +336,5 @@ export {
   deleteCommunityPost,
   updatePostReactions,
   reportPost,
+  reportComment,
 };
