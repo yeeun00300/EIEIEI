@@ -58,6 +58,8 @@ function MyLiveStock(props) {
       };
       dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
       setSelectedValue(defaultFarmId); // 기본적으로 첫 번째 farmId 설정
+    } else {
+      return <button onClick={handleAddClick}>농장을 추가해주세요</button>;
     }
   }, [farmList, dispatch]);
 
