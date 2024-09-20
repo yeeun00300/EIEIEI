@@ -75,7 +75,7 @@ function Livestock() {
   const visibleContents = filteredAndSortedContents.slice(0, visibleCount);
 
   const handleShowMore = () => {
-    setVisibleCount((prevCount) => prevCount + 6); // 게시글 6개씩 더 보기
+    setVisibleCount((prevCount) => prevCount + 6);
   };
 
   return (

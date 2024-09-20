@@ -14,6 +14,9 @@ function CommentSection() {
     (state) => state.checkLoginSlice.checkLogin.nickname
   );
   const email = useSelector((state) => state.checkLoginSlice.checkLogin.email);
+  const profileImage = useSelector(
+    (state) => state.checkLoginSlice.checkLogin.profileImages
+  );
 
   const fetchComments = async () => {
     const fetchedComments = await getComments(id);
@@ -28,20 +31,23 @@ function CommentSection() {
     if (!newComment.trim()) return;
 
     const comment = {
-      nickname: nickname, // 사용자 닉네임
+      nickname: nickname,
       subContent: newComment,
       email: email,
+      profileImage: profileImage,
+      subDeclareReason: "",
+      subDeclareCount: 0,
+      subDeclareState: "",
     };
 
     await addComment(id, comment);
-    setNewComment("");
-    fetchComments();
+    setComments((prevComments) => [...prevComments, comment]); // 상태를 직접 업데이트
+    setNewComment(""); // 입력 필드 초기화
   };
 
   return (
     <div className={styles.commentSection}>
       <h2>댓글</h2>
-      {/* CommentList에 comments와 refreshComments 전달 */}
       <CommentList comments={comments} refreshComments={fetchComments} />
 
       <div className={styles.textareaContainer}>
@@ -49,8 +55,11 @@ function CommentSection() {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="댓글을 입력하세요..."
+          className={styles.commentText}
         />
-        <button onClick={handleAddComment}>댓글 추가</button>
+        <button onClick={handleAddComment} className={styles.addComment}>
+          댓글 추가
+        </button>
       </div>
     </div>
   );

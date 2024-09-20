@@ -200,9 +200,9 @@ function FreeboardPage() {
         <div className={styles.wrapper}>
           <div className={styles.content}>
             <div className={styles.details}>
-              {postData.stockType && ( // stockType이 있을 때만 렌더링
+              {postData.stockType && (
                 <div className={styles.stockType}>
-                  축산 관리 커뮤니티 &gt;{" "}
+                  축산 관리 커뮤니티 &gt;
                   {getStockTypeInKorean(postData.stockType)}
                 </div>
               )}
@@ -248,8 +248,8 @@ function FreeboardPage() {
                   onClick={handleDeclareClick}
                 >
                   <img src={sirenImg} alt="신고하기" />
+                  <span className={styles.reportText}>신고하기</span>
                 </button>
-                <span className={styles.reportText}>신고하기</span>
               </div>
               <div className={styles.reactions}>
                 <ReactionButton
