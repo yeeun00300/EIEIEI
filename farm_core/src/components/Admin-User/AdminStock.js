@@ -16,7 +16,8 @@ import { useForm } from "react-hook-form";
 
 function AdminStock() {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState("");
+  const [stockSearch, setStockSearch] = useState("");
+  const [farmSearch, setFarmSearch] = useState("");
   const [sort, setSort] = useState("");
   const [open, setOpen] = useState({});
   const [startDay, setStartDay] = useState("");
@@ -39,21 +40,41 @@ function AdminStock() {
     formState: { errors },
     reset,
   } = useForm({
-    mode: "onChange",
+    // mode: "onChange",
   });
   const onSubmit = (data) => {
     console.log(data);
   };
+
   useFetchCollectionData("stock");
 
   useEffect(() => {
     if (stock) {
-      // const filtered = stock.filter((item) => item.email === email);
-      // setFilteredStock(filtered);
-      setFilteredStock(stock);
+      if (stockSearch !== "" && farmSearch == "") {
+        const stockSearched = !stockSearched
+          ? setFilteredStock([])
+          : stock.filter((item) => item.stockId.includes(stockSearch));
+        setFilteredStock(stockSearched);
+      } else if (farmSearch !== "" && stockSearch == "") {
+        const farmSearched = !farmSearched
+          ? setFilteredStock([])
+          : stock.filter((item) => item.farmId.includes(farmSearch));
+        setFilteredStock(farmSearched);
+      } else if (stockSearch !== "" && farmSearch !== "") {
+        const stockSearched = !stockSearched
+          ? setFilteredStock([])
+          : stock.filter((item) => item.stockId.includes(stockSearch));
+        const farmSearched = !farmSearched
+          ? setFilteredStock([])
+          : stockSearched.filter((item) => item.farmId.includes(farmSearch));
+        setFilteredStock(farmSearched);
+      } else {
+        setFilteredStock(stock);
+      }
+      // setFilteredStock(stock);
       if (stock.length > 0) {
       } else {
-        console.log("No matching stock data found for email:", email);
+        console.log("No matching stock data :", stock);
       }
     }
   }, [stock, email]);
@@ -66,6 +87,7 @@ function AdminStock() {
       setSortOrder("asc");
     }
   };
+  // 표 1행 sort 기능
   const sortedStock = filteredStock
     ? [...filteredStock].sort((a, b) => {
         const valA = a[sortBy];
@@ -132,6 +154,7 @@ function AdminStock() {
         })
       );
     }
+
     // dispatch(
     //   fetchExcelStock({
     //     collectionName: "stock",
@@ -146,7 +169,16 @@ function AdminStock() {
     <div className={styles.AdminStock}>
       <div className={styles.AdminUtil}>
         <div>가축 정보 리스트</div>
-        <Search setSearch={setSearch} />
+        축사 번호 찾기:
+        <Search
+          setSearch={setFarmSearch}
+          placeholder={"축사번호를 입력하세요!"}
+        />
+        개체번호 찾기 :{" "}
+        <Search
+          setSearch={setStockSearch}
+          placeholder={"개체번호를 입력하세요!"}
+        />
         <DateRangePickerValue setStartDay={setStartDay} setEndDay={setEndDay} />
         <Sort
           title="농장 종류별 :"
@@ -451,22 +483,21 @@ function AdminStock() {
                               <tr>
                                 <td>종류</td>
                                 <td>
+                                  {/*
                                   <select
                                     id="animalType"
                                     name="animalType"
                                     value={stockType}
                                     {...register("stockType")}
-                                    // onChange={(e) =>
-                                    //   setAnimalType(e.target.value)
-                                    // }
                                   >
                                     <option value="">선택하세요</option>
-                                    <option value="cattle">한우</option>
-                                    <option value="dairy">낙농</option>
-                                    <option value="pork">양돈</option>
-                                    <option value="poultry">양계</option>
+                                    <option value="한우">한우</option>
+                                    <option value="낙농">낙농</option>
+                                    <option value="양돈">양돈</option>
+                                    <option value="양계">양계</option>
                                   </select>
-                                  {/* {stockType} */}
+                                     */}
+                                  {stockType}
                                 </td>
                               </tr>
                               <tr>
@@ -486,10 +517,11 @@ function AdminStock() {
                                   <select
                                     id="sexual"
                                     name="sexual"
+                                    value={stockSexual}
                                     {...register("sex")}
                                   >
-                                    <option value="male">수컷</option>
-                                    <option value="female">암컷</option>
+                                    <option value="수컷">수컷</option>
+                                    <option value="암컷">암컷</option>
                                   </select>
                                   {/* {stockSexual[sex]} */}
                                 </td>

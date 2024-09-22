@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Search.module.scss";
 import searchImg from "../../../img/돋보기.png";
 
-function Search({ setSearch }) {
+function Search({ setSearch, placeholder = "검색어를 입력해 주세요!" }) {
   const handleChange = (e) => {
     const search = e.target.value;
     setSearch(search);
@@ -12,7 +12,7 @@ function Search({ setSearch }) {
       <span>
         <img src={searchImg} />
       </span>
-      <input placeholder={`검색어를 입력해 주세요!`} onChange={handleChange} />
+      <input placeholder={placeholder} onChange={handleChange} />
     </div>
   );
 }
