@@ -24,16 +24,17 @@ function AdminStock() {
   const [endDay, setEndDay] = useState("");
   const [updateSetting, setUpdateSetting] = useState(false);
   const { stock, isLoading } = useSelector((state) => state.stockSlice);
-  const stockSexual = {
-    F: "암컷",
-    M: "수컷",
-  };
   const [sortBy, setSortBy] = useState("stockId");
   const [sortOrder, setSortOrder] = useState("asc");
   const email = localStorage.getItem("email");
   const [filteredStock, setFilteredStock] = useState([]);
   const [vaccineOpen, setVaccineOpen] = useState(true);
   const [diseaseOpen, setDiseaseOpen] = useState(true);
+  const stockSexual = {
+    F: "암컷",
+    M: "수컷",
+  };
+
   const {
     register,
     handleSubmit,
@@ -50,27 +51,40 @@ function AdminStock() {
 
   useEffect(() => {
     if (stock) {
-      if (stockSearch !== "" && farmSearch == "") {
-        const stockSearched = !stockSearched
-          ? setFilteredStock([])
-          : stock.filter((item) => item.stockId.includes(stockSearch));
-        setFilteredStock(stockSearched);
-      } else if (farmSearch !== "" && stockSearch == "") {
-        const farmSearched = !farmSearched
-          ? setFilteredStock([])
-          : stock.filter((item) => item.farmId.includes(farmSearch));
-        setFilteredStock(farmSearched);
-      } else if (stockSearch !== "" && farmSearch !== "") {
-        const stockSearched = !stockSearched
-          ? setFilteredStock([])
-          : stock.filter((item) => item.stockId.includes(stockSearch));
-        const farmSearched = !farmSearched
-          ? setFilteredStock([])
-          : stockSearched.filter((item) => item.farmId.includes(farmSearch));
-        setFilteredStock(farmSearched);
-      } else {
-        setFilteredStock(stock);
+      // if (stockSearch !== "" && farmSearch == "") {
+      //   const stockSearched = !stockSearched
+      //     ? setFilteredStock([])
+      //     : stock.filter((item) => item.stockId.includes(stockSearch));
+      //   setFilteredStock(stockSearched);
+      // } else if (farmSearch !== "" && stockSearch == "") {
+      //   const farmSearched = !farmSearched
+      //     ? setFilteredStock([])
+      //     : stock.filter((item) => item.farmId.includes(farmSearch));
+      //   setFilteredStock(farmSearched);
+      // } else if (stockSearch !== "" && farmSearch !== "") {
+      //   const stockSearched = !stockSearched
+      //     ? setFilteredStock([])
+      //     : stock.filter((item) => item.stockId.includes(stockSearch));
+      //   const farmSearched = !farmSearched
+      //     ? setFilteredStock([])
+      //     : stockSearched.filter((item) => item.farmId.includes(farmSearch));
+      //   setFilteredStock(farmSearched);
+      // } else {
+      //   setFilteredStock(stock);
+      // }
+      let filtered = stock;
+
+      if (stockSearch !== "") {
+        filtered = filtered.filter((item) =>
+          item.stockId.includes(stockSearch)
+        );
       }
+
+      if (farmSearch !== "") {
+        filtered = filtered.filter((item) => item.farmId.includes(farmSearch));
+      }
+
+      setFilteredStock(filtered.length ? filtered : []);
       // setFilteredStock(stock);
       if (stock.length > 0) {
       } else {
