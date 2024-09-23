@@ -94,6 +94,26 @@ const communitySlice = createSlice({
               ...updates,
             };
           }
+        } else if (communityType === "question") {
+          const index = state.questionContents.findIndex(
+            (post) => post.id === id
+          );
+          if (index !== -1) {
+            state.questionContents[index] = {
+              ...state.questionContents[index],
+              ...updates,
+            };
+          }
+        } else if (communityType === "notice") {
+          const index = state.noticeContents.findIndex(
+            (post) => post.id === id
+          );
+          if (index !== -1) {
+            state.noticeContents[index] = {
+              ...state.noticeContents[index],
+              ...updates,
+            };
+          }
         }
         state.isLoading = false;
       })
@@ -262,34 +282,44 @@ const updatePostReactions = createAsyncThunk(
 // 비동기 작업: 게시글 신고
 const reportPost = createAsyncThunk(
   "community/reportPost",
-  async ({ id, reason }, { rejectWithValue }) => {
+  async ({ id, reason, state }, { rejectWithValue }) => {
     try {
-      const postRef = doc(db, "community", id);
+      if (!state) {
+        const postRef = doc(db, "community", id);
 
-      // Firestore에서 현재 게시물의 데이터를 가져옵니다.
-      const docSnap = await getDoc(postRef);
-      const postData = docSnap.data();
+        // Firestore에서 현재 게시물의 데이터를 가져옵니다.
+        const docSnap = await getDoc(postRef);
+        const postData = docSnap.data();
 
-      // 기존 신고 사유 배열을 가져오거나 빈 배열을 초기값으로 설정
-      const existingReasons = postData?.declareReason || [];
+        // 기존 신고 사유 배열을 가져오거나 빈 배열을 초기값으로 설정
+        const existingReasons = postData?.declareReason || [];
 
-      // 새로운 사유를 배열에 추가
-      const updatedReasons = [...existingReasons, reason];
+        // 새로운 사유를 배열에 추가
+        const updatedReasons = [...existingReasons, reason];
 
-      // 현재 신고 횟수를 읽어와서 1을 추가
-      const updatedCount = (postData?.declareCount || 0) + 1;
+        // 현재 신고 횟수를 읽어와서 1을 추가
+        const updatedCount = (postData?.declareCount || 0) + 1;
 
-      // 업데이트할 데이터
-      const updates = {
-        declareReason: updatedReasons, // 배열로 업데이트
-        declareState: "reported",
-        declareCount: updatedCount, // 카운트 업데이트
-      };
+        // 업데이트할 데이터
+        const updates = {
+          declareReason: updatedReasons, // 배열로 업데이트
+          declareState: "reported",
+          declareCount: updatedCount, // 카운트 업데이트
+        };
+        // 문서 필드 데이터 수정
+        await updateCommunityDatas(id, updates);
 
-      // 문서 필드 데이터 수정
-      await updateCommunityDatas(id, updates);
+        return { id, updates };
+      } else {
+        // state 값이 있을 때는 declareState의 값을 "black" 또는 "checked" 값으로 업데이트
+        const updates = {
+          declareState: state,
+        };
+        // 문서 필드 데이터 수정
+        await updateCommunityDatas(id, updates);
 
-      return { id, updates };
+        return { id, updates };
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
