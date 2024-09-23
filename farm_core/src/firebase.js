@@ -799,6 +799,11 @@ const testUploadImg = async (file) => {
     throw error; // 오류 발생 시 호출자에게 전달
   }
 };
+// 축사 정보 수정
+const updateFarmDocument = async (id, data) => {
+  const docRef = doc(db, "farm", id); // 'farm' 컬렉션의 문서 참조
+  await setDoc(docRef, data, { merge: true }); // merge 옵션 사용
+};
 
 export {
   db,
@@ -828,5 +833,6 @@ export {
   useFetchCollectionData,
   addPaymentHistory,
   testUploadImg,
+  updateFarmDocument,
 };
 export default app;
