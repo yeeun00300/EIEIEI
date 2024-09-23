@@ -6,6 +6,7 @@ import MedicalList from "../medicalList/MedicalList";
 import StockCondition from "../medicalList/StockCondition";
 import MedicalListSave from "../medicalList/MedicalListSave";
 import DiseaseInfo from "../diseaseInfo/DiseaseInfo";
+import MedicalListCheck from "../medicalList/MedicalListCheck";
 
 function MyStockPage(props) {
   return (
@@ -18,7 +19,7 @@ function MyStockPage(props) {
           justify
         >
           <Tab eventKey="four" title="축사 정보">
-            Tab content for Home
+            <MedicalListCheck />
           </Tab>
           <Tab eventKey="five" title="축사 제어">
             Tab content for Home

@@ -57,19 +57,7 @@ function MedicalListSave() {
         <div className={styles.details}>
           <h3>상세 정보</h3>
           <p>
-            <strong>성명:</strong> {medicalData.name}
-          </p>
-          <p>
-            <strong>전화번호:</strong> {medicalData.phone}
-          </p>
-          <p>
-            <strong>주소:</strong> {medicalData.address}
-          </p>
-          <p>
-            <strong>축사 유형:</strong> {medicalData.barnType}
-          </p>
-          <p>
-            <strong>가축 수:</strong> {medicalData.numberOfAnimals}
+            <strong>축사 번호:</strong> {medicalData.farmId}
           </p>
           <p>
             <strong>공통 증상:</strong> {medicalData.symptom}
