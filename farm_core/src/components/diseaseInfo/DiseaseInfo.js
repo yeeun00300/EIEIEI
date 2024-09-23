@@ -4,6 +4,8 @@ import styles from "./DiseaseInfo.module.scss";
 import cow from "../../img/한우얼굴.png";
 import pork from "../../img/양돈얼굴.png";
 import chicken from "../../img/양계얼굴.png";
+import MyStockPage from "../MyStockPage/MyStockPage";
+import MyStockAddPage from "../../pages/MyStockAddPage/MyStockAddPage";
 
 function DiseaseInfo() {
   const [selectedAnimal, setSelectedAnimal] = useState("cows");
@@ -149,6 +151,7 @@ function DiseaseInfo() {
           </div>
         </div>
       </div>
+      <MyStockAddPage />
     </div>
   );
 }

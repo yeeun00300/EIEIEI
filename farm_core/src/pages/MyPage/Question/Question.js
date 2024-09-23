@@ -253,7 +253,7 @@ function UserInfo() {
             {questions.map((question) => (
               <ListItem key={question.id} className={styles.listItem}>
                 <ListItemText
-                  primary={`${question.nickname} 님의 문의`}
+                  primary={`${question.authorNickName} 님의 문의`}
                   secondary={question.message}
                 />
                 <Box className={styles.itemActions}>
