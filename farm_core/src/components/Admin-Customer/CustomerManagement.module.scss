@@ -2,4 +2,23 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
+}
+.CustomerManagementTable {
+  width: 100%;
+  height: 80%;
+  overflow: scroll;
+}
+.CustomerManagementNav {
+  display: flex;
+  gap: 24px;
+  position: relative;
+}
+.CustomerManagementCollapse {
+  z-index: 10;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  display: flex;
+  width: 30%;
 }
