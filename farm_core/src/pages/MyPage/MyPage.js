@@ -26,7 +26,7 @@ function MyPage() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
 
-  useFetchCollectionData("users"); // 데이터 로딩
+  useFetchCollectionData("users", fetchUser); // 데이터 로딩
 
   const handleComponentChange = (componentName) => {
     if (activeComponent === componentName) return;

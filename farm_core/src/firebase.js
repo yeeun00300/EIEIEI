@@ -718,7 +718,7 @@ export const fetchFarmDocumentByEmail = async (email) => {
   throw new Error("No document found with the given email");
 };
 
-function useFetchCollectionData(collectionName) {
+function useFetchCollectionData(collectionName, fetchAction) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -735,27 +735,27 @@ function useFetchCollectionData(collectionName) {
           ],
         };
 
-        dispatch(fetchUser({ collectionName, queryOptions }))
+        dispatch(fetchAction({ collectionName, queryOptions }))
           .then((resultAction) => {
-            if (fetchUser.fulfilled.match(resultAction)) {
+            if (fetchAction.fulfilled.match(resultAction)) {
               const userData = resultAction.payload;
-              console.log("Fetched users with IDs from Redux: ", userData);
+              console.log("Fetched data with IDs from Redux: ", userData);
 
-              // 예: 첫 번째 사용자 문서 ID
+              // 예: 첫 번째 문서 ID
               if (userData.length > 0) {
-                const firstUserId = userData[0].docId; // 'docId'로 문서 ID 접근
-                console.log("First user document ID: ", firstUserId);
+                const firstDocumentId = userData[0].docId; // 'docId'로 문서 ID 접근
+                console.log("First document ID: ", firstDocumentId);
               }
             }
           })
           .catch((error) => {
-            console.error("Error fetching user data:", error);
+            console.error("Error fetching data:", error);
           });
       }
     });
 
     return () => unsubscribe();
-  }, [dispatch, collectionName]);
+  }, [dispatch, collectionName, fetchAction]);
 }
 
 // 결제를 이력으로 남기기

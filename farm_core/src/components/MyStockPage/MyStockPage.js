@@ -7,6 +7,7 @@ import StockCondition from "../medicalList/StockCondition";
 import MedicalListSave from "../medicalList/MedicalListSave";
 import DiseaseInfo from "../diseaseInfo/DiseaseInfo";
 import MedicalListCheck from "../medicalList/MedicalListCheck";
+import MyLiveStockList from "../../pages/MyLiveStockInfo/MyLiveStockList";
 
 function MyStockPage(props) {
   return (
@@ -20,6 +21,7 @@ function MyStockPage(props) {
         >
           <Tab eventKey="four" title="축사 정보">
             <MedicalListCheck />
+            {/* <MyLiveStockList /> */}
           </Tab>
           <Tab eventKey="five" title="축사 제어">
             Tab content for Home

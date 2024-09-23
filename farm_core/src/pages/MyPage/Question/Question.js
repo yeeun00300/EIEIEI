@@ -83,10 +83,10 @@ function UserInfo() {
 
       const addObj = {
         stockType: formData.stockType,
-        nickname: formData.nickname,
+        authorNickName: formData.nickname,
         message: formData.message,
         docId: users[0].docId,
-        userEmail: users[0].email,
+        email: users[0].email,
         userPhoneNumber: users[0].phone,
         createdAt: new Date().toLocaleDateString(),
         communityType: "question",
