@@ -15,7 +15,7 @@ import { toggleOpen } from "../../../store/myPageSlice/addressSlice";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 
 function UserInfo() {
-  useFetchCollectionData("users");
+  useFetchCollectionData("users", fetchUser);
   const dispatch = useDispatch();
   const {
     name,

@@ -42,7 +42,7 @@ function MyStockDetails(props) {
   //   }
   // }, [dispatch, email]);
 
-  useFetchCollectionData("stock");
+  useFetchCollectionData("stock", fetchExcelStock);
 
   useEffect(() => {
     if (stock) {

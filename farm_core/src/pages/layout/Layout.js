@@ -108,6 +108,7 @@ function Layout(props) {
     (state) => state.checkLoginSlice
   );
   useEffect(() => {
+    debugger;
     if (email) {
       const queryOptions = {
         conditions: [

@@ -47,7 +47,7 @@ function AdminStock() {
     console.log(data);
   };
 
-  useFetchCollectionData("stock");
+  useFetchCollectionData("stock", fetchExcelStock);
 
   useEffect(() => {
     if (stock) {

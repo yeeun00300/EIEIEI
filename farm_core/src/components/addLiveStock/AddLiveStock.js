@@ -224,14 +224,14 @@ function AddLiveStock() {
               <option value="양돈">양돈</option>
               <option value="육계">육계</option>
             </select>
-            <input
+            {/* <input
               type="text"
               name="farm_stockType"
               value={farm_stockType}
               placeholder="예: 한우, 낙농, 닭, 돼지"
               onChange={handleChange}
               required
-            />
+            /> */}
             {formErrors.farm_stockType && (
               <p className={styles.error}>{formErrors.farm_stockType}</p>
             )}
