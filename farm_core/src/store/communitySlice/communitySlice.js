@@ -11,8 +11,10 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 
 const initialState = {
+  noticeContents: [], // 커뮤니티 게시글 목록
   communityContents: [], // 커뮤니티 게시글 목록
   livestockContents: [], // 축산 관리 게시글 목록
+  questionContents: [], // 축산 관리 게시글 목록
   isLoading: false, // 데이터 로딩 상태
   error: null, // 오류 메시지
   selectedItem: null, // 현재 선택된 게시글 (자세히 보기)
@@ -40,6 +42,10 @@ const communitySlice = createSlice({
           state.communityContents = action.payload; // 자유 게시판 데이터
         } else if (action.meta.arg.communityType === "livestock") {
           state.livestockContents = action.payload; // 축산 관리 게시판 데이터
+        } else if (action.meta.arg.communityType === "question") {
+          state.questionContents = action.payload; // 축산 관리 게시판 데이터
+        } else if (action.meta.arg.communityType === "notice") {
+          state.noticeContents = action.payload; // 축산 관리 게시판 데이터
         }
         state.isLoading = false;
       })
