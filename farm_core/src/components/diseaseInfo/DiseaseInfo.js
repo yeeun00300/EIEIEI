@@ -151,7 +151,7 @@ function DiseaseInfo() {
           </div>
         </div>
       </div>
-      <MyStockAddPage />
+      {/* <MyStockAddPage /> */}
     </div>
   );
 }

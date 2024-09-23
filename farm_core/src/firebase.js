@@ -399,13 +399,21 @@ async function uploadExcelAndSaveData(file, collectionName) {
   }
 }
 
-async function updateDatas(collectionName, docId, updateInfoObj) {
+async function updateDatas(collectionName, docId, updateObj) {
   try {
     const docRef = doc(db, collectionName, docId);
-    await updateDoc(docRef, updateInfoObj);
-    console.log("Document successfully updated!");
+    await updateDoc(docRef, updateObj);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) {
+      throw new Error("문서가 존재하지 않습니다."); // 문서가 없을 경우 오류 던지기
+    }
+
+    const resultData = { ...snapshot.data(), docId: snapshot.id };
+    return resultData;
   } catch (error) {
-    console.error("Error updating document: ", error);
+    console.log("Error Update", error);
+    throw error; // 에러를 던져서 호출하는 쪽에서 처리하게 하기
   }
 }
 // 게시판

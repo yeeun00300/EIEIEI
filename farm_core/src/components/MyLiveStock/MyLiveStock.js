@@ -19,10 +19,7 @@ import StockProduct from "./charts/StockProduct";
 import FeedAndWater from "./charts/FeedAndWater";
 import HealthCondition from "./charts/HealthCondition";
 import MortalityRate from "./charts/MortalityRate";
-import {
-  fetchExcelStock,
-  fetchSelectedStock,
-} from "../../store/stockSlice/stockSlice";
+import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 import TempControl from "../ControlPanels/TempControl";
@@ -56,7 +53,7 @@ function MyLiveStock(props) {
           },
         ],
       };
-      dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
+      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
       setSelectedValue(defaultFarmId); // 기본적으로 첫 번째 farmId 설정
     }
   }, [farmList, dispatch]);
@@ -81,7 +78,7 @@ function MyLiveStock(props) {
           },
         ],
       };
-      dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
+      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
       console.log(`선택된 농장 정보`, selectedFarm);
     }
   };
