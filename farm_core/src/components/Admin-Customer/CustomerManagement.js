@@ -15,7 +15,7 @@ import { getSubCollection } from "../../firebase";
 function CustomerManagement() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("커뮤니티");
+  const [sort, setSort] = useState("공지사항");
   const {
     communityContents,
     livestockContents,
@@ -38,7 +38,11 @@ function CustomerManagement() {
   const [commentStateOpen, setCommentStateOpen] = useState(false);
   const [commentList, setCommentList] = useState([]);
   // console.log(commentList);
-
+  const statDict = {
+    reported: "신고 ",
+    black: "차단 ",
+    checked: "확인 ",
+  };
   const toggleOpen = (id) => {
     setStateOpen((prev) => (prev === id ? "" : id));
   };
@@ -68,20 +72,21 @@ function CustomerManagement() {
         }
       })
     : [searchedCommunity];
+
   const commentItems = async () => {
+    let totalArr = [];
     const result = sortedCommunity.forEach(async (value) => {
-      let arr = [];
       const result = await getSubCollection("community", value.id, "comments");
 
       if (result.length > 0) {
-        const resultArr = result.map((item) => ({
+        const resultArr = result?.map((item) => ({
           ...item,
           communityDocId: value.id,
         }));
         // arr.push([{ communityDocId: value.id }, ...result]);
-
-        setCommentList(resultArr);
+        totalArr.push(...resultArr);
       }
+      setCommentList(totalArr);
       return;
     });
   };
@@ -183,6 +188,7 @@ function CustomerManagement() {
       })
     );
   }, [sort, search]);
+
   return (
     <div className={styles.CustomerManagement}>
       <Search
@@ -322,6 +328,7 @@ function CustomerManagement() {
                         declareState,
                         declareReason,
                         id,
+                        communityType,
                       } = communityItem;
 
                       const createDate1 = new Date(createdAt)
@@ -335,6 +342,8 @@ function CustomerManagement() {
                       const selectComment = commentList?.filter(
                         (item) => item.communityDocId === id
                       );
+                      // console.log();
+
                       return (
                         <>
                           <tr key={idx}>
@@ -386,7 +395,7 @@ function CustomerManagement() {
                             </td>
                             <td>
                               {declareState ? (
-                                <>
+                                <div className={styles.communityStateCard}>
                                   <Button
                                     className={styles.communityStateBtn}
                                     onClick={() => toggleOpen(id)}
@@ -396,7 +405,7 @@ function CustomerManagement() {
                                     aria-expanded={commentOpen[id] || false}
                                   >
                                     {declareState !== "checked"
-                                      ? declareState
+                                      ? statDict[declareState]
                                       : "checked"}
                                   </Button>
                                   <div
@@ -408,7 +417,7 @@ function CustomerManagement() {
                                       dimension="width"
                                     >
                                       <div id="communityStateCollapse">
-                                        <Card body style={{ width: "400px" }}>
+                                        <Card body style={{ width: "200px" }}>
                                           <DeclareStateCard
                                             setOpen={setStateOpen}
                                             email={email}
@@ -419,12 +428,13 @@ function CustomerManagement() {
                                             declareState={declareState}
                                             declareReason={declareReason}
                                             id={id}
+                                            communityType={sort}
                                           />
                                         </Card>
                                       </div>
                                     </Collapse>
                                   </div>
-                                </>
+                                </div>
                               ) : (
                                 <p className={styles.communityPTag}>
                                   {declareState}
@@ -447,20 +457,17 @@ function CustomerManagement() {
                                   docId,
                                 } = item;
 
-                                const createDate3 = new Date(
-                                  subCreatedAt.seconds
-                                )
-                                  .toISOString("KR")
+                                const createDate3 = new Date(subCreatedAt)
+                                  ?.toISOString("KR")
                                   .split("T")[0]
                                   .replaceAll("-", ".");
-                                const createDate4 = new Date(
-                                  subCreatedAt.seconds
-                                )
-                                  .toISOString("KR")
+                                const createDate4 = new Date(subCreatedAt)
+                                  ?.toISOString("KR")
                                   .split("T")[1]
                                   .split(".")[0];
+
                                 return (
-                                  <tr>
+                                  <tr className={styles.commentTr}>
                                     <td colspan="2">
                                       <span className={styles.commentRow}>
                                         ↳
@@ -479,53 +486,70 @@ function CustomerManagement() {
                                     {/* <td> </td> */}
                                     <td>{subDeclareCount}</td>
                                     <td>
-                                      {" "}
-                                      <Button
-                                        className={styles.communityStateBtn}
-                                        onClick={() =>
-                                          toggleCommentStateOpen(docId)
-                                        }
-                                        // onClick={() => setStateOpen(!stateOpen)}
-                                        type="button"
-                                        aria-controls="communityStateCollapse"
-                                        aria-expanded={
-                                          commentStateOpen[docId] || false
-                                        }
-                                      >
-                                        {subDeclareState !== "checked"
-                                          ? subDeclareState
-                                          : "checked"}
-                                      </Button>
-                                      <div
-                                        style={{ minHeight: "150px" }}
-                                        className={styles.commentStateCollapse}
-                                      >
-                                        <Collapse
-                                          in={commentStateOpen === docId}
-                                          dimension="width"
+                                      {subDeclareState !== "" ? (
+                                        <div
+                                          className={styles.communityStateCard}
                                         >
-                                          <div id="communityStateCollapse">
-                                            <Card
-                                              body
-                                              style={{ width: "400px" }}
+                                          <Button
+                                            className={styles.communityStateBtn}
+                                            onClick={() =>
+                                              toggleCommentStateOpen(docId)
+                                            }
+                                            type="button"
+                                            aria-controls="communityStateCollapse"
+                                            aria-expanded={
+                                              commentStateOpen[docId] || false
+                                            }
+                                          >
+                                            {subDeclareState !== "checked"
+                                              ? statDict[subDeclareState]
+                                              : "checked"}
+                                          </Button>
+                                          <div
+                                            style={{ minHeight: "150px" }}
+                                            className={
+                                              styles.commentStateCollapse
+                                            }
+                                          >
+                                            <Collapse
+                                              in={commentStateOpen === docId}
+                                              dimension="width"
                                             >
-                                              <DeclareStateCard
-                                                setOpen={setCommentOpen}
-                                                email={email}
-                                                authorNickName={nickname}
-                                                // title={title}
-                                                content={subContent}
-                                                declareCount={subDeclareCount}
-                                                subDeclareState={
-                                                  subDeclareState
-                                                }
-                                                declareReason={subDeclareReason}
-                                                id={id}
-                                              />
-                                            </Card>
+                                              <div id="communityStateCollapse">
+                                                <Card
+                                                  body
+                                                  style={{ width: "200px" }}
+                                                >
+                                                  <DeclareStateCard
+                                                    setOpen={setCommentOpen}
+                                                    email={email}
+                                                    authorNickName={nickname}
+                                                    // title={title}
+                                                    content={subContent}
+                                                    declareCount={
+                                                      subDeclareCount
+                                                    }
+                                                    declareState={
+                                                      subDeclareState
+                                                    }
+                                                    declareReason={
+                                                      subDeclareReason
+                                                    }
+                                                    id={id}
+                                                    commentId={docId}
+                                                    comment={true}
+                                                    communityType={sort}
+                                                  />
+                                                </Card>
+                                              </div>
+                                            </Collapse>
                                           </div>
-                                        </Collapse>
-                                      </div>
+                                        </div>
+                                      ) : (
+                                        <p className={styles.communityPTag}>
+                                          {subDeclareState}
+                                        </p>
+                                      )}
                                     </td>
                                   </tr>
                                 );
@@ -538,14 +562,21 @@ function CustomerManagement() {
                       );
                     })
                   : sortedCommunity?.map((questionItem, idx) => {
-                      const { email, authorNickName, message, createdAt } =
-                        questionItem;
+                      const {
+                        email,
+                        authorNickName,
+                        message,
+                        createdAt,
+                        communityType,
+                        stockType,
+                        docId,
+                      } = questionItem;
                       const createDate1 = new Date(createdAt)
-                        .toISOString("KR")
+                        ?.toISOString("KR")
                         .split("T")[0]
                         .replaceAll("-", ".");
                       const createDate2 = new Date(createdAt)
-                        .toISOString("KR")
+                        ?.toISOString("KR")
                         .split("T")[1]
                         .split(".")[0];
                       return (
@@ -567,6 +598,48 @@ function CustomerManagement() {
                               <br />
                               {createDate2}
                             </p>
+                          </td>
+                          <td>
+                            <div className={styles.communityStateCard}>
+                              <Button
+                                className={styles.communityStateBtn}
+                                onClick={() => toggleOpen(id)}
+                                // onClick={() => setStateOpen(!stateOpen)}
+                                type="button"
+                                aria-controls="communityStateCollapse"
+                                aria-expanded={commentOpen[id] || false}
+                              >
+                                {declareState !== "checked"
+                                  ? statDict[declareState]
+                                  : "checked"}
+                              </Button>
+                              <div
+                                style={{ minHeight: "150px" }}
+                                className={styles.communityStateCollapse}
+                              >
+                                <Collapse
+                                  in={stateOpen === id}
+                                  dimension="width"
+                                >
+                                  <div id="communityStateCollapse">
+                                    <Card body style={{ width: "200px" }}>
+                                      <DeclareStateCard
+                                        setOpen={setStateOpen}
+                                        email={email}
+                                        authorNickName={authorNickName}
+                                        // title={title}
+                                        content={message}
+                                        // declareCount={declareCount}
+                                        // declareState={declareState}
+                                        // declareReason={declareReason}
+                                        id={docId}
+                                        communityType={sort}
+                                      />
+                                    </Card>
+                                  </div>
+                                </Collapse>
+                              </div>
+                            </div>
                           </td>
                         </tr>
                       );
