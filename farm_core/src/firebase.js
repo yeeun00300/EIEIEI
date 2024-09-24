@@ -581,7 +581,7 @@ export const addComment = async (postId, comment) => {
     const commentsRef = collection(db, "community", postId, "comments");
     await addDoc(commentsRef, {
       subContent: comment.subContent, // 새로운 필드 이름
-      subCreatedAt: Timestamp.fromDate(new Date()), // 생성 시간
+      subCreatedAt: new Date().getTime(), // 생성 시간
       nickname: comment.nickname, // 사용자 닉네임
       email: comment.email,
       profileImage: comment.profileImage,
@@ -839,6 +839,11 @@ const updateSubcollectionDocument = async (
   }
 };
 
+const deleteFarmDocument = async (docId) => {
+  const docRef = doc(db, "farm", docId); // "farm" 컬렉션에서 해당 문서 참조
+  await deleteDoc(docRef); // 문서 삭제
+};
+
 export {
   db,
   getCollection,
@@ -869,5 +874,6 @@ export {
   testUploadImg,
   updateFarmDocument,
   updateSubcollectionDocument,
+  deleteFarmDocument,
 };
 export default app;

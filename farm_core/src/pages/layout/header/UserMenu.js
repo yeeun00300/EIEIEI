@@ -40,7 +40,7 @@ function UserMenu(props) {
         <input />
       </div>
       <div className={styles.btns}>
-        <Link className={styles.btn} to={"/userinfo"}>
+        <Link className={styles.btn} to={"/My_Farm_MyPage"}>
           <button>회원정보수정</button>
         </Link>
         <button className={styles.logoutBtn} onClick={handleLogout}>

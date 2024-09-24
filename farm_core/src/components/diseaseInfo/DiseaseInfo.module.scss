@@ -1,31 +1,34 @@
 // DiseaseInfo.module.scss
-
-h1 {
-  margin-bottom: 30px;
-  font-size: 2.5rem;
-  color: #2980b9; // 텍스트 색상 변경
-  text-align: center;
+.headerTitle {
+  h1 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #2980b9; // 텍스트 색상 변경
+    text-align: center;
+  }
+  h2 {
+    margin: 20px 0;
+    font-size: 1.8rem;
+    color: #2c3e50;
+    text-align: center;
+  }
 }
 
-h2 {
-  margin: 20px 0;
-  font-size: 1.8rem;
-  color: #2c3e50;
-  text-align: center;
-}
 .boxContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.imgBox {
-  display: flex;
-  width: 30%;
-  height: 30%;
-  .Img {
-    width: 100%;
-    height: 100%;
+  // justify-content: center;
+  // align-items: center;
+  // flex-direction: column;
+
+  .imgBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    margin: 0 auto;
+    .Img {
+      width: 100%;
+    }
   }
 }
 .btn {
@@ -39,109 +42,96 @@ h2 {
     color: white;
   }
 }
+.rowBox {
+  .formControl {
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
 
-.formControl {
-  border-radius: 5px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 20px;
-
-  &:focus {
-    border-color: #2980b9;
-    box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
-  }
-}
-
-.card {
-  transition: transform 0.3s;
-  cursor: pointer;
-  margin-bottom: 20px;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border-radius: 1rem;
-  }
-
-  .cardHeader {
-    background-color: #ecf0f1;
-    font-weight: bold;
-    padding: 15px;
-    color: var(--point-color);
-    border-radius: 10px;
-    height: 100px;
-  }
-
-  .cardBody {
-    background-color: #ffffff;
-    padding: 15px;
-
-    p {
-      margin: 5px 0;
-      font-size: 1rem;
-      color: #34495e; // 텍스트 색상 변경
+    &:focus {
+      border-color: #2980b9;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
     }
   }
-}
-
-.modalDisease {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-
-  .modalContent {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
+  .prevBtn,
+  .nextBtn {
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: var(--main-color);
+    color: #ffffff;
     font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  .prevBtn:hover,
+  .nextBtn:hover {
+    background-color: var(--second-color);
+  }
+
+  .prevBtn:disabled,
+  .nextBtn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  .card {
+    transition: transform 0.3s;
+    cursor: pointer;
+    margin-bottom: 20px;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border-radius: 1rem;
+    }
+
+    .cardHeader {
+      background-color: #ecf0f1;
+      font-weight: bold;
+      padding: 15px;
+      color: var(--point-color);
+      border-radius: 10px;
+      height: 100px;
+    }
+  }
+  .modalDisease {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    position: relative;
-    padding: 2%;
+    z-index: 1000;
+
+    .modalContent {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 700px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      padding: 2%;
+    }
+
+    .close {
+      cursor: pointer;
+      color: #2980b9;
+      font-weight: bold;
+      float: right;
+      font-size: 2rem;
+      position: absolute;
+      top: 0;
+      right: 3%;
+    }
   }
-
-  .close {
-    cursor: pointer;
-    color: #2980b9;
-    font-weight: bold;
-    float: right;
-    font-size: 2rem;
-    position: absolute;
-    top: 0;
-    right: 3%;
-  }
-}
-
-.prevBtn,
-.nextBtn {
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  background-color: var(--main-color);
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-.prevBtn:hover,
-.nextBtn:hover {
-  background-color: var(--second-color);
-}
-
-.prevBtn:disabled,
-.nextBtn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
 }

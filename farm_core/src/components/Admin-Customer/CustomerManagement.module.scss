@@ -55,7 +55,11 @@
     td {
       font-size: 12px;
       button {
-        padding: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        width: 60px;
         height: 24px;
         font-size: 12px;
       }
@@ -92,6 +96,9 @@
   display: flex;
   gap: 24px;
 }
+.communityStateCard {
+  display: flex;
+}
 .CustomerManagementCollapse {
   position: absolute;
   top: 12px;
@@ -101,14 +108,14 @@
 }
 .communityStateCollapse {
   // position: absolute;
-  height: 150px;
+  height: fit-content;
+  max-height: 150px;
   width: 300px;
   // top: 3%;
   // right: 3%;
   display: flex;
   overflow-x: hidden;
   overflow-y: overlay;
-  margin-top: 12px;
   ::-webkit-scrollbar {
     width: 14px;
     height: 14px;
@@ -134,7 +141,8 @@
 
 .commentStateCollapse {
   // position: absolute;
-  height: 150px;
+  height: fit-content;
+  max-height: 150px;
   width: 300px;
   // width: 120px;
   // bottom: 3%;
@@ -142,7 +150,6 @@
   display: flex;
   align-items: baseline;
   overflow-x: hidden;
-  min-width: 120px;
   overflow-y: overlay;
   ::-webkit-scrollbar {
     width: 14px;
@@ -165,6 +172,9 @@
     box-shadow: none;
     background-color: transparent;
   }
+}
+.commentTr {
+  border: 3px solid #007bff;
 }
 .commentCountBtn {
   z-index: 2;

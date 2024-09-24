@@ -1,33 +1,15 @@
 import React, { useEffect, useState } from "react";
-import styles from "./MedicalList.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addFarmData,
-  addField,
-} from "../../store/addLiveStockSlice/addLiveStockSlice";
-import { getAuth } from "firebase/auth";
-import {
-  addFarmDataWithSubcollections,
-  addMessage,
-  fetchFarmDocumentByEmail,
-  getSubCollection,
-  useFetchCollectionData,
-} from "../../firebase";
-import userInfoEditSlice from "./../../store/userInfoEditSlice/UserInfoEditSlice";
-import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import { addField } from "../../store/addLiveStockSlice/addLiveStockSlice";
+import { fetchFarmDocumentByEmail, addMessage } from "../../firebase";
+import styles from "./MedicalList.module.scss";
 
 function MedicalList(props) {
   const dispatch = useDispatch();
   const farmData = useSelector((state) => state.AddLiveStockSlice);
 
-  console.log(farmData);
-  // const farmData = useSelector((state) => state.userInfoEditSlice);
-
-  // useFetchCollectionData("farm");
-  const [docId, setDocId] = useState([]); // docId 상태 추가
+  const [docId, setDocId] = useState([]);
   const [farmIdList, setFarmIdList] = useState([]);
-  console.log(docId);
-  console.log(farmIdList);
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -35,14 +17,12 @@ function MedicalList(props) {
     if (email) {
       const fetchData = async () => {
         try {
-          // 이메일로 모든 문서 검색
           const documents = await fetchFarmDocumentByEmail(email);
-          console.log("Fetched documents:", documents); // 디버깅용 로그
           if (documents.length > 0) {
-            setDocId(documents.map((doc) => doc.id)); // 첫 번째 문서의 ID를 설정
+            setDocId(documents.map((doc) => doc.id));
             setFarmIdList(
               documents.map((doc) => doc.farmId).filter((id) => id)
-            ); // 모든 farmId를 배열로 설정
+            );
           } else {
             console.log("No documents found for this email.");
           }
@@ -67,8 +47,6 @@ function MedicalList(props) {
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-
-    // 'Yes' 체크박스는 'true'로, 'No' 체크박스는 'false'로 설정
     const isYesCheckbox = name.includes("Yes");
 
     dispatch(
@@ -77,21 +55,17 @@ function MedicalList(props) {
         fieldValue: isYesCheckbox ? checked : !checked,
       })
     );
-    console.log("cough state updated:", farmData.cough);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Submitting farm data:", farmData);
-
-      // 폼 데이터와 하위 컬렉션 데이터 준비
       const subCollections = {
         farmCureList: {
           farmNumber: farmData.farmNumber || "",
           symptom: farmData.symptom || "",
           symptomCount: farmData.symptomCount || "",
-          fever: farmData.fever || "",
+          fever: farmData.fever !== undefined ? farmData.fever : false,
           feverMean: farmData.feverMean || "",
           cough: farmData.cough !== undefined ? farmData.cough : false,
           coughCount: farmData.coughCount || "",
@@ -103,16 +77,19 @@ function MedicalList(props) {
         },
       };
 
-      console.log("SubCollections data:", subCollections);
+      // docId 배열에서 첫 번째 아이디를 선택합니다.
+      if (docId.length > 0) {
+        const farmDocId = await addMessage(
+          "farm",
+          docId[0], // 첫 번째 문서 ID 사용
+          "farmCureList",
+          subCollections.farmCureList
+        );
 
-      const farmDocId = await addMessage(
-        "farm",
-        docId,
-        "farmCureList",
-        subCollections.farmCureList
-      );
-
-      alert("데이터가 성공적으로 저장되었습니다!");
+        alert("데이터가 성공적으로 저장되었습니다!");
+      } else {
+        alert("유효한 문서 ID가 없습니다.");
+      }
     } catch (error) {
       console.error("데이터 저장 실패:", error.message || error);
       alert("데이터 저장에 실패했습니다.");
@@ -120,192 +97,200 @@ function MedicalList(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.container}>
-      <h2>축사 문진표</h2>
+    <div className="container">
+      <div className={styles.wrapper}>
+        <h2 className={styles.title}>축사 문진표</h2>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>축사 번호</label>
+            <select
+              name="farmNumber"
+              value={farmData.farmNumber || ""}
+              onChange={handleSelectChange}
+              className={styles.input}
+            >
+              <option value="">축사 번호를 선택해주세요</option>
+              {farmIdList.map((farmId, index) => (
+                <option key={index} value={farmId}>
+                  {farmId}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <div className="form-section">
-        <h3>의뢰인 정보</h3>
-        <span>축사 번호</span>
-        <select
-          name="farmNumber"
-          value={farmData.farmNumber || ""}
-          onChange={handleSelectChange}
-        >
-          <option value="">축사 번호를 선택해주세요</option>
-          {farmIdList.map((farmId, index) => (
-            <option key={index} value={farmId}>
-              {farmId}
-            </option>
-          ))}
-        </select>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>공통 증상</label>
+            <textarea
+              name="symptom"
+              rows="4"
+              placeholder="가축들이 보이는 공통 증상을 기재하세요"
+              onChange={handleChange}
+              value={farmData.symptom || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>영향을 받은 가축 수</label>
+            <input
+              type="number"
+              name="symptomCount"
+              placeholder="영향을 받은 가축의 수를 입력하세요"
+              onChange={handleChange}
+              value={farmData.symptomCount || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label className={styles.label}>가축들이 열이 있습니까?</label>
+            <div className={styles.checkboxContainer}>
+              <input
+                type="checkbox"
+                checked={farmData.fever === true}
+                onChange={handleCheckboxChange}
+                name="feverYes"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>예</span>
+
+              <input
+                type="checkbox"
+                checked={farmData.fever === false}
+                onChange={handleCheckboxChange}
+                name="feverNo"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>아니오</span>
+            </div>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>평균 체온 (°C)</label>
+            <input
+              type="text"
+              name="feverMean"
+              placeholder="예: 39°C"
+              onChange={handleChange}
+              value={farmData.feverMean || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label className={styles.label}>
+              가축들이 기침을 하고 있습니까?
+            </label>
+            <div className={styles.checkboxContainer}>
+              <input
+                type="checkbox"
+                checked={farmData.cough === true}
+                onChange={handleCheckboxChange}
+                name="coughYes"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>예</span>
+
+              <input
+                type="checkbox"
+                checked={farmData.cough === false}
+                onChange={handleCheckboxChange}
+                name="coughNo"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>아니오</span>
+            </div>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>기침 빈도</label>
+            <input
+              type="text"
+              name="coughCount"
+              placeholder="예: 하루 3회"
+              onChange={handleChange}
+              value={farmData.coughCount || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <label className={styles.label}>설사 증상 여부</label>
+            <div className={styles.checkboxContainer}>
+              <input
+                type="checkbox"
+                checked={farmData.diarrhea === true}
+                onChange={handleCheckboxChange}
+                name="diarrheaYes"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>예</span>
+
+              <input
+                type="checkbox"
+                checked={farmData.diarrhea === false}
+                onChange={handleCheckboxChange}
+                name="diarrheaNo"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>아니오</span>
+            </div>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>설사 빈도</label>
+            <input
+              type="text"
+              name="diarrheaCount"
+              placeholder="예: 하루 2회"
+              onChange={handleChange}
+              value={farmData.diarrheaCount || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>환기 상태</label>
+            <input
+              type="text"
+              name="ventilation"
+              placeholder="환기 상태를 입력하세요"
+              onChange={handleChange}
+              value={farmData.ventilation || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>램프 상태</label>
+            <input
+              type="text"
+              name="lampCondition"
+              placeholder="램프 상태를 입력하세요"
+              onChange={handleChange}
+              value={farmData.lampCondition || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>사료 공급 상태</label>
+            <input
+              type="text"
+              name="feedSupply"
+              placeholder="사료 공급 상태를 입력하세요"
+              onChange={handleChange}
+              value={farmData.feedSupply || ""}
+              className={styles.input}
+            />
+          </div>
+
+          <button type="submit" className={styles.button}>
+            제출하기
+          </button>
+        </form>
       </div>
-
-      <div className="form-section">
-        <h3>가축 건강 상태</h3>
-        <div className="field-group">
-          <label htmlFor="symptom">공통 증상:</label>
-          <textarea
-            id="symptom"
-            name="symptom"
-            placeholder="가축들이 보이는 공통 증상을 기재하세요"
-            onChange={handleChange}
-            value={farmData.symptom || ""}
-          ></textarea>
-        </div>
-        <div className="field-group">
-          <label htmlFor="symptomCount">영향을 받은 가축 수:</label>
-          <input
-            type="text"
-            id="symptomCount"
-            name="symptomCount"
-            placeholder="영향을 받은 가축의 수를 입력하세요"
-            onChange={handleChange}
-            value={farmData.symptomCount || ""}
-          />
-        </div>
-      </div>
-
-      <div className="form-section">
-        <h3>질병 및 상태 체크 리스트</h3>
-        <div className="field-group">
-          <span>1. 가축들이 열이 있습니까?</span>
-          <span>
-            <input
-              type="checkbox"
-              id="feverYes"
-              name="feverYes"
-              checked={farmData.fever === true}
-              onChange={handleCheckboxChange}
-            />{" "}
-            예
-            <input
-              type="checkbox"
-              id="feverNo"
-              name="feverNo"
-              checked={farmData.fever === false}
-              onChange={handleCheckboxChange}
-            />{" "}
-            아니요
-          </span>
-        </div>
-        <div className="field-group">
-          <label htmlFor="feverMean">평균 체온 (°C):</label>
-          <input
-            type="text"
-            id="feverMean"
-            name="feverMean"
-            placeholder="예: 39°C"
-            onChange={handleChange}
-            value={farmData.feverMean || ""}
-          />
-        </div>
-
-        <div className="field-group">
-          <span>2. 가축들이 기침을 하고 있습니까?</span>
-          <span>
-            <input
-              type="checkbox"
-              id="coughYes"
-              name="coughYes"
-              checked={farmData.cough === true}
-              onChange={handleCheckboxChange}
-            />{" "}
-            예
-            <input
-              type="checkbox"
-              id="coughNo"
-              name="coughNo"
-              checked={farmData.cough === false}
-              onChange={handleCheckboxChange}
-            />{" "}
-            아니요
-          </span>
-        </div>
-        <div className="field-group">
-          <label htmlFor="coughCount">기침 빈도:</label>
-          <input
-            type="text"
-            id="coughCount"
-            name="coughCount"
-            placeholder="예: 하루 3회"
-            onChange={handleChange}
-            value={farmData.coughCount || ""}
-          />
-        </div>
-
-        <div className="field-group">
-          <span>3. 설사 증상이 있습니까?</span>
-          <span>
-            <input
-              type="checkbox"
-              id="diarrheaYes"
-              name="diarrheaYes"
-              checked={farmData.diarrhea === true}
-              onChange={handleCheckboxChange}
-            />{" "}
-            예
-            <input
-              type="checkbox"
-              id="diarrheaNo"
-              name="diarrheaNo"
-              checked={farmData.diarrhea === false}
-              onChange={handleCheckboxChange}
-            />{" "}
-            아니요
-          </span>
-        </div>
-        <div className="field-group">
-          <label htmlFor="diarrheaCount">설사 횟수:</label>
-          <input
-            type="text"
-            id="diarrheaCount"
-            name="diarrheaCount"
-            placeholder="예: 하루 5회"
-            onChange={handleChange}
-            value={farmData.diarrheaCount || ""}
-          />
-        </div>
-      </div>
-
-      <div className="form-section">
-        <h3>사육 환경</h3>
-        <div className="field-group">
-          <label htmlFor="ventilation">환기 상태:</label>
-          <input
-            type="text"
-            id="ventilation"
-            name="ventilation"
-            placeholder="환기 상태를 입력하세요"
-            onChange={handleChange}
-            value={farmData.ventilation || ""}
-          />
-        </div>
-        <div className="field-group">
-          <label htmlFor="lampCondition">조명 상태:</label>
-          <input
-            type="text"
-            id="lampCondition"
-            name="lampCondition"
-            placeholder="조명 상태를 입력하세요"
-            onChange={handleChange}
-            value={farmData.lampCondition || ""}
-          />
-        </div>
-        <div className="field-group">
-          <label htmlFor="feed">사료 공급 상태:</label>
-          <input
-            type="text"
-            id="feedSupply"
-            name="feedSupply"
-            placeholder="사료 공급 상태를 입력하세요"
-            onChange={handleChange}
-            value={farmData.feedSupply || ""}
-          />
-        </div>
-      </div>
-
-      <button type="submit">제출</button>
-    </form>
+    </div>
   );
 }
 

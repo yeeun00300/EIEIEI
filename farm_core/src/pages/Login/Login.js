@@ -17,9 +17,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { checkUserInFirestore } from "../../firebase";
-
 import kakaoImg from "../../img/kakao_login.png";
-
 import googleSvg from "../../img/web_light_sq_SU.svg";
 
 function Login() {

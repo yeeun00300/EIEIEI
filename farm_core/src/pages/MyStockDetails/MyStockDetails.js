@@ -482,7 +482,7 @@ function MyStockDetails(props) {
                           onClick={() => handleDelete(item.docId)}
                           className={styles.myStockDetailsDeleteButton}
                         >
-                          가축리스트에서 삭제
+                          삭제
                         </Button>
                         <Button
                           onClick={handleUpdateDeceased}

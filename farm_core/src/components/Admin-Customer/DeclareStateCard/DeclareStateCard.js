@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import styles from "./DeclareStateCard.module.scss";
 import { useDispatch } from "react-redux";
-import { reportPost } from "../../../store/communitySlice/communitySlice";
+import {
+  reportComment,
+  reportPost,
+} from "../../../store/communitySlice/communitySlice";
 import Button from "react-bootstrap/esm/Button";
 
 function DeclareStateCard({
@@ -14,51 +17,107 @@ function DeclareStateCard({
   declareState,
   declareReason,
   id,
+  comment,
+  commentId,
+  communityType,
 }) {
+  console.log(communityType);
+
   const dispatch = useDispatch();
   const handleBlackClick = async (state) => {
-    try {
-      if (declareState == "reported") {
-        await dispatch(
-          reportPost({
-            id: id,
-            reason: declareReason,
-            state: "black",
-          })
-        ).unwrap();
-        setOpen(false);
-      } else if (declareState == "checked") {
-        await dispatch(
-          reportPost({
-            id: id,
-            reason: declareReason,
-            state: "black",
-          })
-        ).unwrap();
-        setOpen(false);
-      } else if (declareState == "black") {
-        await dispatch(
-          reportPost({
-            id: id,
-            reason: declareReason,
-            state: "checked",
-          })
-        ).unwrap();
-        setOpen(false);
-      } else {
-        await dispatch(
-          reportPost({
-            id: id,
-            reason: declareReason,
-            state: "reported",
-          })
-        ).unwrap();
-        setOpen(false);
+    if (!comment) {
+      // 게시글 신고 상태
+      try {
+        if (declareState == "reported") {
+          await dispatch(
+            reportPost({
+              id: id,
+              reason: declareReason,
+              state: "black",
+            })
+          ).unwrap();
+          setOpen(false);
+        } else if (declareState == "checked") {
+          await dispatch(
+            reportPost({
+              id: id,
+              reason: declareReason,
+              state: "black",
+            })
+          ).unwrap();
+          setOpen(false);
+        } else if (declareState == "black") {
+          await dispatch(
+            reportPost({
+              id: id,
+              reason: declareReason,
+              state: "checked",
+            })
+          ).unwrap();
+          setOpen(false);
+        } else {
+          await dispatch(
+            reportPost({
+              id: id,
+              reason: declareReason,
+              state: "reported",
+            })
+          ).unwrap();
+          setOpen(false);
+        }
+      } catch (error) {
+        console.error("게시글 신고 상태 업데이트 실패:", error);
       }
-    } catch (error) {
-      console.error("좋아요 업데이트 실패:", error);
+    } else {
+      // 댓글 신고 상태
+      try {
+        console.log(declareState, id, commentId);
+
+        if (declareState == "reported") {
+          await dispatch(
+            reportComment({
+              postId: id,
+              commentId: commentId,
+              state: "black",
+            }).unwrap()
+          );
+          setOpen(false);
+        } else if (declareState == "checked") {
+          await dispatch(
+            reportComment({
+              postId: id,
+              commentId: commentId,
+              state: "black",
+            }).unwrap()
+          );
+          setOpen(false);
+        } else if (declareState == "black") {
+          await dispatch(
+            reportComment({
+              postId: id,
+              commentId: commentId,
+              state: "checked",
+            }).unwrap()
+          );
+          setOpen(false);
+        } else {
+          await dispatch(
+            reportComment({
+              postId: id,
+              commentId: commentId,
+              state: "reported",
+            }).unwrap()
+          );
+          setOpen(false);
+        }
+      } catch (error) {
+        console.error("댓글 신고 상태 업데이트 실패:", error);
+      }
     }
   };
+  // 수정하기 -------------------------------------------------------------
+
+  // 삭제하기 -------------------------------------------------------------
 
   return (
     <div className={styles.DeclareCard}>
@@ -87,7 +146,7 @@ function DeclareStateCard({
       </div>
       <div className={styles.DeclareBtn}>
         {declareState == "black" ? (
-          <Button onClick={handleBlackClick}>차단해체하기</Button>
+          <Button onClick={handleBlackClick}>차단해체</Button>
         ) : (
           <Button onClick={handleBlackClick}>차단하기</Button>
         )}

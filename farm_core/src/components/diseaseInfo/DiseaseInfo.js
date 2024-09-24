@@ -46,11 +46,12 @@ function DiseaseInfo() {
   return (
     <div className="page">
       <div className="container">
-        <h1>질병 사전</h1>
-
-        <div className="text-center mb-4">
+        <div className={styles.headerTitle}>
+          <h1>질병 사전</h1>
           <h2>가축 종류 선택</h2>
-          <div className={styles.boxContainer}>
+        </div>
+        <div className={styles.boxContainer}>
+          <div className="text-center mb-4">
             <div className={styles.imgBox}>
               <button
                 className={`${styles.btn} btn btn-primary mx-2`}
@@ -74,7 +75,7 @@ function DiseaseInfo() {
           </div>
         </div>
 
-        <div>
+        <div className={styles.rowBox}>
           <h2>
             {selectedAnimal === "cows"
               ? "소"

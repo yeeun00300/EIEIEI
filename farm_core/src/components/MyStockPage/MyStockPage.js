@@ -21,7 +21,6 @@ function MyStockPage(props) {
         >
           <Tab eventKey="four" title="축사 정보">
             <MedicalListCheck />
-            {/* <MyLiveStockList /> */}
           </Tab>
           <Tab eventKey="five" title="축사 제어">
             Tab content for Home

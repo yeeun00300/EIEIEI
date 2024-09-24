@@ -15,16 +15,19 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import styles from "../../pages/MyPage/MyCommunity/MyCommunity.module.scss";
-import { fetchFarmDocumentByEmail, updateFarmDocument } from "../../firebase";
+import {
+  deleteFarmDocument,
+  fetchFarmDocumentByEmail,
+  updateFarmDocument,
+} from "../../firebase";
 import kroDate from "../../utils/korDate";
-import { doc } from "firebase/firestore";
 
 function MedicalListCheck() {
   const dispatch = useDispatch();
-  const [document, setDocument] = useState([]);
+  const [documents, setDocuments] = useState([]); // 다수의 문서를 위한 상태
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [lastModified, setLastModified] = useState(null); // lastModified 상태
+  const [lastModified, setLastModified] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
@@ -33,10 +36,10 @@ function MedicalListCheck() {
     if (email) {
       const fetchData = async () => {
         try {
-          const document = await fetchFarmDocumentByEmail(email);
-          setDocument(document);
-          console.log(document.farmName);
-          // Firebase에서 받은 lastModified 값 설정
+          // 이메일로 모든 문서 검색
+          const documents = await fetchFarmDocumentByEmail(email);
+          console.log("Fetched documents:", documents); // 디버깅용 로그
+          setDocuments(documents); // 다수의 문서 상태에 설정
         } catch (error) {
           console.error("문서 검색 실패:", error.message || error);
         }
@@ -46,12 +49,12 @@ function MedicalListCheck() {
     }
   }, []);
 
-  if (!document) {
+  if (!documents.length) {
     return <p>Loading...</p>;
   }
 
-  const handleViewDetails = () => {
-    setSelectedDocument(document);
+  const handleViewDetails = (doc) => {
+    setSelectedDocument(doc);
     setOpenModal(true);
   };
 
@@ -79,11 +82,13 @@ function MedicalListCheck() {
       });
 
       // 업데이트된 데이터와 함께 document 상태 및 lastModified 상태 업데이트
-      setDocument((prev) => ({
-        ...prev,
-        ...selectedDocument,
-        lastModified: currentTime,
-      }));
+      setDocuments((prev) =>
+        prev.map((doc) =>
+          doc.id === selectedDocument.id
+            ? { ...doc, ...selectedDocument, lastModified: currentTime }
+            : doc
+        )
+      );
       setLastModified(currentTime);
 
       setIsEditing(false);
@@ -91,6 +96,18 @@ function MedicalListCheck() {
       window.alert("수정이 완료되었습니다!");
     } catch (error) {
       console.error("업데이트 실패:", error);
+    }
+  };
+
+  const handleDelete = async (docId) => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      try {
+        await deleteFarmDocument(docId); // 문서 삭제 함수 호출
+        setDocuments((prev) => prev.filter((doc) => doc.id !== docId)); // 삭제된 문서를 상태에서 제거
+        window.alert("삭제가 완료되었습니다!");
+      } catch (error) {
+        console.error("삭제 실패:", error);
+      }
     }
   };
 
@@ -117,16 +134,18 @@ function MedicalListCheck() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {document.map((doc) => (
+            {documents.map((doc) => (
               <TableRow key={doc.id}>
-                <TableCell>{document.farmName}</TableCell>
-                <TableCell>{document.farmId}</TableCell>
-                <TableCell>{lastModified || "정보 없음"}</TableCell>
+                <TableCell>{doc.farmName}</TableCell>
+                <TableCell>{doc.farmId}</TableCell>
+                <TableCell>{doc.lastModified || "정보 없음"}</TableCell>
                 <TableCell>
-                  <Button onClick={handleViewDetails}>자세히 보기</Button>
+                  <Button onClick={() => handleViewDetails(doc)}>
+                    자세히 보기
+                  </Button>
                 </TableCell>
                 <TableCell>
-                  <Button>삭제</Button>
+                  <Button onClick={() => handleDelete(doc.id)}>삭제</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -137,104 +156,116 @@ function MedicalListCheck() {
       <Dialog open={openModal} onClose={handleCloseModal}>
         <DialogTitle>{isEditing ? "수정하기" : "상세 정보"}</DialogTitle>
         <DialogContent>
-          {selectedDocument &&
-            (isEditing ? (
-              <div>
-                <TextField
-                  label="주소"
-                  name="farmAddress"
-                  value={selectedDocument.farmAddress || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="축사 이름"
-                  name="farmName"
-                  value={selectedDocument.farmName || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="축사 번호"
-                  name="farmId"
-                  value={selectedDocument.farmId || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="축사 유형"
-                  name="farm_stockType"
-                  value={selectedDocument.farm_stockType || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="면적"
-                  name="farmScale"
-                  value={selectedDocument.farmScale || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="건축 연도"
-                  name="farmBuild"
-                  value={selectedDocument.farmBuild || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="건물 상태"
-                  name="farmCondition"
-                  value={selectedDocument.farmCondition || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="시설"
-                  name="facilities"
-                  value={selectedDocument.facilities || ""}
-                  onChange={handleChange}
-                />
-                <TextField
-                  label="보험 세부사항"
-                  name="insuranceDetail"
-                  value={selectedDocument.insuranceDetail || ""}
-                  onChange={handleChange}
-                />
-              </div>
-            ) : (
-              <div>
-                <p>
-                  <strong>주소:</strong>{" "}
-                  {selectedDocument.farmAddress || "정보 없음"}
-                </p>
-                <p>
-                  <strong>축사 이름:</strong>{" "}
-                  {selectedDocument.farmName || "정보 없음"}
-                </p>
-                <p>
-                  <strong>축사 번호:</strong>{" "}
-                  {selectedDocument.farmId || "정보 없음"}
-                </p>
-                <p>
-                  <strong>축사 유형:</strong>{" "}
-                  {selectedDocument.farm_stockType || "정보 없음"}
-                </p>
-                <p>
-                  <strong>면적:</strong>{" "}
-                  {selectedDocument.farmScale || "정보 없음"}
-                </p>
-                <p>
-                  <strong>건축 연도:</strong>{" "}
-                  {selectedDocument.farmBuild || "정보 없음"}
-                </p>
-                <p>
-                  <strong>건물 상태:</strong>{" "}
-                  {selectedDocument.farmCondition || "정보 없음"}
-                </p>
-                <p>
-                  <strong>시설:</strong>{" "}
-                  {selectedDocument.facilities || "정보 없음"}
-                </p>
-                <p>
-                  <strong>보험 세부사항:</strong>{" "}
-                  {selectedDocument.insuranceDetail || "정보 없음"}
-                </p>
-              </div>
-            ))}
+          {selectedDocument && (
+            <div>
+              {isEditing ? (
+                <div>
+                  <TextField
+                    label="주소"
+                    name="farmAddress"
+                    value={selectedDocument.farmAddress || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="축사 이름"
+                    name="farmName"
+                    value={selectedDocument.farmName || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="축사 번호"
+                    name="farmId"
+                    value={selectedDocument.farmId || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="축사 유형"
+                    name="farm_stockType"
+                    value={selectedDocument.farm_stockType || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="면적"
+                    name="farmScale"
+                    value={selectedDocument.farmScale || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="건축 연도"
+                    name="farmBuild"
+                    value={selectedDocument.farmBuild || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="건물 상태"
+                    name="farmCondition"
+                    value={selectedDocument.farmCondition || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="시설"
+                    name="facilities"
+                    value={selectedDocument.facilities || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="보험 세부사항"
+                    name="insuranceDetail"
+                    value={selectedDocument.insuranceDetail || ""}
+                    onChange={handleChange}
+                    fullWidth
+                  />
+                </div>
+              ) : (
+                <div>
+                  <p>
+                    <strong>주소:</strong>{" "}
+                    {selectedDocument.farmAddress || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>축사 이름:</strong>{" "}
+                    {selectedDocument.farmName || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>축사 번호:</strong>{" "}
+                    {selectedDocument.farmId || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>축사 유형:</strong>{" "}
+                    {selectedDocument.farm_stockType || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>면적:</strong>{" "}
+                    {selectedDocument.farmScale || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>건축 연도:</strong>{" "}
+                    {selectedDocument.farmBuild || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>건물 상태:</strong>{" "}
+                    {selectedDocument.farmCondition || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>시설:</strong>{" "}
+                    {selectedDocument.facilities || "정보 없음"}
+                  </p>
+                  <p>
+                    <strong>보험 세부사항:</strong>{" "}
+                    {selectedDocument.insuranceDetail || "정보 없음"}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </DialogContent>
         <DialogActions>
           {isEditing ? (

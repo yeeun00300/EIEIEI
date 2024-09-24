@@ -1,15 +1,18 @@
 .imageUploader {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .uploadLabel {
   display: inline-block;
   background-color: #fff;
   color: black;
-  padding: 10px 15px;
-  border-radius: 4px;
+  padding: 0.625rem 0.9375rem;
+  border-radius: 0.25rem;
   cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
 }
 
 .imagePreview {
@@ -17,7 +20,7 @@
   max-width: 100%;
   height: auto;
   margin: 0 auto;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid #ddd;
+  margin-bottom: 0.625rem;
 }
