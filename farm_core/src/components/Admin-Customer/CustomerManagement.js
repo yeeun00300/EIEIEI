@@ -10,6 +10,8 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/esm/Button";
 import { Card, Collapse } from "@mui/material";
 import NoticeAdd from "./NoticeAdd/NoticeAdd";
+import DeclareStateCard from "./DeclareStateCard/DeclareStateCard";
+import { getSubCollection } from "../../firebase";
 function CustomerManagement() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -24,8 +26,28 @@ function CustomerManagement() {
   const [communitySearch, setCommunitySearch] = useState("");
   const [sortBy, setSortBy] = useState("email");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [startDay, setStartDay] = useState("");
+  const [endDay, setEndDay] = useState("");
   const [searchedCommunity, setSearchedCommunity] = useState([]);
   const [open, setOpen] = useState(false);
+  // 게시글 상태open
+  const [stateOpen, setStateOpen] = useState(false);
+  // 댓글 open
+  const [commentOpen, setCommentOpen] = useState(false);
+  // 댓글 상태open
+  const [commentStateOpen, setCommentStateOpen] = useState(false);
+  const [commentList, setCommentList] = useState([]);
+  // console.log(commentList);
+
+  const toggleOpen = (id) => {
+    setStateOpen((prev) => (prev === id ? "" : id));
+  };
+  const toggleCommentOpen = (id) => {
+    setCommentOpen((prev) => (prev === id ? "" : id));
+  };
+  const toggleCommentStateOpen = (id) => {
+    setCommentStateOpen((prev) => (prev === id ? "" : id));
+  };
   const handleSort = (column) => {
     if (sortBy === column) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -46,13 +68,31 @@ function CustomerManagement() {
         }
       })
     : [searchedCommunity];
+  const commentItems = async () => {
+    const result = sortedCommunity.forEach(async (value) => {
+      let arr = [];
+      const result = await getSubCollection("community", value.id, "comments");
+
+      if (result.length > 0) {
+        const resultArr = result.map((item) => ({
+          ...item,
+          communityDocId: value.id,
+        }));
+        // arr.push([{ communityDocId: value.id }, ...result]);
+
+        setCommentList(resultArr);
+      }
+      return;
+    });
+  };
+
   useEffect(() => {
     if (sort == "커뮤니티") {
       let searched = communityContents;
 
       if (communitySearch !== "") {
-        searched = searched.filter((item) =>
-          item.email.includes(communitySearch)
+        searched = searched?.filter((item) =>
+          item?.email?.includes(communitySearch)
         );
       }
       setSearchedCommunity(searched.length ? searched : communityContents);
@@ -63,8 +103,8 @@ function CustomerManagement() {
     } else if (sort == "축산관리") {
       let searched = livestockContents;
       if (communitySearch !== "") {
-        searched = searched.filter((item) =>
-          item.email.includes(communitySearch)
+        searched = searched?.filter((item) =>
+          item?.email?.includes(communitySearch)
         );
       }
       setSearchedCommunity(searched.length ? searched : livestockContents);
@@ -75,8 +115,8 @@ function CustomerManagement() {
     } else if (sort == "문의사항") {
       let searched = questionContents;
       if (communitySearch !== "") {
-        searched = searched.filter((item) =>
-          item.userEmail.includes(communitySearch)
+        searched = searched?.filter((item) =>
+          item?.userEmail?.includes(communitySearch)
         );
       }
       setSearchedCommunity(searched.length ? searched : questionContents);
@@ -87,8 +127,8 @@ function CustomerManagement() {
     } else if (sort == "공지사항") {
       let searched = noticeContents;
       if (communitySearch !== "") {
-        searched = searched.filter((item) =>
-          item.userEmail.includes(communitySearch)
+        searched = searched?.filter((item) =>
+          item?.userEmail?.includes(communitySearch)
         );
       }
       setSearchedCommunity(searched.length ? searched : noticeContents);
@@ -97,6 +137,7 @@ function CustomerManagement() {
         console.log("No matching noticeContents data :", noticeContents);
       }
     }
+    commentItems();
   }, [isLoading]);
   useEffect(() => {
     const freeboardQueryOptions = {
@@ -141,14 +182,14 @@ function CustomerManagement() {
         queryOptions: noticeQueryOptions,
       })
     );
-  }, [sort]);
+  }, [sort, search]);
   return (
     <div className={styles.CustomerManagement}>
       <Search
         setSearch={setCommunitySearch}
         placeholder={"이메일을 입력하세요!"}
       />
-      <DateRangePickerValue />
+      {/* <DateRangePickerValue setStartDay={setStartDay} setEndDay={setEndDay} /> */}
       <div className={styles.CustomerManagementNav}>
         <Sort
           title=""
@@ -161,37 +202,45 @@ function CustomerManagement() {
             { id: "question", value: "문의사항", htmlFor: "question" },
           ]}
         />
-        <Button
-          onClick={() => setOpen(!open)}
-          className={styles.newButton}
-          type="button"
-          aria-controls="example-collapse-text"
-          aria-expanded={open}
-        >
-          공지 글 쓰기
-        </Button>
-        <div
-          style={{ minHeight: "150px" }}
-          className={styles.CustomerManagementCollapse}
-        >
-          <Collapse in={open} dimension="height">
-            <div id="example-collapse-text">
-              <Card body style={{ width: "400px" }}>
-                <NoticeAdd setOpen={setOpen} />
-              </Card>
+        {sort == "공지사항" ? (
+          <>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+              }}
+              className={styles.newButton}
+              type="button"
+              aria-controls="CustomerManagementCollapse"
+              aria-expanded={open}
+            >
+              공지 글 쓰기
+            </Button>
+            <div
+              style={{ minHeight: "150px" }}
+              className={styles.CustomerManagementCollapse}
+            >
+              <Collapse in={open} dimension="height">
+                <div id="CustomerManagementCollapse">
+                  <Card body style={{ width: "400px" }}>
+                    <NoticeAdd setOpen={setOpen} />
+                  </Card>
+                </div>
+              </Collapse>
             </div>
-          </Collapse>
-        </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
       <div className={styles.CustomerManagementTable}>
         <Table striped bordered hover>
           <thead>
             {sort !== "문의사항" ? (
               <tr>
-                <th onClick={() => handleSort("email")}>
+                {/* <th onClick={() => handleSort("email")}>
                   이메일
                   {sortBy === "email" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
+                </th> */}
                 <th onClick={() => handleSort("authorNickName")}>
                   작성자
                   {sortBy === "authorNickName" &&
@@ -215,6 +264,10 @@ function CustomerManagement() {
                   작성시간
                   {sortBy === "createdAt" && (sortOrder === "asc" ? "▲" : "▼")}
                 </th>
+                <th onClick={() => handleSort("comment")}>
+                  댓글
+                  {sortBy === "comment" && (sortOrder === "asc" ? "▲" : "▼")}
+                </th>
                 <th onClick={() => handleSort("declareCount")}>
                   신고
                   {sortBy === "declareCount" &&
@@ -229,13 +282,14 @@ function CustomerManagement() {
               </tr>
             ) : (
               <tr>
-                <th onClick={() => handleSort("userEmail")}>
+                {/* <th onClick={() => handleSort("email")}>
                   이메일
-                  {sortBy === "userEmail" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th onClick={() => handleSort("nickname")}>
+                  {sortBy === "email" && (sortOrder === "asc" ? "▲" : "▼")}
+                </th> */}
+                <th onClick={() => handleSort("authorNickName")}>
                   작성자
-                  {sortBy === "nickname" && (sortOrder === "asc" ? "▲" : "▼")}
+                  {sortBy === "authorNickName" &&
+                    (sortOrder === "asc" ? "▲" : "▼")}
                 </th>
                 <th onClick={() => handleSort("message")}>
                   내용
@@ -266,7 +320,10 @@ function CustomerManagement() {
                         createdAt,
                         declareCount,
                         declareState,
+                        declareReason,
+                        id,
                       } = communityItem;
+
                       const createDate1 = new Date(createdAt)
                         .toISOString("KR")
                         .split("T")[0]
@@ -275,46 +332,209 @@ function CustomerManagement() {
                         .toISOString("KR")
                         .split("T")[1]
                         .split(".")[0];
+                      const selectComment = commentList?.filter(
+                        (item) => item.communityDocId === id
+                      );
                       return (
-                        <tr key={idx}>
-                          <td>
+                        <>
+                          <tr key={idx}>
+                            {/* <td>
                             <p className={styles.communityPTag}>{email}</p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>
-                              {authorNickName}
-                            </p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>{title}</p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>{content}</p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>{like}</p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>{dislike}</p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>
-                              {createDate1}
-                              <br />
-                              {createDate2}
-                            </p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>
-                              {declareCount}
-                            </p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>
-                              {declareState}
-                            </p>
-                          </td>
-                        </tr>
+                          </td> */}
+                            <td>
+                              <p className={styles.communityPTag}>
+                                {authorNickName} ({email})
+                              </p>
+                            </td>
+                            <td>
+                              <p className={styles.communityPTag}>{title}</p>
+                            </td>
+                            <td>
+                              <p className={styles.communityPTag}>{content}</p>
+                            </td>
+                            <td>
+                              <p className={styles.communityPTag}>{like}</p>
+                            </td>
+                            <td>
+                              <p className={styles.communityPTag}>{dislike}</p>
+                            </td>
+                            <td>
+                              <p className={styles.communityPTag}>
+                                {createDate1}
+                                <br />
+                                {createDate2}
+                              </p>
+                            </td>
+                            <td>
+                              <p className={styles.communityPTag}>
+                                {selectComment.length > 0 ? (
+                                  <button
+                                    className={styles.commentCountBtn}
+                                    onClick={() => toggleCommentOpen(id)}
+                                  >
+                                    {selectComment.length}
+                                  </button>
+                                ) : (
+                                  <span>{selectComment.length}</span>
+                                )}
+                              </p>
+                            </td>
+                            <td>
+                              <p className={styles.communityPTag}>
+                                {declareCount}
+                              </p>
+                            </td>
+                            <td>
+                              {declareState ? (
+                                <>
+                                  <Button
+                                    className={styles.communityStateBtn}
+                                    onClick={() => toggleOpen(id)}
+                                    // onClick={() => setStateOpen(!stateOpen)}
+                                    type="button"
+                                    aria-controls="communityStateCollapse"
+                                    aria-expanded={commentOpen[id] || false}
+                                  >
+                                    {declareState !== "checked"
+                                      ? declareState
+                                      : "checked"}
+                                  </Button>
+                                  <div
+                                    style={{ minHeight: "150px" }}
+                                    className={styles.communityStateCollapse}
+                                  >
+                                    <Collapse
+                                      in={stateOpen === id}
+                                      dimension="width"
+                                    >
+                                      <div id="communityStateCollapse">
+                                        <Card body style={{ width: "400px" }}>
+                                          <DeclareStateCard
+                                            setOpen={setStateOpen}
+                                            email={email}
+                                            authorNickName={authorNickName}
+                                            title={title}
+                                            content={content}
+                                            declareCount={declareCount}
+                                            declareState={declareState}
+                                            declareReason={declareReason}
+                                            id={id}
+                                          />
+                                        </Card>
+                                      </div>
+                                    </Collapse>
+                                  </div>
+                                </>
+                              ) : (
+                                <p className={styles.communityPTag}>
+                                  {declareState}
+                                </p>
+                              )}
+                            </td>
+                          </tr>
+                          {/* 댓글버튼 눌렀을때 */}
+                          {commentOpen == id ? (
+                            <>
+                              {selectComment?.map((item) => {
+                                const {
+                                  subContent,
+                                  subCreatedAt,
+                                  nickname,
+                                  email,
+                                  subDeclareCount,
+                                  subDeclareReason,
+                                  subDeclareState,
+                                  docId,
+                                } = item;
+
+                                const createDate3 = new Date(
+                                  subCreatedAt.seconds
+                                )
+                                  .toISOString("KR")
+                                  .split("T")[0]
+                                  .replaceAll("-", ".");
+                                const createDate4 = new Date(
+                                  subCreatedAt.seconds
+                                )
+                                  .toISOString("KR")
+                                  .split("T")[1]
+                                  .split(".")[0];
+                                return (
+                                  <tr>
+                                    <td colspan="2">
+                                      <span className={styles.commentRow}>
+                                        ↳
+                                      </span>{" "}
+                                      {nickname}({email})
+                                    </td>
+                                    {/* <td> </td> */}
+                                    <td colspan="3">{subContent}</td>
+                                    {/* <td> </td>
+                                    <td> </td> */}
+                                    <td colspan="2">
+                                      {createDate3}
+                                      <br />
+                                      {createDate4}
+                                    </td>
+                                    {/* <td> </td> */}
+                                    <td>{subDeclareCount}</td>
+                                    <td>
+                                      {" "}
+                                      <Button
+                                        className={styles.communityStateBtn}
+                                        onClick={() =>
+                                          toggleCommentStateOpen(docId)
+                                        }
+                                        // onClick={() => setStateOpen(!stateOpen)}
+                                        type="button"
+                                        aria-controls="communityStateCollapse"
+                                        aria-expanded={
+                                          commentStateOpen[docId] || false
+                                        }
+                                      >
+                                        {subDeclareState !== "checked"
+                                          ? subDeclareState
+                                          : "checked"}
+                                      </Button>
+                                      <div
+                                        style={{ minHeight: "150px" }}
+                                        className={styles.commentStateCollapse}
+                                      >
+                                        <Collapse
+                                          in={commentStateOpen === docId}
+                                          dimension="width"
+                                        >
+                                          <div id="communityStateCollapse">
+                                            <Card
+                                              body
+                                              style={{ width: "400px" }}
+                                            >
+                                              <DeclareStateCard
+                                                setOpen={setCommentOpen}
+                                                email={email}
+                                                authorNickName={nickname}
+                                                // title={title}
+                                                content={subContent}
+                                                declareCount={subDeclareCount}
+                                                subDeclareState={
+                                                  subDeclareState
+                                                }
+                                                declareReason={subDeclareReason}
+                                                id={id}
+                                              />
+                                            </Card>
+                                          </div>
+                                        </Collapse>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
                       );
                     })
                   : sortedCommunity?.map((questionItem, idx) => {
@@ -330,12 +550,12 @@ function CustomerManagement() {
                         .split(".")[0];
                       return (
                         <tr key={idx}>
-                          <td>
+                          {/* <td>
                             <p className={styles.communityPTag}>{email}</p>
-                          </td>
+                          </td> */}
                           <td>
                             <p className={styles.communityPTag}>
-                              {authorNickName}
+                              {authorNickName}({email})
                             </p>
                           </td>
                           <td>

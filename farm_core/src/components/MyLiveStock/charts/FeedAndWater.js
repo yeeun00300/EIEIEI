@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -11,53 +11,75 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const today = new Date();
-today.getDay();
-const data = [
-  {
-    name: "Page A",
-    물: 4000,
-    사료: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    물: 3000,
-    사료: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    물: 2000,
-    사료: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    물: 2780,
-    사료: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    물: 1890,
-    사료: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    물: 2390,
-    사료: 3800,
-    amt: 2500,
-  },
-];
-
 function FeedAndWater(props) {
+  const [dates, setDates] = useState([]);
+
+  function getLast7Days() {
+    const today = new Date();
+    const newDates = [];
+
+    // 오늘 포함 7일치 날짜를 배열에 추가
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(today.getDate() - i);
+
+      // 월과 일을 추출한 후 '/'로 구분
+      const month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1
+      const day = date.getDate();
+      const formattedDate = `${month}/${day}`;
+
+      newDates.push(formattedDate);
+    }
+
+    return newDates;
+  }
+
+  useEffect(() => {
+    const last7Days = getLast7Days();
+    setDates(last7Days); // 상태 업데이트
+  }, []);
+
+  const data = [
+    {
+      name: dates[6],
+      물: 40,
+      사료: 24,
+    },
+    {
+      name: dates[5],
+      물: 30,
+      사료: 13,
+    },
+    {
+      name: dates[4],
+      물: 20,
+      사료: 68,
+    },
+    {
+      name: dates[3],
+      물: 27,
+      사료: 39,
+    },
+    {
+      name: dates[2],
+      물: 18,
+      사료: 48,
+    },
+    {
+      name: dates[1],
+      물: 23,
+      사료: 38,
+    },
+    {
+      name: dates[0],
+      물: 23,
+      사료: 38,
+    },
+  ];
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
-        // width={400}
-        // height={300}
         data={data}
         margin={{
           top: 30,

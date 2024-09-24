@@ -8,7 +8,7 @@ function BoardList({ items, notices, onItemClick }) {
     <div className={styles.boardList}>
       {/* notices 배열을 통해 NoticeItem 컴포넌트 렌더링 */}
       {/* {notices.map((notice) => (
-        <NoticeItem key={notice.id} notice={notice} />
+        <NoticeItem key={notice.id} notice={notice} onItemClick={onItemClick} />
       ))} */}
 
       {/* items 배열을 통해 FreeBoardItem 컴포넌트 렌더링 */}

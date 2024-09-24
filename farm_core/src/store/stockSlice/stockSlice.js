@@ -4,6 +4,7 @@ import Auction from "./../../components/auction/Auction";
 
 const initialState = {
   stock: [],
+  selectedStock: [],
   isLoading: false,
   selectLoading: false,
   error: null,
@@ -64,8 +65,16 @@ const stockSlice = createSlice({
           (item) => item.docId !== action.payload
         );
       })
+      .addCase(fetchSelectedStock.pending, (state, action) => {
+        state.selectLoading = true;
+        state.error = null;
+      })
       .addCase(fetchSelectedStock.fulfilled, (state, action) => {
         state.selectedStock = action.payload;
+        state.selectLoading = false;
+      })
+      .addCase(fetchSelectedStock.rejected, (state, action) => {
+        state.selectLoading = false;
       });
   },
 });

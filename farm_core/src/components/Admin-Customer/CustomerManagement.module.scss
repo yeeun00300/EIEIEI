@@ -3,22 +3,188 @@
   flex-direction: column;
   gap: 24px;
   width: 100%;
+  min-width: 750px;
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    outline: none;
+    border-radius: 10px;
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: transparent;
+  }
 }
 .CustomerManagementTable {
   width: 100%;
-  height: 80%;
-  overflow: scroll;
+  height: 700px;
+  overflow: overlay;
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    outline: none;
+    border-radius: 10px;
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: transparent;
+  }
+  tbody {
+    td {
+      font-size: 12px;
+      button {
+        padding: 2px;
+        height: 24px;
+        font-size: 12px;
+      }
+    }
+    p {
+      margin: 0;
+      height: 50px;
+      overflow-y: overlay;
+    }
+    ::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      outline: none;
+      border-radius: 10px;
+      border: 4px solid transparent;
+      box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      border: 4px solid transparent;
+      box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+    }
+
+    ::-webkit-scrollbar-track {
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
 }
 .CustomerManagementNav {
   display: flex;
   gap: 24px;
-  position: relative;
 }
 .CustomerManagementCollapse {
-  z-index: 10;
   position: absolute;
-  top: 120%;
-  left: 0;
+  top: 12px;
+  right: -5%;
   display: flex;
   width: 30%;
+}
+.communityStateCollapse {
+  // position: absolute;
+  height: 150px;
+  width: 300px;
+  // top: 3%;
+  // right: 3%;
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  margin-top: 12px;
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    outline: none;
+    border-radius: 10px;
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+
+.commentStateCollapse {
+  // position: absolute;
+  height: 150px;
+  width: 300px;
+  // width: 120px;
+  // bottom: 3%;
+  // right: 3%;
+  display: flex;
+  align-items: baseline;
+  overflow-x: hidden;
+  min-width: 120px;
+  overflow-y: overlay;
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    outline: none;
+    border-radius: 10px;
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+.commentCountBtn {
+  z-index: 2;
+  font-size: 12px;
+  width: 20px;
+  border: none;
+  border-radius: 12px;
+  background-color: transparent;
+  color: #007bff;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    // color: #0056b3;
+    background-color: #007bff;
+  }
+}
+
+.commentRow {
+  margin-left: 12px;
+  size: 24px;
+  font-weight: bold;
 }

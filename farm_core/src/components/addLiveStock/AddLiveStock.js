@@ -143,6 +143,7 @@ function AddLiveStock() {
       console.error("Error adding farm:", error);
     }
   };
+  console.log(farm_stockType);
 
   return (
     <div className="page">
@@ -217,21 +218,19 @@ function AddLiveStock() {
           </div>
           <div>
             <label htmlFor="farm_stockType">축사 유형:</label>
-            <select value={farm_stockType}>
+            <select
+              name="farm_stockType"
+              value={farm_stockType}
+              onChange={handleChange}
+            >
+              <option value="">축사 유형을 선택하세요</option>{" "}
+              {/* Default option */}
               <option value="한우">한우</option>
               <option value="낙농">낙농</option>
               <option value="산란계">산란계</option>
               <option value="양돈">양돈</option>
               <option value="육계">육계</option>
             </select>
-            {/* <input
-              type="text"
-              name="farm_stockType"
-              value={farm_stockType}
-              placeholder="예: 한우, 낙농, 닭, 돼지"
-              onChange={handleChange}
-              required
-            /> */}
             {formErrors.farm_stockType && (
               <p className={styles.error}>{formErrors.farm_stockType}</p>
             )}

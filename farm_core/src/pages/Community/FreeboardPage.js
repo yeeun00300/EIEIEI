@@ -21,7 +21,7 @@ function FreeboardPage() {
   const [userHasLiked, setUserHasLiked] = useState(false);
   const [userHasDisliked, setUserHasDisliked] = useState(false);
   const [isDeclareModalOpen, setIsDeclareModalOpen] = useState(false);
-  const [userHasReported, setUserHasReported] = useState(false); // 신고 여부 상태 추가
+  const [userHasReported, setUserHasReported] = useState(false);
 
   const getStockTypeInKorean = (type) => {
     switch (type) {
@@ -42,6 +42,10 @@ function FreeboardPage() {
 
   const isFreeBoard = location.pathname.includes("My_Farm_Board_FreeBoard");
   const communityType = isFreeBoard ? "freeboard" : "livestock";
+  const noticeContents = useSelector(
+    (state) => state.communitySlice.noticeContents
+  );
+  const noticeItem = noticeContents.find((notice) => notice.id === id);
 
   const contents = useSelector((state) =>
     isFreeBoard
@@ -96,7 +100,7 @@ function FreeboardPage() {
     }
 
     const updates = {
-      like: postData.like + 1,
+      like: (postData?.like || 0) + 1,
     };
 
     try {
@@ -110,7 +114,7 @@ function FreeboardPage() {
         await dispatch(
           updatePostReactions({
             id,
-            updates: { dislike: postData.dislike - 1 },
+            updates: { dislike: (postData?.dislike || 0) - 1 },
             communityType,
           })
         ).unwrap();
@@ -134,7 +138,7 @@ function FreeboardPage() {
     }
 
     const updates = {
-      dislike: postData.dislike + 1,
+      dislike: (postData?.dislike || 0) + 1,
     };
 
     try {
@@ -148,7 +152,7 @@ function FreeboardPage() {
         await dispatch(
           updatePostReactions({
             id,
-            updates: { like: postData.like - 1 },
+            updates: { like: (postData?.like || 0) - 1 },
             communityType,
           })
         ).unwrap();
@@ -161,7 +165,6 @@ function FreeboardPage() {
 
   const handleDeclareClick = () => {
     if (userHasReported) {
-      // 신고 여부 확인
       alert("이미 신고한 게시글입니다.");
       return;
     }
@@ -180,7 +183,7 @@ function FreeboardPage() {
       reportedPosts[id] = userEmail;
       localStorage.setItem("reportedPosts", JSON.stringify(reportedPosts));
 
-      setUserHasReported(true); // 신고 완료 상태 업데이트
+      setUserHasReported(true);
     } catch (error) {
       console.error("신고 처리 실패:", error);
     }
@@ -188,11 +191,12 @@ function FreeboardPage() {
     setIsDeclareModalOpen(false);
   };
 
-  if (!postData) {
+  if (!postData && !noticeItem) {
     return <div>게시물을 찾을 수 없습니다.</div>;
   }
 
-  const isAuthor = postData.email === localStorage.getItem("email"); // 작성자 확인
+  const dataToRender = postData || noticeItem; // postData가 없으면 noticeItem 사용
+  const isAuthor = dataToRender.email === localStorage.getItem("email");
 
   return (
     <div className="page">
@@ -200,39 +204,39 @@ function FreeboardPage() {
         <div className={styles.wrapper}>
           <div className={styles.content}>
             <div className={styles.details}>
-              {postData.stockType && (
+              {dataToRender.stockType && (
                 <div className={styles.stockType}>
                   축산 관리 커뮤니티 &gt;
-                  {getStockTypeInKorean(postData.stockType)}
+                  {getStockTypeInKorean(dataToRender.stockType)}
                 </div>
               )}
-              {postData.imgUrl && (
+              {dataToRender.imgUrl && (
                 <img
-                  src={postData.imgUrl}
-                  alt={postData.title}
+                  src={dataToRender.imgUrl}
+                  alt={dataToRender.title}
                   className={styles.image}
                 />
               )}
-              <h1 className={styles.title}>{postData.title}</h1>
-              <p className={styles.contentText}>{postData.content}</p>
+              <h1 className={styles.title}>{dataToRender.title}</h1>
+              <p className={styles.contentText}>{dataToRender.content}</p>
               <p
                 className={styles.metadata}
-              >{`작성자: ${postData.authorNickName}`}</p>
+              >{`작성자: ${dataToRender.authorNickName}`}</p>
               <p className={styles.metadata}>
                 {`작성일: ${
-                  postData.createdAt
-                    ? new Date(postData.createdAt).toLocaleDateString()
+                  dataToRender.createdAt
+                    ? new Date(dataToRender.createdAt).toLocaleDateString()
                     : "N/A"
                 }`}
               </p>
               <p className={styles.metadata}>
                 {`수정일: ${
-                  postData.updatedAt
-                    ? new Date(postData.updatedAt).toLocaleDateString()
+                  dataToRender.updatedAt
+                    ? new Date(dataToRender.updatedAt).toLocaleDateString()
                     : "N/A"
                 }`}
               </p>
-              {isAuthor && ( // 작성자일 때만 수정 및 삭제 버튼 표시
+              {isAuthor && (
                 <div className={styles.buttonGroup}>
                   <button className={styles.button} onClick={handleUpdate}>
                     수정하기
@@ -245,7 +249,8 @@ function FreeboardPage() {
               <div className={styles.siren}>
                 <button
                   className={styles.reportButton}
-                  onClick={handleDeclareClick}
+                  onClick={noticeItem ? null : handleDeclareClick}
+                  disabled={!!noticeItem}
                 >
                   <img src={sirenImg} alt="신고하기" />
                   <span className={styles.reportText}>신고하기</span>
@@ -255,20 +260,19 @@ function FreeboardPage() {
                 <ReactionButton
                   type="like"
                   onClick={handleLike}
-                  count={postData.like}
+                  count={dataToRender.like}
                   active={userHasLiked}
                 />
                 <ReactionButton
                   type="dislike"
                   onClick={handleDislike}
-                  count={postData.dislike}
+                  count={dataToRender.dislike}
                   active={userHasDisliked}
                 />
               </div>
             </div>
           </div>
-          <div className={styles.commentSectionWrapper}></div>
-          <CommentSection postId={id} />
+          <CommentSection id={id} />
         </div>
       </div>
       {isDeclareModalOpen && (

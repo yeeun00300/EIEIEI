@@ -10,7 +10,7 @@ import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice
 function Community() {
   const dispatch = useDispatch();
   const { communityContents } = useSelector((state) => state.communitySlice);
-
+  const { noticeContents } = useSelector((state) => state.communitySlice);
   const [sortOption, setSortOption] = useState("최신순");
   const [keyword, setKeyword] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,6 +24,17 @@ function Community() {
         queryOptions: {
           conditions: [
             { field: "communityType", operator: "==", value: "freeboard" },
+          ],
+        },
+      })
+    );
+
+    dispatch(
+      fetchCommunityPosts({
+        communityType: "notice",
+        queryOptions: {
+          conditions: [
+            { field: "communityType", operator: "==", value: "notice" },
           ],
         },
       })
@@ -48,6 +59,7 @@ function Community() {
   };
 
   const getFilteredAndSortedContents = () => {
+    // communityContents 필터링 및 정렬
     let filteredContents = [...communityContents];
 
     // 검색어에 따른 필터링
@@ -59,14 +71,20 @@ function Community() {
       );
     }
 
-    // 정렬
+    // 정렬 (최신순 또는 추천순)
     if (sortOption === "최신순") {
       filteredContents.sort((a, b) => b.createdAt - a.createdAt);
     } else if (sortOption === "추천순") {
       filteredContents.sort((a, b) => b.like - a.like);
     }
 
-    return filteredContents;
+    // notice 게시글은 항상 최상단에 위치하게 설정
+    const sortedNotices = [...noticeContents].sort(
+      (a, b) => b.createdAt - a.createdAt
+    );
+
+    // notice 게시글을 최상단에 붙여서 반환
+    return [...sortedNotices, ...filteredContents];
   };
 
   const filteredAndSortedContents = getFilteredAndSortedContents();
@@ -77,6 +95,9 @@ function Community() {
   const handleShowMore = () => {
     setVisibleCount((prevCount) => prevCount + 6); // 게시글 6개씩 더 보기
   };
+
+  // notice 게시글 필터링
+  const notices = noticeContents;
 
   return (
     <div className="page">
@@ -117,6 +138,7 @@ function Community() {
         <BoardList
           items={visibleContents} // 보여줄 게시글 제한
           onItemClick={handleOpenBoard}
+          notices={notices}
         />
 
         {/* 더보기 버튼 */}

@@ -19,7 +19,7 @@ import StockProduct from "./charts/StockProduct";
 import FeedAndWater from "./charts/FeedAndWater";
 import HealthCondition from "./charts/HealthCondition";
 import MortalityRate from "./charts/MortalityRate";
-import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import { fetchSelectedStock } from "../../store/stockSlice/stockSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 import TempControl from "../ControlPanels/TempControl";
@@ -40,6 +40,7 @@ function MyLiveStock(props) {
     farmList.length > 0 ? farmList[0].farmId : ""
   );
   const [selectedFarm, setSelectedFarm] = useState(farmList[0]);
+  const stockLength = selectedStock ? selectedStock.length : 0;
 
   useEffect(() => {
     if (farmList.length > 0) {
@@ -53,7 +54,7 @@ function MyLiveStock(props) {
           },
         ],
       };
-      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
+      dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
       setSelectedValue(defaultFarmId); // 기본적으로 첫 번째 farmId 설정
     }
   }, [farmList, dispatch]);
@@ -78,7 +79,7 @@ function MyLiveStock(props) {
           },
         ],
       };
-      dispatch(fetchExcelStock({ collectionName: "stock", queryOptions }));
+      dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
       console.log(`선택된 농장 정보`, selectedFarm);
     }
   };
@@ -86,6 +87,11 @@ function MyLiveStock(props) {
   // 추가 버튼 클릭 시 축사 추가 페이지로 이동
   const handleAddClick = () => {
     navigate(`/My_Farm_Add`);
+  };
+
+  // 가축 정보 없을 시 가축 추가 페이지로 이동
+  const handleStockAddClick = () => {
+    navigate(`/My_Farm_Add_stock`);
   };
 
   // 버튼 클릭 시 차트를 변경하는 함수
@@ -97,6 +103,7 @@ function MyLiveStock(props) {
   useEffect(() => {
     // if (selectedChart) {
     // }
+    // console.log(selectedStock);
   }, [selectedChart]);
 
   // 선택된 차트에 따라 다른 차트를 렌더링하는 함수
@@ -113,7 +120,7 @@ function MyLiveStock(props) {
         return <TempControl />;
       // 생산량
       case "chart4":
-        return <StockProduct stock={selectedStock} />;
+        return <StockProduct stock={selectedStock} farmData={selectedFarm} />;
       // 건강상태
       case "chart5":
         return <HealthCondition stock={selectedStock} />;
@@ -130,7 +137,9 @@ function MyLiveStock(props) {
 
   return (
     <div className="page">
-      {farmList.length == 0 ? (
+      {selectLoading ? (
+        <>로딩중</>
+      ) : farmList.length == 0 ? (
         <button onClick={handleAddClick}>축사를 추가해주세요</button>
       ) : (
         <div className={styles.container}>
@@ -152,12 +161,20 @@ function MyLiveStock(props) {
               </select>
               <button onClick={handleButtonClick}>확인</button>
               <button onClick={handleAddClick}>추가</button>
+              {stockLength == 0 ? (
+                <div className={styles.warn}>
+                  가축 정보가 없습니다
+                  <button onClick={handleStockAddClick}>가축 추가</button>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div className={styles.cctv}>
               <CCTVandAnimalInfo
                 onClick={handleChartChange}
                 farmData={selectedFarm}
-                stockData={selectedStock}
+                length={stockLength}
               />
             </div>
           </div>
@@ -208,13 +225,7 @@ function MyLiveStock(props) {
             </div>
             <div>
               <h3>축사 데이터 확인</h3>
-              {/* <BiLineChart /> */}
-              {/* <KoreaMap /> */}
-              {/* <KoreaBubble /> */}
-              {/* <KoreaTest /> */}
-              <div className={styles.chartContainer}>
-                {selectLoading ? <div>로딩중</div> : renderChart()}
-              </div>
+              <div className={styles.chartContainer}>{renderChart()}</div>
             </div>
           </div>
         </div>

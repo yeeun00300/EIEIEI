@@ -15,7 +15,11 @@ function FreeBoardItem({ item, onItemClick }) {
       return <p className={styles.reported}>신고된 게시물 입니다</p>;
     }
 
-    if (item.declareState === "reported" || item.declareState === "") {
+    if (
+      item.declareState === "reported" ||
+      item.declareState === "" ||
+      item.declareState === "checked"
+    ) {
       return (
         <>
           {item.imgUrl && <img src={item.imgUrl} alt="게시물" />}
