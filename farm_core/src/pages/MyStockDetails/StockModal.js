@@ -115,372 +115,469 @@ function StockModal({ onClose, stock }) {
   };
 
   return (
-    <Dialog
-      open={!!selectedStock}
-      onClose={onClose}
-      maxWidth="md"
-      fullWidth
-      className={styles.dialog}
-    >
-      <DialogTitle className={styles.dialogTitle}>
-        {isEditMode ? "가축 정보 수정" : "가축 상세 보기"}
-      </DialogTitle>
-      <DialogContent>
-        <Grid container spacing={2}>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="가축 ID"
-              value={formData.stockId || ""}
-              name="stockId"
-              onChange={handleChange}
-              disabled
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="종류"
-              value={formData.stockType || ""}
-              name="stockType"
-              onChange={handleChange}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="성별"
-              value={formData.sex || ""}
-              name="sex"
-              onChange={handleChange}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="체중 (kg)"
-              value={formData.weight || ""}
-              name="weight"
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="온도 (°C)"
-              value={formData.temp || ""}
-              name="temp"
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="입고일"
-              value={formData.incomingDate || ""}
-              name="incomingDate"
-              onChange={handleChange}
-              type="date"
-              InputLabelProps={{ shrink: true }}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="먹이량(kg)"
-              value={formData.feed || ""}
-              name="feed"
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="임신 상태"
-              value={formData.pregnantDate ? "임신" : "비임신"}
-              name="pregnantDate"
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="축사 주소"
-              value={formData.farmAddress || ""}
-              name="farmAddress"
-              onClick={() => setIsPostcodeOpen(true)}
-              placeholder="주소를 입력하려면 클릭하세요"
-              InputProps={{
-                readOnly: isEditMode ? true : false, // isEditMode에 따라 readOnly를 결정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="축사 ID"
-              value={formData.farmId || ""}
-              name="farmId"
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              className={styles.textField}
-              fullWidth
-              label="활동"
-              value={formData.activity || ""}
-              name="activity"
-              onChange={handleChange}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="이메일"
-              value={formData.email || ""}
-              name="email"
-              onChange={handleChange}
-              type="email"
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="크기"
-              value={formData.size || ""}
-              name="size"
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-              className={styles.textField}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="가축 코드"
-              value={formData.stockCode || ""}
-              name="stockCode"
-              onChange={handleChange}
-              disabled
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="종류 (Variety)"
-              value={formData.variety || ""}
-              name="variety"
-              onChange={handleChange}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="폐사 여부"
-              value={formData.deceased || ""}
-              name="deceased"
-              onChange={handleChange}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-              className={styles.textField}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="격리 여부"
-              value={formData.isolation || ""}
-              name="isolation"
-              onChange={handleChange}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="임신 여부"
-              value={formData.mating || ""}
-              name="mating"
-              onChange={handleChange}
-              InputProps={{
-                readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
-              }}
-              className={styles.textField}
-            />
-          </Grid>
-          {isEditMode && (
-            <>
-              <Grid item xs={12} className={styles.addButton}>
-                <Button variant="outlined" onClick={handleAddDisease}>
-                  선택 창 외의 질병 정보 추가
-                </Button>
-              </Grid>
-              <Grid item xs={12} className={styles.addButton}>
-                <Button variant="outlined" onClick={handleDeleteDisease}>
-                  선택된 질병 삭제
-                </Button>
-              </Grid>
-            </>
-          )}
-          {formData.disease &&
-            formData.disease.map((disease, index) => (
-              <React.Fragment key={index}>
-                <Grid item xs={5}>
-                  <TextField
-                    fullWidth
-                    label="질병 날짜"
-                    value={disease.diseaseDate || ""}
-                    name="diseaseDate"
-                    onChange={(e) => handleDiseaseChange(index, e)}
-                    className={styles.textField}
-                  />
-                </Grid>
-                <Grid item xs={5}>
-                  <TextField
-                    fullWidth
-                    label="질병 종류"
-                    value={disease.diseaseType || ""}
-                    name="diseaseType"
-                    onChange={(e) => handleDiseaseChange(index, e)}
-                    className={styles.textField}
-                  />
-                </Grid>
-                <Grid item xs={1}>
-                  <input
-                    type="checkbox"
-                    checked={selectedDiseases[index] || false}
-                    onChange={(e) => {
-                      const updatedSelected = [...selectedDiseases];
-                      updatedSelected[index] = e.target.checked;
-                      setSelectedDiseases(updatedSelected);
-                    }}
-                  />
-                </Grid>
-              </React.Fragment>
-            ))}
-          {isEditMode && (
-            <Grid item xs={12} className={styles.addButton}>
-              <Button variant="outlined" onClick={handleAddVaccine}>
-                선택 창 외의 백신 정보 추가
-              </Button>
-              <Button variant="outlined" onClick={handleDeleteVaccine}>
-                선택된 백신 삭제
-              </Button>
+    <div className={styles.wrapper}>
+      <Dialog
+        open={!!selectedStock}
+        onClose={onClose}
+        maxWidth="md"
+        fullWidth
+        className={styles.StockModaldialog}
+      >
+        <DialogTitle className={styles.StockModaldialogTitle}>
+          {isEditMode ? "가축 정보 수정" : "가축 상세 보기"}
+        </DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="가축 개체번호"
+                value={formData.stockId || ""}
+                name="stockId"
+                onChange={handleChange}
+                disabled
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
             </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="가축 종류"
+                value={formData.stockType || ""}
+                name="stockType"
+                onChange={handleChange}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="성별"
+                value={formData.sex || ""}
+                name="sex"
+                onChange={handleChange}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="체중 (kg)"
+                value={formData.weight || ""}
+                name="weight"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="온도 (°C)"
+                value={formData.temp || ""}
+                name="temp"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="입고일"
+                value={formData.incomingDate || ""}
+                name="incomingDate"
+                onChange={handleChange}
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="먹이량(kg)"
+                value={formData.feed || ""}
+                name="feed"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="임신 날짜"
+                value={formData.pregnantDate || ""}
+                type="date"
+                name="pregnantDate"
+                onChange={handleChange}
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="주소"
+                value={formData.farmAddress || ""}
+                name="farmAddress"
+                onClick={() => setIsPostcodeOpen(true)}
+                placeholder="주소를 입력하려면 클릭하세요"
+                InputProps={{
+                  readOnly: isEditMode ? true : false, // isEditMode에 따라 readOnly를 결정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="축사 번호"
+                value={formData.farmId || ""}
+                name="farmId"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                className={styles.StockModaltextField}
+                fullWidth
+                label="활동"
+                value={formData.activity || ""}
+                name="activity"
+                onChange={handleChange}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="이메일"
+                value={formData.email || ""}
+                name="email"
+                onChange={handleChange}
+                type="email"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="크기"
+                value={formData.size || ""}
+                name="size"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+                className={styles.StockModaltextField}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="가축 코드"
+                value={formData.stockCode || ""}
+                name="stockCode"
+                onChange={handleChange}
+                disabled
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="품종 (Variety)"
+                value={formData.variety || ""}
+                name="variety"
+                onChange={handleChange}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="폐사 여부"
+                value={formData.deceased || ""}
+                name="deceased"
+                onChange={handleChange}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+                className={styles.StockModaltextField}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="격리 여부"
+                value={formData.isolation || ""}
+                name="isolation"
+                onChange={handleChange}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="발정기 여부"
+                value={formData.mating || ""}
+                name="mating"
+                onChange={handleChange}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+                className={styles.StockModaltextField}
+              />
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="출생 날짜"
+                value={formData.birthDate || ""}
+                name="birthDate"
+                onChange={handleChange}
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+
+            {/* 번식 횟수 (breedCount) */}
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="출산 횟수"
+                value={formData.breedCount || ""}
+                name="breedCount"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+
+            {/* 출산 날짜 (breedDate) */}
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="출산 날짜"
+                value={formData.breedDate || ""}
+                name="breedDate"
+                onChange={handleChange}
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+
+            {/* 출산 예정 날짜 (breedDueDate) */}
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="출산 예정 날짜"
+                value={formData.breedDueDate || ""}
+                name="breedDueDate"
+                onChange={handleChange}
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+
+            {/* 우유 생산량 (milk) */}
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="우유 생산량"
+                value={formData.milk || ""}
+                name="milk"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+
+            {/* 산란량 (eggProduction) */}
+            <Grid item xs={5}>
+              <TextField
+                fullWidth
+                label="산란량"
+                value={formData.eggProduction || ""}
+                name="eggProduction"
+                onChange={handleChange}
+                type="number"
+                InputProps={{
+                  readOnly: !isEditMode, // 수정 모드에 따라 readOnly 설정
+                }}
+              />
+            </Grid>
+
+            {isEditMode && (
+              <>
+                <Grid item xs={12} className={styles.StockModaladdButton}>
+                  <Button variant="outlined" onClick={handleAddDisease}>
+                    선택 창 외의 질병 정보 추가
+                  </Button>
+                </Grid>
+                <Grid item xs={12} className={styles.StockModaladdButton}>
+                  <Button variant="outlined" onClick={handleDeleteDisease}>
+                    선택된 질병 삭제
+                  </Button>
+                </Grid>
+              </>
+            )}
+            {formData.disease &&
+              formData.disease.map((disease, index) => (
+                <React.Fragment key={index}>
+                  <Grid item xs={5}>
+                    <TextField
+                      fullWidth
+                      label="질병 날짜"
+                      value={disease.diseaseDate || ""}
+                      name="diseaseDate"
+                      onChange={(e) => handleDiseaseChange(index, e)}
+                      className={styles.StockModaltextField}
+                    />
+                  </Grid>
+                  <Grid item xs={5}>
+                    <TextField
+                      fullWidth
+                      label="질병 종류"
+                      value={disease.diseaseType || ""}
+                      name="diseaseType"
+                      onChange={(e) => handleDiseaseChange(index, e)}
+                      className={styles.StockModaltextField}
+                    />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <input
+                      type="checkbox"
+                      checked={selectedDiseases[index] || false}
+                      onChange={(e) => {
+                        const updatedSelected = [...selectedDiseases];
+                        updatedSelected[index] = e.target.checked;
+                        setSelectedDiseases(updatedSelected);
+                      }}
+                    />
+                  </Grid>
+                </React.Fragment>
+              ))}
+            {isEditMode && (
+              <Grid item xs={12} className={styles.StockModaladdButton}>
+                <Button variant="outlined" onClick={handleAddVaccine}>
+                  선택 창 외의 백신 정보 추가
+                </Button>
+                <Button variant="outlined" onClick={handleDeleteVaccine}>
+                  선택된 백신 삭제
+                </Button>
+              </Grid>
+            )}
+            {formData.vaccine &&
+              formData.vaccine.map((vaccine, index) => (
+                <React.Fragment key={index}>
+                  <Grid item xs={5}>
+                    <TextField
+                      fullWidth
+                      label="백신 날짜"
+                      value={vaccine.vaccineDate || ""}
+                      name="vaccineDate"
+                      onChange={(e) => handleVaccineChange(index, e)}
+                      className={styles.StockModaltextField}
+                    />
+                  </Grid>
+                  <Grid item xs={5}>
+                    <TextField
+                      fullWidth
+                      label="백신 종류"
+                      value={vaccine.vaccineType || ""}
+                      name="vaccineType"
+                      onChange={(e) => handleVaccineChange(index, e)}
+                      className={styles.StockModaltextField}
+                    />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <input
+                      type="checkbox"
+                      checked={selectedVaccines[index] || false}
+                      onChange={(e) => {
+                        const updatedSelected = [...selectedVaccines];
+                        updatedSelected[index] = e.target.checked;
+                        setSelectedVaccines(updatedSelected);
+                      }}
+                    />
+                  </Grid>
+                </React.Fragment>
+              ))}
+          </Grid>
+        </DialogContent>
+        <DialogActions className={styles.StockModalbuttonGroup}>
+          <Button onClick={onClose}>닫기</Button>
+          {isEditMode ? (
+            <>
+              <Button onClick={handleSubmit} color="primary">
+                저장
+              </Button>
+              <Button onClick={handleEditModeToggle} color="secondary">
+                수정 취소
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleEditModeToggle} color="primary">
+              수정하기
+            </Button>
           )}
-          {formData.vaccine &&
-            formData.vaccine.map((vaccine, index) => (
-              <React.Fragment key={index}>
-                <Grid item xs={5}>
-                  <TextField
-                    fullWidth
-                    label="백신 날짜"
-                    value={vaccine.vaccineDate || ""}
-                    name="vaccineDate"
-                    onChange={(e) => handleVaccineChange(index, e)}
-                    className={styles.textField}
-                  />
-                </Grid>
-                <Grid item xs={5}>
-                  <TextField
-                    fullWidth
-                    label="백신 종류"
-                    value={vaccine.vaccineType || ""}
-                    name="vaccineType"
-                    onChange={(e) => handleVaccineChange(index, e)}
-                    className={styles.textField}
-                  />
-                </Grid>
-                <Grid item xs={1}>
-                  <input
-                    type="checkbox"
-                    checked={selectedVaccines[index] || false}
-                    onChange={(e) => {
-                      const updatedSelected = [...selectedVaccines];
-                      updatedSelected[index] = e.target.checked;
-                      setSelectedVaccines(updatedSelected);
-                    }}
-                  />
-                </Grid>
-              </React.Fragment>
-            ))}
-        </Grid>
-      </DialogContent>
-      <DialogActions className={styles.buttonGroup}>
-        <Button onClick={onClose}>닫기</Button>
-        {isEditMode ? (
-          <>
-            <Button onClick={handleSubmit} color="primary">
-              저장
-            </Button>
-            <Button onClick={handleEditModeToggle} color="secondary">
-              수정 취소
-            </Button>
-          </>
-        ) : (
-          <Button onClick={handleEditModeToggle} color="primary">
-            수정하기
-          </Button>
+        </DialogActions>
+        {isPostcodeOpen && (
+          <DaumPostcode onComplete={handlePostcodeComplete} autoClose={false} />
         )}
-      </DialogActions>
-      {isPostcodeOpen && (
-        <DaumPostcode onComplete={handlePostcodeComplete} autoClose={false} />
-      )}
-    </Dialog>
+      </Dialog>
+    </div>
   );
 }
 
