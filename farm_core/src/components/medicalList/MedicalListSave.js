@@ -23,10 +23,10 @@ function MedicalListSave() {
           const document = await fetchFarmDocumentByEmail(email);
           if (document && document.length > 0) {
             // Ensure that document is valid and not empty
-            setMedicalData(document[0]); // Get the first document (assumed to be a single document)
+            setMedicalData(document[1]); // Get the first document (assumed to be a single document)
             const subCollectionData = await getSubCollection(
               "farm",
-              document[0].id,
+              document[1].id,
               "farmCureList"
             );
             setSubCollectionData(subCollectionData);
