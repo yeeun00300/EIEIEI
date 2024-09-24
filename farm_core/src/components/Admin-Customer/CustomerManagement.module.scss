@@ -2,23 +2,87 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 100%;
+  width: 70%;
+  min-width: 750px;
 }
 .CustomerManagementTable {
   width: 100%;
   height: 80%;
-  overflow: scroll;
+  overflow: overlay;
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    outline: none;
+    border-radius: 10px;
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+  }
+
+  ::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: transparent;
+  }
+  tbody {
+    td {
+      font-size: 12px;
+      button {
+        padding: 2px;
+        height: 24px;
+        font-size: 12px;
+      }
+    }
+    p {
+      margin: 0;
+      height: 50px;
+      overflow-y: overlay;
+    }
+    ::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      outline: none;
+      border-radius: 10px;
+      border: 4px solid transparent;
+      box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      border: 4px solid transparent;
+      box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+    }
+
+    ::-webkit-scrollbar-track {
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
 }
 .CustomerManagementNav {
   display: flex;
   gap: 24px;
-  position: relative;
 }
 .CustomerManagementCollapse {
-  z-index: 10;
   position: absolute;
-  top: 120%;
-  left: 0;
+  top: 12px;
+  right: -5%;
   display: flex;
   width: 30%;
+}
+.communityStateCollapse {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  display: flex;
+  width: fit-content;
+  min-width: 120px;
 }

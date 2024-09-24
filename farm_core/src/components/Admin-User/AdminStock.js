@@ -573,7 +573,7 @@ function AdminStock() {
                                     type="number"
                                     id="weight"
                                     name="weight"
-                                    value={weight.split("k")[0]}
+                                    value={weight}
                                     {...register("weight")}
                                   />
                                   {/* {weight} */}kg
@@ -586,7 +586,7 @@ function AdminStock() {
                                     type="number"
                                     id="size"
                                     name="size"
-                                    value={size.split("c")[0]}
+                                    value={size}
                                     {...register("size")}
                                   />
                                   {/* {size} */}cm
