@@ -12,7 +12,7 @@ function FreeBoardItem({ item, onItemClick }) {
 
   const getItemContent = () => {
     if (item.declareState === "black") {
-      return <p className={styles.reported}>신고된 게시물 입니다</p>;
+      return <p className={styles.reported}>차단된 게시물 입니다</p>;
     }
 
     if (

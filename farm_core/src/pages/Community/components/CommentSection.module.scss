@@ -4,8 +4,8 @@
   border-radius: 8px;
   background-color: #f9f9f9;
   width: 100%;
-  overflow-y: hidden;
-  overflow: scroll;
+  overflow-y: scroll; /* 세로 스크롤 가능 */
+  overflow-x: hidden; /* 가로 스크롤 숨김 */
 
   h2 {
     margin-bottom: 10px;
