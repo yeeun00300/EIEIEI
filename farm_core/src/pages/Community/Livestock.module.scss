@@ -1,27 +1,27 @@
 .controls {
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  gap: 15px; /* 요소 간 간격 */
-  margin-top: 20px;
+  align-items: center;
+  gap: 0.9375rem;
+  margin-top: 1.25rem;
 }
 
 .form {
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
+  align-items: center;
   flex: 1;
 }
 
 .searchInput {
   flex: 1;
-  padding: 10px 20px; /* 상하 패딩을 줄여서 버튼과 높이 맞춤 */
-  border: 1px solid #ddd;
-  border-radius: 5px 0 0 5px;
-  font-size: 14px;
+  padding: 0.625rem 1.25rem;
+  border: 0.0625rem solid #ddd;
+  border-radius: 0.3125rem 0 0 0.3125rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
   background-color: #fff;
   transition: border-color 0.3s;
-  height: 40px; /* 버튼과 동일한 높이 설정 */
+  height: 2.5rem;
 
   &::placeholder {
     color: #878787;
@@ -34,21 +34,21 @@
 }
 
 .searchButton {
-  padding: 0 10px; /* 좌우 패딩만 적용 */
+  padding: 0 0.625rem;
   background-color: #f1f1f1;
-  border: 1px solid #ddd;
+  border: 0.0625rem solid #ddd;
   border-left: none;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 0.3125rem 0.3125rem 0;
   color: #333;
   cursor: pointer;
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  height: 40px; /* input과 동일한 높이 설정 */
+  align-items: center;
+  height: 2.5rem;
   transition: background-color 0.3s, border-color 0.3s;
 
   img {
-    width: 20px;
-    height: 20px;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 
   &:hover {
@@ -58,10 +58,10 @@
 
 .newButton {
   background-color: #fff;
-  border: 2px solid #fff;
+  border: 0.125rem solid #fff;
   color: #333;
   border-radius: 9999rem;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
@@ -69,15 +69,15 @@
   &:hover {
     background-color: #333;
     color: #fff;
-    border: 2px solid #333;
+    border: 0.125rem solid #333;
   }
 }
 
 .sortSelect {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  padding: 0.625rem;
+  border: 0.0625rem solid #ddd;
+  border-radius: 0.3125rem;
+  font-size: 0.875rem;
   background-color: #fff;
   transition: border-color 0.3s;
 
@@ -88,14 +88,15 @@
 }
 
 .postCount {
-  margin-top: 20px;
-  font-size: 16px;
+  margin-top: 1.25rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #333;
 }
+
 .showMoreButton {
   display: block;
-  margin: 20px auto;
+  margin: 1.25rem auto;
   border: none;
   background-color: #fff;
   border-radius: 9999rem;
@@ -116,9 +117,9 @@
     bottom: 0;
     left: 0;
     width: 0;
-    height: 2px; /* 밑줄의 두께 */
+    height: 0.125rem;
     background-color: #333;
-    transition: width 0.3s ease; /* 밑줄이 서서히 늘어나도록 transition 적용 */
+    transition: width 0.3s ease;
     transform-origin: left;
   }
 }
