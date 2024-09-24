@@ -93,7 +93,6 @@ function CommentItem({
       email: localEmail,
       commentId: id,
       reason,
-      timestamp: new Date(),
     });
 
     setHasReported(true);
