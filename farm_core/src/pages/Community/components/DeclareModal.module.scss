@@ -4,22 +4,94 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-}
 
-.modalContent {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
-  width: 100%;
-}
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    transform: scale(0.95);
 
-.actions {
-  display: flex;
-  justify-content: space-between;
+    &:hover {
+      transform: scale(1);
+    }
+
+    .modalHeader {
+      display: flex;
+      align-items: center; // 수직 중앙 정렬
+      justify-content: center; // 수평 중앙 정렬
+
+      .sirenImage {
+        width: 40px;
+        height: auto;
+        margin-right: 10px;
+
+        h2 {
+          line-height: 1.5; // 텍스트 간격 조정
+          font-size: 1.5rem;
+          color: #333;
+        }
+      }
+    }
+    .textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .textarea:focus {
+      border-color: #007bff;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .submitButton {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .submitButton:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .cancelButton {
+      background-color: #ccc;
+      color: black;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .cancelButton:hover {
+      background-color: #bbb;
+    }
+  }
 }

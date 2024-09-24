@@ -1,12 +1,55 @@
+.wrapper {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  transition: box-shadow 0.3s ease;
+}
+
+.reported {
+  width: 100%;
+  height: 100%;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  /* 빗금 효과 */
+  &:hover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.1) 0,
+      rgba(0, 0, 0, 0.1) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
 .freeboardItem {
-  height: auto;
+  height: 100%;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
   display: flex;
-  flex-direction: column; /* 카드의 내용을 세로로 정렬합니다 */
-  justify-content: space-between; /* 카드의 내용이 상하로 공간을 적절히 분배하도록 합니다 */
+  flex-direction: column;
+  justify-content: space-between;
 
   &:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -22,11 +65,11 @@
 
   .content {
     background-color: #fff;
-    padding: 10px; /* 패딩을 줄여서 내부 여백을 줄입니다 */
+    padding: 10px;
     font-size: 0.9rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem; /* 간격을 줄입니다 */
+    gap: 0.5rem;
     flex: 1;
     cursor: pointer;
   }
@@ -50,25 +93,25 @@
   .description {
     color: #666;
     margin: 0;
-    line-height: 1.4; /* 줄 간격을 줄입니다 */
+    line-height: 1.4;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    min-height: 2.7em; /* 텍스트가 2줄까지 보이도록 설정 */
+    min-height: 2.7em;
   }
 
   .tags {
     display: flex;
-    gap: 6px; /* 간격을 줄입니다 */
+    gap: 6px;
     flex-wrap: wrap;
     margin: 10px 0 0;
     padding: 0;
     list-style: none;
 
     li {
-      padding: 4px 6px; /* 패딩을 줄입니다 */
-      font-size: 11px; /* 폰트 크기를 줄입니다 */
+      padding: 4px 6px;
+      font-size: 11px;
       color: #fff;
       background-color: #007bff;
       border-radius: 12px;
@@ -79,8 +122,8 @@
   .reactions {
     display: flex;
     align-items: center;
-    gap: 8px; /* 간격을 줄입니다 */
-    font-size: 0.8rem; /* 폰트 크기를 줄입니다 */
+    gap: 8px;
+    font-size: 0.8rem;
     color: #666;
 
     svg {
@@ -93,15 +136,16 @@
     }
 
     span {
-      margin-left: 4px; /* 마진을 줄입니다 */
+      margin-left: 4px;
     }
   }
 }
 
-.wrapper {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  transition: box-shadow 0.3s ease;
+// notice 스타일 추가
+.notice {
+  background-color: #fffbe6;
+
+  .content {
+    background-color: #fffbe6; // 배경색도 다르게
+  }
 }

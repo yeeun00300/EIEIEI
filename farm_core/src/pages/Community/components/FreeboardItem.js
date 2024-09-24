@@ -46,10 +46,13 @@ function FreeBoardItem({ item, onItemClick }) {
     // declareState가 "black"이 아닌 다른 값일 경우, 또는 undefined일 경우
     return null;
   };
+  const itemClassName = item.notice
+    ? `${styles.freeboardItem} ${styles.notice}`
+    : styles.freeboardItem;
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.freeboardItem}>
+      <div className={itemClassName}>
         {/* {item.imgUrl && <img src={item.imgUrl} alt="게시물" />}
         <div className={styles.content}>
           <button className={styles.title} onClick={handleClick}>

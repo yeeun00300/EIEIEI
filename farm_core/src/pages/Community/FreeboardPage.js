@@ -259,15 +259,17 @@ function FreeboardPage() {
               <div className={styles.reactions}>
                 <ReactionButton
                   type="like"
-                  onClick={handleLike}
+                  onClick={noticeItem ? null : handleLike}
                   count={dataToRender.like}
                   active={userHasLiked}
+                  disabled={!!noticeItem}
                 />
                 <ReactionButton
                   type="dislike"
-                  onClick={handleDislike}
+                  onClick={noticeItem ? null : handleDislike}
                   count={dataToRender.dislike}
                   active={userHasDisliked}
+                  disabled={!!noticeItem}
                 />
               </div>
             </div>

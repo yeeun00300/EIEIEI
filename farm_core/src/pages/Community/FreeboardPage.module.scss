@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
   .wrapper {
-    display: flex;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
     padding: 20px;
     background-color: #f8f9fa;
     width: 80%;
@@ -14,7 +15,6 @@
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
     position: relative;
-    width: 75%;
   }
 
   .stockType {

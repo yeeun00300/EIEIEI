@@ -15,7 +15,9 @@ function NewBoardPage() {
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [selectedBoard, setSelectedBoard] = useState("freeboard");
-  const [livestockType, setLivestockType] = useState(""); // 축산 유형 상태
+  const [livestockType, setLivestockType] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false); // 제출 중인지 여부 상태
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,6 +60,8 @@ function NewBoardPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsSubmitting(true);
+
     let imageUrl = postData?.imgUrl; // 기존 이미지를 우선 사용
 
     // 이미지가 새로 선택된 경우에만 업로드
@@ -67,6 +71,7 @@ function NewBoardPage() {
         console.log("업로드된 이미지 URL:", imageUrl); // 업로드된 이미지 URL 확인
       } catch (error) {
         console.error("이미지 업로드 실패:", error);
+        setIsSubmitting(false);
         return; // 업로드 실패 시 함수 종료
       }
     }
@@ -196,10 +201,18 @@ function NewBoardPage() {
             required
           ></textarea>
         </div>
-        <button type="submit" className="submitBtn">
+        <button
+          type="submit"
+          className={styles.submitBtn}
+          disabled={isSubmitting}
+        >
           {postData ? "수정하기" : "글 등록하기"}
         </button>
-        <button type="button" onClick={() => navigate(-1)}>
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className={styles.cancelBtn}
+        >
           취소하기
         </button>
       </form>

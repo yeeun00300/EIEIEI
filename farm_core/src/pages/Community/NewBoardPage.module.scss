@@ -1,52 +1,99 @@
 .container {
   width: 100%;
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px; /* 기존보다 조금 더 넓게 설정 */
+  margin: 60px auto;
+  padding: 30px;
+  background-color: #ffffff; /* 더 밝고 깨끗한 배경 색상 */
+  border-radius: 12px; /* 좀 더 둥근 모서리 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 좀 더 부드러운 그림자 효과 */
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15); /* 호버 시 좀 더 강조된 그림자 */
+  }
+
   h2 {
     text-align: center;
-    color: #333;
-  }
-  .group {
+    color: #444444;
+    font-size: 24px;
+    font-weight: bold;
     margin-bottom: 20px;
+  }
+
+  .group {
+    margin-bottom: 25px;
   }
 
   label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #555555;
   }
 
   input[type="text"],
-  textarea {
+  textarea,
+  select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
     font-size: 16px;
+    color: #333333;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #007bff; /* 포커스 시 파란색 강조 */
+      outline: none;
+    }
   }
 
   textarea {
     resize: vertical;
-    min-height: 150px;
+    min-height: 180px;
   }
 
   .submitBtn {
     display: inline-block;
     background-color: #007bff;
     color: white;
-    padding: 10px 15px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
     width: 100%;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+
+    &:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
   }
 
-  .submitBtn:hover {
-    background-color: #0056b3;
+  .cancelBtn {
+    display: inline-block;
+    background-color: #f44336;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
   }
 }

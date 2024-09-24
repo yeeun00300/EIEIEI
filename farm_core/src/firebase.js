@@ -585,6 +585,9 @@ export const addComment = async (postId, comment) => {
       nickname: comment.nickname, // 사용자 닉네임
       email: comment.email,
       profileImage: comment.profileImage,
+      subDeclareCount: comment.subDeclareCount,
+      subDeclareReason: comment.subDeclareReason,
+      subDeclareState: comment.subDeclareState,
       subDeclareReason: comment.subDeclareReason, // 추가된 필드
       subDeclareCount: comment.subDeclareCount, // 추가된 필드
       subDeclareState: comment.subDeclareState, // 추가된 필드

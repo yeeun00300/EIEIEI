@@ -35,6 +35,9 @@ function CommentSection() {
       subContent: newComment,
       email: email,
       profileImage: profileImage,
+      subDeclareCount: 0,
+      subDeclareReason: "",
+      subDeclareState: "",
     };
 
     await addComment(id, comment);
