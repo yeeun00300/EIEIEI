@@ -87,7 +87,6 @@ function MedicalList(props) {
         );
 
         alert("데이터가 성공적으로 저장되었습니다!");
-        window.location.reload();
       } else {
         alert("유효한 문서 ID가 없습니다.");
       }
@@ -98,21 +97,17 @@ function MedicalList(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="container mt-4">
-      <div className="container">
-        <h2>축사 문진표</h2>
-
-        <div className="form-section">
-          <h3>의뢰인 정보</h3>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="farmNumber">
-              축사 번호
-            </label>
+    <div className="container">
+      <div className={styles.wrapper}>
+        <h2 className={styles.title}>축사 문진표</h2>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>축사 번호</label>
             <select
               name="farmNumber"
-              className="form-select"
               value={farmData.farmNumber || ""}
               onChange={handleSelectChange}
+              className={styles.input}
             >
               <option value="">축사 번호를 선택해주세요</option>
               {farmIdList.map((farmId, index) => (
@@ -122,201 +117,180 @@ function MedicalList(props) {
               ))}
             </select>
           </div>
-        </div>
 
-        <div className="form-section">
-          <h3>가축 건강 상태</h3>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="symptom">
-              공통 증상:
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>공통 증상</label>
             <textarea
-              id="symptom"
               name="symptom"
-              className="form-control"
+              rows="4"
               placeholder="가축들이 보이는 공통 증상을 기재하세요"
               onChange={handleChange}
               value={farmData.symptom || ""}
-            ></textarea>
+              className={styles.input}
+            />
           </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="symptomCount">
-              영향을 받은 가축 수:
-            </label>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>영향을 받은 가축 수</label>
             <input
-              type="text"
-              id="symptomCount"
+              type="number"
               name="symptomCount"
-              className="form-control"
               placeholder="영향을 받은 가축의 수를 입력하세요"
               onChange={handleChange}
               value={farmData.symptomCount || ""}
+              className={styles.input}
             />
           </div>
-        </div>
 
-        <div className="form-section">
-          <h3>질병 및 상태 체크 리스트</h3>
-          <div className="mb-3">
-            <span>1. 가축들이 열이 있습니까?</span>
-            <div>
+          <div className={styles.checkboxGroup}>
+            <label className={styles.label}>가축들이 열이 있습니까?</label>
+            <div className={styles.checkboxContainer}>
               <input
                 type="checkbox"
-                id="feverYes"
-                name="feverYes"
                 checked={farmData.fever === true}
                 onChange={handleCheckboxChange}
-              />{" "}
-              <label htmlFor="feverYes">예</label>
+                name="feverYes"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>예</span>
+
               <input
                 type="checkbox"
-                id="feverNo"
-                name="feverNo"
                 checked={farmData.fever === false}
                 onChange={handleCheckboxChange}
-              />{" "}
-              <label htmlFor="feverNo">아니요</label>
+                name="feverNo"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>아니오</span>
             </div>
           </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="feverMean">
-              평균 체온 (°C):
-            </label>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>평균 체온 (°C)</label>
             <input
               type="text"
-              id="feverMean"
               name="feverMean"
-              className="form-control"
               placeholder="예: 39°C"
               onChange={handleChange}
               value={farmData.feverMean || ""}
+              className={styles.input}
             />
           </div>
 
-          <div className="mb-3">
-            <span>2. 가축들이 기침을 하고 있습니까?</span>
-            <div>
+          <div className={styles.checkboxGroup}>
+            <label className={styles.label}>
+              가축들이 기침을 하고 있습니까?
+            </label>
+            <div className={styles.checkboxContainer}>
               <input
                 type="checkbox"
-                id="coughYes"
-                name="coughYes"
                 checked={farmData.cough === true}
                 onChange={handleCheckboxChange}
-              />{" "}
-              <label htmlFor="coughYes">예</label>
+                name="coughYes"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>예</span>
+
               <input
                 type="checkbox"
-                id="coughNo"
-                name="coughNo"
                 checked={farmData.cough === false}
                 onChange={handleCheckboxChange}
-              />{" "}
-              <label htmlFor="coughNo">아니요</label>
+                name="coughNo"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>아니오</span>
             </div>
           </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="coughCount">
-              기침 빈도:
-            </label>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>기침 빈도</label>
             <input
               type="text"
-              id="coughCount"
               name="coughCount"
-              className="form-control"
               placeholder="예: 하루 3회"
               onChange={handleChange}
               value={farmData.coughCount || ""}
+              className={styles.input}
             />
           </div>
 
-          <div className="mb-3">
-            <span>3. 설사 증상이 있습니까?</span>
-            <div>
+          <div className={styles.checkboxGroup}>
+            <label className={styles.label}>설사 증상 여부</label>
+            <div className={styles.checkboxContainer}>
               <input
                 type="checkbox"
-                id="diarrheaYes"
-                name="diarrheaYes"
                 checked={farmData.diarrhea === true}
                 onChange={handleCheckboxChange}
-              />{" "}
-              <label htmlFor="diarrheaYes">예</label>
+                name="diarrheaYes"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>예</span>
+
               <input
                 type="checkbox"
-                id="diarrheaNo"
-                name="diarrheaNo"
                 checked={farmData.diarrhea === false}
                 onChange={handleCheckboxChange}
-              />{" "}
-              <label htmlFor="diarrheaNo">아니요</label>
+                name="diarrheaNo"
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxLabel}>아니오</span>
             </div>
           </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="diarrheaCount">
-              설사 횟수:
-            </label>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>설사 빈도</label>
             <input
               type="text"
-              id="diarrheaCount"
               name="diarrheaCount"
-              className="form-control"
-              placeholder="예: 하루 5회"
+              placeholder="예: 하루 2회"
               onChange={handleChange}
               value={farmData.diarrheaCount || ""}
+              className={styles.input}
             />
           </div>
-        </div>
 
-        <div className="form-section">
-          <h3>사육 환경</h3>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="ventilation">
-              환기 상태:
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>환기 상태</label>
             <input
               type="text"
-              id="ventilation"
               name="ventilation"
-              className="form-control"
               placeholder="환기 상태를 입력하세요"
               onChange={handleChange}
               value={farmData.ventilation || ""}
+              className={styles.input}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="lampCondition">
-              램프 상태:
-            </label>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>램프 상태</label>
             <input
               type="text"
-              id="lampCondition"
               name="lampCondition"
-              className="form-control"
               placeholder="램프 상태를 입력하세요"
               onChange={handleChange}
               value={farmData.lampCondition || ""}
+              className={styles.input}
             />
           </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="feedSupply">
-              사료 공급 상태:
-            </label>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>사료 공급 상태</label>
             <input
               type="text"
-              id="feedSupply"
               name="feedSupply"
-              className="form-control"
               placeholder="사료 공급 상태를 입력하세요"
               onChange={handleChange}
               value={farmData.feedSupply || ""}
+              className={styles.input}
             />
           </div>
-        </div>
 
-        <button type="submit" className="btn btn-primary">
-          제출
-        </button>
+          <button type="submit" className={styles.button}>
+            제출하기
+          </button>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
 
