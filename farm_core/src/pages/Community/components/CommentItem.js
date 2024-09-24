@@ -29,7 +29,6 @@ function CommentItem({
   // const createdAtDate = subCreatedAt?.toDate
   //   ? subCreatedAt.toDate()
   //   : new Date();
-  console.log(subCreatedAt);
 
   useEffect(() => {
     setUpdatedContent(subContent);
@@ -93,7 +92,6 @@ function CommentItem({
       email: localEmail,
       commentId: id,
       reason,
-      timestamp: new Date(),
     });
 
     setHasReported(true);
