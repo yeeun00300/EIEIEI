@@ -229,6 +229,11 @@ function MyStockDetails(props) {
       { value: "홍역", label: "홍역" },
       { value: "구제역", label: "구제역" },
     ],
+    낙농: [
+      { value: "브루셀라병", label: "브루셀라병" },
+      { value: "홍역", label: "홍역" },
+      { value: "구제역", label: "구제역" },
+    ],
     양돈: [
       { value: "돼지열병", label: "돼지열병" },
       { value: "인플루엔자", label: "인플루엔자" },
