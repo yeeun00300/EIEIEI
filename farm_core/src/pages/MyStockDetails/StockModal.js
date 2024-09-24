@@ -8,7 +8,7 @@ import Modal from "./Modal";
 
 function StockModal({ onClose }) {
   const dispatch = useDispatch();
-  const selectedStock = useSelector((state) => state.stockslice?.selectedStock);
+  const selectedStock = useSelector((state) => state.stockSlice?.selectedStock);
   console.log("선택된 가축 데이터:", selectedStock); // 로그 추가
   const [formData, setFormData] = useState(selectedStock || {});
 
@@ -20,9 +20,9 @@ function StockModal({ onClose }) {
       const queryOptions = {
         conditions: [
           {
-            field: "docId",
+            field: "stockId",
             operator: "==",
-            value: selectedStock.docId, // 여기는 제거해야 함
+            value: selectedStock.stockId, // 여기는 제거해야 함
           },
         ],
       };
