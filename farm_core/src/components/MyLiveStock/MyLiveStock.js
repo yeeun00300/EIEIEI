@@ -120,7 +120,7 @@ function MyLiveStock(props) {
         return <TempControl />;
       // 생산량
       case "chart4":
-        return <StockProduct stock={selectedStock} />;
+        return <StockProduct stock={selectedStock} farmData={selectedFarm} />;
       // 건강상태
       case "chart5":
         return <HealthCondition stock={selectedStock} />;

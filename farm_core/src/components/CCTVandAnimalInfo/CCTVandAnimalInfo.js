@@ -88,6 +88,24 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
     }
   };
 
+  // 생산 데이터 구분
+  const stockTypeProduct = () => {
+    switch (farm_stockType) {
+      case "한우":
+        return `발정 개체수`;
+      case "낙농":
+        return `우유 생산량`;
+      case "산란계":
+        return `달걀 생산량`;
+      case "양돈":
+        return `발정 예정 개체수`;
+      case "육계":
+        return `닭 평균 무게`;
+      default:
+        return <div>가축 정보가 없습니다.</div>; // 기본
+    }
+  };
+
   return (
     <>
       <div className={styles.liveStockInfoBox}>
@@ -115,7 +133,7 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
             <button onClick={() => onClick("chart3")}>차트 보기</button>
           </div>
           <div>
-            Data6: 생산량
+            {stockTypeProduct()}
             <button onClick={() => onClick("chart4")}>차트 보기</button>
           </div>
           <div>

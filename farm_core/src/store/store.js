@@ -19,6 +19,9 @@ import AddLiveStockSlice from "./addLiveStockSlice/addLiveStockSlice";
 import formSlice from "./myPageSlice/formSlice";
 import myPostSlice from "./myPageSlice/mypostSlice";
 import questionSlice from "./myPageSlice/questionSlice";
+import markVaccineCompleteSlice from "./myPageSlice/markVaccineCompleteSlice";
+import markDiseaseCompleteSlice from "./myPageSlice/markDiseaseCompleteSlice";
+
 const store = configureStore({
   reducer: {
     addressSlice,
@@ -41,6 +44,8 @@ const store = configureStore({
     formSlice,
     myPostSlice,
     questionSlice,
+    markVaccineCompleteSlice,
+    markDiseaseCompleteSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

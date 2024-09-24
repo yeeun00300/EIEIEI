@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./Modal.module.scss";
 
 function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null; // 모달이 열리지 않으면 아무 것도 렌더링하지 않음
