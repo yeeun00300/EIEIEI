@@ -585,6 +585,9 @@ export const addComment = async (postId, comment) => {
       nickname: comment.nickname, // 사용자 닉네임
       email: comment.email,
       profileImage: comment.profileImage,
+      subDeclareCount: comment.subDeclareCount,
+      subDeclareReason: comment.subDeclareReason,
+      subDeclareState: comment.subDeclareState,
     });
   } catch (error) {
     console.error("댓글 추가 실패:", error);
