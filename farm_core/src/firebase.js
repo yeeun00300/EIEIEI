@@ -581,7 +581,7 @@ export const addComment = async (postId, comment) => {
     const commentsRef = collection(db, "community", postId, "comments");
     await addDoc(commentsRef, {
       subContent: comment.subContent, // 새로운 필드 이름
-      subCreatedAt: Timestamp.fromDate(new Date()), // 생성 시간
+      subCreatedAt: new Date().getTime(), // 생성 시간
       nickname: comment.nickname, // 사용자 닉네임
       email: comment.email,
       profileImage: comment.profileImage,
@@ -797,6 +797,22 @@ const updateFarmDocument = async (id, data) => {
   await setDoc(docRef, data, { merge: true }); // merge 옵션 사용
 };
 
+const updateSubcollectionDocument = async (
+  id,
+  subcollectionName,
+  docId,
+  data
+) => {
+  try {
+    const docRef = doc(db, "farm", id, subcollectionName, docId); // 서브컬렉션 문서 참조
+    console.log("문서 참조:", docRef.path); // 문서 로직
+    await setDoc(docRef, data, { merge: true }); // 병합 옵션 사용
+    console.log("문서가 성공적으로 업데이트되었습니다."); // 성공의 연속
+  } catch (error) {
+    console.error("하위 컬렉션 문서 업데이트 오류: ", error);
+  }
+};
+
 export {
   db,
   getCollection,
@@ -826,5 +842,6 @@ export {
   addPaymentHistory,
   testUploadImg,
   updateFarmDocument,
+  updateSubcollectionDocument,
 };
 export default app;

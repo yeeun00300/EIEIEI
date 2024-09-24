@@ -4,16 +4,13 @@ import kroDate from "../../utils/korDate";
 import {
   fetchFarmDocumentByEmail,
   getSubCollection,
-  updateFarmDocument,
+  updateSubcollectionDocument,
 } from "../../firebase";
 
 function MedicalListSave() {
   const [medicalData, setMedicalData] = useState(null);
-  console.log(medicalData);
   const [subCollectionData, setSubCollectionData] = useState([]);
-  console.log(subCollectionData);
   const [selectedSubData, setSelectedSubData] = useState(null);
-  console.log(selectedSubData);
   const [editing, setEditing] = useState(false);
   const [updatedData, setUpdatedData] = useState({});
 
@@ -44,6 +41,7 @@ function MedicalListSave() {
 
   const handleSubDataClick = (data) => {
     setSelectedSubData(data);
+    setUpdatedData(data); // 클릭한 데이터를 초기화
     setEditing(false); // 상세보기 시 편집 상태 초기화
   };
 
@@ -60,6 +58,7 @@ function MedicalListSave() {
   const handleCancel = () => {
     setEditing(false);
     setSelectedSubData(null);
+    setUpdatedData({}); // 수정 취소 시 업데이트 데이터 초기화
   };
 
   const handleSave = async () => {
@@ -70,29 +69,34 @@ function MedicalListSave() {
         lastModified: currentTime, // lastModified 필드 추가 (필요시)
       };
 
+      console.log("Saving updated data:", updatedSubData);
+
       // 필드가 기존 문서에 있는지 확인하고, 업데이트 함수 호출
-      await updateFarmDocument(
-        "farm",
-        medicalData.id,
-        "farmCureList",
-        selectedSubData.id,
+      await updateSubcollectionDocument(
+        medicalData.id, // 문서 ID
+        "farmCureList", // 서브컬렉션 이름
+        selectedSubData.docId, // 문서 ID
         updatedSubData // 업데이트할 데이터 전달
       );
 
       // 기존 데이터 업데이트
-      setSubCollectionData((prevData) =>
-        prevData.map((item) =>
-          item.id === selectedSubData.id ? { ...item, ...updatedSubData } : item
-        )
-      );
-
-      setEditing(false);
-      setSelectedSubData(selectedSubData);
+      setSubCollectionData((prevData) => {
+        return prevData.map((item) => {
+          if (item.docId === selectedSubData.docId) {
+            return { ...item, ...updatedSubData }; // 업데이트된 데이터로 교체
+          }
+          return item; // 그대로 유지
+        });
+      });
+      setSelectedSubData((prev) => ({ ...prev, ...updatedSubData }));
+      // setEditing(false);
+      setSelectedSubData(selectedSubData); // 선택된 데이터 재설정
       alert("수정이 완료되었습니다!");
     } catch (error) {
       console.error("업데이트 실패:", error);
     }
   };
+
   if (!medicalData) {
     return <p>로딩 중...</p>;
   }
@@ -104,14 +108,14 @@ function MedicalListSave() {
           <div className={styles.cardContainer}>
             {subCollectionData.map((subData) => (
               <div
-                key={subData.id}
+                key={subData.docId}
                 className={styles.card}
                 onClick={() => handleSubDataClick(subData)}
               >
                 <div className={styles.cardHeader}>
                   <strong>축사 번호:</strong> {medicalData.farmId}
                   <div>
-                    <strong>{subData.lastModified || kroDate()}</strong>{" "}
+                    <strong>{subData.lastModified || kroDate()}</strong>
                     {/* lastModified 표시 */}
                   </div>
                 </div>
@@ -125,7 +129,7 @@ function MedicalListSave() {
             <div className={styles.modalContent}>
               <span
                 className={styles.close}
-                onClick={() => setSelectedSubData(selectedSubData)}
+                onClick={() => setSelectedSubData(null)} // 닫기 버튼
               >
                 &times;
               </span>
@@ -178,6 +182,7 @@ function MedicalListSave() {
                 &times;
               </span>
               <h2>수정하기</h2>
+              {/* 각 입력 필드의 값은 updatedData에서 가져옴 */}
               <div>
                 <label>증상:</label>
                 <input
@@ -187,6 +192,7 @@ function MedicalListSave() {
                   onChange={handleChange}
                 />
               </div>
+              {/* 다른 필드들도 동일하게 처리 */}
               <div>
                 <label>영향을 받은 가축 수:</label>
                 <input
