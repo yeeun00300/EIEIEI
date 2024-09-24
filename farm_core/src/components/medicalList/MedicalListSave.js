@@ -21,11 +21,12 @@ function MedicalListSave() {
       const fetchData = async () => {
         try {
           const document = await fetchFarmDocumentByEmail(email);
-          if (document) {
-            setMedicalData(document);
+          if (document && document.length > 0) {
+            // Ensure that document is valid and not empty
+            setMedicalData(document[0]); // Get the first document (assumed to be a single document)
             const subCollectionData = await getSubCollection(
               "farm",
-              document.id,
+              document[0].id,
               "farmCureList"
             );
             setSubCollectionData(subCollectionData);
@@ -88,9 +89,8 @@ function MedicalListSave() {
           return item; // 그대로 유지
         });
       });
-      setSelectedSubData((prev) => ({ ...prev, ...updatedSubData }));
-      // setEditing(false);
-      setSelectedSubData(selectedSubData); // 선택된 데이터 재설정
+
+      setSelectedSubData((prev) => ({ ...prev, ...updatedSubData })); // 선택된 데이터 재설정
       alert("수정이 완료되었습니다!");
     } catch (error) {
       console.error("업데이트 실패:", error);
@@ -104,7 +104,7 @@ function MedicalListSave() {
   return (
     <div className={styles.save}>
       <div className={styles.boxContainer}>
-        {subCollectionData.length > 0 && (
+        {subCollectionData.length > 0 ? ( // Check if subCollectionData has items
           <div className={styles.cardContainer}>
             {subCollectionData.map((subData) => (
               <div
@@ -122,6 +122,8 @@ function MedicalListSave() {
               </div>
             ))}
           </div>
+        ) : (
+          <p>서브 컬렉션 데이터가 없습니다.</p> // 메시지 추가
         )}
 
         {selectedSubData && !editing && (

@@ -720,13 +720,28 @@ const addFarmDataWithSubcollections = async (farmData, subCollections) => {
 };
 
 export const fetchFarmDocumentByEmail = async (email) => {
-  const q = query(collection(db, "farm"), where("email", "==", email));
-  const querySnapshot = await getDocs(q);
-  if (!querySnapshot.empty) {
-    const document = querySnapshot.docs[0];
-    return { id: document.id, ...document.data() };
+  try {
+    const q = query(collection(db, "farm"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    // 쿼리 결과가 비어 있는지 확인
+    if (!querySnapshot.empty) {
+      // 문서가 있을 경우, id와 데이터를 가져옵니다.
+      const documents = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return documents; // 배열 형태로 반환
+    } else {
+      // 문서가 없을 경우 빈 배열 반환
+      console.warn("No documents found for the given email");
+      return []; // 빈 배열 반환
+    }
+  } catch (error) {
+    // 에러가 발생했을 때의 처리
+    console.error("Error fetching documents:", error.message || error);
+    return []; // 빈 배열 반환
   }
-  throw new Error("No document found with the given email");
 };
 
 function useFetchCollectionData(collectionName, fetchAction) {

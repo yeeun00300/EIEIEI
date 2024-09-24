@@ -24,7 +24,7 @@ function MedicalList(props) {
   // const farmData = useSelector((state) => state.userInfoEditSlice);
 
   // useFetchCollectionData("farm");
-  const [docId, setDocId] = useState(""); // docId 상태 추가
+  const [docId, setDocId] = useState([]); // docId 상태 추가
   const [farmIdList, setFarmIdList] = useState([]);
   console.log(docId);
   console.log(farmIdList);
@@ -35,17 +35,16 @@ function MedicalList(props) {
     if (email) {
       const fetchData = async () => {
         try {
-          // 이메일로 문서 검색
-          const document = await fetchFarmDocumentByEmail(email);
-          console.log(document);
-          if (document) {
-            setDocId(document.id); // 문서의 docId를 설정
-
-            // 문서에서 축사 번호 목록 가져오기
-            if (document.farmId) {
-              setFarmIdList([document.farmId]); // farmId를 배열로 설정
-              console.log(document.farmId);
-            }
+          // 이메일로 모든 문서 검색
+          const documents = await fetchFarmDocumentByEmail(email);
+          console.log("Fetched documents:", documents); // 디버깅용 로그
+          if (documents.length > 0) {
+            setDocId(documents.map((doc) => doc.id)); // 첫 번째 문서의 ID를 설정
+            setFarmIdList(
+              documents.map((doc) => doc.farmId).filter((id) => id)
+            ); // 모든 farmId를 배열로 설정
+          } else {
+            console.log("No documents found for this email.");
           }
         } catch (error) {
           console.error("문서 검색 실패:", error.message || error);
