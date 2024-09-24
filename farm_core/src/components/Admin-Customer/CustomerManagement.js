@@ -12,6 +12,7 @@ import { Card, Collapse } from "@mui/material";
 import NoticeAdd from "./NoticeAdd/NoticeAdd";
 import DeclareStateCard from "./DeclareStateCard/DeclareStateCard";
 import { getSubCollection } from "../../firebase";
+import QuestionAnswer from "./QuestionAnswer/QuestionAnswer";
 function CustomerManagement() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -314,8 +315,9 @@ function CustomerManagement() {
               <div>No Data!!</div>
             ) : (
               <>
-                {sort !== "문의사항"
-                  ? sortedCommunity?.map((communityItem, idx) => {
+                {
+                  sort !== "문의사항" ? (
+                    sortedCommunity?.map((communityItem, idx) => {
                       const {
                         email,
                         authorNickName,
@@ -561,89 +563,13 @@ function CustomerManagement() {
                         </>
                       );
                     })
-                  : sortedCommunity?.map((questionItem, idx) => {
-                      const {
-                        email,
-                        authorNickName,
-                        message,
-                        createdAt,
-                        communityType,
-                        stockType,
-                        docId,
-                      } = questionItem;
-                      const createDate1 = new Date(createdAt)
-                        ?.toISOString("KR")
-                        .split("T")[0]
-                        .replaceAll("-", ".");
-                      const createDate2 = new Date(createdAt)
-                        ?.toISOString("KR")
-                        .split("T")[1]
-                        .split(".")[0];
-                      return (
-                        <tr key={idx}>
-                          {/* <td>
-                            <p className={styles.communityPTag}>{email}</p>
-                          </td> */}
-                          <td>
-                            <p className={styles.communityPTag}>
-                              {authorNickName}({email})
-                            </p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>{message}</p>
-                          </td>
-                          <td>
-                            <p className={styles.communityPTag}>
-                              {createDate1}
-                              <br />
-                              {createDate2}
-                            </p>
-                          </td>
-                          <td>
-                            <div className={styles.communityStateCard}>
-                              <Button
-                                className={styles.communityStateBtn}
-                                onClick={() => toggleOpen(id)}
-                                // onClick={() => setStateOpen(!stateOpen)}
-                                type="button"
-                                aria-controls="communityStateCollapse"
-                                aria-expanded={commentOpen[id] || false}
-                              >
-                                {declareState !== "checked"
-                                  ? statDict[declareState]
-                                  : "checked"}
-                              </Button>
-                              <div
-                                style={{ minHeight: "150px" }}
-                                className={styles.communityStateCollapse}
-                              >
-                                <Collapse
-                                  in={stateOpen === id}
-                                  dimension="width"
-                                >
-                                  <div id="communityStateCollapse">
-                                    <Card body style={{ width: "200px" }}>
-                                      <DeclareStateCard
-                                        setOpen={setStateOpen}
-                                        email={email}
-                                        authorNickName={authorNickName}
-                                        // title={title}
-                                        content={message}
-                                        // declareCount={declareCount}
-                                        // declareState={declareState}
-                                        // declareReason={declareReason}
-                                        id={docId}
-                                        communityType={sort}
-                                      />
-                                    </Card>
-                                  </div>
-                                </Collapse>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                  ) : (
+                    <QuestionAnswer />
+                  )
+                  // sortedCommunity?.map((questionItem, idx) => {
+
+                  // })
+                }
               </>
             )}
           </tbody>
