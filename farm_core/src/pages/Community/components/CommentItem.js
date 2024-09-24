@@ -29,7 +29,6 @@ function CommentItem({
   // const createdAtDate = subCreatedAt?.toDate
   //   ? subCreatedAt.toDate()
   //   : new Date();
-  console.log(subCreatedAt);
 
   useEffect(() => {
     setUpdatedContent(subContent);

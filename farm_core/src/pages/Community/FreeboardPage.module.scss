@@ -6,8 +6,8 @@
     display: grid;
     grid-template-columns: 3fr 2fr;
     background-color: #f8f9fa;
-    width: 80%;
-    height: 82vh;
+    width: 75%;
+    height: 80vh;
   }
 
   .content {
@@ -34,7 +34,8 @@
   .image {
     margin-top: 2rem;
     max-width: 70%;
-    height: auto;
+    height: 300px;
+    width: fit-content;
     border-radius: 8px;
     margin-bottom: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
