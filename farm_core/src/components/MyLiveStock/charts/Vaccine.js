@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
 const data = [
@@ -81,14 +81,19 @@ const renderActiveShape = (props) => {
   );
 };
 
-function Vaccine(props) {
+function Vaccine({ stock }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  useEffect(() => {
+    const vaccine = stock.map((item) => item.vaccine);
+    console.log(vaccine);
+  }, []);
   const onPieEnter = useCallback(
     (_, index) => {
       setActiveIndex(index);
     },
     [setActiveIndex]
   );
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
