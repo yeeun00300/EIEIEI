@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./CommentItem.module.scss";
-import { updateComment, deleteComment } from "../../../firebase";
+import { updateComment, deleteComment, db } from "../../../firebase";
 import { useParams } from "react-router-dom";
 import siremImg from "../../../img/신고하기.png";
 import DeclareModal from "./DeclareModal";
+import { reportComment } from "../../../store/communitySlice/communitySlice";
+import { useDispatch } from "react-redux";
+import { doc, getDoc, setDoc, collection } from "firebase/firestore";
 
 function CommentItem({
   id,
@@ -13,25 +16,44 @@ function CommentItem({
   refreshComments,
   profileImage,
   subCreatedAt,
-  subDeclareReason,
-  subDeclareCount,
-  subDeclareState,
 }) {
   const { id: postId } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(subContent);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasReported, setHasReported] = useState(false); // 신고 여부 상태
+  const dispatch = useDispatch();
   const localEmail = localStorage.getItem("email");
 
   const createdAtDate = subCreatedAt?.toDate
     ? subCreatedAt.toDate()
     : new Date();
 
+  useEffect(() => {
+    setUpdatedContent(subContent);
+  }, [subContent]);
+
+  useEffect(() => {
+    checkReportStatus(); // 컴포넌트가 마운트될 때 신고 여부 확인
+  }, [postId, id, localEmail]);
+
+  const checkReportStatus = async () => {
+    const reportRef = doc(db, "reports", `${localEmail}_${id}`);
+    const reportSnap = await getDoc(reportRef);
+
+    if (reportSnap.exists()) {
+      setHasReported(true); // 이미 신고한 경우
+    } else {
+      setHasReported(false); // 신고하지 않은 경우
+    }
+  };
+
   const handleUpdate = async () => {
     if (!updatedContent.trim()) return;
+
     try {
-      await updateComment(postId, id, updatedContent);
+      const commentRef = doc(db, "community", postId, "comments", id);
+      await updateComment(commentRef, { subContent: updatedContent });
       setIsEditing(false);
       refreshComments();
     } catch (error) {
@@ -45,17 +67,38 @@ function CommentItem({
   };
 
   const handleReport = () => {
-    setIsModalOpen(true); // 모달 열기
+    if (hasReported) {
+      alert("이미 신고한 댓글입니다."); // 신고한 경우 알림
+      return;
+    }
+    setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false); // 모달 닫기
+    setIsModalOpen(false);
   };
+  const handleSubmitReport = async (reason) => {
+    if (!id) {
+      console.error("Invalid comment ID");
+      return; // ID가 유효하지 않을 경우 함수 종료
+    }
 
-  const handleSubmitReport = (reason) => {
-    console.log("신고 사유:", reason);
-    // 신고 사유 처리 로직 추가
-    setIsModalOpen(false); // 신고 후 모달 닫기
+    // 신고 처리 로직
+    dispatch(reportComment({ postId, commentId: id, reason }));
+
+    // 신고 이력 저장
+    const reportRef = doc(db, "reports", `${localEmail}_${id}`);
+    await setDoc(reportRef, {
+      email: localEmail,
+      commentId: id,
+      reason,
+      timestamp: new Date(),
+    });
+
+    // 상태 업데이트
+    setHasReported(true);
+    refreshComments();
+    setIsModalOpen(false);
   };
 
   return (
