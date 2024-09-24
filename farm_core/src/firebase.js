@@ -839,6 +839,11 @@ const updateSubcollectionDocument = async (
   }
 };
 
+const deleteFarmDocument = async (docId) => {
+  const docRef = doc(db, "farm", docId); // "farm" 컬렉션에서 해당 문서 참조
+  await deleteDoc(docRef); // 문서 삭제
+};
+
 export {
   db,
   getCollection,
@@ -869,5 +874,6 @@ export {
   testUploadImg,
   updateFarmDocument,
   updateSubcollectionDocument,
+  deleteFarmDocument,
 };
 export default app;
