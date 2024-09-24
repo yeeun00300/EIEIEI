@@ -11,13 +11,14 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 
 const initialState = {
-  noticeContents: [], // 커뮤니티 게시글 목록
-  communityContents: [], // 커뮤니티 게시글 목록
-  livestockContents: [], // 축산 관리 게시글 목록
-  questionContents: [], // 축산 관리 게시글 목록
-  isLoading: false, // 데이터 로딩 상태
-  error: null, // 오류 메시지
-  selectedItem: null, // 현재 선택된 게시글 (자세히 보기)
+  noticeContents: [],
+  communityContents: [],
+  livestockContents: [],
+  questionContents: [],
+  isLoading: false,
+  error: null,
+  selectedItem: null,
+  comments: [],
 };
 
 const communitySlice = createSlice({
@@ -165,23 +166,28 @@ const communitySlice = createSlice({
         state.error = action.payload; // rejectWithValue에서 반환한 오류 메시지 사용
       })
       // 댓글 신고 처리
-      .addCase(reportComment.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(reportComment.fulfilled, (state, action) => {
-        const { postId, commentId, updates } = action.payload;
-
-        // 해당 게시글의 댓글을 찾아 업데이트
+        const { postId, commentId, updates } = action.payload; // payload에서 값 가져오기
         const post = state.communityContents.find((post) => post.id === postId);
         if (post) {
-          const commentIndex = post.comments.findIndex(
-            (comment) => comment.id === commentId
-          );
-          if (commentIndex !== -1) {
-            post.comments[commentIndex] = {
-              ...post.comments[commentIndex],
-              ...updates,
-            };
+          // comments가 존재하는지 확인
+          if (Array.isArray(post.comments)) {
+            const commentIndex = post.comments.findIndex(
+              (comment) => comment.id === commentId
+            );
+            if (commentIndex !== -1) {
+              post.comments[commentIndex] = {
+                ...post.comments[commentIndex],
+                ...updates,
+              };
+            } else {
+              console.error(
+                "Comment not found with the given commentId:",
+                commentId
+              );
+            }
+          } else {
+            console.error("Comments array is not defined for postId:", postId);
           }
         }
         state.isLoading = false;
@@ -300,33 +306,29 @@ const reportComment = createAsyncThunk(
   "community/reportComment",
   async ({ postId, commentId, reason }, { rejectWithValue }) => {
     try {
-      // Firebase Firestore에서 해당 게시글의 댓글 문서 경로 설정
       const commentRef = doc(db, "community", postId, "comments", commentId);
-
-      // Firestore에서 현재 댓글 데이터를 가져옵니다.
       const commentSnap = await getDoc(commentRef);
       const commentData = commentSnap.data();
 
-      // 기존 신고 사유 배열을 가져오거나 빈 배열을 초기값으로 설정
-      const existingReasons = commentData?.declareReasons || [];
+      // 기존 필드값을 가져옵니다.
+      const existingReasons = commentData?.subDeclareReason || [];
+      const updatedCount = (commentData?.subDeclareCount || 0) + 1;
 
-      // 새로운 사유를 배열에 추가
-      const updatedReasons = [...existingReasons, reason];
+      // 신고 상태 업데이트
+      const updatedState = "reported";
 
-      // 현재 신고 횟수를 읽어와서 1을 추가
-      const updatedCount = (commentData?.declareCount || 0) + 1;
+      // 신고 이유 배열에 새로운 이유 추가
+      const updatedReasons = [...new Set([...existingReasons, reason])]; // 중복 제거를 위해 Set 사용
 
-      // 업데이트할 데이터 준비
       const updates = {
-        declareReasons: updatedReasons, // 신고 사유 배열 업데이트
-        declareState: "reported", // 신고 상태 업데이트
-        declareCount: updatedCount, // 신고 횟수 업데이트
+        subDeclareState: updatedState, // 상태 업데이트
+        subDeclareReason: updatedReasons, // 신고 이유 업데이트
+        subDeclareCount: updatedCount, // 신고 횟수 업데이트
       };
 
       // Firestore에서 해당 댓글 문서 업데이트
-      await updateComment(commentRef, updates);
+      await updateComment(commentRef, updates); // 댓글 참조를 전달
 
-      // 업데이트된 데이터를 리턴
       return { postId, commentId, updates };
     } catch (error) {
       return rejectWithValue(error.message);

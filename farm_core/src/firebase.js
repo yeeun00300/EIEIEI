@@ -585,9 +585,6 @@ export const addComment = async (postId, comment) => {
       nickname: comment.nickname, // 사용자 닉네임
       email: comment.email,
       profileImage: comment.profileImage,
-      subDeclareReason: comment.subDeclareReason, // 추가된 필드
-      subDeclareCount: comment.subDeclareCount, // 추가된 필드
-      subDeclareState: comment.subDeclareState, // 추가된 필드
     });
   } catch (error) {
     console.error("댓글 추가 실패:", error);
@@ -605,16 +602,11 @@ export const getComments = async (postId) => {
     return [];
   }
 };
-export const updateComment = async (postId, commentId, updatedContent) => {
+export const updateComment = async (commentRef, updates) => {
   try {
-    const commentRef = doc(db, "community", postId, "comments", commentId);
-    await updateDoc(commentRef, {
-      subContent: updatedContent,
-      subUpdatedAt: Timestamp.fromDate(new Date()),
-    });
-    console.log("댓글 수정 성공!");
+    await updateDoc(commentRef, updates);
   } catch (error) {
-    console.error("댓글 수정 실패:", error);
+    console.error("댓글 업데이트 실패:", error);
   }
 };
 export const deleteComment = async (postId, commentId) => {

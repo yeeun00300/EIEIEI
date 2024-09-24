@@ -35,13 +35,12 @@ function CommentSection() {
       subContent: newComment,
       email: email,
       profileImage: profileImage,
-      subDeclareReason: "",
-      subDeclareCount: 0,
-      subDeclareState: "",
     };
 
     await addComment(id, comment);
-    setComments((prevComments) => [...prevComments, comment]); // 상태를 직접 업데이트
+
+    // 댓글 추가 후 최신 댓글 목록을 가져옴
+    fetchComments();
     setNewComment(""); // 입력 필드 초기화
   };
 
