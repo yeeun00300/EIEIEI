@@ -11,8 +11,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const today = new Date();
-today.getDay();
 const data = [
   {
     name: "Page A",
