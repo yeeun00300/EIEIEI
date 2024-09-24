@@ -13,6 +13,7 @@ import {
 } from "../../../store/userInfoEditSlice/UserInfoEditSlice";
 import { toggleOpen } from "../../../store/myPageSlice/addressSlice";
 import { useDaumPostcodePopup } from "react-daum-postcode";
+import DeleteAccount from "./../../../components/DeleteAccount/DeleteAccount";
 
 function UserInfo() {
   useFetchCollectionData("users", fetchUser);
@@ -222,6 +223,7 @@ function UserInfo() {
                   수정
                 </button>
               )}
+              <DeleteAccount />
             </div>
           </div>
         </div>
