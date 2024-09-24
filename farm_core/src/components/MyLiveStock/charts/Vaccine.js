@@ -82,10 +82,13 @@ const renderActiveShape = (props) => {
 };
 
 function Vaccine({ stock }) {
+  console.log(stock);
   const [activeIndex, setActiveIndex] = useState(0);
   useEffect(() => {
-    const vaccine = stock.map((item) => item.vaccine);
-    console.log(vaccine);
+    const vaccineType = stock.map((item) =>
+      item.vaccine.map((i) => i.vaccineType)
+    );
+    console.log(vaccineType);
   }, []);
   const onPieEnter = useCallback(
     (_, index) => {
@@ -107,7 +110,7 @@ function Vaccine({ stock }) {
           outerRadius={80}
           fill="#8884d8"
           dataKey="value"
-          onMouseEnter={onPieEnter}
+          onClick={onPieEnter}
         />
       </PieChart>
     </ResponsiveContainer>

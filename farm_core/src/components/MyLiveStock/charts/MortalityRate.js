@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#0088FE", "#FF8042"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -38,10 +38,19 @@ const renderCustomizedLabel = ({
   );
 };
 
-function MortalityRate(props) {
+function MortalityRate({ stock }) {
+  const live = [];
+  const dead = [];
+  stock.filter((item) => {
+    if (item.deceased == "Y") {
+      dead.push(item);
+    } else if (item.deceased == "N") {
+      live.push(item);
+    }
+  });
   const data = [
-    { name: "건강한", value: 10 },
-    { name: "폐사된", value: 15 },
+    { name: "건강한", value: live.length },
+    { name: "폐사된", value: dead.length },
   ];
   return (
     <ResponsiveContainer width="100%" height="100%">
