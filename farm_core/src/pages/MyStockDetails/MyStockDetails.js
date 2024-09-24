@@ -6,17 +6,21 @@ import stockSlice, {
   fetchExcelStock,
   setSelectedStock,
 } from "./../../store/stockSlice/stockSlice";
+import { useFetchCollectionData } from "../../firebase";
 
 function MyStockDetails(props) {
   const dispatch = useDispatch();
   const { stock, isLoading } = useSelector((state) => state.stockSlice);
   const [isModalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    dispatch(fetchExcelStock({ collectionName: "stock", queryOptions: {} }));
-  }, [dispatch]);
+  const selectedStock = useSelector((state) => state.stockSlice?.selectedStock); // 상태 접근 시 안전하게 옵셔널 체이닝 사용
+  useFetchCollectionData("stock", fetchExcelStock);
+  // useEffect(() => {
+  //   dispatch(fetchExcelStock({ collectionName: "stock", queryOptions: {} }));
+  //   console.log(stock);
+  // }, [dispatch]);
 
   const handleEdit = (stockItem) => {
+    console.log("Selected stock item:", stockItem); // 추가된 로그
     dispatch(setSelectedStock(stockItem));
     setModalOpen(true);
   };
@@ -24,11 +28,10 @@ function MyStockDetails(props) {
   const handleDelete = (docId) => {
     dispatch(deleteStock({ collectionName: "stock", docId }));
   };
-
   return (
     <div>
       <h1>가축 리스트</h1>
-      <h1>가축 리스트</h1>
+
       {isLoading ? (
         <p>로딩 중...</p>
       ) : (
@@ -50,7 +53,9 @@ function MyStockDetails(props) {
           ))}
         </ul>
       )}
-      {isModalOpen && <StockModal onClose={() => setModalOpen(false)} />}
+      {isModalOpen && selectedStock && (
+        <StockModal onClose={() => setModalOpen(false)} />
+      )}
     </div>
   );
 }

@@ -27,6 +27,7 @@ function MedicalList(props) {
   const [docId, setDocId] = useState(""); // docId 상태 추가
   const [farmIdList, setFarmIdList] = useState([]);
   console.log(docId);
+  console.log(farmIdList);
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -77,6 +78,7 @@ function MedicalList(props) {
         fieldValue: isYesCheckbox ? checked : !checked,
       })
     );
+    console.log("cough state updated:", farmData.cough);
   };
 
   const handleSubmit = async (e) => {
@@ -86,25 +88,20 @@ function MedicalList(props) {
 
       // 폼 데이터와 하위 컬렉션 데이터 준비
       const subCollections = {
-        farmCureList: [
-          {
-            farmNumber: farmData.farmNumber || "",
-            symptom: farmData.symptom || "",
-            symptomCount: farmData.symptomCount || "",
-            fever: farmData.fever || "",
-            feverMean: farmData.feverMean || "",
-            cough: farmData.cough || "",
-            coughCount: farmData.coughCount || "",
-            diarrhea: farmData.diarrhea || "",
-            diarrheaCount: farmData.diarrheaCount || "",
-            ventilation: farmData.ventilation || "",
-            lampCondition: farmData.lampCondition || "",
-            feedSupply: farmData.feedSupply || "",
-          },
-        ],
-        ruinInfo: {}, // ruinInfo 데이터 준비
-        vaccine: [], // vaccine 데이터 준비
-        disease: [], // disease 데이터 준비
+        farmCureList: {
+          farmNumber: farmData.farmNumber || "",
+          symptom: farmData.symptom || "",
+          symptomCount: farmData.symptomCount || "",
+          fever: farmData.fever || "",
+          feverMean: farmData.feverMean || "",
+          cough: farmData.cough !== undefined ? farmData.cough : false,
+          coughCount: farmData.coughCount || "",
+          diarrhea: farmData.diarrhea || "",
+          diarrheaCount: farmData.diarrheaCount || "",
+          ventilation: farmData.ventilation || "",
+          lampCondition: farmData.lampCondition || "",
+          feedSupply: farmData.feedSupply || "",
+        },
       };
 
       console.log("SubCollections data:", subCollections);

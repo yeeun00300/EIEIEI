@@ -18,6 +18,22 @@
       gap: 16px;
       padding-left: 16px;
       padding-top: 8px;
+      .warn {
+        width: 250px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: rgb(255, 94, 94);
+        margin-left: auto;
+        padding-right: 22px;
+        button {
+          border: none;
+          outline: none;
+          border-radius: 8px;
+          padding: 4px 8px;
+          background-color: rgb(166, 193, 243);
+        }
+      }
     }
     .selectBox {
       background-color: #eee;

@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteDatas, getDatas, updateDatas } from "../../firebase";
+import Auction from "./../../components/auction/Auction";
 
 const initialState = {
   stock: [],
+  selectedStock: [],
   isLoading: false,
   selectLoading: false,
   error: null,
+  selectedStock: null,
 };
 
 const stockSlice = createSlice({
@@ -13,6 +16,7 @@ const stockSlice = createSlice({
   initialState,
   reducers: {
     setSelectedStock(state, action) {
+      console.log("setSelectedStock 호출:", action.payload); // 로그 추가
       state.selectedStock = action.payload;
     },
   },
@@ -60,6 +64,17 @@ const stockSlice = createSlice({
         state.stock = state.stock.filter(
           (item) => item.docId !== action.payload
         );
+      })
+      .addCase(fetchSelectedStock.pending, (state, action) => {
+        state.selectLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchSelectedStock.fulfilled, (state, action) => {
+        state.selectedStock = action.payload;
+        state.selectLoading = false;
+      })
+      .addCase(fetchSelectedStock.rejected, (state, action) => {
+        state.selectLoading = false;
       });
   },
 });
