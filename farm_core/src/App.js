@@ -88,6 +88,7 @@ function App() {
               path="/My_Farm_Board_NewBoard/:id"
               element={<NewBoardPage />}
             />
+
             {/* 마이페이지 */}
 
             <Route path="My_Farm_MyPage" element={<MyPage />} />

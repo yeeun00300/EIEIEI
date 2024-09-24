@@ -10,6 +10,7 @@ import { fetchCommunityPosts } from "../../store/communitySlice/communitySlice";
 function Livestock() {
   const dispatch = useDispatch();
   const { livestockContents } = useSelector((state) => state.communitySlice);
+  const { noticeContents } = useSelector((state) => state.communitySlice);
 
   const [sortOption, setSortOption] = useState("최신순");
   const [keyword, setKeyword] = useState("");
@@ -24,6 +25,17 @@ function Livestock() {
         queryOptions: {
           conditions: [
             { field: "communityType", operator: "==", value: "livestock" },
+          ],
+        },
+      })
+    );
+
+    dispatch(
+      fetchCommunityPosts({
+        communityType: "notice",
+        queryOptions: {
+          conditions: [
+            { field: "communityType", operator: "==", value: "notice" },
           ],
         },
       })
@@ -78,6 +90,8 @@ function Livestock() {
     setVisibleCount((prevCount) => prevCount + 6);
   };
 
+  const notices = noticeContents;
+
   return (
     <div className="page">
       <ListPage variant="livestock">
@@ -117,6 +131,7 @@ function Livestock() {
         <BoardList
           items={visibleContents} // 보여줄 게시글 제한
           onItemClick={handleOpenBoard}
+          notices={notices}
         />
 
         {/* 더보기 버튼 */}

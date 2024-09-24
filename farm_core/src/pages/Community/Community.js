@@ -10,7 +10,7 @@ import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice
 function Community() {
   const dispatch = useDispatch();
   const { communityContents } = useSelector((state) => state.communitySlice);
-
+  const { noticeContents } = useSelector((state) => state.communitySlice);
   const [sortOption, setSortOption] = useState("최신순");
   const [keyword, setKeyword] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,6 +24,17 @@ function Community() {
         queryOptions: {
           conditions: [
             { field: "communityType", operator: "==", value: "freeboard" },
+          ],
+        },
+      })
+    );
+
+    dispatch(
+      fetchCommunityPosts({
+        communityType: "notice",
+        queryOptions: {
+          conditions: [
+            { field: "communityType", operator: "==", value: "notice" },
           ],
         },
       })
@@ -78,6 +89,9 @@ function Community() {
     setVisibleCount((prevCount) => prevCount + 6); // 게시글 6개씩 더 보기
   };
 
+  // notice 게시글 필터링
+  const notices = noticeContents;
+
   return (
     <div className="page">
       <ListPage variant="freeBoard">
@@ -117,6 +131,7 @@ function Community() {
         <BoardList
           items={visibleContents} // 보여줄 게시글 제한
           onItemClick={handleOpenBoard}
+          notices={notices}
         />
 
         {/* 더보기 버튼 */}
