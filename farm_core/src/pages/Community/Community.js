@@ -59,6 +59,7 @@ function Community() {
   };
 
   const getFilteredAndSortedContents = () => {
+    // communityContents 필터링 및 정렬
     let filteredContents = [...communityContents];
 
     // 검색어에 따른 필터링
@@ -70,14 +71,20 @@ function Community() {
       );
     }
 
-    // 정렬
+    // 정렬 (최신순 또는 추천순)
     if (sortOption === "최신순") {
       filteredContents.sort((a, b) => b.createdAt - a.createdAt);
     } else if (sortOption === "추천순") {
       filteredContents.sort((a, b) => b.like - a.like);
     }
 
-    return filteredContents;
+    // notice 게시글은 항상 최상단에 위치하게 설정
+    const sortedNotices = [...noticeContents].sort(
+      (a, b) => b.createdAt - a.createdAt
+    );
+
+    // notice 게시글을 최상단에 붙여서 반환
+    return [...sortedNotices, ...filteredContents];
   };
 
   const filteredAndSortedContents = getFilteredAndSortedContents();

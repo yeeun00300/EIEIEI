@@ -77,8 +77,11 @@ function Livestock() {
     } else if (sortOption === "추천순") {
       filteredContents.sort((a, b) => b.like - a.like);
     }
+    const sortedNotices = [...noticeContents].sort(
+      (a, b) => b.createdAt - a.createdAt
+    );
 
-    return filteredContents;
+    return [...sortedNotices, ...filteredContents];
   };
 
   const filteredAndSortedContents = getFilteredAndSortedContents();
