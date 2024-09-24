@@ -266,7 +266,7 @@ function MyStockDetails(props) {
           >
             <FormControlLabel value="한우" control={<Radio />} label="한우" />
             <FormControlLabel value="양돈" control={<Radio />} label="양돈" />
-            <FormControlLabel value="육우" control={<Radio />} label="육우" />
+            <FormControlLabel value="낙농" control={<Radio />} label="낙농" />
             <FormControlLabel
               value="산란계"
               control={<Radio />}
