@@ -143,6 +143,7 @@ function AddLiveStock() {
       console.error("Error adding farm:", error);
     }
   };
+  console.log(farm_stockType);
 
   return (
     <div className="page">

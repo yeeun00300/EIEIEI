@@ -61,16 +61,18 @@ function DeclareStateCard({
   };
 
   return (
-    <>
-      <div className={styles.DeclareStateCard}>
+    <div className={styles.DeclareCard}>
+      {/* <div className={styles.DeclareStateCard}>
         <div>{title}</div>
+        <button className={styles.cancelBtn} onClick={() => setOpen(false)}>
+          X
+        </button>
         <div>
           {authorNickName} - (<span>{email}</span>)
         </div>
         <div>{content}</div>
-        {/* <div>신고 된 횟수 {declareCount}</div> */}
         <div>신고 된 횟수 {declareCount}</div>
-      </div>
+      </div> */}
       <div className={styles.DeclareList}>
         <div>신고사유</div>
         <ul>
@@ -90,7 +92,7 @@ function DeclareStateCard({
           <Button onClick={handleBlackClick}>차단하기</Button>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

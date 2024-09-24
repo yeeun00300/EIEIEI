@@ -84,7 +84,7 @@ function NoticeAdd({ setOpen }) {
       declareState: postData?.declareState || "",
       declareCount: postData?.declareCount || 0,
       stockType: mapLivestockType(livestockType),
-      notice: postData?.notice || false,
+      notice: "true",
       communityType: "notice",
       authorNickName: userNickName,
       email: email,
