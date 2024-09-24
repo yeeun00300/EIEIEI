@@ -6,7 +6,7 @@ import siremImg from "../../../img/신고하기.png";
 import DeclareModal from "./DeclareModal";
 import { reportComment } from "../../../store/communitySlice/communitySlice";
 import { useDispatch } from "react-redux";
-import { doc, getDoc, setDoc, collection } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 function CommentItem({
   id,
@@ -16,25 +16,27 @@ function CommentItem({
   refreshComments,
   profileImage,
   subCreatedAt,
+  subDeclareState,
 }) {
   const { id: postId } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(subContent);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hasReported, setHasReported] = useState(false); // 신고 여부 상태
+  const [hasReported, setHasReported] = useState(false);
   const dispatch = useDispatch();
   const localEmail = localStorage.getItem("email");
 
-  const createdAtDate = subCreatedAt?.toDate
-    ? subCreatedAt.toDate()
-    : new Date();
+  // const createdAtDate = subCreatedAt?.toDate
+  //   ? subCreatedAt.toDate()
+  //   : new Date();
+  console.log(subCreatedAt);
 
   useEffect(() => {
     setUpdatedContent(subContent);
   }, [subContent]);
 
   useEffect(() => {
-    checkReportStatus(); // 컴포넌트가 마운트될 때 신고 여부 확인
+    checkReportStatus();
   }, [postId, id, localEmail]);
 
   const checkReportStatus = async () => {
@@ -42,9 +44,9 @@ function CommentItem({
     const reportSnap = await getDoc(reportRef);
 
     if (reportSnap.exists()) {
-      setHasReported(true); // 이미 신고한 경우
+      setHasReported(true);
     } else {
-      setHasReported(false); // 신고하지 않은 경우
+      setHasReported(false);
     }
   };
 
@@ -68,7 +70,7 @@ function CommentItem({
 
   const handleReport = () => {
     if (hasReported) {
-      alert("이미 신고한 댓글입니다."); // 신고한 경우 알림
+      alert("이미 신고한 댓글입니다.");
       return;
     }
     setIsModalOpen(true);
@@ -77,16 +79,15 @@ function CommentItem({
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
+
   const handleSubmitReport = async (reason) => {
     if (!id) {
       console.error("Invalid comment ID");
-      return; // ID가 유효하지 않을 경우 함수 종료
+      return;
     }
 
-    // 신고 처리 로직
     dispatch(reportComment({ postId, commentId: id, reason }));
 
-    // 신고 이력 저장
     const reportRef = doc(db, "reports", `${localEmail}_${id}`);
     await setDoc(reportRef, {
       email: localEmail,
@@ -95,63 +96,52 @@ function CommentItem({
       timestamp: new Date(),
     });
 
-    // 상태 업데이트
     setHasReported(true);
     refreshComments();
     setIsModalOpen(false);
   };
+  // 날짜 형식으로 변환하는 함수
+  const formatDate = (date) => {
+    if (!date) return "";
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    };
+    return new Intl.DateTimeFormat("ko-KR", options).format(date);
+  };
 
+  // subCreatedAt을 Date 객체로 변환하고 포맷팅
   return (
     <div className={styles.container}>
-      <div className={styles.profileSection}>
-        <img
-          className={styles.profileImage}
-          src={profileImage}
-          alt={`${nickname}의 프로필`}
-        />
-        <strong className={styles.nickname}>{nickname}</strong>
-      </div>
-
-      <span className={styles.date}>{createdAtDate.toLocaleDateString()}</span>
-
-      {isEditing ? (
-        <>
-          <textarea
-            className={styles.textarea}
-            value={updatedContent}
-            onChange={(e) => setUpdatedContent(e.target.value)}
-          />
-          <div className={styles.buttonContainer}>
-            <button className={styles.CommentButton} onClick={handleUpdate}>
-              수정 완료
-            </button>
-            <button
-              className={`${styles.CommentButton} ${styles.deleteButton}`}
-              onClick={handleDelete}
-            >
-              삭제하기
-            </button>
-          </div>
-        </>
+      {/* subDeclareState에 따른 조건부 렌더링 */}
+      {subDeclareState === "black" ? (
+        <p className={styles.blockedComment}>차단된 댓글입니다.</p>
       ) : (
         <>
-          <p className={styles.subContent}>{subContent}</p>
-          <div className={styles.buttonContainer}>
-            <button className={styles.reportButton} onClick={handleReport}>
-              <img
-                src={siremImg}
-                alt="신고하기"
-                className={styles.reportImage}
+          <div className={styles.profileSection}>
+            <img
+              className={styles.profileImage}
+              src={profileImage}
+              alt={`${nickname}의 프로필`}
+            />
+            <strong className={styles.nickname}>{nickname}</strong>
+          </div>
+          <span className={styles.date}>{formatDate(subCreatedAt)}</span>
+
+          {isEditing ? (
+            <>
+              <textarea
+                className={styles.textarea}
+                value={updatedContent}
+                onChange={(e) => setUpdatedContent(e.target.value)}
               />
-              신고하기
-            </button>
-            {localEmail === email && (
-              <>
-                <button
-                  className={styles.CommentButton}
-                  onClick={() => setIsEditing(true)}
-                >
-                  수정하기
+              <div className={styles.buttonContainer}>
+                <button className={styles.CommentButton} onClick={handleUpdate}>
+                  수정 완료
                 </button>
                 <button
                   className={`${styles.CommentButton} ${styles.deleteButton}`}
@@ -159,9 +149,39 @@ function CommentItem({
                 >
                   삭제하기
                 </button>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className={styles.subContent}>{subContent}</p>
+              <div className={styles.buttonContainer}>
+                <button className={styles.reportButton} onClick={handleReport}>
+                  <img
+                    src={siremImg}
+                    alt="신고하기"
+                    className={styles.reportImage}
+                  />
+                  신고하기
+                </button>
+                {localEmail === email && (
+                  <>
+                    <button
+                      className={styles.CommentButton}
+                      onClick={() => setIsEditing(true)}
+                    >
+                      수정하기
+                    </button>
+                    <button
+                      className={`${styles.CommentButton} ${styles.deleteButton}`}
+                      onClick={handleDelete}
+                    >
+                      삭제하기
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </>
       )}
 

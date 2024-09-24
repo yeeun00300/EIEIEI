@@ -246,32 +246,35 @@ function FreeboardPage() {
                   </button>
                 </div>
               )}
-              <div className={styles.siren}>
-                <button
-                  className={styles.reportButton}
-                  onClick={noticeItem ? null : handleDeclareClick}
-                  disabled={!!noticeItem}
-                >
-                  <img src={sirenImg} alt="신고하기" />
-                  <span className={styles.reportText}>신고하기</span>
-                </button>
-              </div>
-              <div className={styles.reactions}>
-                <ReactionButton
-                  type="like"
-                  onClick={noticeItem ? null : handleLike}
-                  count={dataToRender.like}
-                  active={userHasLiked}
-                  disabled={!!noticeItem}
-                />
-                <ReactionButton
-                  type="dislike"
-                  onClick={noticeItem ? null : handleDislike}
-                  count={dataToRender.dislike}
-                  active={userHasDisliked}
-                  disabled={!!noticeItem}
-                />
-              </div>
+              {!noticeItem && (
+                <>
+                  {" "}
+                  <button
+                    className={styles.reportButton}
+                    onClick={noticeItem ? null : handleDeclareClick}
+                    disabled={!!noticeItem}
+                  >
+                    <img src={sirenImg} alt="신고하기" />
+                    <span className={styles.reportText}>신고하기</span>
+                  </button>
+                  <div className={styles.reactions}>
+                    <ReactionButton
+                      type="like"
+                      onClick={noticeItem ? null : handleLike}
+                      count={dataToRender.like}
+                      active={userHasLiked}
+                      disabled={!!noticeItem}
+                    />
+                    <ReactionButton
+                      type="dislike"
+                      onClick={noticeItem ? null : handleDislike}
+                      count={dataToRender.dislike}
+                      active={userHasDisliked}
+                      disabled={!!noticeItem}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <CommentSection id={id} />
