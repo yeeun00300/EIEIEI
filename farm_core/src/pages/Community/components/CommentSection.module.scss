@@ -7,7 +7,7 @@
   overflow-y: hidden;
   overflow: scroll;
 
-  .commentSection h2 {
+  h2 {
     margin-bottom: 10px;
     font-size: 1.5rem;
     color: #333;
@@ -44,9 +44,19 @@
     &:hover {
       background-color: #0056b3;
     }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
   }
 
   .commentList {
     margin-top: 20px;
+  }
+
+  .error {
+    color: red;
+    margin-top: 10px;
   }
 }
