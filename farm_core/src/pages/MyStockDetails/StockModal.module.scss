@@ -1,0 +1,33 @@
+.dialog {
+  .dialogTitle {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .dialogContent {
+    padding: 20px;
+  }
+
+  .textField {
+    margin-bottom: 16px;
+  }
+
+  .checkbox {
+    display: flex;
+    align-items: center;
+  }
+
+  .buttonGroup {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    button {
+      margin-left: 8px;
+    }
+  }
+
+  .addButton {
+    margin-top: 16px;
+  }
+}
