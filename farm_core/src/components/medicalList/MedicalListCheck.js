@@ -15,7 +15,11 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import styles from "../../pages/MyPage/MyCommunity/MyCommunity.module.scss";
-import { fetchFarmDocumentByEmail, updateFarmDocument } from "../../firebase";
+import {
+  deleteFarmDocument,
+  fetchFarmDocumentByEmail,
+  updateFarmDocument,
+} from "../../firebase";
 import kroDate from "../../utils/korDate";
 
 function MedicalListCheck() {
@@ -95,6 +99,18 @@ function MedicalListCheck() {
     }
   };
 
+  const handleDelete = async (docId) => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      try {
+        await deleteFarmDocument(docId); // 문서 삭제 함수 호출
+        setDocuments((prev) => prev.filter((doc) => doc.id !== docId)); // 삭제된 문서를 상태에서 제거
+        window.alert("삭제가 완료되었습니다!");
+      } catch (error) {
+        console.error("삭제 실패:", error);
+      }
+    }
+  };
+
   return (
     <div>
       <TableContainer className={styles.tableContainer}>
@@ -129,7 +145,7 @@ function MedicalListCheck() {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button>삭제</Button>
+                  <Button onClick={() => handleDelete(doc.id)}>삭제</Button>
                 </TableCell>
               </TableRow>
             ))}

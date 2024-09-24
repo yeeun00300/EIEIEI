@@ -8,7 +8,7 @@ import {
 } from "../../firebase";
 
 function MedicalListSave() {
-  const [medicalData, setMedicalData] = useState(null);
+  const [medicalData, setMedicalData] = useState([]);
   const [subCollectionData, setSubCollectionData] = useState([]);
   const [selectedSubData, setSelectedSubData] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -20,16 +20,27 @@ function MedicalListSave() {
     if (email) {
       const fetchData = async () => {
         try {
-          const document = await fetchFarmDocumentByEmail(email);
-          if (document && document.length > 0) {
-            // Ensure that document is valid and not empty
-            setMedicalData(document[1]); // Get the first document (assumed to be a single document)
-            const subCollectionData = await getSubCollection(
-              "farm",
-              document[1].id,
-              "farmCureList"
-            );
-            setSubCollectionData(subCollectionData);
+          const documents = await fetchFarmDocumentByEmail(email);
+          if (documents && documents.length > 0) {
+            // 모든 문서 가져오기
+            setMedicalData(documents); // 모든 축사 데이터를 상태에 저장
+            const allSubCollectionData = []; // 모든 서브 컬렉션 데이터를 담을 배열
+
+            // 각 문서에 대해 서브컬렉션 데이터 가져오기
+            for (const document of documents) {
+              const subData = await getSubCollection(
+                "farm",
+                document.id,
+                "farmCureList"
+              );
+              // subData에 farmId를 추가하여 allSubCollectionData에 저장
+              const subDataWithFarmId = subData.map((item) => ({
+                ...item,
+                farmId: document.farmId, // 축사 번호 추가
+              }));
+              allSubCollectionData.push(...subDataWithFarmId); // 모든 서브 데이터를 추가
+            }
+            setSubCollectionData(allSubCollectionData); // 모든 서브 컬렉션 데이터 설정
           }
         } catch (error) {
           console.error("문서 검색 실패:", error.message || error);
@@ -113,7 +124,7 @@ function MedicalListSave() {
                 onClick={() => handleSubDataClick(subData)}
               >
                 <div className={styles.cardHeader}>
-                  <strong>축사 번호:</strong> {medicalData.farmId}
+                  <strong>축사 번호:</strong> {subData.farmId}
                   <div>
                     <strong>{subData.lastModified || kroDate()}</strong>
                     {/* lastModified 표시 */}
