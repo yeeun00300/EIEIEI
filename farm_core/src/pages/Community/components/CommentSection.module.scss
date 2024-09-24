@@ -1,62 +1,80 @@
 .commentSection {
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #ffffff; /* 흰색 배경으로 변경 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  padding: 1.25rem;
+  border: 0.0625rem solid #ddd;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px; /* 최대 너비 설정 */
-  margin: 0 auto; /* 중앙 정렬 */
-  overflow-y: auto; /* 세로 스크롤 가능 */
-  overflow-x: hidden; /* 가로 스크롤 숨김 */
+  max-width: 37.5rem;
+  margin: 0 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-  h2 {
-    margin-bottom: 20px;
-    font-size: 1.8rem; /* 제목 크기 증가 */
-    color: #333;
-    text-align: center; /* 중앙 정렬 */
-    font-weight: bold; /* 두꺼운 글씨체 */
+  // 스크롤바 스타일
+  &::-webkit-scrollbar {
+    width: 0.5rem;
   }
 
-  .textareaContainer {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0.625rem;
   }
 
-  .commentText {
-    width: 100%;
-    height: 100px;
-    padding: 12px; /* 패딩 증가 */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    resize: none;
-    margin-bottom: 15px; /* 여백 증가 */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 내부 그림자 효과 */
-    transition: border-color 0.3s ease; /* 테두리 색상 전환 효과 */
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 0.625rem;
+    transition: background 0.3s ease;
 
-    &:focus {
-      border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
-      outline: none; /* 기본 outline 제거 */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #aaa;
     }
   }
+}
 
-  .addComment {
-    align-self: flex-end;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* 변환 효과 추가 */
+h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.125rem;
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+}
 
-    &:hover {
-      background-color: #0056b3;
-      transform: scale(1.05); /* 호버 시 살짝 확대 */
-    }
+.textareaContainer {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.commentText {
+  width: 100%;
+  height: 6.25rem;
+  padding: 0.75rem;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  resize: none;
+  margin-bottom: 0.9375rem;
+  box-shadow: inset 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+}
+
+.addComment {
+  align-self: flex-end;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  &:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
 
     &:disabled {
       background-color: #ccc;
@@ -65,12 +83,12 @@
   }
 
   .commentList {
-    margin-top: 20px;
+    margin-top: 1.25rem;
   }
 
   .error {
     color: red;
-    margin-top: 10px;
-    text-align: center; /* 오류 메시지 중앙 정렬 */
+    margin-top: 0.625rem;
+    text-align: center;
   }
 }
