@@ -262,6 +262,7 @@ function SignUp() {
         phone,
         profileImages: downloadURL,
         createdAt: kroDate(),
+        isActive: "N",
         blackState: "green",
         payDate: kroDate(),
         registDate: kroDate(),

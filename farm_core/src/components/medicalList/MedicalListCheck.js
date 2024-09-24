@@ -17,10 +17,11 @@ import { useDispatch } from "react-redux";
 import styles from "../../pages/MyPage/MyCommunity/MyCommunity.module.scss";
 import { fetchFarmDocumentByEmail, updateFarmDocument } from "../../firebase";
 import kroDate from "../../utils/korDate";
+import { doc } from "firebase/firestore";
 
 function MedicalListCheck() {
   const dispatch = useDispatch();
-  const [document, setDocument] = useState(null);
+  const [document, setDocument] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [lastModified, setLastModified] = useState(null); // lastModified 상태
@@ -34,7 +35,8 @@ function MedicalListCheck() {
         try {
           const document = await fetchFarmDocumentByEmail(email);
           setDocument(document);
-          setLastModified(document.lastModified || "정보 없음"); // Firebase에서 받은 lastModified 값 설정
+          console.log(document.farmName);
+          // Firebase에서 받은 lastModified 값 설정
         } catch (error) {
           console.error("문서 검색 실패:", error.message || error);
         }
@@ -110,21 +112,24 @@ function MedicalListCheck() {
               <TableCell className={styles.tableCellHeader}>
                 정보 보기
               </TableCell>
+              <TableCell className={styles.tableCellHeader}></TableCell>
               <TableCell className={styles.tableCellHeader}>삭제</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow key={document.farmId}>
-              <TableCell>{document.farmName}</TableCell>
-              <TableCell>{document.farmId}</TableCell>
-              <TableCell>{lastModified || "정보 없음"}</TableCell>
-              <TableCell>
-                <Button onClick={handleViewDetails}>자세히 보기</Button>
-              </TableCell>
-              <TableCell>
-                <Button>삭제</Button>
-              </TableCell>
-            </TableRow>
+            {document.map((doc) => (
+              <TableRow key={doc.id}>
+                <TableCell>{document.farmName}</TableCell>
+                <TableCell>{document.farmId}</TableCell>
+                <TableCell>{lastModified || "정보 없음"}</TableCell>
+                <TableCell>
+                  <Button onClick={handleViewDetails}>자세히 보기</Button>
+                </TableCell>
+                <TableCell>
+                  <Button>삭제</Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

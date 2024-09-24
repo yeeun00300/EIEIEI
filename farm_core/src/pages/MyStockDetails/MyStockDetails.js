@@ -5,6 +5,7 @@ import stockSlice, {
   deleteStock,
   fetchExcelStock,
   setSelectedStock,
+  updateStock,
 } from "./../../store/stockSlice/stockSlice";
 import { useFetchCollectionData } from "../../firebase";
 import {
@@ -84,6 +85,13 @@ function MyStockDetails(props) {
     return null;
   };
 
+  const handleCancel = () => {
+    setSelectedDisease("");
+    setTreatmentStatus("");
+    setSelectedStocks([]);
+    setShowDiseaseRegistration(false);
+    setShowVaccineRegistration(false);
+  };
   // 라디오 버튼으로 선택된 종류에 따른 필터링
   const handleTypeChange = (e) => {
     setSelectedType(e.target.value);
@@ -173,6 +181,7 @@ function MyStockDetails(props) {
         setSelectedDisease("");
         setSelectedStocks([]);
         setShowVaccineRegistration(false); // 백신 등록 필드 숨기기
+        window.location.reload();
       })
       .catch((error) => {
         console.error("백신 등록 오류:", error);
@@ -209,6 +218,28 @@ function MyStockDetails(props) {
         String(val).toLowerCase().includes(searchQuery)
       )
     );
+
+  const handleUpdateDeceased = async () => {
+    try {
+      // 선택된 가축의 docId를 반복하여 업데이트
+      await Promise.all(
+        selectedStocks.map((docId) =>
+          dispatch(
+            updateStock({
+              collectionName: "stock",
+              docId,
+              updateInfoObj: { deceased: "Y" },
+            })
+          )
+        )
+      );
+
+      // 업데이트 후 선택된 가축 목록을 초기화
+      setSelectedStocks([]);
+    } catch (error) {
+      console.error("폐사 상태 업데이트 실패:", error);
+    }
+  };
 
   // 정렬된 데이터 적용
   const sortedStock = [...filteredStock].sort((a, b) => {
@@ -261,7 +292,6 @@ function MyStockDetails(props) {
       <div className="container">
         <div className={styles.wrapper}>
           <h3>나의 가축 리스트</h3>
-
           {/* 가축 종류 선택 라디오 버튼 */}
           <RadioGroup
             row
@@ -279,7 +309,6 @@ function MyStockDetails(props) {
             />
             <FormControlLabel value="육계" control={<Radio />} label="육계" />
           </RadioGroup>
-
           {/* 검색 입력 필드 */}
           <TextField
             label="검색"
@@ -291,7 +320,6 @@ function MyStockDetails(props) {
             placeholder="가축 ID, 종류, 성별 등으로 검색"
             className={styles.myStockDetailsTextField}
           />
-
           {/* 질병 등록 버튼 */}
           {!showDiseaseRegistration && !showVaccineRegistration && (
             <Button
@@ -302,7 +330,6 @@ function MyStockDetails(props) {
               질병 등록
             </Button>
           )}
-
           {/* 백신 등록 버튼 */}
           {!showDiseaseRegistration && !showVaccineRegistration && (
             <Button
@@ -352,9 +379,11 @@ function MyStockDetails(props) {
               >
                 질병 등록 완료
               </Button>
+              <Button onClick={handleCancel} className={styles.cancelButton}>
+                취소
+              </Button>
             </>
           )}
-
           {/* 백신 등록 필드 */}
           {showVaccineRegistration && (
             <>
@@ -366,7 +395,7 @@ function MyStockDetails(props) {
                 disabled={!selectedType}
               >
                 <MenuItem value="" disabled>
-                  질병 선택
+                  백신 선택
                 </MenuItem>
                 {diseaseOptions[selectedType]?.map((disease) => (
                   <MenuItem key={disease.value} value={disease.value}>
@@ -380,6 +409,9 @@ function MyStockDetails(props) {
                 disabled={isVaccineButtonDisabled}
               >
                 백신 등록 완료
+              </Button>
+              <Button onClick={handleCancel} className={styles.cancelButton}>
+                취소
               </Button>
             </>
           )}
@@ -450,7 +482,13 @@ function MyStockDetails(props) {
                           onClick={() => handleDelete(item.docId)}
                           className={styles.myStockDetailsDeleteButton}
                         >
-                          삭제
+                          가축리스트에서 삭제
+                        </Button>
+                        <Button
+                          onClick={handleUpdateDeceased}
+                          className={styles.deceasedButton}
+                        >
+                          폐사하기
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -459,7 +497,7 @@ function MyStockDetails(props) {
               </Table>
             </TableContainer>
           )}
-
+          ;
           {isModalOpen && (
             <StockModal
               open={isModalOpen}

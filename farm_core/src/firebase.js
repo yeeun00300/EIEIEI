@@ -283,7 +283,7 @@ const fieldNameMapping = {
 function convertFieldNamesToEnglish(dataObject) {
   const convertedObject = {};
   for (const [key, value] of Object.entries(dataObject)) {
-    // "(예시)"가 포함된 필드들을 필터링
+    // "(양식)"가 포함된 필드들을 필터링
     if (!key.includes("(양식")) {
       const englishKey = fieldNameMapping[key] || key;
       convertedObject[englishKey] = value;
@@ -581,13 +581,16 @@ export const addComment = async (postId, comment) => {
     const commentsRef = collection(db, "community", postId, "comments");
     await addDoc(commentsRef, {
       subContent: comment.subContent, // 새로운 필드 이름
-      subCreatedAt: new Date().getTime(), // 생성 시간
+      subCreatedAt: Timestamp.fromDate(new Date()), // 생성 시간
       nickname: comment.nickname, // 사용자 닉네임
       email: comment.email,
       profileImage: comment.profileImage,
       subDeclareCount: comment.subDeclareCount,
       subDeclareReason: comment.subDeclareReason,
       subDeclareState: comment.subDeclareState,
+      subDeclareReason: comment.subDeclareReason, // 추가된 필드
+      subDeclareCount: comment.subDeclareCount, // 추가된 필드
+      subDeclareState: comment.subDeclareState, // 추가된 필드
     });
   } catch (error) {
     console.error("댓글 추가 실패:", error);
@@ -605,11 +608,16 @@ export const getComments = async (postId) => {
     return [];
   }
 };
-export const updateComment = async (commentRef, updates) => {
+export const updateComment = async (postId, commentId, updatedContent) => {
   try {
-    await updateDoc(commentRef, updates);
+    const commentRef = doc(db, "community", postId, "comments", commentId);
+    await updateDoc(commentRef, {
+      subContent: updatedContent,
+      subUpdatedAt: Timestamp.fromDate(new Date()),
+    });
+    console.log("댓글 수정 성공!");
   } catch (error) {
-    console.error("댓글 업데이트 실패:", error);
+    console.error("댓글 수정 실패:", error);
   }
 };
 export const deleteComment = async (postId, commentId) => {
@@ -712,13 +720,28 @@ const addFarmDataWithSubcollections = async (farmData, subCollections) => {
 };
 
 export const fetchFarmDocumentByEmail = async (email) => {
-  const q = query(collection(db, "farm"), where("email", "==", email));
-  const querySnapshot = await getDocs(q);
-  if (!querySnapshot.empty) {
-    const document = querySnapshot.docs[0];
-    return { id: document.id, ...document.data() };
+  try {
+    const q = query(collection(db, "farm"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    // 쿼리 결과가 비어 있는지 확인
+    if (!querySnapshot.empty) {
+      // 문서가 있을 경우, id와 데이터를 가져옵니다.
+      const documents = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return documents; // 배열 형태로 반환
+    } else {
+      // 문서가 없을 경우 빈 배열 반환
+      console.warn("No documents found for the given email");
+      return []; // 빈 배열 반환
+    }
+  } catch (error) {
+    // 에러가 발생했을 때의 처리
+    console.error("Error fetching documents:", error.message || error);
+    return []; // 빈 배열 반환
   }
-  throw new Error("No document found with the given email");
 };
 
 function useFetchCollectionData(collectionName, fetchAction) {
