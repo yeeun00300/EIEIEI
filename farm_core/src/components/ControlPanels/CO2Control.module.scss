@@ -1,0 +1,18 @@
+.propeller {
+  width: 100px; // 이미지 크기 조절 (필요에 따라 수정)
+  height: auto; // 비율 유지
+  transition: transform 0.5s ease; // 부드럽게 멈추도록 설정
+  &.spin {
+    // spin 클래스 추가
+    animation: spin 1s linear infinite; // 애니메이션 속도를 1초로 설정
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg); // 시작 각도
+  }
+  to {
+    transform: rotate(360deg); // 끝 각도
+  }
+}

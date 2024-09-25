@@ -9,6 +9,7 @@ import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice
 import CO2Control from "../../components/ControlPanels/CO2Control";
 import Auction from "../../components/auction/Auction";
 import TempControl from "../../components/ControlPanels/TempControl";
+import AMControl from "../../components/ControlPanels/AMControl";
 
 function Community() {
   const dispatch = useDispatch();
@@ -152,7 +153,7 @@ function Community() {
         )}
       </ListPage>
       <CO2Control />
-      <TempControl />
+      <AMControl />
     </div>
   );
 }
