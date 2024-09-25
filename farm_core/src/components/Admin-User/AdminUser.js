@@ -8,21 +8,114 @@ import { fetchUserList } from "../../store/checkLoginSlice/checkLoginSlice";
 // import Box from "@mui/material/Box";
 // import { DataGrid } from "@mui/x-data-grid";
 import FilterGrid from "../Grid/FilterGrid";
+import Search from "../../pages/Admin/components/Search";
+import { useParams } from "react-router";
+import { updateDatas } from "../../firebase";
 
 function AdminUser() {
   const dispatch = useDispatch();
+  const [searchQuery, setSearchQuery] = useState(""); // 검색 상태
+  const [blackState, setBlackState] = useState("a");
+  const [secessionState, setSecessionState] = useState("b");
   const { userList } = useSelector((state) => state.checkLoginSlice);
   // const [search, setSearch] = useState("");
   // const [sort, setSort] = useState("");
+  const stateDict = {
+    green: " ",
+    black: "차단",
+  };
+  const handleBlack = async (email, black) => {
+    try {
+      // userList가 존재하는지 체크
+      if (!userList || userList.length === 0) {
+        alert("유저 리스트가 없습니다.");
+        return;
+      }
 
+      const filterUser = userList?.filter((user) => user.email === email)[0];
+
+      // filterUser가 null 또는 undefined인지 체크
+      if (!filterUser) {
+        alert("해당 유저를 찾을 수 없습니다.");
+        return;
+      }
+
+      const selectDocId = filterUser.docId;
+      const blackState = filterUser.blackState;
+      setBlackState({
+        blackState: filterUser.blackState,
+        email: filterUser.email,
+      });
+      const blackOn = { ...filterUser, blackState: "black" };
+      const blackOff = { ...filterUser, blackState: "green" };
+
+      if (blackState === "black") {
+        // await 키워드를 사용하여 업데이트 결과를 기다림
+        await updateDatas("users", selectDocId, blackOff);
+        alert(`${filterUser.email} - 차단을 해체하였습니다.`);
+      } else {
+        // await 키워드를 사용하여 업데이트 결과를 기다림
+        await updateDatas("users", selectDocId, blackOn);
+        alert(`${filterUser.email} - 차단 하였습니다.`);
+      }
+    } catch (error) {
+      console.log("차단 처리 중 오류 발생:", error);
+      alert("차단 처리 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleDelete = async (email, secession) => {
+    try {
+      // console.log("Delete row with email:", email);
+      if (!userList || userList.length === 0) {
+        alert("유저 리스트가 없습니다.");
+        return;
+      }
+
+      const filterUser = userList?.filter((user) => user.email === email)[0];
+
+      if (!filterUser) {
+        alert("해당 유저를 찾을 수 없습니다.");
+        return;
+      }
+      const selectDocId = filterUser.docId;
+      const isActive = filterUser.isActive;
+      setSecessionState({
+        isActive: filterUser.isActive,
+        email: filterUser.email,
+      });
+      const secessionOn = { ...filterUser, isActive: "N" };
+      const secessionOff = { ...filterUser, isActive: "Y" };
+      if (isActive == "N") {
+        await updateDatas("users", selectDocId, secessionOff);
+        alert(`${filterUser.email} - 탈퇴 해체하였습니다.`);
+      } else {
+        await updateDatas("users", selectDocId, secessionOn);
+        alert(`${filterUser.email} - 탈퇴 하였습니다.`);
+      }
+    } catch (error) {
+      console.log("차단 처리 중 오류 발생:", error);
+      alert("차단 처리 중 오류가 발생했습니다.");
+    }
+  };
+  // 검색 기능
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+  // 검색된 데이터 필터링
+  const filteredUser = userList.filter((item) =>
+    Object.values(item).some((val) =>
+      String(val).toLowerCase().includes(searchQuery)
+    )
+  );
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
-    {
-      field: "farmId",
-      headerName: "Farm Id",
-      width: 90,
-      editable: true,
-    },
+    // {
+    //   field: "farmId",
+    //   headerName: "Farm Id",
+    //   width: 90,
+    //   editable: true,
+    // },
     {
       field: "name",
       headerName: "name",
@@ -63,35 +156,89 @@ function AdminUser() {
       width: 100,
       editable: true,
     },
-    // {
-    //   field: "fullName",
-    //   headerName: "Full name",
-    //   description: "This column has a value getter and is not sortable.",
-    //   // sortable: false,
-    //   width: 160,
-    //   valueGetter: (value, row) =>
-    //     `${row.firstName || ""} ${row.lastName || ""}`,
-    // },
+    {
+      field: "black",
+      headerName: "black",
+      // type: "number",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "secession",
+      headerName: "secession",
+      // type: "number",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 150,
+      renderCell: (params) => (
+        <div className={styles.userBtn}>
+          <button
+            onClick={() => handleBlack(params.row.email, params.row.black)}
+            style={{
+              marginRight: "10px",
+              backgroundColor: "transparent",
+              color: "#007bff",
+              border: "none",
+              cursor: "pointer",
+              borderRadius: "12px",
+            }}
+            className={styles.blackBtn}
+          >
+            {params.row.black !== "차단" ? "블랙" : "블랙해제"}
+          </button>
+          <button
+            onClick={() => handleDelete(params.row.email, params.row.secession)}
+            style={{
+              marginRight: "10px",
+              backgroundColor: "transparent",
+              color: "#dc3545",
+              border: "none",
+              cursor: "pointer",
+              borderRadius: "12px",
+            }}
+            className={styles.deleteBtn}
+          >
+            {params.row.secession !== "secession" ? "탈퇴" : "탈퇴해제"}
+          </button>
+        </div>
+      ),
+    },
   ];
 
-  const rows = userList?.map((item, idx) => {
-    const { address, email, farm, name, uid, nickname, createdAt } = item;
+  const rows = filteredUser?.map((item, idx) => {
+    const {
+      address,
+      email,
+      name,
+      uid,
+      nickname,
+      createdAt,
+      blackState,
+      isActive,
+    } = item;
     const seconds = createdAt.seconds;
     const date = new Date(seconds * 1000);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     const selectDate = `${year}-${month}-${day}`;
-    const admin = uid ? "O" : " ";
+    const admin = uid ? "관리자" : " ";
+    const secession = isActive == "Y" ? "" : "secession";
     return {
       id: idx,
-      farmId: farm || "X",
+      // farmId: farm || "X",
       name: name,
       nickname: nickname || "X",
       email: email,
       address: address,
       createdAt: selectDate,
       admin: admin,
+      secession: secession,
+      black: stateDict[blackState],
     };
   });
 
@@ -100,13 +247,15 @@ function AdminUser() {
     dispatch(
       fetchUserList({ collectionName: "users", queryOptions: queryOptions })
     );
-  }, []);
+    console.log("확인용");
+  }, [dispatch, blackState, secessionState]);
+
   return (
     <div className={styles.AdminUser}>
       <div className={styles.AdminUtil}>
         <div>회원 정보 리스트</div>
-        {/* <Search setSearch={setSearch} />
-        <div className={styles.datePicker}>
+        <Search onChange={handleSearch} placeholder={"검색어를 입력하세요!"} />
+        {/* <div className={styles.datePicker}>
           <DateRangePickerValue />
         </div>
         <Sort

@@ -26,7 +26,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
-import styles from "./MyStcokDetails.module.scss";
+import styles from "./MyStockDetails.module.scss";
 import { markVaccineComplete } from "../../store/myPageSlice/markVaccineCompleteSlice";
 import { markDiseaseComplete } from "../../store/myPageSlice/markDiseaseCompleteSlice";
 

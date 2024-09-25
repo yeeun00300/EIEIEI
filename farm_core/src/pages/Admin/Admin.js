@@ -44,17 +44,17 @@ function Admin({ userInfo, address }) {
       children: [
         { id: "user-info", label: "회원 정보" },
         { id: "user-stock-info", label: "가축 이력" },
-        { id: "user-blackList", label: "블랙 리스트" },
+        // { id: "user-blackList", label: "블랙 리스트" },
       ],
     },
     {
       id: "customer",
       label: "고객 센터 관리",
-      children: [
-        { id: "customer-management", label: "게시판 관리" },
-        { id: "customer-QnA", label: "문의 사항" },
-        { id: "customer-declare", label: "신고 게시물" },
-      ],
+      // children: [
+      //   { id: "customer-management", label: "게시판 관리" },
+      //   { id: "customer-QnA", label: "문의 사항" },
+      //   { id: "customer-declare", label: "신고 게시물" },
+      // ],
     },
     {
       id: "weather",
@@ -120,17 +120,17 @@ function Admin({ userInfo, address }) {
    사용 예시`;
     const componentsMap = {
       "": " ",
-      user: " ",
-      customer: " ",
+      user: <AdminUser />,
+      customer: <CustomerManagement />,
       weather: " ",
       disease: " ",
       alarm: " ",
       "user-info": <AdminUser />,
       "user-stock-info": <AdminStock />,
-      "user-blackList": <AdminBlackList />,
-      "customer-management": <CustomerManagement />,
-      "customer-QnA": <CustomerQnA />,
-      "customer-declare": <CustomerDeclare />,
+      // "user-blackList": <AdminBlackList />,
+      // "customer-management": <CustomerManagement />,
+      // "customer-QnA": <CustomerQnA />,
+      // "customer-declare": <CustomerDeclare />,
       "weather-condition": <Weather />,
       "weather-issue": <WeatherIssue />,
       "weather-notice": <AlarmManagement reSend={true} sort={"날씨"} />,

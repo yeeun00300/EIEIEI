@@ -1,742 +1,516 @@
 import React, { useEffect, useState } from "react";
-import styles from "./AdminStock.module.scss";
-import Sort from "../../pages/Admin/components/Sort";
-import Search from "../../pages/Admin/components/Search";
-import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
-import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
-import Collapse from "react-bootstrap/Collapse";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
-import { codeDict } from "../../api/codeDict/codeDict";
-import { Button } from "@mui/material";
+// import StockModal from "./StockModal";
+import stockSlice, {
+  deleteStock,
+  fetchExcelStock,
+  setSelectedStock,
+  updateStock,
+} from "./../../store/stockSlice/stockSlice";
 import { useFetchCollectionData } from "../../firebase";
-import { useForm } from "react-hook-form";
-// import Button from "react-bootstrap/Button";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+  TextField,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import styles from "./AdminStock.module.scss";
+import { markVaccineComplete } from "../../store/myPageSlice/markVaccineCompleteSlice";
+import { markDiseaseComplete } from "../../store/myPageSlice/markDiseaseCompleteSlice";
+import StockModal from "../../pages/MyStockDetails/StockModal";
 
-function AdminStock() {
+function AdminStock(props) {
   const dispatch = useDispatch();
-  const [stockSearch, setStockSearch] = useState("");
-  const [farmSearch, setFarmSearch] = useState("");
-  const [sort, setSort] = useState("");
-  const [open, setOpen] = useState({});
-  const [startDay, setStartDay] = useState("");
-  const [endDay, setEndDay] = useState("");
-  const [updateSetting, setUpdateSetting] = useState(false);
   const { stock, isLoading } = useSelector((state) => state.stockSlice);
-  const [sortBy, setSortBy] = useState("stockId");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const email = localStorage.getItem("email");
-  const [filteredStock, setFilteredStock] = useState([]);
-  const [vaccineOpen, setVaccineOpen] = useState(true);
-  const [diseaseOpen, setDiseaseOpen] = useState(true);
-  const stockSexual = {
-    F: "암컷",
-    M: "수컷",
-  };
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); // 검색 상태
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" }); // 정렬 상태
+  const [selectedType, setSelectedType] = useState(""); // 가축 종류 필터링 상태
+  const [selectedDisease, setSelectedDisease] = useState(""); // 선택된 질병 상태
+  const [selectedStocks, setSelectedStocks] = useState([]); // 선택된 가축 상태
+  const [treatmentStatus, setTreatmentStatus] = useState(""); // 치료 여부 상태 추가
+  const [showDiseaseRegistration, setShowDiseaseRegistration] = useState(false); // 질병 등록 여부 상태
+  const [showVaccineRegistration, setShowVaccineRegistration] = useState(false); // 백신 등록 여부 상태
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    // mode: "onChange",
-  });
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
-  useFetchCollectionData("stock", fetchExcelStock);
+  // const selectedStock = useSelector((state) => state.stockSlice);
+  // const selectedStock = useSelector((state) => state.stockSlice?.selectedStock);
+  // useFetchCollectionData("stock", fetchExcelStock);
+  console.log(stock);
 
   useEffect(() => {
-    if (stock) {
-      // if (stockSearch !== "" && farmSearch == "") {
-      //   const stockSearched = !stockSearched
-      //     ? setFilteredStock([])
-      //     : stock.filter((item) => item.stockId.includes(stockSearch));
-      //   setFilteredStock(stockSearched);
-      // } else if (farmSearch !== "" && stockSearch == "") {
-      //   const farmSearched = !farmSearched
-      //     ? setFilteredStock([])
-      //     : stock.filter((item) => item.farmId.includes(farmSearch));
-      //   setFilteredStock(farmSearched);
-      // } else if (stockSearch !== "" && farmSearch !== "") {
-      //   const stockSearched = !stockSearched
-      //     ? setFilteredStock([])
-      //     : stock.filter((item) => item.stockId.includes(stockSearch));
-      //   const farmSearched = !farmSearched
-      //     ? setFilteredStock([])
-      //     : stockSearched.filter((item) => item.farmId.includes(farmSearch));
-      //   setFilteredStock(farmSearched);
-      // } else {
-      //   setFilteredStock(stock);
-      // }
-      let filtered = stock;
+    // 컴포넌트가 처음 마운트될 때 가축 종류를 '한우'로 설정
+    setSelectedType("한우");
+    dispatch(fetchExcelStock({ collectionName: "stock", queryOptions: {} }));
+  }, []);
 
-      if (stockSearch !== "") {
-        filtered = filtered.filter((item) =>
-          item.stockId.includes(stockSearch)
-        );
-      }
-
-      if (farmSearch !== "") {
-        filtered = filtered.filter((item) => item.farmId.includes(farmSearch));
-      }
-
-      setFilteredStock(filtered.length ? filtered : []);
-      // setFilteredStock(stock);
-      if (stock.length > 0) {
-      } else {
-        console.log("No matching stock data :", stock);
-      }
-    }
-  }, [stock, email]);
-
-  const handleSort = (column) => {
-    if (sortBy === column) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(column);
-      setSortOrder("asc");
-    }
+  const handleEdit = (stockItem) => {
+    dispatch(setSelectedStock(stockItem));
+    setModalOpen(true);
   };
-  // 표 1행 sort 기능
-  const sortedStock = filteredStock
-    ? [...filteredStock].sort((a, b) => {
-        const valA = a[sortBy];
-        const valB = b[sortBy];
 
-        if (sortOrder === "asc") {
-          return valA > valB ? 1 : -1;
-        } else {
-          return valA < valB ? 1 : -1;
-        }
+  const handleDelete = (docId) => {
+    dispatch(deleteStock({ collectionName: "stock", docId }));
+  };
+
+  // 검색 기능
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  // 정렬 기능
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "asc" ? (
+        <FaAngleDoubleUp />
+      ) : (
+        <FaAngleDoubleDown />
+      );
+    }
+    return null;
+  };
+
+  const handleCancel = () => {
+    setSelectedDisease("");
+    setTreatmentStatus("");
+    setSelectedStocks([]);
+    setShowDiseaseRegistration(false);
+    setShowVaccineRegistration(false);
+  };
+  // 라디오 버튼으로 선택된 종류에 따른 필터링
+  const handleTypeChange = (e) => {
+    setSelectedType(e.target.value);
+  };
+
+  const handleDiseaseChange = (e) => {
+    setSelectedDisease(e.target.value);
+  };
+
+  const handleStockSelect = (docId) => {
+    setSelectedStocks((prev) =>
+      prev.includes(docId)
+        ? prev.filter((id) => id !== docId)
+        : [...prev, docId]
+    );
+  };
+
+  const handleMarkDiseaseComplete = () => {
+    if (selectedStocks.length === 0) {
+      alert("가축을 선택한 후 질병 등록을 진행하세요.");
+      return;
+    }
+    const today = new Date();
+    const formattedDate = `${today.getFullYear().toString().slice(-2)}-${(
+      "0" +
+      (today.getMonth() + 1)
+    ).slice(-2)}-${("0" + today.getDate()).slice(-2)}`;
+
+    const newDiseaseEntry = {
+      diseaseDate: `${formattedDate}/ ${treatmentStatus}`,
+      diseaseType: selectedDisease,
+    };
+
+    const promises = selectedStocks.map((stockId) =>
+      dispatch(
+        markDiseaseComplete({
+          stockId,
+          newDiseaseEntry,
+        })
+      )
+    );
+
+    Promise.all(promises)
+      .then(() => {
+        alert("질병 등록 완료");
+        setSelectedDisease("");
+        setTreatmentStatus("");
+        setSelectedStocks([]);
+        setShowDiseaseRegistration(false); // 질병 등록 필드 숨기기
+        window.location.reload();
       })
-    : [];
-  const queryOptions1 = {
-    conditions: [{ field: "stockCode", operator: "==", value: codeDict[sort] }],
-    orderBys: [{ field: "stockCode", direction: "desc" }],
-  };
-  const queryOptions2 = {
-    conditions: [
-      { field: "incomingDate", operator: ">=", value: startDay },
-      { field: "incomingDate", operator: "<=", value: endDay },
-    ],
-    orderBys: [{ field: "incomingDate", direction: "desc" }],
+      .catch((error) => {
+        console.error("질병 등록 오류:", error);
+        alert("질병 등록 실패");
+      });
   };
 
-  const queryOptions3 = {
-    conditions: [
-      { field: "stockCode", operator: "==", value: codeDict[sort] },
-      { field: "incomingDate", operator: ">=", value: startDay },
-      { field: "incomingDate", operator: "<=", value: endDay },
-    ],
-    orderBys: [
-      { field: "stockCode", direction: "desc" },
-      { field: "incomingDate", direction: "desc" },
-    ],
-  };
-
-  useEffect(() => {
-    if (codeDict[sort] !== undefined && startDay == "") {
-      dispatch(
-        fetchExcelStock({
-          collectionName: "stock",
-          queryOptions: queryOptions1,
-        })
-      );
-    } else if (startDay !== "" && codeDict[sort] === undefined) {
-      dispatch(
-        fetchExcelStock({
-          collectionName: "stock",
-          queryOptions: queryOptions2,
-        })
-      );
-    } else if (codeDict[sort] !== undefined && startDay !== "") {
-      dispatch(
-        fetchExcelStock({
-          collectionName: "stock",
-          queryOptions: queryOptions3,
-        })
-      );
-    } else {
-      dispatch(
-        fetchExcelStock({
-          collectionName: "stock",
-          queryOptions: {},
-        })
-      );
+  // 백신 등록 완료 핸들러
+  const handleMarkVaccineComplete = () => {
+    if (selectedStocks.length === 0) {
+      alert("가축을 선택한 후 백신 등록을 진행하세요.");
+      return;
     }
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${(
+      "0" +
+      (today.getMonth() + 1)
+    ).slice(-2)}-${("0" + today.getDate()).slice(-2)}`;
 
-    // dispatch(
-    //   fetchExcelStock({
-    //     collectionName: "stock",
-    //     queryOptions: startDay !== "" ? queryOptions2 : {},
-    //   })
-    // );
-  }, [sort, startDay, codeDict]);
-  const toggleOpen = (id) => {
-    setOpen((prev) => (prev === id ? "" : id));
+    const newVaccineEntry = {
+      vaccineType: selectedDisease,
+      vaccineDate: formattedDate,
+    };
+
+    const promises = selectedStocks.map((stockId) =>
+      dispatch(
+        markVaccineComplete({
+          stockId,
+          newVaccineEntry,
+        })
+      )
+    );
+
+    Promise.all(promises)
+      .then(() => {
+        alert("백신 등록 완료");
+        setSelectedDisease("");
+        setSelectedStocks([]);
+        setShowVaccineRegistration(false); // 백신 등록 필드 숨기기
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("백신 등록 오류:", error);
+        alert("백신 등록 실패");
+      });
   };
+
+  // 버튼 클릭 핸들러
+  // 질병 등록 버튼 클릭 핸들러
+  const handleShowDiseaseRegistration = () => {
+    if (selectedStocks.length === 0) {
+      alert("질병 등록을 하려면 가축을 선택해야 합니다.");
+      return;
+    }
+    setShowDiseaseRegistration(true);
+    setShowVaccineRegistration(false); // 백신 등록 필드를 숨깁니다
+  };
+
+  // 백신 등록 버튼 클릭 핸들러
+  const handleShowVaccineRegistration = () => {
+    if (selectedStocks.length === 0) {
+      alert("백신 등록을 하려면 가축을 선택해야 합니다.");
+      return;
+    }
+    setShowVaccineRegistration(true);
+    setShowDiseaseRegistration(false); // 질병 등록 필드를 숨깁니다
+  };
+
+  // 검색된 데이터 필터링
+  // const filteredStock = stock
+  //   ?.filter((item) => (selectedType ? item.stockType === selectedType : true))
+  //   ?.filter((item) =>
+  //     Object.values(item).some((val) =>
+  //       String(val).toLowerCase().includes(searchQuery)
+  //     )
+  //   );
+
+  const handleUpdateDeceased = async () => {
+    try {
+      // 선택된 가축의 docId를 반복하여 업데이트
+      await Promise.all(
+        selectedStocks.map((docId) =>
+          dispatch(
+            updateStock({
+              collectionName: "stock",
+              docId,
+              updateInfoObj: { deceased: "Y" },
+            })
+          )
+        )
+      );
+
+      // 업데이트 후 선택된 가축 목록을 초기화
+      setSelectedStocks([]);
+    } catch (error) {
+      console.error("폐사 상태 업데이트 실패:", error);
+    }
+  };
+
+  // // 정렬된 데이터 적용
+  // const sortedStock = [...filteredStock].sort((a, b) => {
+  //   if (sortConfig.key === null) return 0;
+  //   const direction = sortConfig.direction === "asc" ? 1 : -1;
+  //   if (a[sortConfig.key] < b[sortConfig.key]) {
+  //     return -1 * direction;
+  //   }
+  //   if (a[sortConfig.key] > b[sortConfig.key]) {
+  //     return 1 * direction;
+  //   }
+  //   return 0;
+  // });
+
+  const diseaseOptions = {
+    한우: [
+      { value: "브루셀라병", label: "브루셀라병" },
+      { value: "홍역", label: "홍역" },
+      { value: "구제역", label: "구제역" },
+    ],
+    낙농: [
+      { value: "브루셀라병", label: "브루셀라병" },
+      { value: "홍역", label: "홍역" },
+      { value: "구제역", label: "구제역" },
+    ],
+    양돈: [
+      { value: "돼지열병", label: "돼지열병" },
+      { value: "인플루엔자", label: "인플루엔자" },
+      { value: "사료 효소 결핍증", label: "사료 효소 결핍증" },
+    ],
+    육계: [
+      { value: "마이코플라스마성 폐렴", label: "마이코플라스마성 폐렴" },
+      { value: "조류 독감", label: "조류 독감" },
+      { value: "조류 인플루엔자", label: "조류 인플루엔자" },
+    ],
+    산란계: [
+      { value: "마이코플라스마성 폐렴", label: "마이코플라스마성 폐렴" },
+      { value: "조류 독감", label: "조류 독감" },
+      { value: "조류 인플루엔자", label: "조류 인플루엔자" },
+    ],
+  };
+
+  const isDiseaseButtonDisabled =
+    selectedStocks.length === 0 || !selectedDisease || !treatmentStatus;
+  const isVaccineButtonDisabled =
+    selectedStocks.length === 0 || !selectedDisease;
+
   return (
-    <div className={styles.AdminStock}>
-      <div className={styles.AdminUtil}>
-        <div>가축 정보 리스트</div>
-        축사 번호 찾기:
-        <Search
-          setSearch={setFarmSearch}
-          placeholder={"축사번호를 입력하세요!"}
-        />
-        개체번호 찾기 :{" "}
-        <Search
-          setSearch={setStockSearch}
-          placeholder={"개체번호를 입력하세요!"}
-        />
-        <DateRangePickerValue setStartDay={setStartDay} setEndDay={setEndDay} />
-        <Sort
-          title="농장 종류별 :"
-          name="stock"
-          setSort={setSort}
-          sort={sort}
-          sortArr={[
-            { id: "k-beef", value: "한우", htmlFor: "k-beef" },
-            { id: "dairy", value: "낙농", htmlFor: "dairy" },
-            { id: "pork", value: "양돈", htmlFor: "pork" },
-            { id: "chicken", value: "육계", htmlFor: "chicken" },
-            { id: "layer", value: "산란계", htmlFor: "layer" },
-          ]}
-        />
-        <div className={styles.AdminList}>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("stockId")}>
-                  개체번호
-                  {sortBy === "stockId" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th onClick={() => handleSort("farmId")}>
-                  축사번호
-                  {sortBy === "farmId" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th onClick={() => handleSort("stockType")}>
-                  종류
-                  {sortBy === "stockType" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th onClick={() => handleSort("incomingDate")}>
-                  등록일자
-                  {sortBy === "incomingDate" &&
-                    (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th onClick={() => handleSort("sex")}>
-                  성별 {sortBy === "sex" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th onClick={() => handleSort("disease")}>
-                  질병{" "}
-                  {sortBy === "disease" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th onClick={() => handleSort("vaccine")}>
-                  백신{" "}
-                  {sortBy === "vaccine" && (sortOrder === "asc" ? "▲" : "▼")}
-                </th>
-                <th>상세정보</th>
-              </tr>
-            </thead>
-            <tbody>
-              {isLoading ? (
-                <div>No Data!!</div>
-              ) : (
-                <>
-                  {sortedStock?.map((stockItem) => {
-                    const {
-                      stockId,
-                      farmId,
-                      stockType,
-                      incomingDate,
-                      sex,
-                      disease,
-                      vaccine,
-                    } = stockItem;
-                    return (
-                      <tr key={stockId}>
-                        <td>
-                          <p className={styles.stockPTag}>{stockId}</p>
-                        </td>
-                        <td>
-                          <p className={styles.stockPTag}>{farmId}</p>
-                        </td>
-                        <td>
-                          <p className={styles.stockPTag}>{stockType}</p>
-                        </td>
-                        <td>
-                          <p className={styles.stockPTag}>
-                            {incomingDate.substr(2)}
-                          </p>
-                        </td>
-                        <td>
-                          <p className={styles.stockPTag}>{stockSexual[sex]}</p>
-                        </td>
-                        <td>
-                          <p className={styles.stockPTag}>
-                            {disease.length !== 0 ? disease.length : " "}
-                          </p>
-                        </td>
-                        <td>
-                          <p className={styles.stockPTag}>
-                            {vaccine.length !== 0 ? vaccine.length : " "}
-                          </p>
-                        </td>
-                        <td>
-                          <Button
-                            onClick={() => toggleOpen(stockId)} // ID에 따라 상태 관리
-                            aria-controls="example-collapse-text1"
-                            aria-expanded={open[stockId] || false}
-                          >
-                            상세보기
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </>
-              )}
-            </tbody>
-          </Table>
+    <div className="page">
+      <div className="container">
+        <div className={styles.wrapper}>
+          <h3>나의 가축 리스트</h3>
+          {/* 가축 종류 선택 라디오 버튼 */}
+          <RadioGroup
+            row
+            value={selectedType}
+            onChange={handleTypeChange}
+            className={styles.myStockDetailsRadioGroup}
+          >
+            <FormControlLabel value="한우" control={<Radio />} label="한우" />
+            <FormControlLabel value="양돈" control={<Radio />} label="양돈" />
+            <FormControlLabel value="낙농" control={<Radio />} label="낙농" />
+            <FormControlLabel
+              value="산란계"
+              control={<Radio />}
+              label="산란계"
+            />
+            <FormControlLabel value="육계" control={<Radio />} label="육계" />
+          </RadioGroup>
+          {/* 검색 입력 필드 */}
+          <TextField
+            label="검색"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={searchQuery}
+            onChange={handleSearch}
+            placeholder="가축 ID, 종류, 성별 등으로 검색"
+            className={styles.myStockDetailsTextField}
+          />
+          {/* 질병 등록 버튼 */}
+          {!showDiseaseRegistration && !showVaccineRegistration && (
+            <Button
+              variant="contained"
+              onClick={handleShowDiseaseRegistration}
+              className={styles.myStockDetailsButton}
+            >
+              질병 등록
+            </Button>
+          )}
+          {/* 백신 등록 버튼 */}
+          {!showDiseaseRegistration && !showVaccineRegistration && (
+            <Button
+              variant="contained"
+              onClick={handleShowVaccineRegistration}
+              className={styles.myStockDetailsButton}
+            >
+              백신 등록
+            </Button>
+          )}
+          {showDiseaseRegistration && (
+            <>
+              {/* 질병 등록 필드 */}
+              <Select
+                value={selectedDisease}
+                onChange={handleDiseaseChange}
+                displayEmpty
+                className={styles.diseaseSelect}
+                disabled={!selectedType}
+              >
+                <MenuItem value="" disabled>
+                  질병 선택
+                </MenuItem>
+                {diseaseOptions[selectedType]?.map((disease) => (
+                  <MenuItem key={disease.value} value={disease.value}>
+                    {disease.label}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              <Select
+                value={treatmentStatus}
+                onChange={(e) => setTreatmentStatus(e.target.value)}
+                displayEmpty
+                className={styles.treatmentSelect}
+              >
+                <MenuItem value="" disabled>
+                  치료/미치료
+                </MenuItem>
+                <MenuItem value="치료">치료</MenuItem>
+                <MenuItem value="미치료">미치료</MenuItem>
+              </Select>
+
+              <Button
+                onClick={handleMarkDiseaseComplete}
+                disabled={isDiseaseButtonDisabled}
+              >
+                질병 등록 완료
+              </Button>
+              <Button onClick={handleCancel} className={styles.cancelButton}>
+                취소
+              </Button>
+            </>
+          )}
+          {/* 백신 등록 필드 */}
+          {showVaccineRegistration && (
+            <>
+              <Select
+                value={selectedDisease}
+                onChange={handleDiseaseChange}
+                displayEmpty
+                className={styles.diseaseSelect}
+                disabled={!selectedType}
+              >
+                <MenuItem value="" disabled>
+                  백신 선택
+                </MenuItem>
+                {diseaseOptions[selectedType]?.map((disease) => (
+                  <MenuItem key={disease.value} value={disease.value}>
+                    {disease.label}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              <Button
+                onClick={handleMarkVaccineComplete}
+                disabled={isVaccineButtonDisabled}
+              >
+                백신 등록 완료
+              </Button>
+              <Button onClick={handleCancel} className={styles.cancelButton}>
+                취소
+              </Button>
+            </>
+          )}
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <TableContainer
+              component={Paper}
+              className={styles.MyStockDetailsContainer}
+            >
+              <Table className={styles.myStockDetailsTable}>
+                <TableHead className={styles.myStockDetailsHead}>
+                  <TableRow>
+                    <TableCell>선택</TableCell>
+                    <TableCell onClick={() => handleSort("stockId")}>
+                      가축 ID {getSortIcon("stockId")}
+                    </TableCell>
+                    <TableCell onClick={() => handleSort("stockType")}>
+                      종류 {getSortIcon("stockType")}
+                    </TableCell>
+                    <TableCell onClick={() => handleSort("sex")}>
+                      성별 {getSortIcon("sex")}
+                    </TableCell>
+                    <TableCell onClick={() => handleSort("weight")}>
+                      체중 (kg) {getSortIcon("weight")}
+                    </TableCell>
+                    <TableCell onClick={() => handleSort("temp")}>
+                      축사번호 {getSortIcon("temp")}
+                    </TableCell>
+                    <TableCell onClick={() => handleSort("incomingDate")}>
+                      입고일 {getSortIcon("incomingDate")}
+                    </TableCell>
+                    <TableCell onClick={() => handleSort("feed")}>
+                      먹이량 (kg){getSortIcon("feed")}
+                    </TableCell>
+                    <TableCell onClick={() => handleSort("deceased")}>
+                      폐사여부{getSortIcon("deceased")}
+                    </TableCell>
+                    <TableCell>작업</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {/* {sortedStock?.map((item) => (
+                    <TableRow key={item.docId}>
+                      <TableCell>
+                        <input
+                          type="checkbox"
+                          checked={selectedStocks.includes(item.docId)}
+                          onChange={() => handleStockSelect(item.docId)}
+                        />
+                      </TableCell>
+                      <TableCell>{item.stockId}</TableCell>
+                      <TableCell>{item.stockType}</TableCell>
+                      <TableCell>{item.sex}</TableCell>
+                      <TableCell>{item.weight}</TableCell>
+                      <TableCell>{item.farmId}</TableCell>
+                      <TableCell>{item.incomingDate}</TableCell>
+                      <TableCell>{item.feed}</TableCell>
+                      <TableCell>{item.deceased}</TableCell>
+                      <TableCell className={styles.btnBox}>
+                        <Button
+                          onClick={() => handleEdit(item)}
+                          className={styles.myStockDetailsEditButton}
+                        >
+                          상세 보기
+                        </Button>
+                        <Button
+                          onClick={() => handleDelete(item.docId)}
+                          className={styles.myStockDetailsDeleteButton}
+                        >
+                          삭제
+                        </Button>
+                        <Button
+                          onClick={handleUpdateDeceased}
+                          className={styles.deceasedButton}
+                        >
+                          폐사하기
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))} */}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+
+          {/* {isModalOpen && (
+            <StockModal
+              open={isModalOpen}
+              onClose={() => setModalOpen(false)}
+              stock={selectedStock}
+            />
+          )} */}
         </div>
       </div>
-
-      {/* Collapse 영역 */}
-      {isLoading ? (
-        <></>
-      ) : (
-        <div className={styles.stockCards}>
-          {stock?.map((stockItem, idx) => {
-            const {
-              stockId,
-              stockType,
-              incomingDate,
-              variety,
-              birthDate,
-              sex,
-              weight,
-              size,
-              disease,
-              vaccine,
-              activity,
-              breedCount,
-              breedDueDate,
-              breedDate,
-              pregnantDate,
-              feed,
-              docId,
-            } = stockItem;
-            return (
-              <div
-                style={{ minHeight: "150px" }}
-                key={idx}
-                className={styles.stockCard}
-              >
-                <Collapse in={open === stockId} dimension="width">
-                  <div id="example-collapse-text1">
-                    {!updateSetting ? (
-                      <Card body style={{ width: "400px" }}>
-                        <Table striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>Index</th>
-                              <th>Value</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>개체번호</td>
-                              <td>{stockId}</td>
-                            </tr>
-                            <tr>
-                              <td>종류</td>
-                              <td>{stockType}</td>
-                            </tr>
-                            <tr>
-                              <td>품종</td>
-                              <td>{variety}</td>
-                            </tr>
-                            <tr>
-                              <td>성별</td>
-                              <td>{stockSexual[sex]}</td>
-                            </tr>
-                            <tr>
-                              <td>출생</td>
-                              <td>{birthDate}</td>
-                            </tr>
-                            <tr>
-                              <td>입고 날짜</td>
-                              <td>{incomingDate}</td>
-                            </tr>
-                            <tr>
-                              <td>체중</td>
-                              <td>{weight}</td>
-                            </tr>
-                            <tr>
-                              <td>크기</td>
-                              <td>{size}</td>
-                            </tr>
-                            <tr>
-                              <td>질병이력</td>
-                              <td>
-                                {disease.map((item, idx) => {
-                                  const { diseaseDate, diseaseType } = item;
-                                  return (
-                                    <div className={styles.tdDiv}>
-                                      <Button
-                                        onClick={() =>
-                                          setDiseaseOpen(!diseaseOpen)
-                                        }
-                                        aria-controls="example-collapse-text"
-                                        aria-expanded={diseaseOpen}
-                                      >
-                                        {diseaseType}
-                                      </Button>
-                                      <Collapse in={diseaseOpen}>
-                                        <div id="example-collapse-text">
-                                          {diseaseDate}
-                                        </div>
-                                      </Collapse>
-                                    </div>
-                                  );
-                                })}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>예방접종</td>
-                              <td>
-                                {vaccine.map((item, idx) => {
-                                  const { vaccineDate, vaccineType } = item;
-                                  return (
-                                    <div className={styles.tdDiv} key={idx}>
-                                      <Button
-                                        onClick={() =>
-                                          setVaccineOpen(!vaccineOpen)
-                                        }
-                                        aria-controls="example-collapse-text"
-                                        aria-expanded={vaccineOpen}
-                                      >
-                                        {vaccineType}
-                                      </Button>
-                                      <Collapse in={vaccineOpen}>
-                                        <div id="example-collapse-text">
-                                          {vaccineDate}
-                                        </div>
-                                      </Collapse>
-                                    </div>
-                                  );
-                                })}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>건강상태</td>
-                              <td>{activity}</td>
-                            </tr>
-                            <tr>
-                              <td>생산량</td>
-                              <td> </td>
-                              {/* <td>{stockType}</td> */}
-                            </tr>
-                            <tr>
-                              <td>임신횟수</td>
-                              <td>{breedCount ? breedCount : "X"}</td>
-                            </tr>
-                            <tr>
-                              <td>최근 임신날짜</td>
-                              <td>{pregnantDate ? pregnantDate : "X"}</td>
-                            </tr>
-                            <tr>
-                              <td>최근 출산예정</td>
-                              <td>{breedDueDate ? breedDueDate : "X"}</td>
-                            </tr>
-                            <tr>
-                              <td>최근 출산날짜</td>
-                              <td>{breedDate ? breedDate : "X"}</td>
-                            </tr>
-                            <tr>
-                              <td>사료</td>
-                              <td>{feed}</td>
-                            </tr>
-                          </tbody>
-                        </Table>
-                        <button
-                          className={styles.editStockBtn}
-                          onClick={(e) => {
-                            setUpdateSetting(true);
-                          }}
-                        >
-                          수정하기
-                        </button>
-                      </Card>
-                    ) : (
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <Card body style={{ width: "400px" }}>
-                          <Table striped bordered hover>
-                            <thead>
-                              <tr>
-                                <th>Index</th>
-                                <th>Value</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>개체번호</td>
-                                <td>
-                                  <input
-                                    type="text"
-                                    value={stockId}
-                                    {...register("stockId")}
-                                  />
-                                  {/* {stockId} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>종류</td>
-                                <td>
-                                  {/*
-                                  <select
-                                    id="animalType"
-                                    name="animalType"
-                                    value={stockType}
-                                    {...register("stockType")}
-                                  >
-                                    <option value="">선택하세요</option>
-                                    <option value="한우">한우</option>
-                                    <option value="낙농">낙농</option>
-                                    <option value="양돈">양돈</option>
-                                    <option value="양계">양계</option>
-                                  </select>
-                                     */}
-                                  {stockType}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>품종</td>
-                                <td>
-                                  <input
-                                    type="text"
-                                    value={variety}
-                                    {...register("variety")}
-                                  />
-                                  {/* {variety} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>성별</td>
-                                <td>
-                                  <select
-                                    id="sexual"
-                                    name="sexual"
-                                    value={stockSexual}
-                                    {...register("sex")}
-                                  >
-                                    <option value="수컷">수컷</option>
-                                    <option value="암컷">암컷</option>
-                                  </select>
-                                  {/* {stockSexual[sex]} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>출생</td>
-                                <td>
-                                  <input
-                                    type="date"
-                                    id="birthDate"
-                                    name="birthDate"
-                                    value={birthDate}
-                                    {...register("birthDate")}
-                                  />
-                                  {/* {birthDate} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>입고 날짜</td>
-                                <td>
-                                  <input
-                                    type="date"
-                                    id="incomingDate"
-                                    name="incomingDate"
-                                    value={incomingDate}
-                                    {...register("incomingDate")}
-                                  />
-                                  {/* {incomingDate} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>체중</td>
-                                <td>
-                                  <input
-                                    type="number"
-                                    id="weight"
-                                    name="weight"
-                                    value={weight}
-                                    {...register("weight")}
-                                  />
-                                  {/* {weight} */}kg
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>크기</td>
-                                <td>
-                                  <input
-                                    type="number"
-                                    id="size"
-                                    name="size"
-                                    value={size}
-                                    {...register("size")}
-                                  />
-                                  {/* {size} */}cm
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>질병이력</td>
-                                <td>
-                                  {disease.map((item, idx) => {
-                                    const { diseaseDate, diseaseType } = item;
-                                    return (
-                                      <div className={styles.tdDiv}>
-                                        <Button
-                                          onClick={() =>
-                                            setDiseaseOpen(!diseaseOpen)
-                                          }
-                                          aria-controls="example-collapse-text"
-                                          aria-expanded={diseaseOpen}
-                                        >
-                                          {diseaseType}
-                                        </Button>
-                                        <Collapse in={diseaseOpen}>
-                                          <div id="example-collapse-text">
-                                            {diseaseDate}
-                                          </div>
-                                        </Collapse>
-                                      </div>
-                                    );
-                                  })}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>예방접종</td>
-                                <td>
-                                  {vaccine.map((item, idx) => {
-                                    const { vaccineDate, vaccineType } = item;
-                                    return (
-                                      <div className={styles.tdDiv}>
-                                        <Button
-                                          onClick={() =>
-                                            setVaccineOpen(!vaccineOpen)
-                                          }
-                                          aria-controls="example-collapse-text"
-                                          aria-expanded={vaccineOpen}
-                                        >
-                                          {vaccineType}
-                                        </Button>
-                                        <Collapse in={vaccineOpen}>
-                                          <div id="example-collapse-text">
-                                            {vaccineDate}
-                                          </div>
-                                        </Collapse>
-                                      </div>
-                                    );
-                                  })}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>건강상태</td>
-                                <td>{activity}</td>
-                              </tr>
-                              <tr>
-                                <td>생산량</td>
-                                <td>{stockType}</td>
-                              </tr>
-                              <tr>
-                                <td>임신횟수</td>
-                                <td>
-                                  <input
-                                    type="number"
-                                    id="breedCount"
-                                    name="breedCount"
-                                    value={breedCount}
-                                    {...register("breedCount")}
-                                  />
-                                  {/* {breedCount ? breedCount : "X"} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>최근 임신날짜</td>
-                                <td>
-                                  <input
-                                    type="date"
-                                    id="pregnantDate"
-                                    name="pregnantDate"
-                                    value={pregnantDate}
-                                    {...register("pregnantDate")}
-                                  />
-                                  {/* {pregnantDate ? pregnantDate : "X"} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>최근 출산예정</td>
-                                <td>
-                                  <input
-                                    type="date"
-                                    id="dueDate"
-                                    name="dueDate"
-                                    value={breedDueDate}
-                                    {...register("breedDueDate")}
-                                  />
-                                  {/* {breedDate ? breedDate : "X"} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>최근 출산날짜</td>
-                                <td>
-                                  <input
-                                    type="date"
-                                    id="breedDate"
-                                    name="breedDate"
-                                    value={breedDate}
-                                    {...register("breedDate")}
-                                  />
-                                  {/* {stockType} */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>사료</td>
-                                <td>{feed}</td>
-                              </tr>
-                            </tbody>
-                          </Table>
-                          <div style={styles.stockDetailBtn}>
-                            <button
-                              className={styles.settingStockBtn}
-                              type="submit"
-                              onClick={(e) => {
-                                setUpdateSetting(false);
-                              }}
-                            >
-                              설정하기
-                            </button>
-                            <button
-                              className={styles.deleteStockBtn}
-                              onClick={(e) => setUpdateSetting(false)}
-                            >
-                              폐사처리
-                            </button>
-                          </div>
-                        </Card>
-                      </form>
-                    )}
-                  </div>
-                </Collapse>
-              </div>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }
