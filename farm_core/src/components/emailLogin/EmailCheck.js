@@ -1,42 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { applyActionCode, getAuth } from "firebase/auth";
+import { getAuth, applyActionCode } from "firebase/auth";
+import PasswordConfirm from "../../pages/Login/Password/PasswordConfirm"; // 파일 경로 수정
+// import styles from "../../pages/Login/Password/PasswordConfirm";
 
 function EmailCheck() {
   const [searchParams] = useSearchParams();
+  console.log(searchParams);
   const navigate = useNavigate();
   const auth = getAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+    const mode = searchParams.get("mode"); // mode 확인
     const oobCodeFromURL = searchParams.get("oobCode");
-    console.log("Query String:", queryString);
-    console.log("Search params:", urlParams.toString());
-    console.log("oobCode from URL:", oobCodeFromURL);
+    console.log("mode:", mode); // 콘솔에 mode 값 출력
+    console.log("oobCode:", oobCodeFromURL);
 
     if (oobCodeFromURL) {
-      applyActionCode(auth, oobCodeFromURL)
-        .then(() => {
-          setLoading(false); // 로딩 완료
-          alert("이메일 인증이 완료되었습니다.");
-          navigate("/SignUp"); // 인증이 완료되면 회원가입 페이지로
-        })
-        .catch((error) => {
-          setLoading(false); // 로딩 완료
-          console.error("이메일 인증 중 오류가 발생했습니다: ", error);
-          setError("이메일 인증에 실패했습니다. 다시 시도해주세요.");
-        });
+      if (mode === "verifyEmail") {
+        // 이메일 인증 처리
+        applyActionCode(auth, oobCodeFromURL)
+          .then(() => {
+            setLoading(false);
+            alert("이메일 인증이 완료되었습니다.");
+            navigate("/SignUp");
+          })
+          .catch((error) => {
+            setLoading(false);
+            console.error("이메일 인증 중 오류가 발생했습니다: ", error);
+            setError("이메일 인증에 실패했습니다. 다시 시도해주세요.");
+          });
+      } else if (mode === "resetPassword") {
+        setLoading(false); // 로딩 완료
+      } else {
+        setLoading(false);
+        setError("잘못된 요청입니다.");
+      }
     }
+    // else {
+    //   setLoading(false);
+    //   setError("왜 오류가 날까 회원가입은 되는데 흐으음...");
+    //   console.log("oobCode가 없습니다."); // 디버깅을 위한 로그
+    // }
   }, [navigate, searchParams]);
 
   return (
     <div className="container">
-      <h1>이메일 인증 중...</h1>
-      {loading && <p>인증 코드 확인 중입니다...</p>}
+      {loading && <p>처리 중...</p>}
       {error && <p>{error}</p>}
+      {searchParams.get("mode") === "resetPassword" && (
+        <PasswordConfirm
+          auth={auth}
+          oobCodeFromURL={searchParams.get("oobCode")}
+          navigate={navigate}
+          setLoading={setLoading}
+          setError={setError}
+        />
+      )}
     </div>
   );
 }

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import GaugeNeedle from "../Gauge/GaugeNeedle";
+import propellerImg from "../../img/프로펠러.png";
+import styles from "./CO2Control.module.scss";
+import { ToggleSwitch } from "../ToggleSwitch/ToggleSwitch";
 
 function CO2Control() {
   const [setValue, setSetValue] = useState(300); // 목표 설정값은 300
@@ -65,6 +68,10 @@ function CO2Control() {
   }, [intervalValue, setValue]);
   return (
     <div>
+      <img
+        src={propellerImg}
+        className={`${styles.propeller} ${isOn ? styles.spin : ""}`}
+      />
       <GaugeNeedle
         title="CO2"
         setName="CO2 설정"
@@ -78,6 +85,7 @@ function CO2Control() {
         valueMax={1000}
       />
       <button onClick={toggleOnOff}>{isOn ? "OFF" : "ON"}</button>
+      <p>{isIncreasing ? "CO2 증가 중" : "CO2 감소 중"}</p>
     </div>
   );
 }
