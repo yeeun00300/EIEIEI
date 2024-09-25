@@ -41,8 +41,8 @@ function MyLiveStock(props) {
     (state) => state.stockSlice
   );
 
+  const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
   useFetchCollectionData("stock", fetchExcelStock);
-  const { stock, isLoading } = useSelector((state) => state.stockSlice);
 
   const [selectedChart, setSelectedChart] = useState(null); // 현재 선택된 차트를 저장할 상태
   const [selectedValue, setSelectedValue] = useState(
@@ -78,21 +78,20 @@ function MyLiveStock(props) {
     // farmList에서 선택된 farmId에 해당하는 farm 객체 찾기
     const farm = farmList.find((f) => f.farmId == selectedFarmId);
     setSelectedFarm(farm); // 선택된 farm 객체 상태 업데이트
-  };
-  const handleButtonClick = () => {
-    // farmList에서 선택된 farmId에 해당하는 정보를 찾아서 업데이트
-    if (selectedFarm) {
+
+    // 선택된 farmId에 해당하는 정보를 찾아서 업데이트
+    if (farm) {
       const queryOptions = {
         conditions: [
           {
             field: "farmId",
             operator: "==",
-            value: Number(selectedValue),
+            value: Number(selectedFarmId),
           },
         ],
       };
       dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
-      console.log(`선택된 농장 정보`, selectedFarm);
+      console.log(`선택된 농장 정보`, farm);
     }
   };
 
@@ -174,7 +173,7 @@ function MyLiveStock(props) {
                         </option>
                       ))}
                     </select>
-                    <button onClick={handleButtonClick}>확인</button>
+                    {/* <button onClick={handleButtonClick}>확인</button> */}
                     <button onClick={handleAddClick}>추가</button>
                     {stockLength === 0 && (
                       <div className={styles.warn}>가축 정보가 없습니다</div>
@@ -190,41 +189,6 @@ function MyLiveStock(props) {
                   </div>
                 </div>
                 <div className={styles.farmInfoBox}>
-                  {/* <div className={styles.farmListInfo}>
-                    <h3>전체 평균 데이터</h3>
-                    <table className={styles.styledTable}>
-                      <thead>
-                        <tr>
-                          <th>
-                            <select>
-                              <option>축종 선택</option>
-                              <option>한우</option>
-                              <option>낙농</option>
-                              <option>양돈</option>
-                              <option>육계</option>
-                              <option>산란계</option>
-                            </select>
-                          </th>
-                          <th>총 개체 수</th>
-                          <th>평균 무게</th>
-                        </tr>
-                      </thead>
-                      <thead>
-                        <tr>
-                          <th>농장 이름</th>
-                          <th>총 개체 수</th>
-                          <th>평균 무게</th>
-                        </tr>
-                      </thead>
-                      <thead>
-                        <tr>
-                          <th>농장 이름</th>
-                          <th>총 개체 수</th>
-                          <th>평균 무게</th>
-                        </tr>
-                      </thead>
-                    </table>
-                  </div> */}
                   <Table data={stock} />
                   <div>
                     <h3>축사 데이터 확인</h3>
