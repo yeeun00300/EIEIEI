@@ -19,6 +19,7 @@ import {
 import { checkUserInFirestore } from "../../firebase";
 import kakaoImg from "../../img/kakao_login.png";
 import googleSvg from "../../img/web_light_sq_SU.svg";
+import Password from "./Password/Password";
 
 function Login() {
   const dispatch = useDispatch();
@@ -181,7 +182,7 @@ function Login() {
           {isLoading ? "Logging in..." : "Login"}
         </button>
         <div className={styles.links}>
-          <Link>아이디 찾기</Link>|<Link>비밀번호 찾기</Link>|
+          <Link to={"/password"}>비밀번호 찾기</Link>
           <Link to={"/emailsignup"}>회원가입</Link>
         </div>
         <div className={styles.buttons}>
