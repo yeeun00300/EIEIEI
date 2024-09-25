@@ -7,9 +7,12 @@ import {
   setDetailedAddress,
   toggleOpen,
 } from "../../store/myPageSlice/addressSlice";
-import { addField } from "../../store/addLiveStockSlice/addLiveStockSlice";
+import {
+  addField,
+  addLiveStockAction,
+} from "../../store/addLiveStockSlice/addLiveStockSlice";
 import kroDate from "../../utils/korDate";
-import { addFarmDataWithSubcollections } from "../../firebase";
+import { addFarmDataWithSubcollections, db, getDatas } from "../../firebase";
 
 function AddLiveStock() {
   const dispatch = useDispatch();
@@ -32,6 +35,7 @@ function AddLiveStock() {
   } = useSelector((state) => state.AddLiveStockSlice);
 
   const [formErrors, setFormErrors] = useState({});
+  const [isFarmIdExists, setIsFarmIdExists] = useState(false);
 
   const open = useDaumPostcodePopup();
 
@@ -55,18 +59,48 @@ function AddLiveStock() {
       dispatch(setDetailedAddress(value)); // Update detailed address
     } else {
       dispatch(addField({ fieldName: name, fieldValue: value }));
+      // Check if farmId is being changed and validate
+      if (name === "farmId") {
+        checkFarmIdExists(value);
+      }
     }
   };
 
   const validateForm = () => {
     const errors = {};
     if (!farmName) errors.farmName = "축사 이름은 필수입니다.";
+    if (farmName.length > 8)
+      errors.farmName = "축사 이름은 8자리 이하로 입력해주세요.";
     if (!farmId) errors.farmId = "축사 번호는 필수입니다.";
+    if (isFarmIdExists) errors.farmId = "축사 번호가 이미 존재합니다.";
     if (!address) errors.address = "축사 위치는 필수입니다.";
     if (!detailedAddress) errors.detailedAddress = "상세 주소는 필수입니다.";
     if (!farm_stockType) errors.farm_stockType = "축사 유형은 필수입니다.";
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
+  };
+
+  const checkFarmIdExists = async (farmId) => {
+    const queryOptions = {
+      conditions: [{ field: "farmId", operator: "==", value: farmId }],
+    };
+    const snapshot = await getDatas("farm", queryOptions);
+
+    console.log("Farm ID exists check:", snapshot); // 디버깅을 위한 로그
+    setIsFarmIdExists(snapshot.length > 0); // 결과에 따라 상태 업데이트
+  };
+
+  const handleFarmIdCheck = async () => {
+    if (farmId) {
+      await checkFarmIdExists(farmId);
+      if (isFarmIdExists) {
+        alert("축사 번호가 이미 존재합니다.");
+      } else {
+        alert("축사 번호가 사용 가능합니다.");
+      }
+    } else {
+      alert("축사 번호를 입력해 주세요.");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -97,30 +131,17 @@ function AddLiveStock() {
       saveLayout,
     };
 
-    const subCollections = {
-      farmCureList: [
-        {
-          symptom: "",
-          symptomCount: "",
-          fever: "",
-          feverMean: "",
-          cough: "",
-          coughCount: "",
-          diarrhea: "",
-          diarrheaCount: "",
-          ventilation: "",
-          lampCondition: "",
-          feedSupply: "",
-        },
-      ],
-    };
-
     try {
-      const farmDocId = await addFarmDataWithSubcollections(
-        farmData,
-        subCollections
+      // Dispatch the action to add the farm data to the Firestore
+      const resultAction = await dispatch(
+        addLiveStockAction({ collectionName: "farm", addObj: farmData })
       );
-      console.log("Farm added with ID:", farmDocId);
+
+      if (addLiveStockAction.fulfilled.match(resultAction)) {
+        console.log("Farm added successfully:", resultAction.payload);
+      } else {
+        console.error("Failed to add farm:", resultAction.error.message);
+      }
 
       // Clear form fields
       const fieldsToClear = [
@@ -143,6 +164,7 @@ function AddLiveStock() {
       console.error("Error adding farm:", error);
     }
   };
+
   console.log(farm_stockType);
 
   return (
@@ -174,6 +196,9 @@ function AddLiveStock() {
               onChange={handleChange}
               required
             />
+            <button type="button" onClick={handleFarmIdCheck} cal>
+              중복 확인
+            </button>
             {formErrors.farmId && (
               <p className={styles.error}>{formErrors.farmId}</p>
             )}
@@ -223,8 +248,7 @@ function AddLiveStock() {
               value={farm_stockType}
               onChange={handleChange}
             >
-              <option value="">축사 유형을 선택하세요</option>{" "}
-              {/* Default option */}
+              <option value="">축사 유형을 선택하세요</option>
               <option value="한우">한우</option>
               <option value="낙농">낙농</option>
               <option value="산란계">산란계</option>
@@ -266,26 +290,25 @@ function AddLiveStock() {
             />
           </div>
           <div>
-            <label htmlFor="insuranceDetail">보험 세부사항:</label>
+            <label htmlFor="insuranceDetail">보험 상세:</label>
             <input
               type="text"
               name="insuranceDetail"
               value={insuranceDetail}
-              placeholder="예: 농업재해보험, 축산재해보험"
+              placeholder="예: 화재보험, 재해보험"
               onChange={handleChange}
             />
           </div>
           <div>
-            <label htmlFor="note">비고:</label>
-            <input
-              type="text"
+            <label htmlFor="note">기타 메모:</label>
+            <textarea
               name="note"
               value={note}
-              placeholder="특이사항을 적어주세요"
+              placeholder="추가적인 정보를 입력하세요"
               onChange={handleChange}
             />
           </div>
-          <button type="submit">저장</button>
+          <button type="submit">추가하기</button>
         </form>
       </div>
     </div>

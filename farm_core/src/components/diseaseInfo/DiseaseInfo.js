@@ -6,6 +6,7 @@ import pork from "../../img/양돈얼굴.png";
 import chicken from "../../img/양계얼굴.png";
 import MyStockPage from "../MyStockPage/MyStockPage";
 import MyStockAddPage from "../../pages/MyStockAddPage/MyStockAddPage";
+import MonthPractice from "../diseaseMonth/MonthPractice";
 
 function DiseaseInfo() {
   const [selectedAnimal, setSelectedAnimal] = useState("cows");
@@ -153,6 +154,7 @@ function DiseaseInfo() {
         </div>
       </div>
       {/* <MyStockAddPage /> */}
+      <MonthPractice />
     </div>
   );
 }

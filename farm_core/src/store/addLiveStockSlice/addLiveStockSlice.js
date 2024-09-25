@@ -114,6 +114,19 @@ const AddLiveStockSlice = createSlice({
       })
       .addCase(deleteFarmData.rejected, (state, action) => {
         state.isLoading = false;
+      })
+      .addCase(addLiveStockAction.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addLiveStockAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.farmData = action.payload;
+      })
+      .addCase(addLiveStockAction.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        console.error("Data save failed:", action.payload);
       });
   },
 });
@@ -173,6 +186,19 @@ const deleteFarmData = createAsyncThunk(
   }
 );
 
+const addLiveStockAction = createAsyncThunk(
+  "livestock/addLiveStock",
+  async ({ collectionName, addObj }, { rejectWithValue }) => {
+    try {
+      const resultData = await addDatas(collectionName, addObj);
+      return resultData;
+    } catch (error) {
+      console.error("Error adding farm:", error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export default AddLiveStockSlice.reducer;
 export const { addField, updateFields } = AddLiveStockSlice.actions;
-export { addFarmData, fetchFarmData, updateFarmData };
+export { addFarmData, fetchFarmData, updateFarmData, addLiveStockAction };
