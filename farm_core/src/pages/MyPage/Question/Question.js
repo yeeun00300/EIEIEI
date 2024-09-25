@@ -18,6 +18,9 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
+import KoreaMap from "../../../components/KoreaMap/KoreaMap";
+import KoreaBubble from "../../../components/KoreaMap/KoreaBubble";
+import { KoreaBubbleMap } from "@tenqube/react-korea-bubble-map";
 
 function UserInfo() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
