@@ -11,6 +11,11 @@ function Table({ data }) {
   const [totalVaccine, setTotalVaccine] = useState("");
   const [totalIsolation, setTotalIsolation] = useState("");
   const [totalDead, setTotalDead] = useState(0);
+
+  const getRandomPrice = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
   useEffect(() => {
     // 데이터 변경 또는 컴포넌트 초기화 시 처리할 내용
     // console.log(`선택된 축종: ${selectedSpecies}`); // 선택된 값 로그
@@ -40,27 +45,32 @@ function Table({ data }) {
       filteredStock.length > 0 ? totalFeedSum / filteredStock.length : 0;
     setTotalFeed(averageFeed);
     //4.일일 평균 생산량
-    if (selectedSpecies == "한우") {
+    if (selectedSpecies === "한우") {
       filteredStock.length > 0
-        ? setTotalProduct("6,431원")
-        : setTotalProduct("");
-    } else if (selectedSpecies == "양돈") {
+        ? setTotalProduct(`${getRandomPrice(6000, 7000)}원`)
+        : setTotalProduct("0원");
+    } else if (selectedSpecies === "양돈") {
       filteredStock.length > 0
-        ? setTotalProduct("7,042원")
-        : setTotalProduct("");
-    } else if (selectedSpecies == "육계") {
+        ? setTotalProduct(`${getRandomPrice(7000, 8000)}원`)
+        : setTotalProduct("0원");
+    } else if (selectedSpecies === "육계") {
       filteredStock.length > 0
-        ? setTotalProduct("3,585원")
-        : setTotalProduct("");
-    } else if (selectedSpecies == "낙농") {
+        ? setTotalProduct(`${getRandomPrice(3000, 4000)}원`)
+        : setTotalProduct("0원");
+    } else if (selectedSpecies === "낙농") {
       setTotalProduct("30L");
-    } else if (selectedSpecies == "산란계") {
+    } else if (selectedSpecies === "산란계") {
       setTotalProduct(filteredStock.length);
     }
+
     //5.평균 건강 상태
-    setTotalActivity("양호");
+    filteredStock.length > 0
+      ? setTotalActivity("양호")
+      : setTotalActivity("정보없음");
     //6.예방접종 완료율
-    setTotalVaccine("89%");
+    filteredStock.length > 0
+      ? setTotalVaccine("89%")
+      : setTotalVaccine("정보없음");
     //7.격리 개체 수
     const isolation = filteredStock.filter((item) => item.isolation == "Y");
     setTotalIsolation(isolation.length);
