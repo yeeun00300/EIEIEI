@@ -1,0 +1,64 @@
+.communityPTag {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 5px 0;
+}
+
+td {
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.answerSendBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  form {
+    width: 100%;
+  }
+
+  textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    resize: none;
+    transition: border 0.3s ease-in-out;
+
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+  }
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+}

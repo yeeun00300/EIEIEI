@@ -11,7 +11,7 @@ import Button from "react-bootstrap/esm/Button";
 import { Card, Collapse } from "@mui/material";
 import NoticeAdd from "./NoticeAdd/NoticeAdd";
 import DeclareStateCard from "./DeclareStateCard/DeclareStateCard";
-import { getSubCollection } from "../../firebase";
+import { deleteDatas, getSubCollection } from "../../firebase";
 import QuestionAnswer from "./QuestionAnswer/QuestionAnswer";
 function CustomerManagement() {
   const dispatch = useDispatch();
@@ -25,10 +25,9 @@ function CustomerManagement() {
     isLoading,
   } = useSelector((state) => state.communitySlice);
   const [communitySearch, setCommunitySearch] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // 검색 상태
   const [sortBy, setSortBy] = useState("email");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [startDay, setStartDay] = useState("");
-  const [endDay, setEndDay] = useState("");
   const [searchedCommunity, setSearchedCommunity] = useState([]);
   const [open, setOpen] = useState(false);
   // 게시글 상태open
@@ -38,7 +37,6 @@ function CustomerManagement() {
   // 댓글 상태open
   const [commentStateOpen, setCommentStateOpen] = useState(false);
   const [commentList, setCommentList] = useState([]);
-  // console.log(commentList);
   const statDict = {
     reported: "신고 ",
     black: "차단 ",
@@ -61,6 +59,11 @@ function CustomerManagement() {
       setSortOrder("asc");
     }
   };
+  // 검색 기능
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
   const sortedCommunity = searchedCommunity
     ? [...searchedCommunity].sort((a, b) => {
         const valA = a[sortBy];
@@ -97,11 +100,18 @@ function CustomerManagement() {
       case "커뮤니티": {
         let searched = communityContents;
 
-        if (communitySearch !== "") {
+        if (searchQuery !== "") {
           searched = searched?.filter((item) =>
-            item?.email?.includes(communitySearch)
+            Object.values(item).some((val) =>
+              String(val).toLowerCase().includes(searchQuery)
+            )
           );
         }
+        // if (communitySearch !== "") {
+        //   searched = searched?.filter((item) =>
+        //     item?.email?.includes(communitySearch)
+        //   );
+        // }
         setSearchedCommunity(searched.length ? searched : communityContents);
 
         if (communityContents.length > 0) {
@@ -115,11 +125,18 @@ function CustomerManagement() {
       case "축산관리": {
         let searched = livestockContents;
 
-        if (communitySearch !== "") {
+        if (searchQuery !== "") {
           searched = searched?.filter((item) =>
-            item?.email?.includes(communitySearch)
+            Object.values(item).some((val) =>
+              String(val).toLowerCase().includes(searchQuery)
+            )
           );
         }
+        // if (communitySearch !== "") {
+        //   searched = searched?.filter((item) =>
+        //     item?.email?.includes(communitySearch)
+        //   );
+        // }
         setSearchedCommunity(searched.length ? searched : livestockContents);
 
         if (livestockContents.length > 0) {
@@ -136,9 +153,11 @@ function CustomerManagement() {
       case "문의사항": {
         let searched = questionContents;
 
-        if (communitySearch !== "") {
+        if (searchQuery !== "") {
           searched = searched?.filter((item) =>
-            item?.userEmail?.includes(communitySearch)
+            Object.values(item).some((val) =>
+              String(val).toLowerCase().includes(searchQuery)
+            )
           );
         }
         setSearchedCommunity(searched.length ? searched : questionContents);
@@ -154,9 +173,11 @@ function CustomerManagement() {
       case "공지사항": {
         let searched = noticeContents;
 
-        if (communitySearch !== "") {
+        if (searchQuery !== "") {
           searched = searched?.filter((item) =>
-            item?.userEmail?.includes(communitySearch)
+            Object.values(item).some((val) =>
+              String(val).toLowerCase().includes(searchQuery)
+            )
           );
         }
         setSearchedCommunity(searched.length ? searched : noticeContents);
@@ -218,15 +239,15 @@ function CustomerManagement() {
         queryOptions: noticeQueryOptions,
       })
     );
-  }, [sort, search]);
+  }, [sort, searchQuery]);
 
   return (
     <div className={styles.CustomerManagement}>
       <Search
         setSearch={setCommunitySearch}
-        placeholder={"이메일을 입력하세요!"}
+        onChange={handleSearch}
+        placeholder={"검색어를 입력하세요!"}
       />
-      {/* <DateRangePickerValue setStartDay={setStartDay} setEndDay={setEndDay} /> */}
       <div className={styles.CustomerManagementNav}>
         <Sort
           title=""
@@ -434,51 +455,64 @@ function CustomerManagement() {
                             </p>
                           </td>
                           <td>
-                            {declareState ? (
-                              <div className={styles.communityStateCard}>
-                                <Button
-                                  className={styles.communityStateBtn}
-                                  onClick={() => toggleOpen(id)}
-                                  // onClick={() => setStateOpen(!stateOpen)}
-                                  type="button"
-                                  aria-controls="communityStateCollapse"
-                                  aria-expanded={commentOpen[id] || false}
-                                >
-                                  {declareState !== "checked"
-                                    ? statDict[declareState]
-                                    : "checked"}
-                                </Button>
-                                <div
-                                  style={{ minHeight: "150px" }}
-                                  className={styles.communityStateCollapse}
-                                >
-                                  <Collapse
-                                    in={stateOpen === id}
-                                    dimension="width"
-                                  >
-                                    <div id="communityStateCollapse">
-                                      <Card body style={{ width: "200px" }}>
-                                        <DeclareStateCard
-                                          setOpen={setStateOpen}
-                                          email={email}
-                                          authorNickName={authorNickName}
-                                          title={title}
-                                          content={content}
-                                          declareCount={declareCount}
-                                          declareState={declareState}
-                                          declareReason={declareReason}
-                                          id={id}
-                                          communityType={sort}
-                                        />
-                                      </Card>
+                            {sort == "커뮤니티" || sort == "축산관리" ? (
+                              <>
+                                {/* 커뮤니티 축산관리 버튼 */}
+                                {declareState && (
+                                  <div className={styles.communityStateCard}>
+                                    <Button
+                                      className={styles.communityStateBtn}
+                                      onClick={() => toggleOpen(id)}
+                                      // onClick={() => setStateOpen(!stateOpen)}
+                                      type="button"
+                                      aria-controls="communityStateCollapse"
+                                      aria-expanded={commentOpen[id] || false}
+                                    >
+                                      {declareState !== "checked"
+                                        ? statDict[declareState]
+                                        : "checked"}
+                                    </Button>
+                                    <div
+                                      style={{ minHeight: "150px" }}
+                                      className={styles.communityStateCollapse}
+                                    >
+                                      <Collapse
+                                        in={stateOpen === id}
+                                        dimension="width"
+                                      >
+                                        <div id="communityStateCollapse">
+                                          <Card body style={{ width: "200px" }}>
+                                            <DeclareStateCard
+                                              setOpen={setStateOpen}
+                                              email={email}
+                                              authorNickName={authorNickName}
+                                              title={title}
+                                              content={content}
+                                              declareCount={declareCount}
+                                              declareState={declareState}
+                                              declareReason={declareReason}
+                                              id={id}
+                                              communityType={sort}
+                                            />
+                                          </Card>
+                                        </div>
+                                      </Collapse>
                                     </div>
-                                  </Collapse>
-                                </div>
-                              </div>
+                                  </div>
+                                )}
+                              </>
                             ) : (
-                              <p className={styles.communityPTag}>
-                                {declareState}
-                              </p>
+                              // 문의 사항 버튼
+                              <Button
+                                className={styles.communityPTag}
+                                onClick={() => {
+                                  deleteDatas("community", id);
+                                  alert("공지게시판 삭제가 완료되었습니다.");
+                                }}
+                              >
+                                {/* <Button className={styles.communityPTag} onClick={()=> deleteDatas()}> */}
+                                삭제하기
+                              </Button>
                             )}
                           </td>
                         </tr>

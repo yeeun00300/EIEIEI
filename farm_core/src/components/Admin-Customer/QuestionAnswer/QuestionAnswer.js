@@ -5,7 +5,10 @@ import { addComment, getComments } from "../../../firebase";
 
 function QuestionAnswer({ sortedCommunity }) {
   const [answer, setAnswer] = useState([]);
+  console.log(answer);
+
   const [answerText, setAnswerText] = useState("");
+  // const [searchedCommunity, setSearchedCommunity] = useState([]);
   const nickname = useSelector(
     (state) => state.checkLoginSlice.checkLogin.nickname
   );
@@ -46,7 +49,9 @@ function QuestionAnswer({ sortedCommunity }) {
           communityType,
           stockType,
           id,
+          docId,
         } = questionItem;
+        console.log(questionItem);
 
         const createDate1 = new Date(createdAt)
           ?.toISOString("KR")
@@ -57,7 +62,7 @@ function QuestionAnswer({ sortedCommunity }) {
           .split("T")[1]
           .split(".")[0];
         const fetchComments = async () => {
-          const fetchedComments = await getComments(id);
+          const fetchedComments = await getComments(docId);
           setAnswer(fetchedComments);
         };
         const handleAddComment = async () => {

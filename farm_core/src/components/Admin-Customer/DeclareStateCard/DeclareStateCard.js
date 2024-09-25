@@ -21,8 +21,6 @@ function DeclareStateCard({
   commentId,
   communityType,
 }) {
-  console.log(communityType);
-
   const dispatch = useDispatch();
   const handleBlackClick = async (state) => {
     if (!comment) {
