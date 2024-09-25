@@ -36,12 +36,13 @@ function UserInfo() {
   const [isEditing, setIsEditing] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
-
+  const email = localStorage.getItem("email");
   useEffect(() => {
     const fetchQuestions = async () => {
       const queryOptions = {
         conditions: [
           { field: "communityType", operator: "==", value: "question" },
+          { field: "email", operator: "==", value: email },
         ],
       };
       const fetchedQuestions = await getDatas("community", queryOptions);
