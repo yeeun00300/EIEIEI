@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GaugeNeedle from "../Gauge/GaugeNeedle";
 import propellerImg from "../../img/프로펠러.png";
 import styles from "./CO2Control.module.scss";
+import { ToggleSwitch } from "../ToggleSwitch/ToggleSwitch";
 
 function CO2Control() {
   const [setValue, setSetValue] = useState(300); // 목표 설정값은 300

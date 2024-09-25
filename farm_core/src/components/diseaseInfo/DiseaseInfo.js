@@ -45,116 +45,113 @@ function DiseaseInfo() {
   };
 
   return (
-    <div className="page">
-      <div className="container">
-        <div className={styles.headerTitle}>
-          <h1>질병 사전</h1>
-          <h2>가축 종류 선택</h2>
-        </div>
-        <div className={styles.boxContainer}>
-          <div className="text-center mb-4">
-            <div className={styles.imgBox}>
-              <button
-                className={`${styles.btn} btn btn-primary mx-2`}
-                onClick={() => handleSelectAnimal("cows")}
-              >
-                <img src={cow} className={styles.Img} />
-              </button>
-              <button
-                className={`${styles.btn} btn btn-success mx-2`}
-                onClick={() => handleSelectAnimal("pigs")}
-              >
-                <img src={pork} className={styles.Img} />
-              </button>
-              <button
-                className={`${styles.btn} btn btn-warning mx-2`}
-                onClick={() => handleSelectAnimal("chickens")}
-              >
-                <img src={chicken} className={styles.Img} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.rowBox}>
-          <h2>
-            {selectedAnimal === "cows"
-              ? "소"
-              : selectedAnimal === "pigs"
-              ? "돼지"
-              : "닭"}{" "}
-            질병 목록
-          </h2>
-
-          <input
-            type="text"
-            className={`${styles.formControl} form-control`}
-            placeholder="질병 검색..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-
-          <div className={`${styles.row} row`}>
-            {currentDiseases.map((disease, index) => (
-              <div className={`col-md-4 mb-3`} key={index}>
-                <div
-                  className={styles.card}
-                  onClick={() => handleSelectDisease(disease)}
-                >
-                  <div className={styles.cardHeader}>
-                    <h5 className="mb-0">{disease.diseaseName}</h5>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {selectedDisease && (
-            <div className={styles.modalDisease}>
-              <div className={styles.modalContent}>
-                <span className={styles.close} onClick={closeModal}>
-                  &times;
-                </span>
-                <h2>{selectedDisease.diseaseName}</h2>
-                <p>
-                  <strong>증상:</strong> {selectedDisease.symptoms}
-                </p>
-                <p>
-                  <strong>진단 도구:</strong> {selectedDisease.diagnosisTool}
-                </p>
-                <p>
-                  <strong>치료법:</strong> {selectedDisease.therapy}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Pagination controls */}
-          <div className={styles.pagination}>
+    <div className="container">
+      <div className={styles.headerTitle}>
+        <h1>질병 사전</h1>
+        <h2>가축 종류 선택</h2>
+      </div>
+      <div className={styles.boxContainer}>
+        <div className="text-center mb-4">
+          <div className={styles.imgBox}>
             <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className={styles.prevBtn}
+              className={`${styles.btn} btn btn-primary mx-2`}
+              onClick={() => handleSelectAnimal("cows")}
             >
-              이전
+              <img src={cow} className={styles.Img} />
             </button>
-            <span>
-              {currentPage} / {totalPages}
-            </span>
             <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className={styles.nextBtn}
+              className={`${styles.btn} btn btn-success mx-2`}
+              onClick={() => handleSelectAnimal("pigs")}
             >
-              다음
+              <img src={pork} className={styles.Img} />
+            </button>
+            <button
+              className={`${styles.btn} btn btn-warning mx-2`}
+              onClick={() => handleSelectAnimal("chickens")}
+            >
+              <img src={chicken} className={styles.Img} />
             </button>
           </div>
         </div>
       </div>
+
+      <div className={styles.rowBox}>
+        <h2>
+          {selectedAnimal === "cows"
+            ? "소"
+            : selectedAnimal === "pigs"
+            ? "돼지"
+            : "닭"}{" "}
+          질병 목록
+        </h2>
+
+        <input
+          type="text"
+          className={`${styles.formControl} form-control`}
+          placeholder="질병 검색..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        <div className={`${styles.row} row`}>
+          {currentDiseases.map((disease, index) => (
+            <div className={`col-md-4 mb-3`} key={index}>
+              <div
+                className={styles.card}
+                onClick={() => handleSelectDisease(disease)}
+              >
+                <div className={styles.cardHeader}>
+                  <h5 className="mb-0">{disease.diseaseName}</h5>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {selectedDisease && (
+          <div className={styles.modalDisease}>
+            <div className={styles.modalContent}>
+              <span className={styles.close} onClick={closeModal}>
+                &times;
+              </span>
+              <h2>{selectedDisease.diseaseName}</h2>
+              <p>
+                <strong>증상:</strong> {selectedDisease.symptoms}
+              </p>
+              <p>
+                <strong>진단 도구:</strong> {selectedDisease.diagnosisTool}
+              </p>
+              <p>
+                <strong>치료법:</strong> {selectedDisease.therapy}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Pagination controls */}
+        <div className={styles.pagination}>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={styles.prevBtn}
+          >
+            이전
+          </button>
+          <span>
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className={styles.nextBtn}
+          >
+            다음
+          </button>
+        </div>
+      </div>
       {/* <MyStockAddPage /> */}
-      <MonthPractice />
     </div>
   );
 }

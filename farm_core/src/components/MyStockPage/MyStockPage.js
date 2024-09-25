@@ -8,6 +8,7 @@ import MedicalListSave from "../medicalList/MedicalListSave";
 import DiseaseInfo from "../diseaseInfo/DiseaseInfo";
 import MedicalListCheck from "../medicalList/MedicalListCheck";
 import MyLiveStockList from "../../pages/MyLiveStockInfo/MyLiveStockList";
+import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
 
 function MyStockPage(props) {
   return (
@@ -34,7 +35,7 @@ function MyStockPage(props) {
             <MedicalListSave />
           </Tab>
           <Tab eventKey="six" title="질병 정보">
-            <DiseaseInfo />
+            <DiseaseSelect />
           </Tab>
         </Tabs>
       </div>

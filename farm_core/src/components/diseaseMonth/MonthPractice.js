@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import KORMap from "./KORMap";
+import styles from "./MonthPractice.module.scss";
 
 function MonthPractice(props) {
   const [data, setData] = useState([]);
@@ -7,49 +9,67 @@ function MonthPractice(props) {
 
   const handleMonthChange = async (e) => {
     const month = e.target.value.replace("-", "");
-    console.log(month);
+    console.log(`Selected Month: ${month}`);
     setSelectedMonth(month);
 
-    const apiURL = `/api6/Grid_20151204000000000316_1/1/5/?QRANT_COMPT_MT=${month}`;
-    console.log(apiURL); // 요청 URL 확인
+    const apiURL = `/api6/openapi/ef47786d3eabcb9f87d0c7d3b301f869312d4cf9af878855b06ed3c153a53290/json/Grid_20220621000000000615_1/1/5/?QRANT_COMPT_MT=${month}`;
+    console.log(apiURL);
 
     try {
-      const response = await fetch(apiURL).then((response) => {
-        console.log(response);
-      });
-      console.log(response.data); // JSON 데이터 확인
-      const apiData = response.data.Grid_20220621000000000615_1.row;
+      const response = await fetch(apiURL);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const jsonData = await response.json();
+      console.log("jsonData", jsonData);
+      const rows = jsonData.Grid_20220621000000000615_1.row;
+      console.log("rows", rows);
 
-      const processedData = apiData.map((item) => {
-        console.log(item);
-        return {
-          locale: item.CTPRVN_NM,
-          count: item.OCCRRNC_CNT,
-        };
-      });
-      setData(processedData);
+      const regionalData = rows.reduce((acc, row) => {
+        const locale = row.CTPRVN_NM;
+        const count = row.OCCRRNC_CNT;
+        const animalType = row.LVSTCK_KIND_CD_NM;
+
+        if (!acc[locale]) {
+          acc[locale] = { count: 0, diseases: [], animalTypes: new Set() };
+        }
+
+        acc[locale].count += count;
+        acc[locale].diseases.push(row.DISE_CD_NM);
+        acc[locale].animalTypes.add(animalType);
+
+        return acc;
+      }, {});
+
+      const formattedData = Object.entries(regionalData).map(
+        ([locale, info]) => ({
+          locale,
+          count: info.count,
+          diseases: info.diseases,
+          animalTypes: Array.from(info.animalTypes),
+        })
+      );
+
+      console.log("최종 데이터", formattedData);
+      setData(formattedData);
     } catch (error) {
-      console.error("API 요청 실패:", error);
+      console.error("Error fetching data:", error);
     }
   };
 
+  console.log(selectedMonth);
   return (
-    <div>
-      <h1>월별 질병 발생 데이터</h1>
-
-      <input
-        type="month"
-        value={selectedMonth.slice(0, 4) + "-" + selectedMonth.slice(4)} // "YYYY-MM" 형식으로 표시
-        onChange={handleMonthChange}
-      />
-
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>
-            {item.locale}: {item.count}건 발생
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <div className={styles.wrapper}>
+        <h1>월별 질병 발생 데이터</h1>
+        <input
+          type="month"
+          value={selectedMonth.slice(0, 4) + "-" + selectedMonth.slice(4)}
+          onChange={handleMonthChange}
+        />
+      </div>
+      <KORMap data={data} selectedMonth={selectedMonth} />{" "}
+      {/* 선택된 월도 전달 */}
     </div>
   );
 }

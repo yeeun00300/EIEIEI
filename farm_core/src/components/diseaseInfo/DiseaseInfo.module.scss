@@ -16,9 +16,6 @@
 
 .boxContainer {
   display: flex;
-  // justify-content: center;
-  // align-items: center;
-  // flex-direction: column;
 
   .imgBox {
     display: flex;
@@ -42,6 +39,7 @@
     color: white;
   }
 }
+
 .rowBox {
   .formControl {
     border-radius: 5px;
@@ -134,4 +132,19 @@
       right: 3%;
     }
   }
+}
+
+.monthPracticeContainer {
+  margin-top: 40px; // 상단 여백
+  padding: 20px; // 내부 여백
+  background-color: #f8f9fa; // 배경 색상
+  border-radius: 10px; // 모서리 둥글게
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); // 그림자 효과
+}
+
+.monthPracticeTitle {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #2980b9;
+  margin-bottom: 20px;
 }
