@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
   const {
@@ -82,19 +75,47 @@ const renderActiveShape = (props) => {
 };
 
 function Vaccine({ stock }) {
-  console.log(stock);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [data, setData] = useState([]);
+
+  // stock 데이터가 변경될 때만 데이터 처리
   useEffect(() => {
+    if (!stock || stock.length === 0) return; // 데이터가 없으면 처리하지 않음
+
     const vaccineType = stock.map((item) =>
       item.vaccine.map((i) => i.vaccineType)
     );
-    console.log(vaccineType);
-  }, []);
+
+    // Step 1: 배열 평탄화
+    const flattenedVaccineTypes = [];
+    vaccineType.forEach((innerArray) => {
+      innerArray.forEach((vaccine) => {
+        flattenedVaccineTypes.push(vaccine);
+      });
+    });
+
+    // Step 2: 백신 종류 개수 세기
+    const countMap = flattenedVaccineTypes.reduce((acc, vaccine) => {
+      acc[vaccine] = (acc[vaccine] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Step 3: 데이터 구성
+    const chartData = Object.entries(countMap).map(([name, value]) => ({
+      name,
+      value,
+    }));
+
+    setData(chartData); // 데이터 상태 업데이트
+  }, [stock]);
+
   const onPieEnter = useCallback(
     (_, index) => {
-      setActiveIndex(index);
+      if (index !== activeIndex) {
+        setActiveIndex(index); // 인덱스가 다를 때만 업데이트
+      }
     },
-    [setActiveIndex]
+    [activeIndex]
   );
 
   return (
@@ -103,14 +124,14 @@ function Vaccine({ stock }) {
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
-          data={data}
+          data={data} // 상태로부터 데이터 사용
           cx="50%"
           cy="50%"
-          innerRadius={50}
+          innerRadius={65}
           outerRadius={80}
           fill="#8884d8"
           dataKey="value"
-          onClick={onPieEnter}
+          onMouseEnter={onPieEnter} // 호버 시 activeIndex 변경
         />
       </PieChart>
     </ResponsiveContainer>

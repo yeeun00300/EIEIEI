@@ -23,6 +23,7 @@ import { fetchSelectedStock } from "../../store/stockSlice/stockSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 import TempControl from "../ControlPanels/TempControl";
+import Table from "./table/Table";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();
@@ -168,11 +169,9 @@ function MyLiveStock(props) {
                     <button onClick={handleButtonClick}>확인</button>
                     <button onClick={handleAddClick}>추가</button>
                     {stockLength === 0 && (
-                      <div className={styles.warn}>
-                        가축 정보가 없습니다
-                        <button onClick={handleStockAddClick}>가축 추가</button>
-                      </div>
+                      <div className={styles.warn}>가축 정보가 없습니다</div>
                     )}
+                    <button onClick={handleStockAddClick}>가축 추가</button>
                   </div>
                   <div className={styles.cctv}>
                     <CCTVandAnimalInfo
@@ -183,50 +182,42 @@ function MyLiveStock(props) {
                   </div>
                 </div>
                 <div className={styles.farmInfoBox}>
-                  <div className={styles.farmListInfo}>
+                  {/* <div className={styles.farmListInfo}>
                     <h3>전체 평균 데이터</h3>
                     <table className={styles.styledTable}>
+                      <thead>
+                        <tr>
+                          <th>
+                            <select>
+                              <option>축종 선택</option>
+                              <option>한우</option>
+                              <option>낙농</option>
+                              <option>양돈</option>
+                              <option>육계</option>
+                              <option>산란계</option>
+                            </select>
+                          </th>
+                          <th>총 개체 수</th>
+                          <th>평균 무게</th>
+                        </tr>
+                      </thead>
                       <thead>
                         <tr>
                           <th>농장 이름</th>
                           <th>총 개체 수</th>
                           <th>평균 무게</th>
-                          <th>질병 발생 비율(1달)</th>
-                          <th>격리 개체 수</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <thead>
                         <tr>
-                          <td>예은이네 1농장</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                          <td>6000</td>
+                          <th>농장 이름</th>
+                          <th>총 개체 수</th>
+                          <th>평균 무게</th>
                         </tr>
-                        <tr>
-                          <td>예은이네 2농장</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                        </tr>
-                        <tr>
-                          <td>예은이네 3농장</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                          <td>6000</td>
-                        </tr>
-                        <tr className={styles.active}>
-                          <td>총 합계</td>
-                          <td>5150</td>
-                          <td>5150</td>
-                          <td>5150</td>
-                          <td>5150</td>
-                        </tr>
-                      </tbody>
+                      </thead>
                     </table>
-                  </div>
+                  </div> */}
+                  <Table />
                   <div>
                     <h3>축사 데이터 확인</h3>
                     <div className={styles.chartContainer}>{renderChart()}</div>

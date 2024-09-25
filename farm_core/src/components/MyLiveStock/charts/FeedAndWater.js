@@ -84,7 +84,7 @@ function FeedAndWater(props) {
         margin={{
           top: 30,
           right: 30,
-          left: 20,
+          left: -25,
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
