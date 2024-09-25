@@ -71,8 +71,7 @@ module.exports = function (app) {
   app.use(
     "/api6", // 기존 host 대신 사용할 경로
     createProxyMiddleware({
-      target:
-        "http://211.237.50.150:7080/openapi/ef47786d3eabcb9f87d0c7d3b301f869312d4cf9af878855b06ed3c153a53290/json/",
+      target: "http://211.237.50.150:7080/",
       changeOrigin: true,
       pathRewrite: {
         "^/api6": "", // /api6 부분을 제거하고 나머지 URL을 사용

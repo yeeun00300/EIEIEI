@@ -1,26 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { SimpleSouthKoreaMapChart } from "react-simple-south-korea-map-chart";
 
-const data = [
-  { locale: "부산광역시", count: 1500 },
-  { locale: "대구광역시", count: 3000 },
-  { locale: "대전광역시", count: 400 },
-  { locale: "강원도", count: 2500 },
-  { locale: "광주광역시", count: 1000 },
-  { locale: "경기도", count: 4000 },
-  { locale: "인천광역시", count: 2200 },
-  { locale: "제주특별자치도", count: 100 },
-  { locale: "충청북도", count: 49 },
-  { locale: "경상북도", count: 2000 },
-  { locale: "전라북도", count: 3300 },
-  { locale: "세종특별자치시", count: 110 },
-  { locale: "충청남도", count: 10 },
-  { locale: "경상남도", count: 0 },
-  { locale: "전라남도", count: 250 },
-  { locale: "울산광역시", count: 100 },
-  { locale: "서울특별시", count: 10000 },
-];
-function KoreaMap(props) {
+function KoreaMap({ data }) {
+  const [selectedInfo, setSelectedInfo] = useState(null);
+  // const setColorByCount = (count) => {
+  //   if (count === 0) return "#F1F1F1";
+  //   if (count > 5000) return "#79D3C4";
+  //   if (count > 3000) return "#43cdb6";
+  //   if (count > 1000) return "#61CDBB";
+  //   if (count > 200) return "#91D9CD";
+  //   if (count > 100) return "#A9DFD6";
+  //   if (count > 50) return "#C1E5DF";
+  //   if (count > 5) return "#D9EBF9";
+  //   else return "#ebfffd";
+  // };
   const setColorByCount = (count) => {
     if (count === 0) return "#F1F1F1";
     if (count > 5000) return "#79D3C4";
@@ -29,13 +22,47 @@ function KoreaMap(props) {
     if (count > 200) return "#91D9CD";
     if (count > 100) return "#A9DFD6";
     if (count > 50) return "#C1E5DF";
-    if (count > 5) return "#D9EBE8";
+    if (count > 5) return "#D9EBF9";
     else return "#ebfffd";
   };
 
+  const handleMouseEnter = (locale) => {
+    // const item = data.find((d) => d.locale === locale);
+    // if (item) {
+    //   setSelectedInfo(item);
+    // } else {
+    //   console.warn(`No data found for locale: ${locale}`); // 데이터가 없을 때 경고 로그
+    // }
+    alert("??");
+  };
+  console.log(selectedInfo);
+  // const tooltipContent = (locale, count, diseases) => {
+  //   console.log(locale);
+  //   const diseaseList = diseases.length > 0 ? diseases.join(", ") : "없음";
+
+  //   console.log(diseaseList);
+  //   return `
+  //     <strong>${locale}</strong><br />
+  //     발생한 질병 수: ${count}<br />
+  //     발생한 질병: ${diseaseList}
+  //   `;
+  // };
+
+  // formattedData 배열로 변환
+  const formattedData = data.map((item) => ({
+    locale: item.locale,
+    count: item.count,
+    diseases: item.diseases || [],
+    animalTypes: item.animalTypes || [],
+  }));
+
   return (
     <div>
-      <SimpleSouthKoreaMapChart setColorByCount={setColorByCount} data={data} />
+      <SimpleSouthKoreaMapChart
+        setColorByCount={setColorByCount}
+        data={formattedData}
+        onClick={handleMouseEnter} // 호버 시 이벤트 핸들러 추가
+      />
     </div>
   );
 }
