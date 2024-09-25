@@ -497,7 +497,7 @@ function MyStockDetails(props) {
               </Table>
             </TableContainer>
           )}
-          ;
+
           {isModalOpen && (
             <StockModal
               open={isModalOpen}
