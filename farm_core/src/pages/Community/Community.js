@@ -6,6 +6,9 @@ import ListPage from "./components/ListPage";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommunityPosts } from "./../../store/communitySlice/communitySlice";
+import CO2Control from "../../components/ControlPanels/CO2Control";
+import Auction from "../../components/auction/Auction";
+import TempControl from "../../components/ControlPanels/TempControl";
 
 function Community() {
   const dispatch = useDispatch();
@@ -148,6 +151,8 @@ function Community() {
           </button>
         )}
       </ListPage>
+      <CO2Control />
+      <TempControl />
     </div>
   );
 }
