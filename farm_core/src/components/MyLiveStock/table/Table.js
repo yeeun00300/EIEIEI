@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../MyLiveStock.module.scss";
 
-function Table(props) {
+function Table({ data }) {
+  const { weight } = data;
+  useEffect(() => {
+    console.log(data);
+  }, []);
+
   return (
     <div className={styles.farmListInfo}>
       <h3>전체 평균 데이터</h3>
@@ -24,15 +29,15 @@ function Table(props) {
         </thead>
         <thead>
           <tr>
-            <th>농장 이름</th>
-            <th>총 개체 수</th>
-            <th>평균 무게</th>
+            <th>일일 평균 생산량</th>
+            <th>일일 사료/물 소비량</th>
+            <th>예방접종 완료율</th>
           </tr>
         </thead>
         <thead>
           <tr>
-            <th>농장 이름</th>
-            <th>총 개체 수</th>
+            <th>격리 개체 수</th>
+            <th>발정 개체 수</th>
             <th>평균 무게</th>
           </tr>
         </thead>

@@ -19,11 +19,15 @@ import StockProduct from "./charts/StockProduct";
 import FeedAndWater from "./charts/FeedAndWater";
 import HealthCondition from "./charts/HealthCondition";
 import MortalityRate from "./charts/MortalityRate";
-import { fetchSelectedStock } from "../../store/stockSlice/stockSlice";
+import {
+  fetchExcelStock,
+  fetchSelectedStock,
+} from "../../store/stockSlice/stockSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 import TempControl from "../ControlPanels/TempControl";
 import Table from "./table/Table";
+import { useFetchCollectionData } from "../../firebase";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();
@@ -36,6 +40,10 @@ function MyLiveStock(props) {
   const { selectedStock, selectLoading } = useSelector(
     (state) => state.stockSlice
   );
+
+  useFetchCollectionData("stock", fetchExcelStock);
+  const { stock, isLoading } = useSelector((state) => state.stockSlice);
+
   const [selectedChart, setSelectedChart] = useState(null); // 현재 선택된 차트를 저장할 상태
   const [selectedValue, setSelectedValue] = useState(
     farmList.length > 0 ? farmList[0].farmId : ""
@@ -139,7 +147,7 @@ function MyLiveStock(props) {
 
   return (
     <>
-      {selectLoading ? (
+      {selectLoading && isLoading ? (
         <div className="page">
           <div>로딩중</div>
         </div>
@@ -217,7 +225,7 @@ function MyLiveStock(props) {
                       </thead>
                     </table>
                   </div> */}
-                  <Table />
+                  <Table data={stock} />
                   <div>
                     <h3>축사 데이터 확인</h3>
                     <div className={styles.chartContainer}>{renderChart()}</div>

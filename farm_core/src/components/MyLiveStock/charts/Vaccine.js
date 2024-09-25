@@ -101,9 +101,11 @@ function Vaccine({ stock }) {
     }, {});
 
     // Step 3: 데이터 구성
+    const total = stock.length;
     const chartData = Object.entries(countMap).map(([name, value]) => ({
       name,
       value,
+      percent: value / total,
     }));
 
     setData(chartData); // 데이터 상태 업데이트
