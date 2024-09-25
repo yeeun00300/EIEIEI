@@ -22,6 +22,8 @@ import EmailCheck from "./components/emailLogin/EmailCheck";
 import MyStockPage from "./components/MyStockPage/MyStockPage";
 import NewBoardPage from "./pages/Community/NewBoardPage";
 import MyStockDetails from "./pages/MyStockDetails/MyStockDetails";
+import Password from "./pages/Login/Password/Password";
+import PasswordConfirm from "./pages/Login/Password/PasswordConfirm";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,6 +51,8 @@ function App() {
             <Route index element={<Intro />} />
             <Route path="EmailSignUp" element={<EmailSignUp />} />
             <Route path="verify-email" element={<EmailCheck />} />
+            <Route path="password" element={<Password />} />
+            <Route path="passwordconfirm" element={<PasswordConfirm />} />
             <Route path="SignUp" element={<SignUp />} />
             <Route path="oauth" element={<KakaoCallBack />} />
             <Route path="RegularPayment" element={<RegularPayment />} />

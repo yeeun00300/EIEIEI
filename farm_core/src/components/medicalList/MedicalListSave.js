@@ -26,6 +26,7 @@ import {
 
 function MedicalListSave() {
   const [medicalData, setMedicalData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [subCollectionData, setSubCollectionData] = useState([]);
   const [selectedSubData, setSelectedSubData] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -70,13 +71,13 @@ function MedicalListSave() {
 
   const handleSubDataClick = (data) => {
     setSelectedSubData(data);
-    setUpdatedData(data); // 클릭한 데이터를 초기화
-    setEditing(false); // 상세보기 시 편집 상태 초기화
+    setUpdatedData(data);
+    setIsModalOpen(true); // 모달을 열기
   };
 
   const handleEdit = () => {
     setEditing(true);
-    setUpdatedData(selectedSubData); // 수정할 데이터를 저장
+    setUpdatedData(selectedSubData);
   };
 
   const handleChange = (e) => {
@@ -95,7 +96,13 @@ function MedicalListSave() {
   const handleCancel = () => {
     setEditing(false);
     setSelectedSubData(null);
-    setUpdatedData({}); // 수정 취소 시 업데이트 데이터 초기화
+    setUpdatedData({});
+    setIsModalOpen(false); // 모달 닫기
+  };
+
+  const handleCloseModal = () => {
+    setSelectedSubData(null);
+    setIsModalOpen(false); // 모달 닫기
   };
 
   const handleSave = async () => {
@@ -132,6 +139,7 @@ function MedicalListSave() {
 
       setSelectedSubData((prev) => ({ ...prev, ...updatedSubData }));
       alert("수정이 완료되었습니다!");
+      handleCancel();
     } catch (error) {
       console.error("업데이트 실패:", error);
     }
@@ -192,55 +200,60 @@ function MedicalListSave() {
           <DialogTitle>상세 증상</DialogTitle>
           <DialogContent>
             {selectedSubData && (
-              <div>
-                <p>
+              <div className={styles.subcontainer}>
+                <h2 className={styles.detailHeader}>상세 정보</h2>
+                <div className={styles.detailItem}>
                   <strong>증상:</strong> {selectedSubData.symptom}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>영향을 받은 가축 수:</strong>{" "}
                   {selectedSubData.symptomCount}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>열이 있습니까?</strong>{" "}
                   {selectedSubData.fever ? "예" : "아니요"}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>평균 체온:</strong> {selectedSubData.feverMean}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>기침 여부:</strong>{" "}
                   {selectedSubData.cough ? "예" : "아니요"}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>기침 빈도:</strong> {selectedSubData.coughCount}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>설사 증상:</strong>{" "}
                   {selectedSubData.diarrhea ? "예" : "아니요"}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>설사 횟수:</strong> {selectedSubData.diarrheaCount}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>환기 상태:</strong> {selectedSubData.ventilation}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>조명 상태:</strong> {selectedSubData.lampCondition}
-                </p>
-                <p>
+                </div>
+                <div className={styles.detailItem}>
                   <strong>사료 공급 상태:</strong> {selectedSubData.feedSupply}
-                </p>
-                <Button variant="contained" onClick={handleEdit}>
-                  수정하기
-                </Button>
+                </div>
+                <DialogActions className={styles.dialogActions}>
+                  <button className={styles.detailButton} onClick={handleEdit}>
+                    수정하기
+                  </button>
+                  <Button
+                    onClick={handleCloseModal}
+                    color="primary"
+                    className={styles.cancelbutton}
+                  >
+                    닫기
+                  </Button>
+                </DialogActions>
               </div>
             )}
           </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setSelectedSubData(null)} color="primary">
-              닫기
-            </Button>
-          </DialogActions>
         </Dialog>
 
         <Dialog open={editing} onClose={handleCancel}>

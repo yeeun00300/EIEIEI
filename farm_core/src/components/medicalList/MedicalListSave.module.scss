@@ -145,3 +145,56 @@ h2 {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.subcontainer {
+  width: 500px;
+  padding: 1rem;
+  background-color: #ecf0f1;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.detailHeader {
+  font-size: 1.5rem;
+  color: #2980b9;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.detailItem {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  color: #34495e;
+
+  strong {
+    color: #2980b9;
+  }
+}
+
+.detailButton {
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken(#2980b9, 10%);
+  }
+}
+.dialogActions {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.cancelbutton {
+  background-color: #2980b9;
+  color: white;
+
+  // &:hover {
+  // background-color: ;
+  // }
+}
