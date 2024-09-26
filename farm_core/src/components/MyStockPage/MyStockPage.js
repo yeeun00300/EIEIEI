@@ -10,6 +10,7 @@ import MedicalListCheck from "../medicalList/MedicalListCheck";
 import MyLiveStockList from "../../pages/MyLiveStockInfo/MyLiveStockList";
 import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
 import SubMain from "../../pages/Main/subMain/SubMain";
+import DeleteAccount from "../DeleteAccount/DeleteAccount";
 
 function MyStockPage(props) {
   return (
@@ -21,25 +22,26 @@ function MyStockPage(props) {
           className="mb-3"
           justify
         >
-          <Tab eventKey="four" title="축사 정보">
+          <Tab eventKey="one" title="축사 정보">
             <MedicalListCheck />
           </Tab>
-          <Tab eventKey="five" title="축사 제어">
+          <Tab eventKey="two" title="축사 제어">
             Tab content for Home
           </Tab>
-          <Tab eventKey="one" title="문진표 작성">
+          <Tab eventKey="three" title="문진표 작성">
             <div className={styles.one}>
               <MedicalList />
             </div>
           </Tab>
-          <Tab eventKey="two" title="문진표 내역">
+          <Tab eventKey="four" title="문진표 내역">
             <MedicalListSave />
           </Tab>
-          <Tab eventKey="two" title="회원탈퇴">
-            <SubMain />
-          </Tab>
-          <Tab eventKey="six" title="질병 정보">
+          <Tab eventKey="five" title="질병 정보">
             <DiseaseSelect />
+          </Tab>
+          <Tab eventKey="qwe" title="TEST">
+            {/* <DeleteAccount /> */}
+            <SubMain />
           </Tab>
         </Tabs>
       </div>

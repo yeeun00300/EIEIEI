@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./SubMain.module.scss";
 import CurrentMarker from "../../../components/DiseaseStatus/CurrentMarker";
 import { AiOutlineSearch } from "react-icons/ai";
-
+import { GrClose } from "react-icons/gr";
 function SubMain(props) {
   const [openModal, setOpenModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -27,7 +27,7 @@ function SubMain(props) {
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <button className={styles.closebutton} onClick={handleCloseModal}>
-              X
+              <GrClose />
             </button>
             <CurrentMarker />
           </div>
