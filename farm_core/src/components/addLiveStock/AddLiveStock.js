@@ -13,9 +13,12 @@ import {
 } from "../../store/addLiveStockSlice/addLiveStockSlice";
 import kroDate from "../../utils/korDate";
 import { addFarmDataWithSubcollections, db, getDatas } from "../../firebase";
+import { useNavigate } from "react-router-dom";
+import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 
 function AddLiveStock() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     zoneCode,
     address = "",
@@ -160,6 +163,23 @@ function AddLiveStock() {
       );
       dispatch(setAddress("")); // Clear main address
       dispatch(setDetailedAddress("")); // Clear detailed address
+      await dispatch(
+        fetchFarmList({
+          collectionName: "farm",
+          queryOptions: {
+            conditions: [
+              {
+                field: "email",
+                operator: "==",
+                value: email,
+              },
+            ],
+          },
+        })
+      );
+
+      // 홈으로 이동
+      navigate("/");
     } catch (error) {
       console.error("Error adding farm:", error);
     }
