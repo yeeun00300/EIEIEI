@@ -22,7 +22,7 @@ import { useParams } from "react-router-dom";
 import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
-import { useFetchCollectionData } from "../../firebase";
+import { saveFarmLayout, useFetchCollectionData } from "../../firebase";
 import MonthPractice from "./../../components/diseaseMonth/MonthPractice";
 
 // Category 스케일을 등록
@@ -53,8 +53,9 @@ const LineChart = ({ dataset }) => {
   );
 };
 
-function Main() {
+function Main({ farmList }) {
   const { farmId } = useParams();
+  const currentFarm = farmList.filter((item) => item.farmId === farmId)[0];
 
   // ????????????????????????????????????????????????????????????????????????????????
   const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
@@ -121,17 +122,17 @@ function Main() {
 
   // 1. 레이아웃 정보를 로컬스토리지에 저장
   const saveLayout = (layout) => {
-    localStorage.setItem("userLayout", JSON.stringify(layout));
+    // localStorage.setItem("userLayout", JSON.stringify(layout));
   };
 
   // 2. 로컬스토리지에 저장된 최신 레이아웃정보 불러오기
   const loadLayout = () => {
-    const savedLayout = localStorage.getItem("userLayout");
-    return savedLayout ? JSON.parse(savedLayout) : LAYOUTS;
+    // const savedLayout = localStorage.getItem("userLayout");
+    // return savedLayout ? JSON.parse(savedLayout) : LAYOUTS;
   };
 
   // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
-  const [layout, setLayout] = useState(loadLayout());
+  const [layout, setLayout] = useState([]);
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
   const onLayoutChange = (newLayout) => {
@@ -142,13 +143,18 @@ function Main() {
     saveLayout({
       lg: newLayout, // 'lg' 레이아웃 저장
     });
-    console.log(newLayout);
+
+    // console.log(newLayout);
   };
 
   // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
   useEffect(() => {
-    const savedLayout = loadLayout();
-    setLayout(savedLayout);
+    // const savedLayout = loadLayout();
+    // setLayout(savedLayout);
+    console.log(`농장정보확인:`, farmList);
+    //params에 있는 농장 번호와 farmList중에서 같은 거 찾기
+
+    console.log(`선택된 농장 확인`, currentFarm);
   }, []);
 
   const [edit, setEdit] = useState(false);
@@ -157,8 +163,12 @@ function Main() {
     setEdit(true);
   };
   //대시보드 편집 완료(파이어베이스에 등록하는거 추가예정)
-  const fixedMode = () => {
+  const fixedMode = async () => {
+    // 수정 모드를 비활성화
     setEdit(false);
+    const farmDocId = currentFarm.docId;
+    // docId와 newLayout 값을 적절히 전달하여 호출
+    // await saveFarmLayout(farmDocId, );  // farmId와 현재 레이아웃 전달
   };
   return (
     <div className="page">

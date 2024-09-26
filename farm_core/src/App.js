@@ -87,7 +87,10 @@ function App() {
               }
             />
             {/* 나의 축사(농장수 만큼 반복예정 path추가하기) */}
-            <Route path="/My_Farm/:farmId" element={<Main />} />
+            <Route
+              path="/My_Farm/:farmId"
+              element={<Main farmList={farmList} />}
+            />
             {/* 축사 데이터 */}
             <Route path="My_Farm_Details_Farm" element={<MyLiveStock />} />
             {/* 축사추가 */}
