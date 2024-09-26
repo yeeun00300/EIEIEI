@@ -53,7 +53,7 @@ function PasswordConfirm({
   return (
     <div className={styles.passwordConfirm}>
       <div className={styles.mainpassword}>
-        <p>새로운 비밀번호를 입력해주세요.</p>
+        <h1>새로운 비밀번호를 입력해주세요.</h1>
         <input
           type="password"
           placeholder="새 비밀번호를 입력하세요"

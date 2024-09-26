@@ -44,7 +44,7 @@ function DeleteAccount() {
         const userDocRef = querySnapshot.docs[0].ref; // 첫 번째 문서의 참조 가져오기
 
         // isActive 필드 업데이트
-        await updateDoc(userDocRef, { isActive: "Y" });
+        await updateDoc(userDocRef, { isActive: "N" });
         alert("회원 탈퇴 성공.");
 
         signOut(auth).then(() => {

@@ -47,7 +47,7 @@ function EmailCheck() {
   }, [navigate, searchParams]);
 
   return (
-    <div className="container">
+    <div>
       {loading && <p>처리 중...</p>}
       {error && <p>{error}</p>}
       {searchParams.get("mode") === "resetPassword" && (

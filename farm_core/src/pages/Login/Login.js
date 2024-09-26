@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,10 +16,16 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { checkUserInFirestore } from "../../firebase";
+import { checkUserInFirestore, db } from "../../firebase";
 import kakaoImg from "../../img/kakao_login.png";
 import googleSvg from "../../img/web_light_sq_SU.svg";
-import Password from "./Password/Password";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 
 function Login() {
   const dispatch = useDispatch();
@@ -34,6 +40,42 @@ function Login() {
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
+  };
+
+  // 사용자의 상태를 실시간으로 감시하는 함수
+  const monitorUserStatus = (userEmail) => {
+    const userDocQuery = query(
+      collection(db, "users"),
+      where("email", "==", userEmail)
+    );
+
+    const unsubscribe = onSnapshot(userDocQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const userData = snapshot.docs[0].data();
+        console.log("실시간 사용자 상태:", userData);
+
+        if (userData.blackState === "black") {
+          alert("블랙처리된 계정입니다. 자동으로 로그아웃됩니다.");
+          handleLogout();
+        }
+      }
+    });
+
+    return unsubscribe; // 감시를 해제하는 함수를 반환
+  };
+
+  // 로그아웃 처리 함수
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("email");
+      dispatch(setNotLogin(true));
+      navigate("/");
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+    }
   };
 
   const handleLogin = async (e) => {
@@ -53,28 +95,56 @@ function Login() {
         password
       );
       const { user } = userCredential;
-      console.log(user);
 
-      if (user) {
-        if (user && user.email) {
-          // 추가 정보 입력이 완료된 사용자
+      if (user && user.email) {
+        // Firestore에서 이메일 주소로 사용자 데이터 조회
+        const usersQuery = query(
+          collection(db, "users"),
+          where("email", "==", user.email)
+        );
+        const querySnapshot = await getDocs(usersQuery);
+        console.log(querySnapshot);
+
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data(); // 첫 번째 문서의 데이터 가져오기
+
+          // 사용자의 상태 확인
+          if (userData.isActive === "N") {
+            alert(
+              "해당 계정은 탈퇴된 상태입니다. 관리자에게 문의해주세요. 042-314-4741"
+            );
+            dispatch(setNotLogin(true));
+            await auth.signOut(); // 로그인 세션 종료
+            return; // 로그인 절차 중단
+          }
+
+          if (userData.blackState === "black") {
+            alert(
+              "블랙처리된 계정입니다. 관리자에게 문의해주세요. 042-314-4741"
+            );
+            dispatch(setNotLogin(true));
+            await auth.signOut(); // 로그인 세션 종료
+            return; // 로그인 절차 중단
+          }
+
+          // 로그인 성공 처리 후 실시간 상태 감시 시작
           localStorage.setItem("authToken", user.refreshToken);
-          localStorage.setItem("userId", user.uid);
+          localStorage.setItem("userId", user.uid); // 사용자 데이터에서 uid 가져오기
           localStorage.setItem("email", user.email);
-          console.log("로그인 성공", user);
           dispatch(setNotLogin(false));
+          monitorUserStatus(user.email); // 실시간 상태 감시 함수 호출
           navigate("/"); // 메인 페이지로 리디렉션
         } else {
-          // 추가 정보 입력이 필요한 사용자
-          navigate("/SignUp"); // 추가 정보 입력 페이지로 리디렉션
+          console.error("사용자 문서가 존재하지 않습니다.");
+          alert("사용자 데이터가 존재하지 않습니다.");
+          dispatch(setNotLogin(true));
         }
       } else {
-        // 사용자 문서가 존재하지 않으면 에러 처리
-        throw new Error("사용자 데이터가 존재하지 않습니다.");
+        console.error("로그인된 사용자 정보가 없습니다.");
+        alert("로그인 실패: 사용자 정보가 없습니다.");
+        dispatch(setNotLogin(true));
       }
     } catch (error) {
-      // console.log(error.code);
-      // console.log(error.message);
       let errorMessage;
 
       switch (error.code) {
@@ -104,7 +174,6 @@ function Login() {
   };
 
   // 카카오 소셜 로그인
-
   const SocialKakao = () => {
     const kakaoAPIKey = `${process.env.REACT_APP_REST_API_KEY}`;
     const redirectURI = `${process.env.REACT_APP_REDIRECT_URI}`;
@@ -121,8 +190,7 @@ function Login() {
     );
   };
 
-  // 구글
-
+  // 구글 로그인
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
@@ -137,7 +205,7 @@ function Login() {
           dispatch(setNotLogin(false));
           navigate("/");
         } else {
-          // 구글 최초 회원가입->추가정보입력페이지 이동
+          // 구글 최초 회원가입 -> 추가정보입력페이지로 이동
           console.log(`false확인용`);
           localStorage.setItem("email", user.email);
           navigate("/SignUp");
@@ -157,7 +225,6 @@ function Login() {
             <input
               id="email"
               type="text"
-              // placeholder="Email"
               value={email}
               onChange={(e) => dispatch(setEmail(e.target.value))}
               required
@@ -169,7 +236,6 @@ function Login() {
             <input
               id="password"
               type="password"
-              // placeholder="Password"
               value={password}
               onChange={(e) => dispatch(setPassword(e.target.value))}
               required
