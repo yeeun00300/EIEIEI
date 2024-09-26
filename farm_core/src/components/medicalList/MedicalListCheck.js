@@ -129,7 +129,6 @@ function MedicalListCheck() {
               <TableCell className={styles.tableCellHeader}>
                 정보 보기
               </TableCell>
-              <TableCell className={styles.tableCellHeader}></TableCell>
               <TableCell className={styles.tableCellHeader}>삭제</TableCell>
             </TableRow>
           </TableHead>

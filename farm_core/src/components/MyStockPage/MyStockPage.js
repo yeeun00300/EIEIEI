@@ -9,7 +9,7 @@ import DiseaseInfo from "../diseaseInfo/DiseaseInfo";
 import MedicalListCheck from "../medicalList/MedicalListCheck";
 import MyLiveStockList from "../../pages/MyLiveStockInfo/MyLiveStockList";
 import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
-import DeleteAccount from "../DeleteAccount/DeleteAccount";
+import SubMain from "../../pages/Main/subMain/SubMain";
 
 function MyStockPage(props) {
   return (
@@ -36,7 +36,7 @@ function MyStockPage(props) {
             <MedicalListSave />
           </Tab>
           <Tab eventKey="two" title="회원탈퇴">
-            <DeleteAccount />
+            <SubMain />
           </Tab>
           <Tab eventKey="six" title="질병 정보">
             <DiseaseSelect />
