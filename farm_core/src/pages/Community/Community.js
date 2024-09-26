@@ -153,9 +153,6 @@ function Community() {
           </button>
         )}
       </ListPage>
-      <MonthPractice />
-      <CO2Control />
-      <AMControl />
     </div>
   );
 }
