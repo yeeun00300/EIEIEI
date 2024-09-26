@@ -110,30 +110,11 @@ function Main() {
         i: "4",
         x: 2,
         y: 0,
-<<<<<<< Updated upstream
-        w: 1,
-=======
-        w: 2,
->>>>>>> Stashed changes
-        h: 4,
-        minw: 1,
-        maxh: 3,
-        children: <MonthPractice />,
-<<<<<<< Updated upstream
-=======
-      },
-    ],
-    md: [
-      {
-        i: "4",
-        x: 2,
-        y: 0,
         w: 2,
         h: 4,
         minw: 1,
         maxh: 3,
         children: <MonthPractice />,
->>>>>>> Stashed changes
       },
     ],
   };
