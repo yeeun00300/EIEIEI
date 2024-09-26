@@ -149,8 +149,7 @@ async function getData(collectionName, queryOptions) {
 
 async function deleteDatas(collectionName, docId) {
   try {
-    const cartRef = getCollection(collectionName);
-    const docRef = await doc(cartRef, docId.toString());
+    const docRef = doc(db, collectionName, docId);
     await deleteDoc(docRef);
     return true;
   } catch (error) {

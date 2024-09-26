@@ -1,38 +1,118 @@
-import React, { useState } from "react";
-import { diseaseData } from "../../utils/Disease";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./DiseaseInfo.module.scss";
 import cow from "../../img/한우얼굴.png";
 import pork from "../../img/양돈얼굴.png";
 import chicken from "../../img/양계얼굴.png";
-import MyStockPage from "../MyStockPage/MyStockPage";
-import MyStockAddPage from "../../pages/MyStockAddPage/MyStockAddPage";
-import MonthPractice from "../diseaseMonth/MonthPractice";
+import {
+  deleteDisease,
+  fetchDiseases,
+  addDisease,
+} from "../../store/diseaseSlice/diseaseSlice";
+import AddDiseaseForm from "./addDiseaseForm/AddDiseaseForm";
 
 function DiseaseInfo() {
+  const dispatch = useDispatch();
+  const { diseases, loading, error } = useSelector(
+    (state) => state.diseaseSlice
+  );
+
   const [selectedAnimal, setSelectedAnimal] = useState("cows");
   const [selectedDisease, setSelectedDisease] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAddDiseaseForm, setShowAddDiseaseForm] = useState(false);
   const itemsPerPage = 6;
+
+  const userEmail = localStorage.getItem("email");
+  const isAdmin = userEmail === "vet@naver.com";
+
+  useEffect(() => {
+    dispatch(
+      fetchDiseases({ collectionName: "DiseaseInfoMock", queryOptions: {} })
+    );
+  }, [dispatch, selectedAnimal]);
 
   const handleSelectAnimal = (animal) => {
     setSelectedAnimal(animal);
     setSelectedDisease(null);
-    setCurrentPage(1); // Reset to first page when animal changes
+    setCurrentPage(1);
   };
 
   const handleSelectDisease = (disease) => {
     setSelectedDisease(selectedDisease === disease ? null : disease);
   };
 
-  const filteredDiseases = diseaseData[selectedAnimal].filter((disease) =>
-    disease.diseaseName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleAddDisease = () => {
+    setShowAddDiseaseForm(true);
+  };
 
-  // Calculate the number of pages
+  const handleDeleteDisease = async (docId) => {
+    if (window.confirm("삭제 유무 확인중..")) {
+      console.log("docId를 찍어보자", docId);
+      const resultAction = await dispatch(
+        deleteDisease({
+          collectionName: "DiseaseInfoMock",
+          docId: docId,
+        })
+      );
+
+      if (deleteDisease.fulfilled.match(resultAction)) {
+        console.log("삭제 성공:", resultAction.payload);
+      } else {
+        console.error("삭제 실패:", resultAction.error);
+      }
+    }
+  };
+
+  const handleUpdateDisease = (diseaseId) => {
+    alert(`질병 ID ${diseaseId} 업데이트`);
+  };
+
+  const handleDiseaseAdded = async (newDisease) => {
+    const animalIdMap = {
+      cows: "cow",
+      pigs: "pork",
+      chickens: "chicken",
+    };
+
+    const animalType = animalIdMap[selectedAnimal];
+    const existingDiseases = diseases.filter((disease) =>
+      disease.id.startsWith(animalType)
+    );
+    const newId = `${animalType}${existingDiseases.length + 1}`;
+
+    const diseaseToAdd = {
+      ...newDisease,
+      id: newId,
+    };
+
+    dispatch(
+      await addDisease({
+        collectionName: "DiseaseInfoMock",
+        addObj: diseaseToAdd,
+      })
+    );
+    setShowAddDiseaseForm(false);
+  };
+
+  const filteredDiseases = diseases.filter((disease) => {
+    const animalIdMap = {
+      cows: "cow",
+      pigs: "pork",
+      chickens: "chicken",
+    };
+
+    return (
+      disease &&
+      disease.id &&
+      disease.diseaseName &&
+      disease.id.includes(animalIdMap[selectedAnimal]) &&
+      disease.diseaseName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   const totalPages = Math.ceil(filteredDiseases.length / itemsPerPage);
-
-  // Get current diseases to display
   const indexOfLastDisease = currentPage * itemsPerPage;
   const indexOfFirstDisease = indexOfLastDisease - itemsPerPage;
   const currentDiseases = filteredDiseases.slice(
@@ -57,19 +137,19 @@ function DiseaseInfo() {
               className={`${styles.btn} btn btn-primary mx-2`}
               onClick={() => handleSelectAnimal("cows")}
             >
-              <img src={cow} className={styles.Img} />
+              <img src={cow} className={styles.Img} alt="Cow" />
             </button>
             <button
               className={`${styles.btn} btn btn-success mx-2`}
               onClick={() => handleSelectAnimal("pigs")}
             >
-              <img src={pork} className={styles.Img} />
+              <img src={pork} className={styles.Img} alt="Pork" />
             </button>
             <button
               className={`${styles.btn} btn btn-warning mx-2`}
               onClick={() => handleSelectAnimal("chickens")}
             >
-              <img src={chicken} className={styles.Img} />
+              <img src={chicken} className={styles.Img} alt="Chicken" />
             </button>
           </div>
         </div>
@@ -93,20 +173,64 @@ function DiseaseInfo() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <div className={`${styles.row} row`}>
-          {currentDiseases.map((disease, index) => (
-            <div className={`col-md-4 mb-3`} key={index}>
-              <div
-                className={styles.card}
-                onClick={() => handleSelectDisease(disease)}
-              >
-                <div className={styles.cardHeader}>
-                  <h5 className="mb-0">{disease.diseaseName}</h5>
+        {loading ? (
+          <p>로딩 중...</p>
+        ) : error ? (
+          <p>에러 발생: {error}</p>
+        ) : (
+          <div className={`${styles.row} row`}>
+            {currentDiseases.length > 0 ? (
+              currentDiseases.map((disease, index) => (
+                <div className={`col-md-4 mb-3`} key={index}>
+                  <div
+                    className={styles.card}
+                    onClick={() => handleSelectDisease(disease)}
+                  >
+                    <div className={styles.cardHeader}>
+                      <h5 className="mb-0">{disease.diseaseName}</h5>
+                    </div>
+                    {isAdmin && (
+                      <div className={styles.adminActions}>
+                        <button
+                          className={`${styles.btnAction} btn btn-danger`}
+                          onClick={() => handleDeleteDisease(disease.docId)}
+                        >
+                          삭제
+                        </button>
+                        <button
+                          className={`${styles.btnAction} btn btn-info`}
+                          onClick={() => handleUpdateDisease(disease.id)}
+                        >
+                          수정
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              ))
+            ) : (
+              <p>등록된 질병이 없습니다.</p>
+            )}
+          </div>
+        )}
+
+        {isAdmin && (
+          <div className="text-center">
+            <button
+              className={`${styles.addButton} btn btn-primary`}
+              onClick={handleAddDisease}
+            >
+              질병 추가
+            </button>
+          </div>
+        )}
+        {isAdmin && showAddDiseaseForm && (
+          <AddDiseaseForm
+            onClose={() => setShowAddDiseaseForm(false)}
+            onDiseaseAdded={handleDiseaseAdded}
+            selectedAnimal={selectedAnimal}
+          />
+        )}
 
         {selectedDisease && (
           <div className={styles.modalDisease}>
@@ -151,7 +275,6 @@ function DiseaseInfo() {
           </button>
         </div>
       </div>
-      {/* <MyStockAddPage /> */}
     </div>
   );
 }

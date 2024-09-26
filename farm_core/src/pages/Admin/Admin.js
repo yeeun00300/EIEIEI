@@ -34,6 +34,7 @@ import AMControl from "../../components/ControlPanels/AMControl";
 import UserInfo from "./../MyPage/UserInfo/UserInfo";
 import AccordionAlarm from "../../components/Alarm/AccordionAlarm";
 import Chatting from "../../components/Chatting/Chatting";
+import DiseaseInfo from "../../components/diseaseInfo/DiseaseInfo";
 
 function Admin({ userInfo, address }) {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -134,7 +135,7 @@ function Admin({ userInfo, address }) {
       "weather-condition": <Weather />,
       "weather-issue": <WeatherIssue />,
       "weather-notice": <AlarmManagement reSend={true} sort={"날씨"} />,
-      "disease-state": <DiseaseUser />,
+      "disease-state": <DiseaseInfo />,
       "disease-issue": <DiseaseState />,
       "disease-consult": <h1>문진표 목록</h1>,
       "disease-notice": <DiseaseIssue />,

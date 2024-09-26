@@ -1,0 +1,191 @@
+[
+  {
+    "diseaseName": "뉴캐슬병 (Newcastle Disease, ND)",
+    "symptoms": "호흡기 문제, 기침, 재채기, 신경 증상: 경련, 마비, 급격한 산란율 감소",
+    "diagnosisTool": "RT-PCR 검사, 혈청학적 검사로 항체 확인",
+    "therapy": "바이러스성 질병으로 치료법은 없으며 예방이 최우선, 감염 시 살처분이 원칙",
+    "id": "chicken1"
+  },
+  {
+    "diseaseName": "가금티푸스 (Fowl Typhoid)",
+    "symptoms": "무기력, 식욕 부진, 탈수, 설사, 산란율 저하",
+    "diagnosisTool": "배설물 및 혈액 샘플 분석, 세균 배양 및 항생제 감수성 검사",
+    "therapy": "항생제 치료, 위생 및 환경 관리 강화",
+    "id": "chicken2"
+  },
+  {
+    "diseaseName": "조류 연쇄상구균증 (Avian Streptococcosis)",
+    "symptoms": "호흡기 증상, 발열, 식욕 저하",
+    "diagnosisTool": "혈액 검사, 세균 배양",
+    "therapy": "항생제 치료, 위생 관리",
+    "id": "chicken3"
+  },
+  {
+    "diseaseName": "가금류 동물사이토메갈로바이러스 (Avian Cytomegalovirus Infection)",
+    "symptoms": "발열, 성장 지연, 면역력 저하",
+    "diagnosisTool": "혈액 검사, 조직 생검",
+    "therapy": "항바이러스제, 예방 접종",
+    "id": "chicken4"
+  },
+  {
+    "diseaseName": "조류 인플루엔자 (Avian Influenza, AI)",
+    "symptoms": "호흡 곤란, 기침, 재채기, 산란율 저하, 얼굴 부종, 심한 경우 폐사",
+    "diagnosisTool": "RT-PCR 및 ELISA 검사, 병변 조직 검사",
+    "therapy": "바이러스성 질병으로 치료법은 없으며 감염 시 살처분이 원칙, 방역과 예방이 중요",
+    "id": "chicken5"
+  },
+  {
+    "diseaseName": "가금 콕시듐증 (Avian Coccidiosis)",
+    "symptoms": "설사, 혈변, 체중 감소, 성장 지연, 산란율 저하",
+    "diagnosisTool": "분변 샘플을 통한 현미경 검사, 항생제 감수성 검사",
+    "therapy": "항콕시듐제를 통한 치료, 예방접종 및 사료 관리 강화",
+    "id": "chicken6"
+  },
+  {
+    "diseaseName": "전염성 기관지염 (Infectious Bronchitis, IB)",
+    "symptoms": "기침, 재채기, 호흡 곤란, 산란율 저하, 기형란 발생",
+    "diagnosisTool": "RT-PCR 검사, 바이러스 분리 및 항체 검사",
+    "therapy": "대증 요법으로 증상 완화, 항생제를 통한 2차 감염 예방",
+    "id": "chicken7"
+  },
+  {
+    "diseaseName": "마렉병 (Marek's Disease)",
+    "symptoms": "신경 마비, 날개 처짐, 다리 마비, 체중 감소",
+    "diagnosisTool": "현미경을 통한 조직 검사, 바이러스 분리 및 PCR 검사",
+    "therapy": "예방 접종이 최선의 방책, 감염 조류의 격리 및 도태",
+    "id": "chicken8"
+  },
+  {
+    "diseaseName": "가금콜레라 (Fowl Cholera)",
+    "symptoms": "발열, 식욕 저하, 설사, 폐사율 증가, 만성형은 관절염",
+    "diagnosisTool": "혈액 샘플을 통한 세균 배양, PCR 검사",
+    "therapy": "항생제 치료 가능하나, 예방 접종과 환경 관리가 중요",
+    "id": "chicken9"
+  },
+  {
+    "diseaseName": "조류 호흡기 증후군 (Avian Respiratory Syndrome)",
+    "symptoms": "기침, 재채기, 호흡 곤란, 산란율 저하",
+    "diagnosisTool": "RT-PCR 검사, 호흡기 분비물 분석",
+    "therapy": "항생제 치료, 환기 및 위생 관리",
+    "id": "chicken10"
+  },
+  {
+    "diseaseName": "가금 백혈병 (Avian Leukosis)",
+    "symptoms": "체중 감소, 백혈구 증가, 종양 발생",
+    "diagnosisTool": "혈액 검사, 조직 생검",
+    "therapy": "특정 치료법 없음, 예방 접종이 필요",
+    "id": "chicken11"
+  },
+  {
+    "diseaseName": "조류 조기사멸 증후군 (Early Mortality Syndrome in Poultry)",
+    "symptoms": "신속한 폐사, 무기력, 체중 감소",
+    "diagnosisTool": "병리학적 분석, 원인균 검사",
+    "therapy": "환경 및 위생 관리 강화, 예방 접종",
+    "id": "chicken12"
+  },
+  {
+    "diseaseName": "조류 구순염 (Avian Stomatitis)",
+    "symptoms": "입술의 염증, 침 흘림, 식욕 저하",
+    "diagnosisTool": "입술 샘플 검사, 세균 배양",
+    "therapy": "항생제 치료, 구강 위생 관리",
+    "id": "chicken13"
+  },
+  {
+    "diseaseName": "조류 혈관염 (Avian Vascular Disease)",
+    "symptoms": "피부와 조직의 출혈, 무기력",
+    "diagnosisTool": "혈액 검사, 조직 샘플 분석",
+    "therapy": "대증 요법, 환경 위생 관리",
+    "id": "chicken14"
+  },
+  {
+    "diseaseName": "조류 부종 (Avian Edema)",
+    "symptoms": "부풀어 오른 얼굴, 발열, 호흡 곤란",
+    "diagnosisTool": "RT-PCR 검사, 조직 검사",
+    "therapy": "항바이러스제, 환경 관리",
+    "id": "chicken15"
+  },
+  {
+    "diseaseName": "가금류 전염성 창상염 (Infectious Dermatitis)",
+    "symptoms": "피부의 염증, 발열, 식욕 저하",
+    "diagnosisTool": "피부 샘플 검사, 세균 배양",
+    "therapy": "항생제 치료, 상처 관리",
+    "id": "chicken16"
+  },
+  {
+    "diseaseName": "조류 위염 (Avian Gastritis)",
+    "symptoms": "식욕 저하, 체중 감소, 구토",
+    "diagnosisTool": "위 내시경 검사, 조직 생검",
+    "therapy": "항생제 치료, 사료 조정",
+    "id": "chicken17"
+  },
+  {
+    "diseaseName": "만성 호흡기 질병(Chronic Respiratory Disease (CRD))",
+    "symptoms": "기침, 재채기, 호흡 곤란",
+    "diagnosisTool": "RT-PCR 검사, 조직 샘플 분석",
+    "therapy": "항생제 치료, 환기 및 위생 관리",
+    "id": "chicken18"
+  },
+  {
+    "diseaseName": "조류 마이코플라스마증(Avian Mycoplasmosis)",
+    "symptoms": "기침, 발열, 비강 분비물",
+    "diagnosisTool": "RT-PCR 검사, 세균 배양",
+    "therapy": "항생제 치료, 환경 관리",
+    "id": "chicken19"
+  },
+  {
+    "diseaseName": "가금 유두종(Fowlpox)",
+    "symptoms": "피부에 발진, 식욕 저하",
+    "diagnosisTool": "피부 샘플 검사, 병리학적 분석",
+    "therapy": "백신 접종, 감염 조류의 격리",
+    "id": "chicken20"
+  },
+  {
+    "diseaseName": "조류 살모넬라증(Avian Salmonellosis)",
+    "symptoms": "설사, 무기력, 식욕 부진",
+    "diagnosisTool": "분변 및 혈액 샘플 분석, 세균 배양",
+    "therapy": "항생제 치료, 위생 관리",
+    "id": "chicken21"
+  },
+  {
+    "diseaseName": "조류 간염 (Avian Hepatitis)",
+    "symptoms": "간 부위의 부풀음, 황달, 체중 감소",
+    "diagnosisTool": "간 조직 생검, 혈액 검사",
+    "therapy": "항바이러스제, 간 보호제, 위생 관리",
+    "id": "chicken22"
+  },
+  {
+    "diseaseName": "조류 두창 (Avian Pox)",
+    "symptoms": "피부에 궤양, 발열, 식욕 저하",
+    "diagnosisTool": "피부 샘플 검사, 병리학적 분석",
+    "therapy": "백신 접종, 상처 관리",
+    "id": "chicken23"
+  },
+  {
+    "diseaseName": "조류 장염 (Avian Enteritis)",
+    "symptoms": "설사, 체중 감소, 무기력",
+    "diagnosisTool": "분변 검사, 조직 생검",
+    "therapy": "항생제 치료, 사료 및 위생 관리",
+    "id": "chicken24"
+  },
+  {
+    "diseaseName": "가금류 후두염 (Avian Laryngitis)",
+    "symptoms": "호흡 곤란, 기침, 목 부위의 부종",
+    "diagnosisTool": "후두 및 기도 샘플 검사, RT-PCR 검사",
+    "therapy": "항생제 치료, 환경 개선 및 위생 관리",
+    "id": "chicken25"
+  },
+  {
+    "diseaseName": "가금류 급성 위염 (Acute Avian Gastritis)",
+    "symptoms": "식욕 저하, 구토, 체중 감소",
+    "diagnosisTool": "위 내시경 검사, 혈액 검사",
+    "therapy": "항생제 치료, 사료 조정 및 위생 관리",
+    "id": "chicken26"
+  },
+  {
+    "diseaseName": "조류 백혈병 (Avian Leukosis)",
+    "symptoms": "체중 감소, 백혈구 증가, 종양 발생",
+    "diagnosisTool": "혈액 검사, 조직 생검",
+    "therapy": "특정 치료법 없음, 예방 접종이 필요",
+    "id": "chicken27"
+  }
+]

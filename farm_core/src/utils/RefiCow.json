@@ -3,162 +3,189 @@
     "diseaseName": "소 바이러스성 설사증 (Bovine Viral Diarrhea, BVD)",
     "symptoms": "발열, 설사, 식욕 저하, 호흡기 문제, 임신 중 감염 시 유산, 사산, 태아 기형 발생 가능",
     "diagnosisTool": "혈액, 타액 또는 분변 샘플을 이용한 RT-PCR 검사, 혈청검사를 통해 항체 유무 확인",
-    "therapy": "대증요법을 통한 증상 완화. 2차 감염 예방을 위한 항생제 증상투여, 감염 소의 영양 상태 관리"
+    "therapy": "대증요법을 통한 증상 완화. 2차 감염 예방을 위한 항생제 증상투여, 감염 소의 영양 상태 관리",
+    "id": "cow1"
   },
   {
     "diseaseName": "구제역 (Foot-and-Mouth Disease, FMD)",
     "symptoms": "고열, 입과 발굽의 물집, 침 흘림, 절뚝거림, 심한 경우 폐사",
     "diagnosisTool": "RT-PCR 및 ELISA 검사, 바이러스 항원 및 항체 검출",
-    "therapy": "구제역은 법정전염병으로 치료보다는 전파 방지가 중요, 감염된 동물은 살처분이 원칙"
+    "therapy": "구제역은 법정전염병으로 치료보다는 전파 방지가 중요, 감염된 동물은 살처분이 원칙",
+    "id": "cow2"
   },
   {
     "diseaseName": "소 결핵 (Bovine Tuberculosis)",
     "symptoms": "초기 증상은 거의 없음, 후기에는 기침, 체중 감소, 피로",
     "diagnosisTool": "피부 결핵 검사 (Tuberculin skin test), 혈액 검사를 통한 세균 확인",
-    "therapy": "소 결핵은 치료보다는 감염 동물의 도태가 중요, 농장의 위생 및 방역 관리"
+    "therapy": "소 결핵은 치료보다는 감염 동물의 도태가 중요, 농장의 위생 및 방역 관리",
+    "id": "cow3"
   },
   {
     "diseaseName": "유방염 (Mastitis)",
     "symptoms": "젖소의 젖이 붓고, 통증, 염증, 젖에서 혈액이나 고름이 나옴",
     "diagnosisTool": "우유 샘플을 통한 세균 배양 검사, Somatic Cell Count (SCC) 측정",
-    "therapy": "항생제 치료, 젖소의 위생 관리 강화, 우유 생산 중단"
+    "therapy": "항생제 치료, 젖소의 위생 관리 강화, 우유 생산 중단",
+    "id": "cow4"
   },
   {
     "diseaseName": "소 폐렴 (Bovine Pneumonia)",
     "symptoms": "기침, 발열, 호흡 곤란, 폐에서 잡음",
     "diagnosisTool": "임상 증상 관찰, 흉부 청진, 폐의 엑스레이 촬영",
-    "therapy": "항생제 투여, 소의 스트레스 관리, 농장의 환기 상태 개선"
+    "therapy": "항생제 투여, 소의 스트레스 관리, 농장의 환기 상태 개선",
+    "id": "cow5"
   },
   {
     "diseaseName": "야콥병 (Bovine Spongiform Encephalopathy, BSE)",
     "symptoms": "신경계 증상, 운동 실조, 행동 이상, 거동 불편",
     "diagnosisTool": "뇌 조직 검사 (사후), ELISA 또는 Western blot 분석",
-    "therapy": "치료 불가, 감염 소의 살처분 및 농장 격리"
+    "therapy": "치료 불가, 감염 소의 살처분 및 농장 격리",
+    "id": "cow6"
   },
   {
     "diseaseName": "소 파라티푸스 (Paratuberculosis, Johne's Disease)",
     "symptoms": "만성 설사, 체중 감소, 식욕 저하, 면역력 저하",
     "diagnosisTool": "분변 및 혈액 샘플을 통한 세균 배양, PCR 검사",
-    "therapy": "치료가 어려우며, 감염 동물의 도태 및 농장의 방역 관리"
+    "therapy": "치료가 어려우며, 감염 동물의 도태 및 농장의 방역 관리",
+    "id": "cow7"
   },
   {
     "diseaseName": "블랙레그 (Blackleg)",
     "symptoms": "급성 발병, 발열, 근육 부종, 조직 괴사, 급격한 폐사",
     "diagnosisTool": "병변 부위의 조직 샘플 검사, 박테리아 배양",
-    "therapy": "항생제 치료 가능하나, 예방 접종이 최선의 방책"
+    "therapy": "항생제 치료 가능하나, 예방 접종이 최선의 방책",
+    "id": "cow8"
   },
   {
     "diseaseName": "소 유두염 (Bovine Udder Inflammation)",
     "symptoms": "유두의 발적, 부종, 통증, 젖의 질 변화",
     "diagnosisTool": "유두 샘플 검사, 우유 내 세균 배양",
-    "therapy": "항생제 치료, 유두 위생 관리"
+    "therapy": "항생제 치료, 유두 위생 관리",
+    "id": "cow9"
   },
   {
     "diseaseName": "소 강직증 (Bovine Rickets)",
     "symptoms": "골격 이상, 비정상적인 뼈 성장, 체중 감소",
     "diagnosisTool": "혈액 검사, X-ray 검사",
-    "therapy": "비타민 D 및 칼슘 보충, 적절한 영양 관리"
+    "therapy": "비타민 D 및 칼슘 보충, 적절한 영양 관리",
+    "id": "cow10"
   },
   {
     "diseaseName": "소 리에모바이러스 감염증 (Bovine Leptospirosis)",
     "symptoms": "발열, 황달, 신장 및 간 손상",
     "diagnosisTool": "혈청 검사, PCR 검사",
-    "therapy": "항생제 치료, 백신 접종"
+    "therapy": "항생제 치료, 백신 접종",
+    "id": "cow11"
   },
   {
     "diseaseName": "소 원충병 (Bovine Protozoal Infection)",
     "symptoms": "설사, 체중 감소, 빈혈",
     "diagnosisTool": "분변 검사, 혈액 검사",
-    "therapy": "항원충제 치료, 환경 및 위생 관리"
+    "therapy": "항원충제 치료, 환경 및 위생 관리",
+    "id": "cow12"
   },
   {
     "diseaseName": "소 전염성 비기관지염 (Infectious Bovine Rhinotracheitis, IBR)",
     "symptoms": "발열, 기침, 재채기, 분비물",
     "diagnosisTool": "RT-PCR 검사, 바이러스 배양",
-    "therapy": "항바이러스제, 백신 접종"
+    "therapy": "항바이러스제, 백신 접종",
+    "id": "cow13"
   },
   {
     "diseaseName": "소 낭창병 (Bovine Lumpy Skin Disease, LSD)",
     "symptoms": "피부에 결절, 발열, 식욕 저하",
     "diagnosisTool": "피부 샘플 검사, RT-PCR 검사",
-    "therapy": "항바이러스제, 백신 접종"
+    "therapy": "항바이러스제, 백신 접종",
+    "id": "cow14"
   },
   {
     "diseaseName": "소 생식기 질병 (Bovine Genital Tract Diseases)",
     "symptoms": "생식기 염증, 불임, 배란 문제",
     "diagnosisTool": "생식기 검진, 초음파 검사",
-    "therapy": "항생제 치료, 생식기 위생 관리"
+    "therapy": "항생제 치료, 생식기 위생 관리",
+    "id": "cow15"
   },
   {
     "diseaseName": "소 우유 체중 감소 증후군 (Bovine Milk Fever)",
     "symptoms": "무기력, 떨림, 발열, 식욕 저하",
     "diagnosisTool": "혈청 칼슘 농도 측정",
-    "therapy": "칼슘 주사, 영양 관리"
+    "therapy": "칼슘 주사, 영양 관리",
+    "id": "cow16"
   },
   {
     "diseaseName": "소 호흡기 융합 바이러스(Bovine Respiratory Syncytial Virus BRSV)",
     "symptoms": "기침, 호흡 곤란, 발열",
     "diagnosisTool": "RT-PCR 검사, 폐 조직 검사",
-    "therapy": "항바이러스제, 대증 요법"
+    "therapy": "항바이러스제, 대증 요법",
+    "id": "cow17"
   },
   {
     "diseaseName": "소 아나플라즈마증 (Bovine Anaplasmosis)",
     "symptoms": "발열, 빈혈, 황달",
     "diagnosisTool": "혈액 검사, 혈청 검사",
-    "therapy": "항생제 치료, 농장 위생 관리"
+    "therapy": "항생제 치료, 농장 위생 관리",
+    "id": "cow18"
   },
   {
     "diseaseName": "소 파라튜버클로시스 (조네병) (Bovine Johne's Disease Paratuberculosis)",
     "symptoms": "만성 설사, 체중 감소, 식욕 저하",
     "diagnosisTool": "분변 검사, 혈액 검사",
-    "therapy": "감염 동물의 도태, 농장 방역 관리"
+    "therapy": "감염 동물의 도태, 농장 방역 관리",
+    "id": "cow19"
   },
   {
     "diseaseName": "소 리코치아증 (Cattle Tick Fever)",
     "symptoms": "발열, 빈혈, 식욕 저하, 기침, 피부 발진",
     "diagnosisTool": "혈액 검사, 진드기 검사",
-    "therapy": "항진드기제 사용, 대증 요법, 항생제 치료"
+    "therapy": "항진드기제 사용, 대증 요법, 항생제 치료",
+    "id": "cow20"
   },
   {
     "diseaseName": "소 신장염 (Bovine Nephritis)",
     "symptoms": "발열, 체중 감소, 식욕 저하, 잦은 배뇨",
     "diagnosisTool": "혈액 검사, 소변 검사, 신장 초음파",
-    "therapy": "항생제 치료, 체액 보충, 신장 보호제"
+    "therapy": "항생제 치료, 체액 보충, 신장 보호제",
+    "id": "cow21"
   },
   {
     "diseaseName": "소 급성 장염 (Acute Bovine Enteritis)",
     "symptoms": "급성 설사, 발열, 탈수, 식욕 저하",
     "diagnosisTool": "분변 검사, 혈액 검사",
-    "therapy": "수분 및 전해질 보충, 항생제 치료"
+    "therapy": "수분 및 전해질 보충, 항생제 치료",
+    "id": "cow22"
   },
   {
     "diseaseName": "소 브루셀라증 (Bovine Brucellosis)",
     "symptoms": "발열, 관절염, 유산",
     "diagnosisTool": "혈액 검사, 항체 검출",
-    "therapy": "항생제 치료, 감염 동물의 도태 및 농장 위생 관리"
+    "therapy": "항생제 치료, 감염 동물의 도태 및 농장 위생 관리",
+    "id": "cow23"
   },
   {
     "diseaseName": "소 고환염 (Bovine Orchitis)",
     "symptoms": "고환의 붓기, 통증, 발열",
     "diagnosisTool": "고환 초음파 검사, 혈액 검사",
-    "therapy": "항생제 치료, 고환 보호 및 위생 관리"
+    "therapy": "항생제 치료, 고환 보호 및 위생 관리",
+    "id": "cow24"
   },
   {
     "diseaseName": "소 림프구성 비만증 (Bovine Lymphosarcoma)",
     "symptoms": "림프절 비대, 체중 감소, 식욕 부진, 발열",
     "diagnosisTool": "조직 생검, 혈액 검사, 초음파 검사",
-    "therapy": "치료는 어렵고, 감염 동물의 격리 및 농장 방역 관리"
+    "therapy": "치료는 어렵고, 감염 동물의 격리 및 농장 방역 관리",
+    "id": "cow25"
   },
   {
     "diseaseName": "소 신경염 (Bovine Neuropathy)",
     "symptoms": "신경 증상, 발음 어려움, 마비",
     "diagnosisTool": "신경 생검, MRI 또는 CT 스캔",
-    "therapy": "대증 요법 및 비타민 보충, 신경 치료"
+    "therapy": "대증 요법 및 비타민 보충, 신경 치료",
+    "id": "cow26"
   },
   {
     "diseaseName": "소 자궁내막염 (Bovine Endometritis)",
     "symptoms": "자궁 염증, 비정상적인 분비물, 불임",
     "diagnosisTool": "자궁 초음파 검사, 분비물 검사",
-    "therapy": "항생제 치료, 자궁 위생 관리"
+    "therapy": "항생제 치료, 자궁 위생 관리",
+    "id": "cow27"
   }
 ]
