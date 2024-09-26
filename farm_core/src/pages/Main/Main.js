@@ -82,11 +82,7 @@ function Main() {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: (
-          <div className={styles.small}>
-            <LineChart dataset={sampleData} />
-          </div>
-        ),
+        children: <LineChart dataset={sampleData} />,
       },
       {
         i: "2",
@@ -172,7 +168,7 @@ function Main() {
             layouts={layout}
             breakpoints={{ lg: 1400, md: 600 }}
             cols={{ lg: 5, md: 2 }}
-            rowHeight={100}
+            rowHeight={300}
             width={1000}
             isResizable={false}
             onLayoutChange={onLayoutChange}
