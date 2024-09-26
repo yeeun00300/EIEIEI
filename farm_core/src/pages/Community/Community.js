@@ -10,6 +10,7 @@ import CO2Control from "../../components/ControlPanels/CO2Control";
 import Auction from "../../components/auction/Auction";
 import TempControl from "../../components/ControlPanels/TempControl";
 import AMControl from "../../components/ControlPanels/AMControl";
+import MonthPractice from "../../components/diseaseMonth/MonthPractice";
 
 function Community() {
   const dispatch = useDispatch();
@@ -152,6 +153,7 @@ function Community() {
           </button>
         )}
       </ListPage>
+      <MonthPractice />
       <CO2Control />
       <AMControl />
     </div>
