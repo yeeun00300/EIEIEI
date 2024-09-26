@@ -72,7 +72,11 @@ function Main() {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: <LineChart dataset={sampleData} />,
+        children: (
+          <div>
+            <LineChart dataset={sampleData} />
+          </div>
+        ),
       },
       {
         i: "2",

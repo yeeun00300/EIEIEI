@@ -189,7 +189,9 @@ function MyLiveStock(props) {
                   </div>
                 </div>
                 <div className={styles.farmInfoBox}>
-                  <Table data={stock} />
+                  <div className={styles.farmTable}>
+                    <Table data={stock} />
+                  </div>
                   <div>
                     <h3>축사 데이터 확인</h3>
                     <div className={styles.chartContainer}>{renderChart()}</div>

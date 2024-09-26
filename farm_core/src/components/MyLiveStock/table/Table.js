@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "../MyLiveStock.module.scss";
+import styles from "./Table.module.scss";
 
 function Table({ data }) {
   const [selectedSpecies, setSelectedSpecies] = useState("축종 선택"); // 선택된 축종 상태

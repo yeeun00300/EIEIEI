@@ -76,7 +76,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             {/* 최초 로그인시 농장 추가하러 가기 */}
             <Route path="/FirstPage" element={<FirstPage />} />
-            {/* RedirectToFirstFarm는 farmList에 따라 적절히 리디렉션 */}
+            {/* farm 존재여부 확인 */}
             <Route
               path="/"
               element={
