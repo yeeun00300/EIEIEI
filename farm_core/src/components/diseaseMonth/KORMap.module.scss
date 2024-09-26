@@ -1,9 +1,9 @@
 .wrapper {
-  width: 100%; // 부모 컨테이너의 너비에 맞추기
+  width: 40%; // 부모 컨테이너의 너비에 맞추기
   height: 0; // 높이를 0으로 설정
   padding-bottom: 56.25%; // 16:9 비율 (높이: 너비 비율)
   position: relative; // 자식 요소의 절대 위치 지정을 위한 상대 위치
-
+  margin: 0 auto;
   @media (min-width: 576px) {
     padding-bottom: 50%; // 작은 화면에서는 약간의 높이 조정
   }
@@ -12,12 +12,11 @@
   }
 
   // 커스텀 여백 추가
-  margin-top: 20px; // 지도와 다른 요소 간 여백
+  margin-top: 1rem; // 지도와 다른 요소 간 여백
 
   .korMap {
-    position: absolute; // wrapper 내에서 절대 위치
-    top: 0;
-    left: 0;
+    margin: 0 auto;
+    position: absolute;
     width: 100%; // 전체 너비 사용
     height: 100%; // 전체 높이 사용
     border-radius: 8px; // 지도의 모서리를 둥글게
