@@ -13,6 +13,7 @@ const RedirectToFirstFarm = ({ farmList, farmLoading }) => {
         navigate("/FirstPage");
       }
     }
+    console.log(`렌더링 테스트`);
   }, [farmList, farmLoading, navigate]);
 
   return null; // 리디렉션하는 컴포넌트이므로 아무것도 렌더링하지 않음

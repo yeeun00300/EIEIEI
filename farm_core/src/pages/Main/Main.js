@@ -73,7 +73,7 @@ function Main() {
         minw: 1,
         maxh: 3,
         children: (
-          <div>
+          <div className={styles.small}>
             <LineChart dataset={sampleData} />
           </div>
         ),
@@ -169,7 +169,7 @@ function Main() {
             isDraggable={edit}
           >
             {LAYOUTS.lg.map((el) => (
-              <div key={el.i} {...el}>
+              <div className={styles.item} key={el.i} {...el}>
                 {el.children}
               </div>
             ))}
