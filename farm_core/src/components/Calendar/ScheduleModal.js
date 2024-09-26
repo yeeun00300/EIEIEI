@@ -51,16 +51,16 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
       className="ReactModal__Content"
       overlayClassName="ReactModal__Overlay"
     >
-      <h2>{schedules ? "Edit Schedule" : "Add Schedule"}</h2>
+      <h2>{schedules ? "일정 추가하기" : "Add Schedule"}</h2>
       <input
         type="text"
-        placeholder="Title"
+        placeholder="일정 제목"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="inputModal"
       />
       <textarea
-        placeholder="Description"
+        placeholder="일정 내용"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         className="textareaModal"
@@ -68,7 +68,7 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
       <div className="time-picker">
         <select value={hour} onChange={(e) => setHour(e.target.value)}>
           <option value="" disabled>
-            Select Hour
+            시간
           </option>
           {Array.from({ length: 12 }, (_, i) => i + 1).map((h) => (
             <option key={h} value={h}>
@@ -79,7 +79,7 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
         <span>:</span>
         <select value={minute} onChange={(e) => setMinute(e.target.value)}>
           <option value="" disabled>
-            Select Minute
+            분
           </option>
           {Array.from({ length: 60 }, (_, i) => i).map((m) => (
             <option key={m} value={m.toString().padStart(2, "0")}>
@@ -88,12 +88,12 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
           ))}
         </select>
         <select value={ampm} onChange={(e) => setAmpm(e.target.value)}>
-          <option value="AM">AM</option>
-          <option value="PM">PM</option>
+          <option value="AM">오전</option>
+          <option value="PM">오후</option>
         </select>
       </div>
       <button onClick={handleSave} className="schedule-btn">
-        Save
+        저장하기
       </button>
     </Modal>
   );
