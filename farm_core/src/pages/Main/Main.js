@@ -23,6 +23,7 @@ import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import { useFetchCollectionData } from "../../firebase";
+import MonthPractice from "./../../components/diseaseMonth/MonthPractice";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -110,10 +111,10 @@ function Main() {
         x: 2,
         y: 0,
         w: 1,
-        h: 3,
+        h: 4,
         minw: 1,
         maxh: 3,
-        children: <div>안녕하세요2</div>,
+        children: <MonthPractice />,
       },
     ],
   };
