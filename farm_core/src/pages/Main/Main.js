@@ -110,11 +110,30 @@ function Main() {
         i: "4",
         x: 2,
         y: 0,
+<<<<<<< Updated upstream
         w: 1,
+=======
+        w: 2,
+>>>>>>> Stashed changes
         h: 4,
         minw: 1,
         maxh: 3,
         children: <MonthPractice />,
+<<<<<<< Updated upstream
+=======
+      },
+    ],
+    md: [
+      {
+        i: "4",
+        x: 2,
+        y: 0,
+        w: 2,
+        h: 4,
+        minw: 1,
+        maxh: 3,
+        children: <MonthPractice />,
+>>>>>>> Stashed changes
       },
     ],
   };
@@ -166,7 +185,7 @@ function Main() {
         <div className={styles.widget}>
           <ResponsiveGridLayout
             className="layout"
-            layouts={layout}
+            layouts={LAYOUTS}
             breakpoints={{ lg: 1400, md: 600 }}
             cols={{ lg: 5, md: 2 }}
             rowHeight={100}

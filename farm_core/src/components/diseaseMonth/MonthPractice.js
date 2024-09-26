@@ -59,7 +59,7 @@ function MonthPractice(props) {
 
   console.log(selectedMonth);
   return (
-    <div className="container">
+    <div className={styles.mapbox}>
       <div className={styles.wrapper}>
         <h1>월별 질병 발생 데이터</h1>
         <input
