@@ -117,7 +117,6 @@ function AddLiveStock() {
 
     const email = localStorage.getItem("email");
     const saveLayoutString = localStorage.getItem("userLayout");
-    const saveLayout = JSON.parse(saveLayoutString);
 
     const farmData = {
       farmName,
@@ -131,7 +130,6 @@ function AddLiveStock() {
       insuranceDetail,
       note,
       email,
-      saveLayout,
     };
 
     try {
