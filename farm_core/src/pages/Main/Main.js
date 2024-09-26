@@ -7,6 +7,7 @@ import Weather from "./../../api/Weather/Weather";
 import DiseaseMap from "./../../components/DiseaseStatus/DiseaseMap";
 import GaugeNeedle from "./../../components/Gauge/GaugeNeedle";
 import MyCalendar from "./../../components/Calendar/MyCalendar";
+import Table from "./../../components/MyLiveStock/table/Table";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,6 +20,9 @@ import {
 } from "chart.js";
 import { useParams } from "react-router-dom";
 import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
+import { useSelector } from "react-redux";
+import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
+import { useFetchCollectionData } from "../../firebase";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -50,6 +54,12 @@ const LineChart = ({ dataset }) => {
 
 function Main() {
   const { farmId } = useParams();
+
+  // ????????????????????????????????????????????????????????????????????????????????
+  const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
+  useFetchCollectionData("stock", fetchExcelStock);
+  // ????????????????????????????????????????????????????????????????????????????????
+
   // console.log(farmId);
   const sampleData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -87,7 +97,7 @@ function Main() {
         minw: 1.5,
         maxh: 3,
         // children: <DiseaseMap />,
-        children: <CurrentMarker />,
+        children: <Table data={stock && stock} />,
       },
       {
         i: "3",
@@ -160,7 +170,7 @@ function Main() {
           <ResponsiveGridLayout
             className="layout"
             layouts={layout}
-            breakpoints={{ lg: 1000, md: 600 }}
+            breakpoints={{ lg: 1400, md: 600 }}
             cols={{ lg: 5, md: 2 }}
             rowHeight={100}
             width={1000}
