@@ -1,11 +1,38 @@
-import React from "react";
-import stlyes from "./SubMain.module.scss";
+import React, { useState } from "react";
+import styles from "./SubMain.module.scss";
+import CurrentMarker from "../../../components/DiseaseStatus/CurrentMarker";
+import { AiOutlineSearch } from "react-icons/ai";
 
 function SubMain(props) {
+  const [openModal, setOpenModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setIsEditing(false);
+  };
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
   return (
-    <div className={stlyes.subMain}>
-      <div>하이</div>
-      <div>메롱</div>
+    <div className={styles.subMain}>
+      <button onClick={handleOpenModal}>
+        {" "}
+        <AiOutlineSearch /> 내 주변 동물병원
+      </button>
+
+      {openModal && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <button className={styles.closebutton} onClick={handleCloseModal}>
+              X
+            </button>
+            <CurrentMarker />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

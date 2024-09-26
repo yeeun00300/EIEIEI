@@ -88,9 +88,9 @@ function Main() {
         i: "2",
         x: 1,
         y: 0,
-        w: 2,
-        h: 6,
-        minw: 1.5,
+        w: 1,
+        h: 3,
+        minw: 1,
         maxh: 3,
         // children: <DiseaseMap />,
         children: <Table data={stock && stock} />,
@@ -100,7 +100,7 @@ function Main() {
         x: 2,
         y: 0,
         w: 1,
-        h: 2,
+        h: 3,
         minw: 1,
         maxh: 3,
         children: <GaugeNeedle />,
@@ -110,7 +110,7 @@ function Main() {
         x: 2,
         y: 0,
         w: 1,
-        h: 2,
+        h: 3,
         minw: 1,
         maxh: 3,
         children: <div>안녕하세요2</div>,
@@ -168,7 +168,7 @@ function Main() {
             layouts={layout}
             breakpoints={{ lg: 1400, md: 600 }}
             cols={{ lg: 5, md: 2 }}
-            rowHeight={300}
+            rowHeight={100}
             width={1000}
             isResizable={false}
             onLayoutChange={onLayoutChange}
