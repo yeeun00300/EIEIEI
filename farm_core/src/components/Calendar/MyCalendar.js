@@ -71,31 +71,53 @@ const MyCalendar = () => {
     setModalOpen(true);
   };
 
-  const handleSaveSchedule = (schedule) => {
+  const handleSaveSchedule = async (schedule) => {
+    console.log("handleSaveSchedule called", schedule); // 추가된 로그
     const collectionName = "schedules";
+    const existingSchedule = schedules.find(
+      (sch) => sch.email === schedule.email
+    ) || { content: [] };
+
     const scheduleData = {
-      title: scheduleData.content[0].title, // title이 있는지 확인
-      description: scheduleData.content[0].description, // description이 있는지 확인
-      time: scheduleData.content[0].time, // time이 있는지 확인
-      date: scheduleData.content[0].date, // date가 있는지 확인
+      ...existingSchedule,
+      content: [
+        ...existingSchedule.content,
+        {
+          title: schedule.content[0].title || "",
+          description: schedule.content[0].description || "",
+          time: schedule.content[0].time || "",
+          createdAt: new Date().toISOString(),
+          updatedAt: null,
+        },
+      ],
     };
 
     if (editingSchedule?.index !== undefined) {
-      // 일정 수정 시 업데이트
-      const docId = schedules[editingSchedule.index].id; // 기존 스케줄 업데이트
-      dispatch(
-        updateSchedule({ collectionName, docId, updatedData: scheduleData })
-      );
-    } else {
-      // 새 일정 추가
-      dispatch(addSchedule({ collectionName: "", scheduleObj: scheduleData }));
-    }
+      const existingSchedule = schedules[editingSchedule.index];
+      if (existingSchedule) {
+        const docId = existingSchedule.id;
+        console.log("Dispatching updateSchedule", {
+          collectionName,
+          docId,
+          updatedData: scheduleData,
+        });
 
+        const result = await dispatch(
+          updateSchedule({ collectionName, docId, updatedData: scheduleData })
+        );
+
+        console.log("Dispatch result:", result); // 여기에 로그 추가
+        if (updateSchedule.fulfilled.match(result)) {
+          console.log("Update succeeded:", result.payload); // 업데이트 성공 시
+        } else {
+          console.error("Update failed:", result.error); // 업데이트 실패 시
+        }
+      }
+    }
     setModalOpen(false);
     setSelectedDate(schedule.date);
     setDate(schedule.date);
   };
-
   const handleDeleteSchedule = (index) => {
     const docId = schedules[index].id;
     const collectionName = "schedules";

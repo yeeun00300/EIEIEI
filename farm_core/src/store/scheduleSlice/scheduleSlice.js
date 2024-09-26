@@ -25,7 +25,6 @@ const scheduleSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
       .addCase(addSchedule.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -39,20 +38,22 @@ const scheduleSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
       .addCase(updateSchedule.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateSchedule.fulfilled, (state, action) => {
-        state.schedules = action.payload.content; // 업데이트된 스케줄 배열로 대체
-        state.loading = false;
+        console.log("State before update:", state); // 상태 업데이트 전
+        const updatedSchedules = state.schedules.map((schedule) =>
+          schedule.id === action.payload.id ? action.payload : schedule
+        );
+        state.schedules = updatedSchedules;
+        console.log("Updated schedules:", state.schedules); // 업데이트된 상태 로그
       })
       .addCase(updateSchedule.rejected, (state, action) => {
-        state.loading = false;
+        console.error("Error updating schedule:", action.payload); // 에러 로그
         state.error = action.payload;
       })
-
       .addCase(deleteSchedule.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -75,10 +76,8 @@ export const fetchSchedules = createAsyncThunk(
   async ({ collectionName, queryOptions }, { rejectWithValue }) => {
     try {
       const result = await getDatas(collectionName, queryOptions);
-      console.log("Fetched result from Firestore:", result); // 추가된 로그
       return result;
     } catch (error) {
-      console.error("Error fetching schedules:", error);
       return rejectWithValue(error.message);
     }
   }
@@ -88,12 +87,15 @@ export const addSchedule = createAsyncThunk(
   "schedule/addSchedule",
   async ({ collectionName, scheduleObj }, { rejectWithValue }) => {
     const email = localStorage.getItem("email"); // 로컬스토리지에서 이메일 가져오기
+    const createdAt = new Date().toISOString(); // 현재 시간
+    const updatedAt = createdAt; // 처음엔 createdAt과 동일하게 설정
+
     const scheduleData = {
       title: scheduleObj.title,
       description: scheduleObj.description,
       time: scheduleObj.time,
-      date: scheduleObj.date,
-      updatedAt: null, // 처음엔 null, 수정 시 값이 추가될 예정
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     };
 
     try {
@@ -101,16 +103,12 @@ export const addSchedule = createAsyncThunk(
       const querySnapshot = await getDatas(collectionName, {
         conditions: [{ field: "email", operator: "==", value: email }],
       });
-      console.log("쿼리스냅샷", querySnapshot);
       if (querySnapshot.length > 0) {
         // 문서가 있을 때, content 배열에 일정 추가
         const docId = querySnapshot[0].docId; // 해당 문서의 ID
         const existingContent = querySnapshot[0].content || [];
-        console.log(docId);
-        console.log(existingContent);
-        // 새로운 일정 추가
         const updatedContent = [...existingContent, scheduleData];
-        console.log("업데이트컨텐츠", updatedContent);
+
         // Firestore에서 문서 업데이트
         await updateDatas(collectionName, docId, { content: updatedContent });
 
@@ -127,27 +125,26 @@ export const addSchedule = createAsyncThunk(
         return newDoc;
       }
     } catch (error) {
-      console.error("Error adding schedule:", error);
       return rejectWithValue(error.message);
     }
   }
 );
 
-// 3. 스케줄 업데이트
+// 스케줄 업데이트
 export const updateSchedule = createAsyncThunk(
   "schedule/updateSchedule",
   async ({ collectionName, docId, updatedData }, { rejectWithValue }) => {
     try {
       const result = await updateDatas(collectionName, docId, updatedData);
+      console.log("Update result:", result); // 여기서 결과 로그
       return result;
     } catch (error) {
-      console.error("Error updating schedule:", error);
+      console.error("Error updating schedule:", error); // 오류 로그
       return rejectWithValue(error.message);
     }
   }
 );
-
-// 4. 스케줄 삭제
+// 스케줄 삭제
 export const deleteSchedule = createAsyncThunk(
   "schedule/deleteSchedule",
   async ({ collectionName, docId }, { rejectWithValue }) => {
@@ -155,7 +152,6 @@ export const deleteSchedule = createAsyncThunk(
       await deleteDatas(collectionName, docId);
       return docId;
     } catch (error) {
-      console.error("Error deleting schedule:", error);
       return rejectWithValue(error.message);
     }
   }
