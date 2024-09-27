@@ -56,6 +56,7 @@ function MedicalListSave() {
                 ...item,
                 farmId: document.farmId, // 축사 번호 추가
               }));
+              console.log("Sub data with farmId:", subDataWithFarmId);
               allSubCollectionData.push(...subDataWithFarmId); // 모든 서브 데이터를 추가
             }
             setSubCollectionData(allSubCollectionData); // 모든 서브 컬렉션 데이터 설정

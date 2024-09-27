@@ -23,7 +23,7 @@ function WeekWeatherWidget() {
   const APIkey2 = "7318e8d03f33842f882be1c11ec76a8b";
   const lat = 36.328799;
   const lon = 127.4230707;
-  const { weatherData } = useSelector((state) => state.weatherSlice);
+  const { weatherData, isLoading } = useSelector((state) => state.weatherSlice);
   // const weatherList = weatherData?.list; //전체 날씨데이터
   // const weatherList = weatherData?.list?.slice(0, 8); // 하루 3시간마다 날씨 데이터
   const weatherList = [
@@ -40,23 +40,24 @@ function WeekWeatherWidget() {
     dispatch(fetchWeatherForecastData({ APIkey: APIkey1, lat: lat, lon: lon }));
     dispatch(fetchWeatherTodayData({ APIkey: APIkey2, lat: lat, lon: lon }));
   }, []);
-
+  if (isLoading) return <></>; //
   return (
     <div className={styles.weatherItem}>
       {weatherList?.map((item) => {
         const weatherIcon = item?.weather?.[0]?.icon;
         const weatherTime = item?.dt_txt;
-        const weatherDay = weatherTime?.split(" ")[0];
+        const weatherDay1 = weatherTime?.split(" ")[0]?.split("-")[1];
+        const weatherDay2 = weatherTime?.split(" ")[0]?.split("-")[2];
         return (
-          <div key={item.dt}>
+          <div key={item?.dt}>
             <h3>
               <img
                 src={`https://openweathermap.org/img/wn/${weatherIcon}@2x.png`}
               />
             </h3>
             {/* <h5>{item?.weather?.description}</h5> */}
-            <h5>{weatherDay}</h5>
-            <h5>온도 : {item?.main?.temp}℃</h5>
+            <h5>{`${weatherDay1} / ${weatherDay2}`}</h5>
+            <h5>온도 : {Math.round(item?.main?.temp)}℃</h5>
             <h5>습도 : {item?.main?.humidity}%</h5>
           </div>
         );

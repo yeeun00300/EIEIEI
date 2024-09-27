@@ -11,6 +11,7 @@ import MyLiveStockList from "../../pages/MyLiveStockInfo/MyLiveStockList";
 import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
 import SubMain from "../../pages/Main/subMain/SubMain";
 import DeleteAccount from "../DeleteAccount/DeleteAccount";
+import CCTVAnimal from "../CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
 
 function MyStockPage(props) {
   return (
@@ -41,7 +42,8 @@ function MyStockPage(props) {
           </Tab>
           <Tab eventKey="qwe" title="TEST">
             {/* <DeleteAccount /> */}
-            <SubMain />
+            {/* <SubMain /> */}
+            <CCTVAnimal />
           </Tab>
         </Tabs>
       </div>
