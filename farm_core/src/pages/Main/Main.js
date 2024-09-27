@@ -176,37 +176,10 @@ function Main({ farmList }) {
         maxh: 3,
       },
       {
-        i: "9",
-        x: 2,
-        y: 0,
-        w: 1,
-        h: 3,
-        minw: 1,
-        maxh: 3,
-      },
-      {
-        i: "9",
-        x: 2,
-        y: 0,
-        w: 1,
-        h: 3,
-        minw: 1,
-        maxh: 3,
-      },
-      {
         i: "10",
         x: 2,
         y: 0,
         w: 3,
-        h: 3,
-        minw: 1,
-        maxh: 3,
-      },
-      {
-        i: "10",
-        x: 2,
-        y: 0,
-        w: 5,
         h: 3,
         minw: 1,
         maxh: 3,
@@ -441,12 +414,12 @@ function Main({ farmList }) {
       ...updatedLayouts,
     }));
 
-    console.log(`json 확인용`, JSON.stringify(updatedLayouts));
+    // console.log(`json 확인용`, JSON.stringify(updatedLayouts));
   };
 
   const handleBreakpointChange = (newBreakpoint) => {
     setCurrentBreakpoint(newBreakpoint);
-    console.log("Current breakpoint:", newBreakpoint);
+    // console.log("Current breakpoint:", newBreakpoint);
   };
 
   // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
@@ -465,7 +438,7 @@ function Main({ farmList }) {
       } else {
         console.log(`저장된 정보없음`);
       }
-      console.log(`테스트`, savedLayout);
+      // console.log(`테스트`, savedLayout);
     };
     loadLayout();
   }, [currentFarm.docId]);
