@@ -91,7 +91,7 @@ function FanPieChart({
 
       return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 정리
     }
-  }, [isIncreasing, setValue, intervalValue]); // 의존성 배열에 상태 추가
+  }, [isIncreasing, setValue, intervalValue, isOn]); // 의존성 배열에 상태 추가
 
   // 버튼 상태 업데이트
   // useEffect(() => {

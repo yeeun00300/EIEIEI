@@ -4,6 +4,25 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+  .propeller {
+    &.spin {
+      animation: spin 3s linear infinite;
+    }
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .PieChart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   button {
     background-color: #34d399; // TailwindCSS 색상: emerald-400

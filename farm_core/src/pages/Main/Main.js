@@ -34,6 +34,8 @@ import CO2PiChartWidget from "./../../components/ControlPanels/widget/CO2PiChart
 import HumidPiChartWidget from "../../components/ControlPanels/widget/HumidPiChartWidget";
 import LightPiChartWidget from "../../components/ControlPanels/widget/LightPiChartWidget";
 import NH3PiChartWidget from "../../components/ControlPanels/widget/NH3PiChartWidget";
+import TodayWeatherWidget from "../../components/ControlPanels/WeatherWidget/TodayWeatherWidget";
+import WeekWeatherWidget from "../../components/ControlPanels/WeatherWidget/WeekWeatherWidget";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -173,6 +175,51 @@ function Main({ farmList }) {
         minw: 1,
         maxh: 3,
       },
+      {
+        i: "9",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "9",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "10",
+        x: 2,
+        y: 0,
+        w: 3,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "10",
+        x: 2,
+        y: 0,
+        w: 5,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      // {
+      //   i: "11",
+      //   x: 2,
+      //   y: 0,
+      //   w: 5,
+      //   h: 6,
+      //   minw: 1,
+      //   maxh: 3,
+      // },
     ],
     md: [
       {
@@ -363,6 +410,10 @@ function Main({ farmList }) {
         return <CO2PiChartWidget />;
       case "9":
         return <NH3PiChartWidget />;
+      case "10":
+        return <TodayWeatherWidget />;
+      case "11":
+        return <WeekWeatherWidget />;
       default:
         return null;
     }

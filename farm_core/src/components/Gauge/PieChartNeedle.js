@@ -64,7 +64,7 @@ function PieChartNeedle({
         <div className={styles.nowValue}>
           <p>{nowName}</p>
           <div>
-            {intervalValue}
+            {intervalValue < 0 ? 0 : intervalValue}
             {unit}
           </div>
         </div>

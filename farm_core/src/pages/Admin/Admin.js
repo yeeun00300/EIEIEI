@@ -42,6 +42,8 @@ import CO2PiChartWidget from "../../components/ControlPanels/widget/CO2PiChartWi
 import NH3PiChartWidget from "../../components/ControlPanels/widget/NH3PiChartWidget";
 import WidgetList from "../Main/subMain/widgetList/WidgetList";
 import DiseaseInfo from "../../components/diseaseInfo/DiseaseInfo";
+import WeekWeatherWidget from "../../components/ControlPanels/WeatherWidget/WeekWeatherWidget";
+import TodayWeatherWidget from "../../components/ControlPanels/WeatherWidget/TodayWeatherWidget";
 
 function Admin({ userInfo, address }) {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -167,23 +169,25 @@ function Admin({ userInfo, address }) {
       // ),
       chatting: (
         <>
+          <WeekWeatherWidget />
+          <TodayWeatherWidget />
           {/* <Gauge01 /> */}
-          <TempPiNeedleWidget />
+          {/* <TempPiNeedleWidget /> */}
           {/* <TempControl /> */}
-          <HumidPiChartWidget />
+          {/* <HumidPiChartWidget /> */}
           {/* <HumidControl /> */}
-          <LightPiChartWidget />
+          {/* <LightPiChartWidget /> */}
           {/* <LIghtControl /> */}
-          <CO2PiChartWidget />
+          {/* <CO2PiChartWidget /> */}
           {/* <CO2Control /> */}
-          <NH3PiChartWidget />
+          {/* <NH3PiChartWidget /> */}
           {/* <AMControl /> */}
           {/* <GaugeNeedle /> */}
-          <LineChart01 />
-          <BiLineChart />
-          <BarChart01 />
+          {/* <LineChart01 /> */}
+          {/* <BiLineChart /> */}
+          {/* <BarChart01 /> */}
           {/* <Chatting /> */}
-          <WidgetList />
+          {/* <WidgetList /> */}
         </>
       ),
       // chatting: <h1>채팅기록</h1>,
@@ -192,7 +196,6 @@ function Admin({ userInfo, address }) {
     return componentsMap[itemId] || <h1>Default Content</h1>;
   };
   // --------------------------------------------------------------------
-  console.log("확인용");
 
   useEffect(() => {
     // console.log(userInfo);
