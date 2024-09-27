@@ -1,0 +1,33 @@
+.fanSwitch {
+  // margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  button {
+    background-color: #34d399; // TailwindCSS 색상: emerald-400
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #059669; // TailwindCSS 색상: emerald-600
+    }
+
+    &:active {
+      background-color: #047857; // TailwindCSS 색상: emerald-700
+    }
+  }
+
+  p {
+    margin: 0px;
+    font-size: 14px;
+    color: #1f2937; // TailwindCSS 색상: gray-800
+    font-weight: 500;
+  }
+}
