@@ -79,10 +79,6 @@ function Main({ farmList }) {
       },
     ],
   };
-
-  const childrenDict = {
-    LineChart: <LineChart dataset={sampleData} />,
-  };
   const LAYOUTS = {
     lg: [
       {
@@ -93,8 +89,7 @@ function Main({ farmList }) {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: childrenDict["LineChart"],
-        // children: <LineChart dataset={sampleData} />,
+        children: <LineChart dataset={sampleData} />,
       },
       {
         i: "2",
@@ -154,7 +149,8 @@ function Main({ farmList }) {
         }));
       } else {
         //저장된 레이아웃 없을때
-        setLayout([LAYOUTS]);
+        // setLayout([LAYOUTS]);
+        console.log(`저장된 정보없음`);
       }
       console.log(`테스트`, savedLayout);
     };
