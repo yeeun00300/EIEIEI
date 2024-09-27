@@ -192,6 +192,7 @@ function Admin({ userInfo, address }) {
     return componentsMap[itemId] || <h1>Default Content</h1>;
   };
   // --------------------------------------------------------------------
+  console.log("확인용");
 
   useEffect(() => {
     // console.log(userInfo);

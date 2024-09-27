@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./CO2PiChartWidget.module.scss";
 import propellerImg from "../../../img/프로펠러.png";
 import PieChartNeedle from "../../Gauge/PieChartNeedle";
 import FanPieChart from "./FanPieChart";
+// import ToggleCont from "../ContextToggle";
 function CO2PiChartWidget() {
   const [setValue, setSetValue] = useState(300); // 목표 설정값은 300
   const [intervalValue, setIntervalValue] = useState(270); // 초기값 270
   const [isOn, setIsOn] = useState(false); // 초기값 OFF 상태
+  // const { isOn = false, setIsOn, toggleOnOff } = useContext(ToggleCont);
   const [isIncreasing, setIsIncreasing] = useState(true); // 증가 상태
+  // console.log(`CO2 On : ${isOn}`);
 
   const RADIAN = Math.PI / 90;
 
@@ -71,34 +74,35 @@ function CO2PiChartWidget() {
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(
-      () => {
-        if (isIncreasing) {
-          // 증가 중일 때
-          if (intervalValue < setValue) {
-            setIntervalValue((prevValue) =>
-              Number((prevValue + 1.1).toFixed(2))
-            );
-          } else {
-            setIsIncreasing(false); // 목표 값 도달 시 감소로 전환
-          }
-        } else {
-          // 감소 중일 때
-          if (intervalValue > 0) {
-            setIntervalValue((prevValue) =>
-              Number((prevValue - 1.1).toFixed(2))
-            );
-          } else {
-            setIsIncreasing(true); // 0에 도달하면 다시 증가로 전환
-          }
-        }
-      },
-      isIncreasing ? 300 : 100
-    ); // 증가 시 300ms, 감소 시 100ms
+  // useEffect(() => {
+  //   const interval = setInterval(
+  //     () => {
+  //       if (isIncreasing) {
+  //         // 증가 중일 때
+  //         if (intervalValue < setValue) {
+  //           setIntervalValue((prevValue) =>
+  //             Number((prevValue + 1.1).toFixed(2))
+  //           );
+  //         } else {
+  //           setIsIncreasing(false); // 목표 값 도달 시 감소로 전환
+  //         }
+  //       } else {
+  //         // 감소 중일 때
+  //         if (intervalValue > 0) {
+  //           setIntervalValue((prevValue) =>
+  //             Number((prevValue - 1.1).toFixed(2))
+  //           );
+  //         } else {
+  //           setIsIncreasing(true); // 0에 도달하면 다시 증가로 전환
+  //         }
+  //       }
+  //     },
+  //     isIncreasing ? 300 : 100
+  //   ); // 증가 시 300ms, 감소 시 100ms
 
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 정리
-  }, [isIncreasing, setValue, intervalValue]); // 의존성 배열에 상태 추가
+  //   return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 정리
+  // }, [isIncreasing, setValue, intervalValue]); // 의존성 배열에 상태 추가
+
   // 버튼 상태 업데이트
   useEffect(() => {
     if (intervalValue <= 0) {
@@ -119,39 +123,18 @@ function CO2PiChartWidget() {
         needle={needle}
         setValue={setValue}
         intervalValue={intervalValue}
+        setIntervalValue={setIntervalValue}
         handleUp={handleUp}
         handleDown={handleDown}
         unit="ppm"
         nowName="CO2 농도"
-        // isOn={isOn}
-        // toggleOnOff={toggleOnOff}
+        isOn={isOn && isOn}
+        setIsOn={setIsOn}
+        toggleOnOff={toggleOnOff}
         isIncreasing={isIncreasing}
         setIsIncreasing={setIsIncreasing}
+        mode={"CO2"}
       />
-      {/* <div className={styles.fanSwitch}>
-        <img
-          src={propellerImg}
-          className={`${styles.propeller} ${isOn ? styles.spin : ""}`}
-        />
-        <button onClick={toggleOnOff}>{isOn ? "On" : "OFF"}</button>
-      </div>
-      <div className={styles.PieChart}>
-        <PieChartNeedle
-          data={data}
-          cx={cx}
-          cy={cy}
-          iR={iR}
-          oR={oR}
-          value={value}
-          needle={needle}
-          setValue={setValue}
-          intervalValue={intervalValue}
-          handleUp={handleUp}
-          handleDown={handleDown}
-          unit="ppm"
-          nowName="CO2 농도"
-        />
-      </div> */}
     </div>
   );
 }

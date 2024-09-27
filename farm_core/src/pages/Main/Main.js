@@ -79,6 +79,12 @@ function Main({ farmList }) {
       },
     ],
   };
+  const layoutDict = {
+    LineChart: <LineChart dataset={sampleData} />,
+    Table: <Table data={stock && stock} />,
+    GaugeNeedle: <GaugeNeedle />,
+    MonthPractice: <MonthPractice />,
+  };
   const LAYOUTS = {
     lg: [
       {
@@ -89,7 +95,7 @@ function Main({ farmList }) {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: <LineChart dataset={sampleData} />,
+        children: layoutDict["LineChart"],
       },
       {
         i: "2",
@@ -100,7 +106,7 @@ function Main({ farmList }) {
         minw: 1,
         maxh: 3,
         // children: <DiseaseMap />,
-        children: <Table data={stock && stock} />,
+        children: layoutDict["Table"],
       },
       {
         i: "3",
@@ -110,7 +116,7 @@ function Main({ farmList }) {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: <GaugeNeedle />,
+        children: layoutDict["GaugeNeedle"],
       },
       {
         i: "4",
@@ -120,13 +126,13 @@ function Main({ farmList }) {
         h: 4,
         minw: 1,
         maxh: 3,
-        children: <MonthPractice />,
+        children: layoutDict["MonthPractice"],
       },
     ],
   };
 
   // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
-  const [layout, setLayout] = useState();
+  const [layout, setLayout] = useState(LAYOUTS);
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
   const onLayoutChange = (newLayout) => {
