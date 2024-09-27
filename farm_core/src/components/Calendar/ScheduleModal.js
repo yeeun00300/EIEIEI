@@ -12,24 +12,31 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
   const [ampm, setAmpm] = useState("AM");
 
   const handleSave = () => {
-    const formattedTime = `${hour}:${minute} ${ampm}`;
-    const currentDate = new Date().toISOString(); // 현재 시간을 ISO 형식으로 가져오기
-    const email = localStorage.getItem("email"); // 로컬스토리지에서 이메일 가져오기
+    if (!title || !description || !hour || !minute) {
+      alert("모든 필드를 채워주세요."); // 필수 필드가 입력되지 않았을 때 경고
+      return;
+    }
 
-    onSave({
+    const formattedTime = `${hour}:${minute} ${ampm}`;
+    const currentDate = new Date().toISOString(); // 현재 시간 ISO 형식으로 변환
+    const email = localStorage.getItem("email");
+
+    const scheduleObj = {
       email,
       content: [
         {
           title, // 사용자가 입력한 제목
           description, // 사용자가 입력한 설명
           time: formattedTime,
-          date: currentDate, // 등록하는 시간
-          updatedAt: null, // 처음엔 null, 수정 시 값이 추가될 예정
+          date: currentDate, // 등록 시간
+          updatedAt: null, // 수정되지 않은 경우 null
         },
       ],
-    });
+    };
 
-    onRequestClose();
+    console.log("Saving schedule object:", scheduleObj); // 스케줄 객체 확인
+    onSave(scheduleObj); // 부모 컴포넌트에 스케줄 객체 전달
+    onRequestClose(); // 모달 닫기
   };
 
   useEffect(() => {

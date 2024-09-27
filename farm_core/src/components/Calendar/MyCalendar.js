@@ -72,58 +72,65 @@ const MyCalendar = () => {
   };
 
   const handleSaveSchedule = async (schedule) => {
-    console.log("handleSaveSchedule called", schedule); // 추가된 로그
+    console.log("Received schedule object:", schedule); // 전달된 객체 확인
+
+    if (!schedule || !schedule.content || !schedule.content[0]) {
+      console.error("Invalid schedule object or missing content");
+      return;
+    }
+
     const collectionName = "schedules";
-    const existingSchedule = schedules.find(
-      (sch) => sch.email === schedule.email
-    ) || { content: [] };
+    const email = schedule.email;
 
-    const scheduleData = {
-      ...existingSchedule,
-      content: [
-        ...existingSchedule.content,
-        {
-          title: schedule.content[0].title || "",
-          description: schedule.content[0].description || "",
-          time: schedule.content[0].time || "",
-          createdAt: new Date().toISOString(),
-          updatedAt: null,
-        },
-      ],
+    // content 배열에 추가할 새 일정 데이터
+    const newScheduleContent = {
+      title: schedule.content[0].title || "",
+      description: schedule.content[0].description || "",
+      time: schedule.content[0].time || "",
+      createdAt: new Date().toISOString(),
+      updatedAt: null,
     };
+    console.log("newScheduleContent", newScheduleContent);
+    // Firestore에서 이메일로 문서를 조회
+    const existingSchedules = schedules.find((sch) => sch.email === email);
 
-    if (editingSchedule?.index !== undefined) {
-      const existingSchedule = schedules[editingSchedule.index];
-      if (existingSchedule) {
-        const docId = existingSchedule.id;
-        console.log("Dispatching updateSchedule", {
+    if (existingSchedules) {
+      const updatedContent = [...existingSchedules.content, newScheduleContent];
+      const updatedScheduleData = {
+        ...existingSchedules,
+        content: updatedContent,
+      };
+      const docId = existingSchedules.id || existingSchedules.docId;
+      console.log("Updating existing schedule with ID:", docId);
+      await dispatch(
+        updateSchedule({
           collectionName,
           docId,
-          updatedData: scheduleData,
-        });
-
-        const result = await dispatch(
-          updateSchedule({ collectionName, docId, updatedData: scheduleData })
-        );
-
-        console.log("Dispatch result:", result); // 여기에 로그 추가
-        if (updateSchedule.fulfilled.match(result)) {
-          console.log("Update succeeded:", result.payload); // 업데이트 성공 시
-        } else {
-          console.error("Update failed:", result.error); // 업데이트 실패 시
-        }
-      }
+          updatedData: updatedScheduleData,
+        })
+      );
+    } else {
+      const newScheduleData = {
+        email,
+        content: [newScheduleContent],
+      };
+      console.log("Adding new schedule:", newScheduleData);
+      await dispatch(
+        addSchedule({
+          collectionName,
+          scheduleObj: newScheduleData, // scheduleObj가 전달되는지 확인
+        })
+      );
     }
+
     setModalOpen(false);
-    setSelectedDate(schedule.date);
-    setDate(schedule.date);
   };
+
   const handleDeleteSchedule = (index) => {
     const docId = schedules[index].id;
     const collectionName = "schedules";
     dispatch(deleteSchedule({ collectionName, docId }));
   };
-
   const renderDotForDate = (date) => {
     if (schedules && Array.isArray(schedules)) {
       const hasSchedule = schedules.some((schedule) =>
@@ -144,7 +151,7 @@ const MyCalendar = () => {
             : false
         )
       : [];
-
+  console.log("filteredSchedules", filteredSchedules);
   return (
     <div className="calendar-wrapper">
       <Calendar

@@ -86,46 +86,60 @@ export const fetchSchedules = createAsyncThunk(
 export const addSchedule = createAsyncThunk(
   "schedule/addSchedule",
   async ({ collectionName, scheduleObj }, { rejectWithValue }) => {
-    const email = localStorage.getItem("email"); // 로컬스토리지에서 이메일 가져오기
-    const createdAt = new Date().toISOString(); // 현재 시간
-    const updatedAt = createdAt; // 처음엔 createdAt과 동일하게 설정
+    if (!scheduleObj) {
+      console.error("scheduleObj is undefined");
+      return rejectWithValue("scheduleObj is missing");
+    }
 
-    const scheduleData = {
-      title: scheduleObj.title,
-      description: scheduleObj.description,
-      time: scheduleObj.time,
+    const email = localStorage.getItem("email");
+    const createdAt = new Date().toISOString();
+    const updatedAt = createdAt;
+
+    const newScheduleData = {
+      title: scheduleObj.content[0].title || "", // content 배열에서 값 가져오기
+      description: scheduleObj.content[0].description || "", // content 배열에서 값 가져오기
+      time: scheduleObj.content[0].time || "", // content 배열에서 값 가져오기
       createdAt: createdAt,
       updatedAt: updatedAt,
     };
 
+    console.log("newScheduleData:", newScheduleData);
     try {
-      // Firestore 컬렉션에서 이메일로 기존 문서를 조회
+      // Firestore에서 동일한 이메일로 문서 조회
+      console.log("Fetching existing schedules for email:", email);
       const querySnapshot = await getDatas(collectionName, {
         conditions: [{ field: "email", operator: "==", value: email }],
       });
-      if (querySnapshot.length > 0) {
-        // 문서가 있을 때, content 배열에 일정 추가
-        const docId = querySnapshot[0].docId; // 해당 문서의 ID
-        const existingContent = querySnapshot[0].content || [];
-        const updatedContent = [...existingContent, scheduleData];
+      console.log("Firestore query result:", querySnapshot);
 
-        // Firestore에서 문서 업데이트
+      if (querySnapshot.length > 0) {
+        // 기존 문서가 있을 때, 해당 문서의 content 배열에 새 일정 추가
+        const docId = querySnapshot[0].docId;
+        console.log("Existing document ID:", docId);
+        const existingContent = querySnapshot[0].content || [];
+        const updatedContent = [...existingContent, newScheduleData];
+
+        console.log("Updated content for existing schedule:", updatedContent);
+
         await updateDatas(collectionName, docId, { content: updatedContent });
 
         return { email, content: updatedContent }; // 상태 업데이트에 반영될 데이터
       } else {
-        // 문서가 없을 때 새로 생성
+        // 기존 문서가 없을 때, 새로운 문서 생성
         const newDoc = {
           email,
-          content: [scheduleData],
+          content: [newScheduleData],
         };
+
+        console.log("Creating new schedule document:", newDoc);
 
         await addDatas(collectionName, newDoc);
 
         return newDoc;
       }
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error("Error in addSchedule:", error); // 여기서 발생한 오류를 제대로 로깅
+      return rejectWithValue(error?.message || "Unknown error occurred");
     }
   }
 );
