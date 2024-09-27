@@ -12,13 +12,13 @@ import hen from "../../../video/hen1.mp4";
 import hen2 from "../../../video/hen2.mp4";
 import { useSelector } from "react-redux";
 
-function CCTVAnimal() {
-  const farm_stockType = useSelector(
-    (state) => state.AddLiveStockSlice.farm_stockType
-  );
-  console.log("Farm Stock Type from Redux: ", farm_stockType);
+function CCTVAnimal({ stockType }) {
+  // const farm_stockType = useSelector(
+  //   (state) => state.AddLiveStockSlice.farm_stockType
+  // );
+  // console.log("Farm Stock Type from Redux: ", farm_stockType);
   const stockTypeCCTVAnimal = () => {
-    switch (farm_stockType) {
+    switch (stockType) {
       case "한우":
         return (
           <div className={styles.cctvBox}>
