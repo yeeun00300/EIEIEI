@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import styles from "./MedicalListSave.module.scss";
 import kroDate from "../../utils/korDate";
 import {
+  deleteDatas,
+  deleteDocument,
   fetchFarmDocumentByEmail,
   getSubCollection,
+  removeDocument,
   updateSubcollectionDocument,
 } from "../../firebase";
 import {
@@ -31,6 +34,7 @@ function MedicalListSave() {
   const [selectedSubData, setSelectedSubData] = useState(null);
   const [editing, setEditing] = useState(false);
   const [updatedData, setUpdatedData] = useState({});
+  const [deleteSubData, setDeleteSubData] = useState(null);
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -39,6 +43,7 @@ function MedicalListSave() {
       const fetchData = async () => {
         try {
           const documents = await fetchFarmDocumentByEmail(email);
+          console.log(documents);
           if (documents && documents.length > 0) {
             // 모든 문서 가져오기
             setMedicalData(documents); // 모든 축사 데이터를 상태에 저장
@@ -54,8 +59,10 @@ function MedicalListSave() {
               // subData에 farmId를 추가하여 allSubCollectionData에 저장
               const subDataWithFarmId = subData.map((item) => ({
                 ...item,
+                farmDocId: document.id,
                 farmId: document.farmId, // 축사 번호 추가
               }));
+              console.log("Sub data with farmId:", subDataWithFarmId);
               allSubCollectionData.push(...subDataWithFarmId); // 모든 서브 데이터를 추가
             }
             setSubCollectionData(allSubCollectionData); // 모든 서브 컬렉션 데이터 설정
@@ -145,6 +152,22 @@ function MedicalListSave() {
     }
   };
 
+  const handleDelete = async (subData) => {
+    try {
+      const { docId, farmId, farmDocId } = subData;
+
+      await deleteDocument("farm", farmDocId, "farmCureList", docId);
+
+      setSubCollectionData((prevData) =>
+        prevData.filter((item) => item.docId !== docId)
+      );
+
+      alert("삭제가 완료되었습니다!");
+    } catch (error) {
+      console.error("삭제 실패:", error.message || error);
+    }
+  };
+
   if (!medicalData) {
     return <p>로딩 중...</p>;
   }
@@ -160,32 +183,42 @@ function MedicalListSave() {
                 <TableCell>증상</TableCell>
                 <TableCell>마지막 수정일</TableCell>
                 <TableCell>상세보기</TableCell>
+                <TableCell>삭제하기</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {subCollectionData.length > 0 ? (
-                subCollectionData.map((subData) => (
-                  <TableRow
-                    key={subData.docId}
-                    onClick={() => handleSubDataClick(subData)}
-                  >
-                    <TableCell>{subData.farmId}</TableCell>
-                    <TableCell>{subData.symptom}</TableCell>
-                    <TableCell>{subData.lastModified || kroDate()}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleSubDataClick(subData)}
-                      >
-                        보기
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
+                subCollectionData.map((subData) => {
+                  return (
+                    <TableRow key={subData.docId}>
+                      <TableCell>{subData.farmId}</TableCell>
+                      <TableCell>{subData.symptom}</TableCell>
+                      <TableCell>
+                        {subData.lastModified || "수정 이력이 없습니다."}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleSubDataClick(subData)}
+                        >
+                          보기
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleDelete(subData)}
+                        >
+                          삭제
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               ) : (
                 <TableRow>
                   <TableCell colSpan={4}>
-                    서브 컬렉션 데이터가 없습니다.
+                    문진표 작성 이력이 없습니다.
                   </TableCell>
                 </TableRow>
               )}

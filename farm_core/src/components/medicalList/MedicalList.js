@@ -60,33 +60,38 @@ function MedicalList(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const subCollections = {
-        farmCureList: {
-          farmNumber: farmData.farmNumber || "",
-          symptom: farmData.symptom || "",
-          symptomCount: farmData.symptomCount || "",
-          fever: farmData.fever !== undefined ? farmData.fever : false,
-          feverMean: farmData.feverMean || "",
-          cough: farmData.cough !== undefined ? farmData.cough : false,
-          coughCount: farmData.coughCount || "",
-          diarrhea: farmData.diarrhea || "",
-          diarrheaCount: farmData.diarrheaCount || "",
-          ventilation: farmData.ventilation || "",
-          lampCondition: farmData.lampCondition || "",
-          feedSupply: farmData.feedSupply || "",
-        },
-      };
+      const selectedFarmId = farmData.farmNumber; // 사용자가 선택한 farmId
+      const farmDocIndex = farmIdList.indexOf(selectedFarmId); // 선택된 farmId의 인덱스 찾기
 
-      // docId 배열에서 첫 번째 아이디를 선택합니다.
-      if (docId.length > 0) {
-        const farmDocId = await addMessage(
+      if (farmDocIndex !== -1) {
+        const farmDocId = docId[farmDocIndex]; // 인덱스를 통해 docId에서 문서 ID 찾기
+
+        const subCollections = {
+          farmCureList: {
+            farmNumber: selectedFarmId || "",
+            symptom: farmData.symptom || "",
+            symptomCount: farmData.symptomCount || "",
+            fever: farmData.fever !== undefined ? farmData.fever : false,
+            feverMean: farmData.feverMean || "",
+            cough: farmData.cough !== undefined ? farmData.cough : false,
+            coughCount: farmData.coughCount || "",
+            diarrhea: farmData.diarrhea || "",
+            diarrheaCount: farmData.diarrheaCount || "",
+            ventilation: farmData.ventilation || "",
+            lampCondition: farmData.lampCondition || "",
+            feedSupply: farmData.feedSupply || "",
+          },
+        };
+
+        // 선택된 farmId에 맞는 문서 ID로 서브컬렉션에 데이터 추가
+        await addMessage(
           "farm",
-          docId[0], // 첫 번째 문서 ID 사용
+          farmDocId,
           "farmCureList",
           subCollections.farmCureList
         );
-
-        alert("데이터가 성공적으로 저장되었습니다!");
+        window.alert("데이터가 성공적으로 저장되었습니다!");
+        window.location.reload();
       } else {
         alert("유효한 문서 ID가 없습니다.");
       }

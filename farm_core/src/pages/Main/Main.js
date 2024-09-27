@@ -36,6 +36,13 @@ import LightPiChartWidget from "../../components/ControlPanels/widget/LightPiCha
 import NH3PiChartWidget from "../../components/ControlPanels/widget/NH3PiChartWidget";
 import TodayWeatherWidget from "../../components/ControlPanels/WeatherWidget/TodayWeatherWidget";
 import WeekWeatherWidget from "../../components/ControlPanels/WeatherWidget/WeekWeatherWidget";
+import StockNum from "../../components/MyLiveStock/charts/StockNum";
+import Vaccine from "../../components/MyLiveStock/charts/Vaccine";
+import FeedAndWater from "../../components/MyLiveStock/charts/FeedAndWater";
+import HealthCondition from "../../components/MyLiveStock/charts/HealthCondition";
+import StockProduct from "../../components/MyLiveStock/charts/StockProduct";
+import MortalityRate from "../../components/MyLiveStock/charts/MortalityRate";
+import CCTVAnimal from "../../components/CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -74,7 +81,8 @@ function Main({ farmList }) {
   useFetchCollectionData("stock", fetchExcelStock);
   // ????????????????????????????????????????????????????????????????????????????????
 
-  // console.log(farmId);
+  const [filteredStock, setFilteredStock] = useState([]);
+
   const sampleData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
@@ -184,6 +192,51 @@ function Main({ farmList }) {
         minw: 1,
         maxh: 3,
       },
+      {
+        i: "11",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "12",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "13",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "14",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "15",
+        x: 2,
+        y: 0,
+        w: 2,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
     ],
     md: [
       {
@@ -272,6 +325,15 @@ function Main({ farmList }) {
         x: 2,
         y: 0,
         w: 3,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "11",
+        x: 2,
+        y: 0,
+        w: 1,
         h: 3,
         minw: 1,
         maxh: 3,
@@ -368,6 +430,15 @@ function Main({ farmList }) {
         minw: 1,
         maxh: 3,
       },
+      {
+        i: "11",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
     ],
   };
 
@@ -375,25 +446,36 @@ function Main({ farmList }) {
   const renderComponent = (id) => {
     switch (id) {
       case "1":
-        return <LineChart dataset={sampleData} />;
+        return <Vaccine stock={stock && stock} />; //백신정보
       case "2":
-        return <Table data={stock && stock} />;
+        return <Table data={stock && stock} />; //가축별 총 데이터
       case "3":
-        return <GaugeNeedle />;
+        return <FeedAndWater />; //물 사료 소비량
       case "4":
-        return <MonthPractice />;
+        return <MonthPractice />; // 질병 지도 데이터
       case "5":
-        return <TempPiNeedleWidget />;
+        return <TempPiNeedleWidget />; // 온도 조절
       case "6":
-        return <HumidPiChartWidget />;
+        return <HumidPiChartWidget />; // 습도 조절
       case "7":
-        return <LightPiChartWidget />;
+        return <LightPiChartWidget />; // 조도 조절
       case "8":
-        return <CO2PiChartWidget />;
+        return <CO2PiChartWidget />; //co2 조절
       case "9":
-        return <NH3PiChartWidget />;
+        return <NH3PiChartWidget />; //암모니아 조절
       case "10":
-        return <WeekWeatherWidget />;
+        return <WeekWeatherWidget />; // 5일 날씨
+      case "11":
+        return <StockNum stock={stock && stock} />; //현재 농장 가축 수
+      case "12":
+        return <StockProduct stock={stock && stock} farmData={currentFarm} />; //발정상태&생산량
+      case "13":
+        return <HealthCondition stock={stock && stock} />; //건강 상태
+      case "14":
+        return <MortalityRate stock={stock && stock} />; //폐사율
+      case "15":
+        return <CCTVAnimal stockType={currentFarm.farm_stockType} />; //cctv
+
       default:
         return null;
     }
@@ -473,7 +555,7 @@ function Main({ farmList }) {
             className="layout"
             layouts={layout}
             breakpoints={{ lg: 1400, md: 700, sm: 400 }}
-            cols={{ lg: 5, md: 2, sm: 1 }}
+            cols={{ lg: 5, md: 3, sm: 1 }}
             rowHeight={83}
             // width={1000}
             isResizable={false}
