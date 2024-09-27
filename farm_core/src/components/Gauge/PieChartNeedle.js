@@ -16,6 +16,7 @@ function PieChartNeedle({
   handleDown,
   unit,
   nowName,
+  fan,
 }) {
   return (
     <div>
@@ -46,8 +47,12 @@ function PieChartNeedle({
             {setValue}
             {unit}
             <div className={styles.setting}>
-              <span onClick={handleUp}>{`▲`}</span>
-              <span onClick={handleDown}>{`▼`}</span>
+              {!fan && (
+                <>
+                  <span onClick={handleUp}>{`▲`}</span>
+                  <span onClick={handleDown}>{`▼`}</span>
+                </>
+              )}
             </div>
           </div>
         </div>

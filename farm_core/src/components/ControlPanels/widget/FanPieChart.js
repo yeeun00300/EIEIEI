@@ -126,6 +126,7 @@ function FanPieChart({
           handleDown={handleDown}
           unit={unit}
           nowName={nowName}
+          fan={true}
         />
       </div>
     </>

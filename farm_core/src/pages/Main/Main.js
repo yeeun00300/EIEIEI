@@ -29,6 +29,11 @@ import {
 } from "../../firebase";
 import MonthPractice from "./../../components/diseaseMonth/MonthPractice";
 import WidgetList from "./subMain/widgetList/WidgetList";
+import TempPiNeedleWidget from "../../components/ControlPanels/widget/TempPieChartWithNeedle";
+import CO2PiChartWidget from "./../../components/ControlPanels/widget/CO2PiChartWidget";
+import HumidPiChartWidget from "../../components/ControlPanels/widget/HumidPiChartWidget";
+import LightPiChartWidget from "../../components/ControlPanels/widget/LightPiChartWidget";
+import NH3PiChartWidget from "../../components/ControlPanels/widget/NH3PiChartWidget";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -123,6 +128,51 @@ function Main({ farmList }) {
         minw: 1,
         maxh: 3,
       },
+      {
+        i: "5",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "6",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "7",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "8",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "9",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
     ],
   };
 
@@ -137,6 +187,16 @@ function Main({ farmList }) {
         return <GaugeNeedle />;
       case "4":
         return <MonthPractice />;
+      case "5":
+        return <TempPiNeedleWidget />;
+      case "6":
+        return <HumidPiChartWidget />;
+      case "7":
+        return <LightPiChartWidget />;
+      case "8":
+        return <CO2PiChartWidget />;
+      case "9":
+        return <NH3PiChartWidget />;
       default:
         return null;
     }
