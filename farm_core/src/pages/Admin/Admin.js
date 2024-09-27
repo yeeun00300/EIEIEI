@@ -34,6 +34,13 @@ import AMControl from "../../components/ControlPanels/AMControl";
 import UserInfo from "./../MyPage/UserInfo/UserInfo";
 import AccordionAlarm from "../../components/Alarm/AccordionAlarm";
 import Chatting from "../../components/Chatting/Chatting";
+import DiseaseMedicalList from "../../components/Admin-Disease/DiseaseMedicalList";
+import TempPiNeedleWidget from "../../components/ControlPanels/widget/TempPieChartWithNeedle";
+import HumidPiChartWidget from "../../components/ControlPanels/widget/HumidPiChartWidget";
+import LightPiChartWidget from "../../components/ControlPanels/widget/LightPiChartWidget";
+import CO2PiChartWidget from "../../components/ControlPanels/widget/CO2PiChartWidget";
+import NH3PiChartWidget from "../../components/ControlPanels/widget/NH3PiChartWidget";
+import WidgetList from "../Main/subMain/widgetList/WidgetList";
 
 function Admin({ userInfo, address }) {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -136,7 +143,7 @@ function Admin({ userInfo, address }) {
       "weather-notice": <AlarmManagement reSend={true} sort={"날씨"} />,
       "disease-state": <DiseaseUser />,
       "disease-issue": <DiseaseState />,
-      "disease-consult": <h1>문진표 목록</h1>,
+      "disease-consult": <DiseaseMedicalList />,
       "disease-notice": <DiseaseIssue />,
       // "alarm-management": <AlarmManagement reSend={true} />,
       // "alarm-management": (
@@ -159,17 +166,23 @@ function Admin({ userInfo, address }) {
       // ),
       chatting: (
         <>
-          <Gauge01 />
-          <TempControl />
-          <HumidControl />
-          <LIghtControl />
-          <CO2Control />
-          <AMControl />
+          {/* <Gauge01 /> */}
+          <TempPiNeedleWidget />
+          {/* <TempControl /> */}
+          <HumidPiChartWidget />
+          {/* <HumidControl /> */}
+          <LightPiChartWidget />
+          {/* <LIghtControl /> */}
+          <CO2PiChartWidget />
+          {/* <CO2Control /> */}
+          <NH3PiChartWidget />
+          {/* <AMControl /> */}
           {/* <GaugeNeedle /> */}
           <LineChart01 />
           <BiLineChart />
           <BarChart01 />
-          <Chatting />
+          {/* <Chatting /> */}
+          <WidgetList />
         </>
       ),
       // chatting: <h1>채팅기록</h1>,

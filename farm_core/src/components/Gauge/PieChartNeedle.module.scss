@@ -1,0 +1,61 @@
+.GaugeContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.setValue {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+    // margin-top: 12px;
+    padding: 0;
+  }
+  div {
+    color: var(--point-color);
+    display: flex;
+    // flex-direction: column;
+    gap: 4px;
+  }
+}
+.nowValue {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+    // margin-top: 12px;
+    padding: 0;
+  }
+  div {
+    width: 80px;
+    margin-top: 8px;
+  }
+}
+.setting {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 8px;
+    border: 1px solid var(--point-color);
+    padding: 2px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--point-color);
+      color: white;
+      border: 1px solid white;
+    }
+  }
+}

@@ -47,7 +47,6 @@ function AdminStock(props) {
   // const selectedStock = useSelector((state) => state.stockSlice);
   // const selectedStock = useSelector((state) => state.stockSlice?.selectedStock);
   // useFetchCollectionData("stock", fetchExcelStock);
-  console.log(stock);
 
   useEffect(() => {
     // 컴포넌트가 처음 마운트될 때 가축 종류를 '한우'로 설정
@@ -215,13 +214,13 @@ function AdminStock(props) {
   };
 
   // 검색된 데이터 필터링
-  // const filteredStock = stock
-  //   ?.filter((item) => (selectedType ? item.stockType === selectedType : true))
-  //   ?.filter((item) =>
-  //     Object.values(item).some((val) =>
-  //       String(val).toLowerCase().includes(searchQuery)
-  //     )
-  //   );
+  const filteredStock = stock
+    ?.filter((item) => (selectedType ? item.stockType === selectedType : true))
+    ?.filter((item) =>
+      Object.values(item).some((val) =>
+        String(val).toLowerCase().includes(searchQuery)
+      )
+    );
 
   const handleUpdateDeceased = async () => {
     try {
@@ -245,18 +244,18 @@ function AdminStock(props) {
     }
   };
 
-  // // 정렬된 데이터 적용
-  // const sortedStock = [...filteredStock].sort((a, b) => {
-  //   if (sortConfig.key === null) return 0;
-  //   const direction = sortConfig.direction === "asc" ? 1 : -1;
-  //   if (a[sortConfig.key] < b[sortConfig.key]) {
-  //     return -1 * direction;
-  //   }
-  //   if (a[sortConfig.key] > b[sortConfig.key]) {
-  //     return 1 * direction;
-  //   }
-  //   return 0;
-  // });
+  // 정렬된 데이터 적용
+  const sortedStock = [...filteredStock].sort((a, b) => {
+    if (sortConfig.key === null) return 0;
+    const direction = sortConfig.direction === "asc" ? 1 : -1;
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return -1 * direction;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return 1 * direction;
+    }
+    return 0;
+  });
 
   const diseaseOptions = {
     한우: [
@@ -458,7 +457,7 @@ function AdminStock(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {/* {sortedStock?.map((item) => (
+                  {sortedStock?.map((item) => (
                     <TableRow key={item.docId}>
                       <TableCell>
                         <input
@@ -496,19 +495,19 @@ function AdminStock(props) {
                         </Button>
                       </TableCell>
                     </TableRow>
-                  ))} */}
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
           )}
 
-          {/* {isModalOpen && (
+          {isModalOpen && (
             <StockModal
               open={isModalOpen}
               onClose={() => setModalOpen(false)}
-              stock={selectedStock}
+              stock={stock}
             />
-          )} */}
+          )}
         </div>
       </div>
     </div>

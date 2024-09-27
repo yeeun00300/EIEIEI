@@ -99,10 +99,8 @@ function KORMap({ data, selectedMonth }) {
   }, [data, selectedMonth]);
 
   return (
-    <div className="container">
-      <div className={styles.wrapper}>
-        <div id="chartdiv" className={styles.korMap} />
-      </div>
+    <div className={styles.wrapper}>
+      <div id="chartdiv" className={styles.korMap} />
     </div>
   );
 }

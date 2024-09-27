@@ -1,0 +1,98 @@
+// .propeller {
+//   width: 100px; // 이미지 크기 조절 (필요에 따라 수정)
+//   height: auto; // 비율 유지
+//   transition: transform 0.5s ease; // 부드럽게 멈추도록 설정
+//   &.spin {
+//     // spin 클래스 추가
+//     animation: spin 1s linear infinite; // 애니메이션 속도를 1초로 설정
+//   }
+// }
+
+// @keyframes spin {
+//   from {
+//     transform: rotate(0deg); // 시작 각도
+//   }
+//   to {
+//     transform: rotate(360deg); // 끝 각도
+//   }
+// }
+.NH3Widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f4f8;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+    transition: transform 0.5s ease;
+  }
+
+  .propeller {
+    &.spin {
+      animation: spin 3s linear infinite;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .PieChart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fanSwitch {
+    margin-top: 20px;
+    display: flex;
+    // flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    button {
+      background-color: #34d399; // TailwindCSS 색상: emerald-400
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #059669; // TailwindCSS 색상: emerald-600
+      }
+
+      &:active {
+        background-color: #047857; // TailwindCSS 색상: emerald-700
+      }
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: #1f2937; // TailwindCSS 색상: gray-800
+      font-weight: 500;
+    }
+  }
+
+  .PieChartNeedle {
+    margin-bottom: 20px;
+  }
+}

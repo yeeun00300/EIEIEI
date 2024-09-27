@@ -23,6 +23,7 @@ import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import { useFetchCollectionData } from "../../firebase";
+import MonthPractice from "./../../components/diseaseMonth/MonthPractice";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -109,11 +110,11 @@ function Main() {
         i: "4",
         x: 2,
         y: 0,
-        w: 1,
-        h: 3,
+        w: 2,
+        h: 4,
         minw: 1,
         maxh: 3,
-        children: <div>안녕하세요2</div>,
+        children: <MonthPractice />,
       },
     ],
   };
@@ -165,7 +166,7 @@ function Main() {
         <div className={styles.widget}>
           <ResponsiveGridLayout
             className="layout"
-            layouts={layout}
+            layouts={LAYOUTS}
             breakpoints={{ lg: 1400, md: 600 }}
             cols={{ lg: 5, md: 2 }}
             rowHeight={100}

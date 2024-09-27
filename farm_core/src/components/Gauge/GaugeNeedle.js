@@ -59,7 +59,7 @@ export default function GaugeNeedle({
       >
         <GaugeReferenceArc />
         <GaugeValueArc />
-        <GaugePointer />
+        <GaugePointer fill={"#4db6ac"} />
       </GaugeContainer>
       <div className={styles.GaugeContainer}>
         <div className={styles.setValue}>

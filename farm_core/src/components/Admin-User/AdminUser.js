@@ -229,7 +229,7 @@ function AdminUser() {
     const admin = uid ? "관리자" : " ";
     const secession = isActive == "Y" ? "" : "secession";
     return {
-      id: idx,
+      id: idx + 1,
       // farmId: farm || "X",
       name: name,
       nickname: nickname || "X",
