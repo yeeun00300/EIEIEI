@@ -257,7 +257,7 @@ function Main({ farmList }) {
             layouts={layout}
             breakpoints={{ lg: 1400, md: 600 }}
             cols={{ lg: 5, md: 2 }}
-            rowHeight={100}
+            rowHeight={83}
             width={1000}
             isResizable={false}
             onLayoutChange={onLayoutChange}
