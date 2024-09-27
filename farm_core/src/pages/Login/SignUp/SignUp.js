@@ -355,7 +355,7 @@ function SignUp() {
             {downloadURL ? (
               <img src={downloadURL} alt="프로필 이미지" />
             ) : (
-              <FaImage size={90} />
+              <FaImage size={90} className={styles.imgPhoto} />
             )}
             <input
               type="file"
