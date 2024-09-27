@@ -40,7 +40,7 @@ const MyCalendar = () => {
 
   useEffect(() => {
     if (schedules?.length > 0) {
-      console.log("Fetched schedules:", schedules);
+      // console.log("Fetched schedules:", schedules);
     } else {
       console.log("No schedules found or still loading.");
     }
@@ -56,6 +56,12 @@ const MyCalendar = () => {
     setDate(today);
     setSelectedDate(today);
   };
+  const handleEditSchedule = (scheduleIndex, contentIndex) => {
+    const scheduleToEdit = schedules[scheduleIndex];
+    const contentToEdit = scheduleToEdit.content[contentIndex];
+    setEditingSchedule({ ...scheduleToEdit, content: contentToEdit }); // 수정할 내용 설정
+    setModalOpen(true); // 모달 열기
+  };
 
   const handleAddSchedule = () => {
     if (selectedDate) {
@@ -65,14 +71,8 @@ const MyCalendar = () => {
       alert("날짜를 먼저 선택하세요.");
     }
   };
-
-  const handleEditSchedule = (index) => {
-    setEditingSchedule({ ...schedules[index], index });
-    setModalOpen(true);
-  };
-
   const handleSaveSchedule = async (schedule) => {
-    console.log("Received schedule object:", schedule); // 전달된 객체 확인
+    // console.log("Received schedule object:", schedule); // 전달된 객체 확인
 
     if (!schedule || !schedule.content || !schedule.content[0]) {
       console.error("Invalid schedule object or missing content");
@@ -90,18 +90,18 @@ const MyCalendar = () => {
       createdAt: new Date().toISOString(),
       updatedAt: null,
     };
-    console.log("newScheduleContent", newScheduleContent);
+    // console.log("newScheduleContent", newScheduleContent);
     // Firestore에서 이메일로 문서를 조회
     const existingSchedules = schedules.find((sch) => sch.email === email);
-
+    // console.log("existingSchedules", existingSchedules);
     if (existingSchedules) {
       const updatedContent = [...existingSchedules.content, newScheduleContent];
       const updatedScheduleData = {
         ...existingSchedules,
         content: updatedContent,
       };
-      const docId = existingSchedules.id || existingSchedules.docId;
-      console.log("Updating existing schedule with ID:", docId);
+      const docId = existingSchedules.docId;
+      // console.log("Updating existing schedule with ID:", docId);
       await dispatch(
         updateSchedule({
           collectionName,
@@ -114,7 +114,7 @@ const MyCalendar = () => {
         email,
         content: [newScheduleContent],
       };
-      console.log("Adding new schedule:", newScheduleData);
+      // console.log("Adding new schedule:", newScheduleData);
       await dispatch(
         addSchedule({
           collectionName,
@@ -122,15 +122,13 @@ const MyCalendar = () => {
         })
       );
     }
-
+    debugger;
     setModalOpen(false);
   };
+  // console.log("콘솔로찍은 스케줄스", schedules);
 
-  const handleDeleteSchedule = (index) => {
-    const docId = schedules[index].id;
-    const collectionName = "schedules";
-    dispatch(deleteSchedule({ collectionName, docId }));
-  };
+  // debugger;
+
   const renderDotForDate = (date) => {
     if (schedules && Array.isArray(schedules)) {
       const hasSchedule = schedules.some((schedule) =>
@@ -152,6 +150,7 @@ const MyCalendar = () => {
         )
       : [];
   console.log("filteredSchedules", filteredSchedules);
+  // console.log("editingSchedule", editingSchedule);
   return (
     <div className="calendar-wrapper">
       <Calendar
@@ -203,14 +202,14 @@ const MyCalendar = () => {
         </button>
       </div>
       <ScheduleList
-        schedules={filteredSchedules} // 선택된 날짜의 일정만 전달
+        schedules={filteredSchedules}
+        // 선택된 날짜의 일정만 전달
         onEdit={handleEditSchedule}
-        onDelete={handleDeleteSchedule}
       ></ScheduleList>
       <ScheduleModal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
-        onSave={handleSaveSchedule}
+        onSave={handleSaveSchedule} // 조건에 따라 올바른 함수 설정
         schedules={editingSchedule}
       />
     </div>
