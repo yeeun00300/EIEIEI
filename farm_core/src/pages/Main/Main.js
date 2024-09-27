@@ -126,7 +126,7 @@ function Main({ farmList }) {
         x: 2,
         y: 0,
         w: 2,
-        h: 4,
+        h: 3,
         minw: 1,
         maxh: 3,
       },
@@ -254,7 +254,7 @@ function Main({ farmList }) {
         x: 2,
         y: 0,
         w: 2,
-        h: 4,
+        h: 3,
         minw: 1,
         maxh: 3,
       },
@@ -420,13 +420,7 @@ function Main({ farmList }) {
   };
 
   // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
-  const [layout, setLayout] = useState({
-    lg: [],
-    md: [],
-    sm: [],
-    xs: [],
-    xxs: [],
-  });
+  const [layout, setLayout] = useState(LAYOUTS);
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트

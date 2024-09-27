@@ -61,7 +61,7 @@ function MonthPractice(props) {
   return (
     <div className={styles.mapbox}>
       <div className={styles.wrapper}>
-        <h1>월별 질병 발생 데이터</h1>
+        <h1>월별 질병 데이터</h1>
         <input
           type="month"
           value={selectedMonth.slice(0, 4) + "-" + selectedMonth.slice(4)}
