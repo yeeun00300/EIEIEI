@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./NH3PiChartWidget.module.scss";
 import propellerImg from "../../../img/프로펠러.png";
 import PieChartNeedle from "../../Gauge/PieChartNeedle";
+import FanPieChart from "./FanPieChart";
 function NH3PiChartWidget() {
   const [setValue, setSetValue] = useState(25); // 목표 설정값은 300
   const [intervalValue, setIntervalValue] = useState(1); // 초기값 270
@@ -108,10 +109,32 @@ function NH3PiChartWidget() {
   }, [intervalValue, setValue]);
   return (
     <div className={styles.NH3Widget}>
-      <img
-        src={propellerImg}
-        className={`${styles.propeller} ${isOn ? styles.spin : ""}`}
+      <FanPieChart
+        data={data}
+        cx={cx}
+        cy={cy}
+        iR={iR}
+        oR={oR}
+        value={value}
+        needle={needle}
+        setValue={setValue}
+        intervalValue={intervalValue}
+        handleUp={handleUp}
+        handleDown={handleDown}
+        unit="ppm"
+        nowName="NH3 농도"
+        // isOn={isOn}
+        // toggleOnOff={toggleOnOff}
+        isIncreasing={isIncreasing}
+        setIsIncreasing={setIsIncreasing}
       />
+      {/* <div className={styles.fanSwitch}>
+        <img
+          src={propellerImg}
+          className={`${styles.propeller} ${isOn ? styles.spin : ""}`}
+        />
+        <button onClick={toggleOnOff}>{isOn ? "ON" : "OFF"}</button>
+      </div>
       <div className={styles.PieChart}>
         <PieChartNeedle
           data={data}
@@ -128,11 +151,7 @@ function NH3PiChartWidget() {
           unit="ppm"
           nowName="NH3 농도"
         />
-      </div>
-      <div className={styles.fanSwitch}>
-        <button onClick={toggleOnOff}>{isOn ? "OFF" : "ON"}</button>
-        <p>{isIncreasing ? "NH3 증가 중" : "NH3 감소 중"}</p>
-      </div>
+      </div> */}
     </div>
   );
 }

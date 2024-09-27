@@ -74,6 +74,10 @@ function Main({ farmList }) {
       },
     ],
   };
+
+  const childrenDict = {
+    LineChart: <LineChart dataset={sampleData} />,
+  };
   const LAYOUTS = {
     lg: [
       {
@@ -84,7 +88,8 @@ function Main({ farmList }) {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: <LineChart dataset={sampleData} />,
+        children: childrenDict["LineChart"],
+        // children: <LineChart dataset={sampleData} />,
       },
       {
         i: "2",
