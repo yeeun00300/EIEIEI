@@ -5,7 +5,7 @@ import AccordionHeader from "react-bootstrap/AccordionHeader";
 import AccordionBody from "react-bootstrap/AccordionBody";
 import styles from "./AccordionAlarm.module.scss";
 
-function AccordionAlarm({ weatherIssueAlarm }) {
+function AccordionAlarm({ weatherIssueAlarm, diseaseAlarm }) {
   return (
     <div className={styles.AccordionAlarm}>
       <Accordion defaultActiveKey="0" alwaysOpen>
@@ -41,19 +41,35 @@ function AccordionAlarm({ weatherIssueAlarm }) {
         <AccordionItem eventKey="1">
           <AccordionHeader>
             질병 알람
-            <span className={styles.AlarmCount}>1</span>
+            <span className={styles.AlarmCount}>{diseaseAlarm?.length}</span>
           </AccordionHeader>
           <AccordionBody>
-            <AccordionItem eventKey="2">
-              <AccordionHeader>
-                질병 알람
-                <span className={styles.weatherAlarmDate}>09-09 12:04</span>
-              </AccordionHeader>
-              <AccordionBody>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </AccordionBody>
-            </AccordionItem>
+            {diseaseAlarm?.map((diseaseItem, idx) => {
+              const { createdAt, diseaseTypes, diseases, locale } = diseaseItem;
+              return (
+                <AccordionItem eventKey={idx + 100} key={createdAt}>
+                  <AccordionHeader>{`${locale}의 질병 소식`}</AccordionHeader>
+                  <AccordionBody>
+                    {
+                      <div className={styles.diseaseContents}>
+                        <p>
+                          가축 종류 :
+                          {diseaseTypes.map((type) => (
+                            <span>{`${type}`}</span>
+                          ))}
+                        </p>
+                        <p>
+                          질병 :
+                          {diseases.map((type) => (
+                            <span>{`${type}`}</span>
+                          ))}
+                        </p>
+                      </div>
+                    }
+                  </AccordionBody>
+                </AccordionItem>
+              );
+            })}
           </AccordionBody>
         </AccordionItem>
       </Accordion>

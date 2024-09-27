@@ -54,7 +54,7 @@ function WeatherIssue() {
 
   return (
     <div className={styles.WeatherIssue}>
-      <Search setSearch={setSearch} />
+      {/* <Search setSearch={setSearch} /> */}
 
       {weatherIssueContent.map((item, idx) => {
         const { t1, t2, t6, tmFc, other } = item;

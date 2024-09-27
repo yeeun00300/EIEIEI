@@ -1,34 +1,130 @@
 .Alarm {
+  list-style: none;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: relative;
+  margin: 0;
   width: 100%;
-  .AlarmBtn {
-    // font-size: 18px;
-    position: absolute;
-    top: 12px;
-    right: 20px;
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 10px;
-      margin-left: 10px;
-      cursor: pointer;
-      &:hover {
-        background-color: lightgray;
+  max-width: 800px;
+  background-color: #f9fafc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+  li {
+    background-color: #fff;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #f1f5f9;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #333;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        font-size: 0.9rem;
+        color: #999;
+      }
+    }
+
+    h4,
+    p {
+      font-size: 1rem;
+      color: #555;
+      margin: 5px 0;
+
+      span {
+        background-color: #eef2f5;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        color: #333;
+        margin-right: 5px;
       }
     }
   }
-  span {
-    color: darkgrey;
-    font-size: 12px;
+}
+
+.AlarmBtn {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:first-child {
+      background-color: #ff6b6b;
+      color: #fff;
+
+      &:hover {
+        background-color: #e05656;
+      }
+    }
+
+    &:last-child {
+      background-color: #1abc9c;
+      color: #fff;
+
+      &:hover {
+        background-color: #16a085;
+      }
+    }
   }
-  li {
-    padding: 24px;
-    list-style-type: none;
-    border: 1px solid black;
-    border-radius: 12px;
+}
+.diseaseAlarmBtn {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  position: absolute;
+  top: 0;
+  right: 10px;
+
+  button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:first-child {
+      background-color: #ff6b6b;
+      color: #fff;
+
+      &:hover {
+        background-color: #e05656;
+      }
+    }
+
+    &:last-child {
+      background-color: #1abc9c;
+      color: #fff;
+
+      &:hover {
+        background-color: #16a085;
+      }
+    }
   }
 }

@@ -323,26 +323,28 @@ function AdminStock(props) {
             placeholder="가축 ID, 종류, 성별 등으로 검색"
             className={styles.myStockDetailsTextField}
           />
-          {/* 질병 등록 버튼 */}
-          {!showDiseaseRegistration && !showVaccineRegistration && (
-            <Button
-              variant="contained"
-              onClick={handleShowDiseaseRegistration}
-              className={styles.myStockDetailsButton}
-            >
-              질병 등록
-            </Button>
-          )}
-          {/* 백신 등록 버튼 */}
-          {!showDiseaseRegistration && !showVaccineRegistration && (
-            <Button
-              variant="contained"
-              onClick={handleShowVaccineRegistration}
-              className={styles.myStockDetailsButton}
-            >
-              백신 등록
-            </Button>
-          )}
+          <div className={styles.myStockDetailsBtn}>
+            {/* 질병 등록 버튼 */}
+            {!showDiseaseRegistration && !showVaccineRegistration && (
+              <Button
+                variant="contained"
+                onClick={handleShowDiseaseRegistration}
+                className={styles.myStockDetailsButton}
+              >
+                질병 등록
+              </Button>
+            )}
+            {/* 백신 등록 버튼 */}
+            {!showDiseaseRegistration && !showVaccineRegistration && (
+              <Button
+                variant="contained"
+                onClick={handleShowVaccineRegistration}
+                className={styles.myStockDetailsButton}
+              >
+                백신 등록
+              </Button>
+            )}
+          </div>
           {showDiseaseRegistration && (
             <>
               {/* 질병 등록 필드 */}
@@ -458,7 +460,10 @@ function AdminStock(props) {
                 </TableHead>
                 <TableBody>
                   {sortedStock?.map((item) => (
-                    <TableRow key={item.docId}>
+                    <TableRow
+                      key={item.docId}
+                      className={styles.myStockDetailsRow}
+                    >
                       <TableCell>
                         <input
                           type="checkbox"

@@ -1,19 +1,7 @@
-.DiseaseIssue {
+.DiseaseAlarm {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  ul {
-    border: 1px solid black;
-    border-radius: 12px;
-    h2 {
-      font-weight: bold;
-    }
-    h3 {
-      font-weight: normal;
-    }
-    h4 {
-      font-weight: normal;
-      margin: 10px 0;
-    }
-  }
+  // justify-content: center;
+  width: 80%;
+  gap: 12px;
 }

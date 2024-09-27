@@ -1,5 +1,6 @@
 .wrapper {
   overflow: hidden;
+  width: 95%;
   h3 {
     text-align: center;
     color: #2c3e50; // 어두운 색상으로 변경
@@ -22,8 +23,8 @@
   .myStockDetailsTextField {
     border-radius: 6px; // 테두리 둥글게
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); // 그림자 강도 증가
-    padding: 10px; // 패딩 추가
-    border: 1px solid #ccc; // 테두리 추가
+    // padding: 10px; // 패딩 추가
+    // border: 1px solid #ccc; // 테두리 추가
     transition: border-color 0.3s; // 테두리 색상 전환 효과
     font-size: 0.7rem;
     &:focus {
@@ -31,6 +32,13 @@
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); // 포커스 시 그림자 효과
     }
     margin: 0;
+  }
+  .myStockDetailsBtn {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
   }
 
   .MyStockDetailsContainer {
@@ -61,7 +69,8 @@
   }
 
   .myStockDetailsHead th {
-    padding: 15px 10px;
+    padding: 8px 5px;
+    // padding: 15px 10px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s; // 부드러운 전환 효과
     width: 100px; // 원하는 고정 너비
@@ -80,7 +89,9 @@
       background-color: #f1f1f1;
     }
   }
-
+  .myStockDetailsRow td {
+    padding: 4px 8px;
+  }
   .sortIcon {
     margin-left: 5px;
   }

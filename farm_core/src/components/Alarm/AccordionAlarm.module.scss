@@ -47,3 +47,19 @@
   justify-content: center;
   align-items: center;
 }
+.diseaseContents {
+  p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #555;
+
+    span {
+      font-size: 0.9rem;
+      color: #333;
+      background-color: #eef1f4;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+  }
+}

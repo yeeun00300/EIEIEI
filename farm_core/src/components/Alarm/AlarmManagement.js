@@ -34,12 +34,11 @@ function AlarmManagement({ reSend, sort }) {
       handleLoad();
       // }, []);
     }, [onWeatherIssueAlarm]);
-    console.log(onWeatherIssueAlarm);
 
     if (sort === "날씨") {
       return (
         <>
-          <Search setSearch={setSearch} />
+          {/* <Search setSearch={setSearch} /> */}
           {weatherIssueAlarm.map((item) => {
             const now = new Date();
             const newTime = now.getTime();

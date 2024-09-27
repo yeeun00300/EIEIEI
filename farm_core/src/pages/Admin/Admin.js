@@ -70,7 +70,7 @@ function Admin({ userInfo, address }) {
       id: "weather",
       label: "기상 관리",
       children: [
-        { id: "weather-condition", label: "날씨 현황" },
+        // { id: "weather-condition", label: "날씨 현황" },
         { id: "weather-issue", label: "기상 특보" },
         { id: "weather-notice", label: "날씨 알림" },
       ],
@@ -81,8 +81,8 @@ function Admin({ userInfo, address }) {
       children: [
         { id: "disease-state", label: "질병 현황" },
         { id: "disease-issue", label: "질병 특보" },
-        { id: "disease-consult", label: "문진표 목록" },
         { id: "disease-notice", label: "질병 알림" },
+        { id: "disease-consult", label: "문진표 목록" },
       ],
     },
     // {
@@ -132,22 +132,22 @@ function Admin({ userInfo, address }) {
       "": " ",
       user: <AdminUser />,
       customer: <CustomerManagement />,
-      weather: " ",
-      disease: " ",
-      alarm: " ",
+      weather: <WeatherIssue />,
+      disease: <DiseaseInfo />,
+      // alarm: " ",
       "user-info": <AdminUser />,
       "user-stock-info": <AdminStock />,
       // "user-blackList": <AdminBlackList />,
       // "customer-management": <CustomerManagement />,
       // "customer-QnA": <CustomerQnA />,
       // "customer-declare": <CustomerDeclare />,
-      "weather-condition": <Weather />,
+      // "weather-condition": <Weather />,
       "weather-issue": <WeatherIssue />,
       "weather-notice": <AlarmManagement reSend={true} sort={"날씨"} />,
       "disease-state": <DiseaseInfo />,
       "disease-issue": <DiseaseState />,
-      "disease-consult": <DiseaseMedicalList />,
       "disease-notice": <DiseaseIssue />,
+      "disease-consult": <DiseaseMedicalList />,
       // "alarm-management": <AlarmManagement reSend={true} />,
       // "alarm-management": (
       //   <Alarm title={"날씨 알림"} description={weatherDescription} />
@@ -169,8 +169,8 @@ function Admin({ userInfo, address }) {
       // ),
       chatting: (
         <>
-          <WeekWeatherWidget />
-          <TodayWeatherWidget />
+          {/* <WeekWeatherWidget /> */}
+          {/* <TodayWeatherWidget /> */}
           {/* <Gauge01 /> */}
           {/* <TempPiNeedleWidget /> */}
           {/* <TempControl /> */}
@@ -186,7 +186,7 @@ function Admin({ userInfo, address }) {
           {/* <LineChart01 /> */}
           {/* <BiLineChart /> */}
           {/* <BarChart01 /> */}
-          {/* <Chatting /> */}
+          <Chatting />
           {/* <WidgetList /> */}
         </>
       ),

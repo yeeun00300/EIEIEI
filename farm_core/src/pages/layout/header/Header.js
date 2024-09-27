@@ -22,16 +22,24 @@ function Header({ title, userInfo, address }) {
   const { weatherIssueAlarm, isLoading, onWeatherIssueAlarm } = useSelector(
     (state) => state.weatherSlice
   );
-
-  const conditions = [];
-  const orderBys = [{ field: "weatherDate", direction: "desc" }];
-  const q = getQuery("weatherInfo", {
-    conditions: conditions,
-    orderBys: orderBys,
+  // 실시간 날씨 알림
+  const weatherConditions = [];
+  const weatherOrderBys = [{ field: "weatherDate", direction: "desc" }];
+  const weatherQ = getQuery("weatherInfo", {
+    conditions: weatherConditions,
+    orderBys: weatherOrderBys,
   });
-  const [weatherInfo] = useCollectionData(q);
+  const [weatherInfo] = useCollectionData(weatherQ);
 
-  // const address = useSelector((state) => state.mapAddrSlice.address);
+  // 실시간 질병 알림
+  const diseaseConditions = [];
+  const diseaseOrderBys = [{ field: "createdAt", direction: "desc" }];
+  const diseaseQ = getQuery("diseaseInfo", {
+    conditions: diseaseConditions,
+    orderBys: diseaseOrderBys,
+  });
+  const [diseaseInfo] = useCollectionData(diseaseQ);
+
   const hereAddress = address;
   useEffect(() => {
     // const queryOptions = {
@@ -54,7 +62,7 @@ function Header({ title, userInfo, address }) {
   useEffect(() => {
     dispatch(setOnWeatherIssueAlarm(weatherInfo));
   }, [weatherInfo, weatherIssueAlarm]);
-
+  useEffect(() => {}, []);
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
@@ -71,7 +79,10 @@ function Header({ title, userInfo, address }) {
             {isLoading ? (
               <div>알람 로딩</div>
             ) : (
-              <AccordionAlarm weatherIssueAlarm={weatherInfo} />
+              <AccordionAlarm
+                weatherIssueAlarm={weatherInfo}
+                diseaseAlarm={diseaseInfo}
+              />
             )}
           </div>
         </div>
