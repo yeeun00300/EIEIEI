@@ -4,7 +4,14 @@ import "./ScheduleModal.css"; // 사용자 정의 CSS 파일
 
 Modal.setAppElement("#root");
 
-const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
+const ScheduleModal = ({
+  isOpen,
+  onRequestClose,
+  onSave, // 새로운 일정 저장
+  schedules, //
+  onUpdate,
+  contentIndex,
+}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [hour, setHour] = useState("");
@@ -30,21 +37,30 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
           time: formattedTime,
           date: currentDate, // 등록 시간
           updatedAt: null, // 수정되지 않은 경우 null
+          createdAt: currentDate,
         },
       ],
     };
-
+    // debugger;
     console.log("Saving schedule object:", scheduleObj); // 스케줄 객체 확인
-    onSave(scheduleObj); // 부모 컴포넌트에 스케줄 객체 전달
+    // 조건에 따라 onSave 또는 onUpdate 호출
+    if (contentIndex !== undefined) {
+      // 수정 모드
+      onUpdate({ ...scheduleObj, contentIndex }); // 수정된 스케줄 객체 전달
+    } else {
+      // 추가 모드
+      onSave(scheduleObj); // 새 스케줄 객체 전달
+    }
+
     onRequestClose(); // 모달 닫기
   };
 
   useEffect(() => {
-    if (schedules) {
-      setTitle(schedules.title || "");
-      setDescription(schedules.description || "");
-      if (schedules.time) {
-        const [time, period] = schedules.time.split(" ");
+    if (schedules && schedules.content) {
+      setTitle(schedules.content.title || "");
+      setDescription(schedules.content.description || "");
+      if (schedules.content.time) {
+        const [time, period] = schedules.content.time.split(" ");
         const [h, m] = time.split(":");
         setHour(parseInt(h));
         setMinute(m);
@@ -59,7 +75,6 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
       setAmpm("AM");
     }
   }, [schedules]);
-
   return (
     <Modal
       isOpen={isOpen}
