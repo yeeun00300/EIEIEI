@@ -41,6 +41,7 @@ import LightPiChartWidget from "../../components/ControlPanels/widget/LightPiCha
 import CO2PiChartWidget from "../../components/ControlPanels/widget/CO2PiChartWidget";
 import NH3PiChartWidget from "../../components/ControlPanels/widget/NH3PiChartWidget";
 import WidgetList from "../Main/subMain/widgetList/WidgetList";
+import DiseaseInfo from "../../components/diseaseInfo/DiseaseInfo";
 
 function Admin({ userInfo, address }) {
   // const [selectedDW, setSelectedDW] = useState("All");
@@ -141,7 +142,7 @@ function Admin({ userInfo, address }) {
       "weather-condition": <Weather />,
       "weather-issue": <WeatherIssue />,
       "weather-notice": <AlarmManagement reSend={true} sort={"날씨"} />,
-      "disease-state": <DiseaseUser />,
+      "disease-state": <DiseaseInfo />,
       "disease-issue": <DiseaseState />,
       "disease-consult": <DiseaseMedicalList />,
       "disease-notice": <DiseaseIssue />,

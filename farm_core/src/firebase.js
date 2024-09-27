@@ -149,8 +149,7 @@ async function getData(collectionName, queryOptions) {
 
 async function deleteDatas(collectionName, docId) {
   try {
-    const cartRef = getCollection(collectionName);
-    const docRef = await doc(cartRef, docId.toString());
+    const docRef = doc(db, collectionName, docId);
     await deleteDoc(docRef);
     return true;
   } catch (error) {
@@ -844,6 +843,21 @@ const deleteFarmDocument = async (docId) => {
   await deleteDoc(docRef); // 문서 삭제
 };
 
+// 위젯 업데이트 함수
+
+async function saveFarmLayout(docId, value) {
+  const docRef = doc(db, "farm", docId);
+
+  try {
+    await updateDoc(docRef, {
+      newFieldName: value, // 새로운 필드를 추가
+    });
+    console.log("필드가 성공적으로 추가되었습니다.");
+  } catch (error) {
+    console.error("필드 추가 중 오류 발생:", error);
+  }
+}
+
 export {
   db,
   getCollection,
@@ -875,5 +889,6 @@ export {
   updateFarmDocument,
   updateSubcollectionDocument,
   deleteFarmDocument,
+  saveFarmLayout,
 };
 export default app;

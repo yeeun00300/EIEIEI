@@ -13,12 +13,22 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
 
   const handleSave = () => {
     const formattedTime = `${hour}:${minute} ${ampm}`;
+    const currentDate = new Date().toISOString(); // 현재 시간을 ISO 형식으로 가져오기
+    const email = localStorage.getItem("email"); // 로컬스토리지에서 이메일 가져오기
+
     onSave({
-      title,
-      description,
-      time: formattedTime,
-      date: schedules?.date || new Date(),
+      email,
+      content: [
+        {
+          title, // 사용자가 입력한 제목
+          description, // 사용자가 입력한 설명
+          time: formattedTime,
+          date: currentDate, // 등록하는 시간
+          updatedAt: null, // 처음엔 null, 수정 시 값이 추가될 예정
+        },
+      ],
     });
+
     onRequestClose();
   };
 
@@ -51,7 +61,7 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
       className="ReactModal__Content"
       overlayClassName="ReactModal__Overlay"
     >
-      <h2>{schedules ? "일정 추가하기" : "Add Schedule"}</h2>
+      <h2>{schedules ? "일정 수정하기" : "일정 추가하기"}</h2>
       <input
         type="text"
         placeholder="일정 제목"
@@ -98,5 +108,4 @@ const ScheduleModal = ({ isOpen, onRequestClose, onSave, schedules }) => {
     </Modal>
   );
 };
-
 export default ScheduleModal;

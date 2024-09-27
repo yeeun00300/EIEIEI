@@ -6,6 +6,14 @@ import moment from "moment";
 import "./styles.css";
 import ScheduleModal from "./ScheduleModal"; // 모달 컴포넌트 임포트
 import ScheduleList from "./ScheduleList"; // 스케줄 리스트 컴포넌트 임포트
+import {
+  addSchedule,
+  deleteSchedule,
+  fetchSchedules,
+  updateSchedule,
+} from "../../store/scheduleSlice/scheduleSlice";
+import { useDispatch, useSelector } from "react-redux";
+import scheduleSlice from "./../../store/scheduleSlice/scheduleSlice";
 
 Modal.setAppElement("#root");
 
@@ -13,20 +21,29 @@ const MyCalendar = () => {
   const today = new Date();
   const [date, setDate] = useState(today);
   const [activeStartDate, setActiveStartDate] = useState(today);
-  const [schedules, setSchedules] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingSchedule, setEditingSchedule] = useState(null);
   const [selectedDate, setSelectedDate] = useState(today);
+  const email = localStorage.getItem("email");
+
+  const dispatch = useDispatch();
+  const { schedules, loading, error } = useSelector(
+    (state) => state.scheduleSlice
+  );
+  // 스케줄 가져오기
+  useEffect(() => {
+    const queryOptions = {
+      conditions: [{ field: "email", operator: "==", value: email }],
+    };
+    dispatch(fetchSchedules({ collectionName: "schedules", queryOptions }));
+  }, [dispatch]);
 
   useEffect(() => {
-    const storedSchedules = JSON.parse(localStorage.getItem("schedules"));
-    if (storedSchedules) {
-      setSchedules(storedSchedules);
+    if (schedules?.length > 0) {
+      console.log("Fetched schedules:", schedules);
+    } else {
+      console.log("No schedules found or still loading.");
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("schedules", JSON.stringify(schedules));
   }, [schedules]);
 
   const handleDateChange = (newDate) => {
@@ -54,40 +71,79 @@ const MyCalendar = () => {
     setModalOpen(true);
   };
 
-  const handleSaveSchedule = (schedule) => {
-    const newSchedules = [...schedules];
-    if (editingSchedule?.index !== undefined) {
-      newSchedules[editingSchedule.index] = schedule;
-    } else {
-      newSchedules.push(schedule);
-    }
-    setSchedules(newSchedules);
-    setModalOpen(false);
+  const handleSaveSchedule = async (schedule) => {
+    console.log("handleSaveSchedule called", schedule); // 추가된 로그
+    const collectionName = "schedules";
+    const existingSchedule = schedules.find(
+      (sch) => sch.email === schedule.email
+    ) || { content: [] };
 
+    const scheduleData = {
+      ...existingSchedule,
+      content: [
+        ...existingSchedule.content,
+        {
+          title: schedule.content[0].title || "",
+          description: schedule.content[0].description || "",
+          time: schedule.content[0].time || "",
+          createdAt: new Date().toISOString(),
+          updatedAt: null,
+        },
+      ],
+    };
+
+    if (editingSchedule?.index !== undefined) {
+      const existingSchedule = schedules[editingSchedule.index];
+      if (existingSchedule) {
+        const docId = existingSchedule.id;
+        console.log("Dispatching updateSchedule", {
+          collectionName,
+          docId,
+          updatedData: scheduleData,
+        });
+
+        const result = await dispatch(
+          updateSchedule({ collectionName, docId, updatedData: scheduleData })
+        );
+
+        console.log("Dispatch result:", result); // 여기에 로그 추가
+        if (updateSchedule.fulfilled.match(result)) {
+          console.log("Update succeeded:", result.payload); // 업데이트 성공 시
+        } else {
+          console.error("Update failed:", result.error); // 업데이트 실패 시
+        }
+      }
+    }
+    setModalOpen(false);
     setSelectedDate(schedule.date);
     setDate(schedule.date);
   };
-
   const handleDeleteSchedule = (index) => {
-    const newSchedules = schedules.filter((_, i) => i !== index);
-    setSchedules(newSchedules);
+    const docId = schedules[index].id;
+    const collectionName = "schedules";
+    dispatch(deleteSchedule({ collectionName, docId }));
   };
 
-  // 해당 날짜에 일정이 있는지 확인하여 점을 표시하는 함수
   const renderDotForDate = (date) => {
-    const hasSchedule = schedules.some((schedule) =>
-      moment(schedule.date).isSame(date, "day")
-    );
-    if (hasSchedule) {
-      return <div className="dot" />;
+    if (schedules && Array.isArray(schedules)) {
+      const hasSchedule = schedules.some((schedule) =>
+        moment(schedule.date).isSame(date, "day")
+      );
+      if (hasSchedule) {
+        return <div className="dot" />;
+      }
     }
     return null;
   };
 
-  // 선택된 날짜에 해당하는 일정 필터링
-  const filteredSchedules = schedules.filter((schedule) =>
-    selectedDate ? moment(schedule.date).isSame(selectedDate, "day") : false
-  );
+  const filteredSchedules =
+    schedules && schedules.length > 0
+      ? schedules.filter((schedule) =>
+          selectedDate
+            ? moment(schedule.date).isSame(selectedDate, "day")
+            : false
+        )
+      : [];
 
   return (
     <div className="calendar-wrapper">

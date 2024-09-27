@@ -6,14 +6,13 @@ import styles from "./KORMap.module.scss";
 function KORMap({ data, selectedMonth }) {
   const setColorByCount = (count) => {
     if (count === 0) return "#F1F1F1";
-    if (count > 5000) return "#79D3C4";
-    if (count > 3000) return "#43cdb6";
-    if (count > 1000) return "#61CDBB";
-    if (count > 200) return "#91D9CD";
-    if (count > 100) return "#A9DFD6";
-    if (count > 50) return "#C1E5DF";
-    if (count > 5) return "#D9EBF9";
-    return "#ebfffd";
+    if (count > 5000) return "#8B0000";
+    if (count > 3000) return "#CD5C5C";
+    if (count > 1000) return "#FF7F7F";
+    if (count > 200) return "#FFA07A";
+    if (count > 100) return "#FFB6C1";
+    if (count > 50) return "#FFCCCC";
+    if (count > 5) return "#FFE4E1";
   };
 
   useEffect(() => {
