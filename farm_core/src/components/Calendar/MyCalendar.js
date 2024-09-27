@@ -19,10 +19,15 @@ Modal.setAppElement("#root");
 
 const MyCalendar = () => {
   const today = new Date();
+  // 현재 날짜
   const [date, setDate] = useState(today);
+  // 캘린더에 활성화된 시작 날짜
   const [activeStartDate, setActiveStartDate] = useState(today);
+  // 모달의 열닫기하는거
   const [modalOpen, setModalOpen] = useState(false);
+  // 현재 수정중인 일정
   const [editingSchedule, setEditingSchedule] = useState(null);
+  // 사용자가 선택한날짜
   const [selectedDate, setSelectedDate] = useState(today);
   const email = localStorage.getItem("email");
 
@@ -38,6 +43,7 @@ const MyCalendar = () => {
     dispatch(fetchSchedules({ collectionName: "schedules", queryOptions }));
   }, [dispatch]);
 
+  // 스케줄 상태 변경 확인
   useEffect(() => {
     if (schedules?.length > 0) {
       // console.log("Fetched schedules:", schedules);
@@ -46,23 +52,43 @@ const MyCalendar = () => {
     }
   }, [schedules]);
 
+  // 날짜 변경 처리
   const handleDateChange = (newDate) => {
     setDate(newDate);
     setSelectedDate(newDate);
   };
-
+  // 오늘 날짜로 이동
   const handleTodayClick = () => {
     setActiveStartDate(today);
     setDate(today);
     setSelectedDate(today);
   };
+
+  // 일정 수정 처리 : 특정 일정을 수정하기 위해 해당 일정의 데이터를 설정하고 모달을 열어 수정화면을 표시
   const handleEditSchedule = (scheduleIndex, contentIndex) => {
+    // console.log(scheduleIndex);
+    // 이거는 내가 스케줄이란 컬렉션에 등록한 문서의 갯수(인덱스)
+
+    // console.log(contentIndex);
+    // 이거는 진짜 content 인덱스
+
+    // 이건 문서임 즉 스케줄컬렉션에 있는 내가 쓴 문서
     const scheduleToEdit = schedules[scheduleIndex];
+    // 이건 문서중에 content만 있는거임
     const contentToEdit = scheduleToEdit.content[contentIndex];
-    setEditingSchedule({ ...scheduleToEdit, content: contentToEdit }); // 수정할 내용 설정
+    // console.log(contentToEdit);
+    // console.log(contentToEdit);
+    setEditingSchedule({
+      ...scheduleToEdit,
+      content: contentToEdit,
+      contentIndex,
+    }); // 수정할 내용 설정 인덱스도 보냄
+    // console.log(editingSchedule);
+    // 이거 찍으니까 결국이 edttingSchedule 에는 내가 누른 그 문서가 나오네
     setModalOpen(true); // 모달 열기
   };
 
+  // 사용자가 일정 추가할때 하는거
   const handleAddSchedule = () => {
     if (selectedDate) {
       setEditingSchedule({ date: selectedDate });
@@ -71,10 +97,13 @@ const MyCalendar = () => {
       alert("날짜를 먼저 선택하세요.");
     }
   };
-  const handleSaveSchedule = async (schedule) => {
-    // console.log("Received schedule object:", schedule); // 전달된 객체 확인
 
-    if (!schedule || !schedule.content || !schedule.content[0]) {
+  // 새로운 일정이 추가되거나 기존 일정이 업데이트 됌. 즉 배열이 생김
+  const handleSaveSchedule = async (schedule) => {
+    console.log("Received schedule object:", schedule);
+
+    // schedule.content 배열의 유효성 검사
+    if (!schedule || !schedule.content || schedule.content.length === 0) {
       console.error("Invalid schedule object or missing content");
       return;
     }
@@ -82,18 +111,17 @@ const MyCalendar = () => {
     const collectionName = "schedules";
     const email = schedule.email;
 
-    // content 배열에 추가할 새 일정 데이터
     const newScheduleContent = {
       title: schedule.content[0].title || "",
       description: schedule.content[0].description || "",
       time: schedule.content[0].time || "",
       createdAt: new Date().toISOString(),
-      updatedAt: null,
+      updatedAt: new Date().toISOString(),
     };
-    // console.log("newScheduleContent", newScheduleContent);
+
     // Firestore에서 이메일로 문서를 조회
     const existingSchedules = schedules.find((sch) => sch.email === email);
-    // console.log("existingSchedules", existingSchedules);
+
     if (existingSchedules) {
       const updatedContent = [...existingSchedules.content, newScheduleContent];
       const updatedScheduleData = {
@@ -101,7 +129,7 @@ const MyCalendar = () => {
         content: updatedContent,
       };
       const docId = existingSchedules.docId;
-      // console.log("Updating existing schedule with ID:", docId);
+
       await dispatch(
         updateSchedule({
           collectionName,
@@ -114,21 +142,82 @@ const MyCalendar = () => {
         email,
         content: [newScheduleContent],
       };
-      // console.log("Adding new schedule:", newScheduleData);
       await dispatch(
         addSchedule({
           collectionName,
-          scheduleObj: newScheduleData, // scheduleObj가 전달되는지 확인
+          scheduleObj: newScheduleData,
         })
       );
     }
-    debugger;
     setModalOpen(false);
   };
+
   // console.log("콘솔로찍은 스케줄스", schedules);
 
-  // debugger;
+  // 일정 업데이트 처리 : 기존 일정 찾고 수정할 내용을 firestore에 업데이트
+  const handleUpdateSchedule = async (schedule) => {
+    // console.log("업데이트에서 찍은", schedule);
+    // 잘나왔음
+    if (!schedule || !schedule.content || !schedule.content[0]) {
+      console.error("Invalid schedule object or missing content");
+      return;
+    }
 
+    const collectionName = "schedules";
+    const email = schedule.email;
+
+    const contentIndex = schedule.contentIndex; // 이 값을 설정해야 함
+    console.log(contentIndex);
+    const updatedContent = {
+      title: schedule.content[0].title || "",
+      description: schedule.content[0].description || "",
+      time: schedule.content[0].time || "",
+      updatedAt: new Date().toISOString(), // 수정 시간
+    };
+    console.log("updatedContent.title:", updatedContent.title);
+
+    const existingSchedules = schedules.find((sch) => sch.email === email);
+
+    console.log("existingSchedules", existingSchedules.content);
+
+    if (existingSchedules) {
+      // contentIndex를 사용하여 해당 일정 업데이트
+      const updatedContentArray = [...existingSchedules.content];
+      console.log(updatedContentArray);
+      updatedContentArray[contentIndex] = updatedContent; // 특정 인덱스의 내용을 수정
+      console.log(updatedContent);
+      console.log(updatedContentArray[contentIndex]);
+
+      const updatedScheduleData = {
+        ...existingSchedules,
+        content: updatedContentArray,
+      };
+      console.log(updatedScheduleData);
+      console.log(existingSchedules);
+      const docId = existingSchedules.docId;
+      console.log(docId);
+      // Firestore에 업데이트된 데이터를 전송
+      await dispatch(
+        updateSchedule({
+          collectionName,
+          docId,
+          updatedData: updatedScheduleData,
+        })
+      );
+      setModalOpen(false);
+    } else {
+      console.log("일치하는 일정이 없습니다.");
+    }
+  };
+
+  const handleDeleteSchedule = (schedule) => {
+    console.log(schedules);
+    dispatch(
+      deleteSchedule({ collectionName: "schedules", docId: schedule.docId })
+    );
+  };
+
+  // 날짜에 대한 점 표시
   const renderDotForDate = (date) => {
     if (schedules && Array.isArray(schedules)) {
       const hasSchedule = schedules.some((schedule) =>
@@ -140,7 +229,7 @@ const MyCalendar = () => {
     }
     return null;
   };
-
+  // 필터링된 스케줄 : 선택된 날짜에 해당하는 일정만 필터링하여 보여줌
   const filteredSchedules =
     schedules && schedules.length > 0
       ? schedules.filter((schedule) =>
@@ -149,7 +238,7 @@ const MyCalendar = () => {
             : false
         )
       : [];
-  console.log("filteredSchedules", filteredSchedules);
+  // console.log("filteredSchedules", filteredSchedules);
   // console.log("editingSchedule", editingSchedule);
   return (
     <div className="calendar-wrapper">
@@ -205,12 +294,16 @@ const MyCalendar = () => {
         schedules={filteredSchedules}
         // 선택된 날짜의 일정만 전달
         onEdit={handleEditSchedule}
+        editingSchedule={editingSchedule}
+        onDelete={handleDeleteSchedule}
       ></ScheduleList>
       <ScheduleModal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
-        onSave={handleSaveSchedule} // 조건에 따라 올바른 함수 설정
+        onSave={handleSaveSchedule}
         schedules={editingSchedule}
+        onUpdate={handleUpdateSchedule}
+        contentIndex={editingSchedule?.contentIndex}
       />
     </div>
   );
