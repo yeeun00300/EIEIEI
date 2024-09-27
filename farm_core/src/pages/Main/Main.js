@@ -174,6 +174,172 @@ function Main({ farmList }) {
         maxh: 3,
       },
     ],
+    md: [
+      {
+        i: "1",
+        x: 0,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "2",
+        x: 1,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "3",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "4",
+        x: 2,
+        y: 0,
+        w: 2,
+        h: 4,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "5",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "6",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "7",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "8",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "9",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+    ],
+    sm: [
+      {
+        i: "1",
+        x: 0,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "2",
+        x: 1,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "3",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "4",
+        x: 2,
+        y: 0,
+        w: 2,
+        h: 4,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "5",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "6",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "7",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "8",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "9",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+    ],
   };
 
   // 컴포넌트 복원
@@ -203,16 +369,39 @@ function Main({ farmList }) {
   };
 
   // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
-  const [layout, setLayout] = useState(LAYOUTS);
+  const [layout, setLayout] = useState({
+    lg: [],
+    md: [],
+    sm: [],
+    xs: [],
+    xxs: [],
+  });
+  const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
-  const onLayoutChange = (newLayout) => {
+  const onLayoutChange = (newLayout, allLayouts) => {
+    const updatedLayouts = { ...allLayouts };
+
+    // 'md'와 'sm' 브레이크포인트의 w: 1, h: 3 설정
+    ["md", "sm"].forEach((breakpoint) => {
+      updatedLayouts[breakpoint] = updatedLayouts[breakpoint].map((item) => ({
+        ...item,
+        w: 1,
+        h: 3,
+      }));
+    });
+
     setLayout((prevLayout) => ({
       ...prevLayout,
-      lg: newLayout, // 'lg' 레이아웃을 업데이트
+      ...updatedLayouts,
     }));
 
-    console.log(`json 확ㄷ인용`, JSON.stringify(layout));
+    console.log(`json 확인용`, JSON.stringify(updatedLayouts));
+  };
+
+  const handleBreakpointChange = (newBreakpoint) => {
+    setCurrentBreakpoint(newBreakpoint);
+    console.log("Current breakpoint:", newBreakpoint);
   };
 
   // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
@@ -223,10 +412,12 @@ function Main({ farmList }) {
         setLayout((prevLayout) => ({
           ...prevLayout,
           lg: savedLayout.lg || [],
+          md: savedLayout.md || [],
+          sm: savedLayout.sm || [],
+          xs: savedLayout.xs || [],
+          xxs: savedLayout.xxs || [],
         }));
       } else {
-        //저장된 레이아웃 없을때
-        // setLayout([LAYOUTS]);
         console.log(`저장된 정보없음`);
       }
       console.log(`테스트`, savedLayout);
@@ -248,6 +439,7 @@ function Main({ farmList }) {
     // docId와 newLayout 값을 적절히 전달하여 호출
     await saveFarmLayout(farmDocId, layout); // farmId와 현재 레이아웃 전달
   };
+
   return (
     <div className="page">
       <div className={styles.box}>
@@ -255,12 +447,13 @@ function Main({ farmList }) {
           <ResponsiveGridLayout
             className="layout"
             layouts={layout}
-            breakpoints={{ lg: 1400, md: 600 }}
-            cols={{ lg: 5, md: 2 }}
+            breakpoints={{ lg: 1400, md: 700, sm: 400 }}
+            cols={{ lg: 5, md: 2, sm: 1 }}
             rowHeight={83}
-            width={1000}
+            // width={1000}
             isResizable={false}
             onLayoutChange={onLayoutChange}
+            onBreakpointChange={handleBreakpointChange}
             isDraggable={edit}
           >
             {/* {LAYOUTS.lg.map((el) => (
@@ -268,7 +461,7 @@ function Main({ farmList }) {
                 {el.children}
               </div>
             ))} */}
-            {layout.lg.map((el) => (
+            {layout[currentBreakpoint].map((el) => (
               <div className={styles.item} key={el.i} {...el}>
                 {renderComponent(el.i)}
               </div>
