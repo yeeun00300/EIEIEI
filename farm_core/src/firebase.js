@@ -844,19 +844,36 @@ const deleteFarmDocument = async (docId) => {
 };
 
 // 위젯 업데이트 함수
-
-async function saveFarmLayout(docId, value) {
+async function saveFarmLayout(docId, newLayout) {
+  const docRef = doc(db, "farm", docId);
+  try {
+    await updateDoc(docRef, {
+      userFarmLayout: JSON.stringify(newLayout), // 실제 저장하고자 하는 필드 이름으로 변경
+    });
+    console.log("레이아웃이 성공적으로 저장되었습니다.");
+  } catch (error) {
+    console.error("레이아웃 저장 중 오류 발생:", error);
+  }
+}
+// 위젯 불러오는 함수
+export const fetchFarmLayout = async (docId) => {
   const docRef = doc(db, "farm", docId);
 
   try {
-    await updateDoc(docRef, {
-      newFieldName: value, // 새로운 필드를 추가
-    });
-    console.log("필드가 성공적으로 추가되었습니다.");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const savedLayout = JSON.parse(docSnap.data().userFarmLayout);
+      return savedLayout; // 레이아웃 데이터를 복원하여 반환
+    } else {
+      console.log("해당 문서가 없습니다!");
+      return null;
+    }
   } catch (error) {
-    console.error("필드 추가 중 오류 발생:", error);
+    console.error("레이아웃 불러오기 중 오류 발생:", error);
+    return null;
   }
-}
+};
 
 export {
   db,

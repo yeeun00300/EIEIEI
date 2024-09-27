@@ -98,4 +98,22 @@
     box-shadow: #d6d6e7 0 0.1875rem 0.4375rem inset; /* 3px 7px */
     transform: translateY(0.125rem); /* 2px */
   }
+
+  .checkList {
+    position: absolute;
+    bottom: 100px;
+    right: 30px;
+    display: flex;
+    background-color: #c4c4c4;
+    flex-direction: column;
+    height: 400px;
+    width: 200px;
+    padding: 16px;
+    text-align: left;
+    gap: 8px;
+    border-radius: 16px;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 0.125rem 0.25rem,
+      /* 2px 4px */ rgba(45, 35, 66, 0.3) 0 0.4375rem 0.8125rem -0.1875rem,
+      /* 7px 13px -3px */ #d6d6e7 0 -0.1875rem 0 inset;
+  }
 }

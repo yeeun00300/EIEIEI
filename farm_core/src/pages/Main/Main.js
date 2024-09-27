@@ -22,8 +22,13 @@ import { useParams } from "react-router-dom";
 import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
-import { saveFarmLayout, useFetchCollectionData } from "../../firebase";
+import {
+  fetchFarmLayout,
+  saveFarmLayout,
+  useFetchCollectionData,
+} from "../../firebase";
 import MonthPractice from "./../../components/diseaseMonth/MonthPractice";
+import WidgetList from "./subMain/widgetList/WidgetList";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -125,19 +130,8 @@ function Main({ farmList }) {
     ],
   };
 
-  // 1. 레이아웃 정보를 로컬스토리지에 저장
-  const saveLayout = (layout) => {
-    // localStorage.setItem("userLayout", JSON.stringify(layout));
-  };
-
-  // 2. 로컬스토리지에 저장된 최신 레이아웃정보 불러오기
-  const loadLayout = () => {
-    // const savedLayout = localStorage.getItem("userLayout");
-    // return savedLayout ? JSON.parse(savedLayout) : LAYOUTS;
-  };
-
   // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
-  const [layout, setLayout] = useState([]);
+  const [layout, setLayout] = useState();
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
   const onLayoutChange = (newLayout) => {
@@ -145,22 +139,27 @@ function Main({ farmList }) {
       ...prevLayout,
       lg: newLayout, // 'lg' 레이아웃을 업데이트
     }));
-    saveLayout({
-      lg: newLayout, // 'lg' 레이아웃 저장
-    });
 
-    // console.log(newLayout);
+    console.log(`json 확ㄷ인용`, JSON.stringify(layout));
   };
 
   // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
   useEffect(() => {
-    // const savedLayout = loadLayout();
-    // setLayout(savedLayout);
-    console.log(`농장정보확인:`, farmList);
-    //params에 있는 농장 번호와 farmList중에서 같은 거 찾기
-
-    console.log(`선택된 농장 확인`, currentFarm);
-  }, []);
+    const loadLayout = async () => {
+      const savedLayout = await fetchFarmLayout(currentFarm.docId);
+      if (savedLayout) {
+        setLayout((prevLayout) => ({
+          ...prevLayout,
+          lg: savedLayout.lg || [],
+        }));
+      } else {
+        //저장된 레이아웃 없을때
+        setLayout([LAYOUTS]);
+      }
+      console.log(`테스트`, savedLayout);
+    };
+    loadLayout();
+  }, [currentFarm.docId]);
 
   const [edit, setEdit] = useState(false);
   //대시보드 편집중일때
@@ -172,8 +171,9 @@ function Main({ farmList }) {
     // 수정 모드를 비활성화
     setEdit(false);
     const farmDocId = currentFarm.docId;
+
     // docId와 newLayout 값을 적절히 전달하여 호출
-    // await saveFarmLayout(farmDocId, );  // farmId와 현재 레이아웃 전달
+    await saveFarmLayout(farmDocId, layout); // farmId와 현재 레이아웃 전달
   };
   return (
     <div className="page">
@@ -181,7 +181,7 @@ function Main({ farmList }) {
         <div className={styles.widget}>
           <ResponsiveGridLayout
             className="layout"
-            layouts={LAYOUTS}
+            layouts={layout}
             breakpoints={{ lg: 1400, md: 600 }}
             cols={{ lg: 5, md: 2 }}
             rowHeight={100}
@@ -208,6 +208,13 @@ function Main({ farmList }) {
             <button className={styles.button} onClick={editMode}>
               대시보드 편집하기
             </button>
+          )}
+          {edit ? (
+            <div className={styles.checkList}>
+              <WidgetList />
+            </div>
+          ) : (
+            <></>
           )}
         </div>
       </div>

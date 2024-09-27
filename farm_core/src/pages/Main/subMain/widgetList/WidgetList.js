@@ -22,56 +22,56 @@ function WidgetList() {
     }));
   };
   return (
-    <div>
+    <>
       <Checkbox
         color="primary"
         label="온도 조절"
         value="temperature"
-        variant="solid"
+        variant="outlined"
         onChange={handleCheckboxChange}
       />
       <Checkbox
         color="primary"
         label="습도 조절"
         value="humidity"
-        variant="solid"
+        variant="outlined"
         onChange={handleCheckboxChange}
       />
       <Checkbox
         color="primary"
         label="조도 조절"
         value="light"
-        variant="solid"
+        variant="outlined"
         onChange={handleCheckboxChange}
       />
       <Checkbox
         color="primary"
         label="CO2 조절"
         value="co2"
-        variant="solid"
+        variant="outlined"
         onChange={handleCheckboxChange}
       />
       <Checkbox
         color="primary"
         label="NH3 조절"
         value="nh3"
-        variant="solid"
+        variant="outlined"
         onChange={handleCheckboxChange}
       />
 
-      <div>
-        {/* 온도 조절 */}
-        {selectedWidgets.temperature && <TempPiNeedleWidget />}
-        {/* 습도 조절 */}
-        {selectedWidgets.humidity && <HumidPiChartWidget />}
-        {/* 조도 조절 */}
-        {selectedWidgets.light && <LightPiChartWidget />}
-        {/* CO2 조절 */}
-        {selectedWidgets.co2 && <CO2PiChartWidget />}
-        {/* NH3 조절 */}
-        {selectedWidgets.nh3 && <NH3PiChartWidget />}
-      </div>
-    </div>
+      {/* <div> */}
+      {/* 온도 조절 */}
+      {/* {selectedWidgets.temperature && <TempPiNeedleWidget />} */}
+      {/* 습도 조절 */}
+      {/* {selectedWidgets.humidity && <HumidPiChartWidget />} */}
+      {/* 조도 조절 */}
+      {/* {selectedWidgets.light && <LightPiChartWidget />} */}
+      {/* CO2 조절 */}
+      {/* {selectedWidgets.co2 && <CO2PiChartWidget />} */}
+      {/* NH3 조절 */}
+      {/* {selectedWidgets.nh3 && <NH3PiChartWidget />} */}
+      {/* </div> */}
+    </>
   );
 }
 
