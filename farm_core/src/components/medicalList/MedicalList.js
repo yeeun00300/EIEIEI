@@ -10,7 +10,6 @@ function MedicalList(props) {
 
   const [docId, setDocId] = useState([]);
   const [farmIdList, setFarmIdList] = useState([]);
-  const [isDataSaved, setIsDataSaved] = useState(false);
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -91,7 +90,8 @@ function MedicalList(props) {
           "farmCureList",
           subCollections.farmCureList
         );
-        alert("데이터가 성공적으로 저장되었습니다!");
+        window.alert("데이터가 성공적으로 저장되었습니다!");
+        window.location.reload();
       } else {
         alert("유효한 문서 ID가 없습니다.");
       }
@@ -100,11 +100,6 @@ function MedicalList(props) {
       alert("데이터 저장에 실패했습니다.");
     }
   };
-  useEffect(() => {
-    if (isDataSaved) {
-      setIsDataSaved(false);
-    }
-  }, [isDataSaved]);
 
   return (
     <div className="container">

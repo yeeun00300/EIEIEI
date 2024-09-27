@@ -875,6 +875,16 @@ export const fetchFarmLayout = async (docId) => {
   }
 };
 
+const deleteDocument = async (
+  collectionName,
+  docId,
+  subCollectionName,
+  subDocId
+) => {
+  const docRef = doc(db, collectionName, docId, subCollectionName, subDocId); // 서브컬렉션 문서 참조
+  await deleteDoc(docRef); // 문서 삭제
+};
+
 export {
   db,
   getCollection,
@@ -907,5 +917,6 @@ export {
   updateSubcollectionDocument,
   deleteFarmDocument,
   saveFarmLayout,
+  deleteDocument,
 };
 export default app;
