@@ -79,12 +79,12 @@ function Main({ farmList }) {
       },
     ],
   };
-  const layoutDict = {
-    LineChart: <LineChart dataset={sampleData} />,
-    Table: <Table data={stock && stock} />,
-    GaugeNeedle: <GaugeNeedle />,
-    MonthPractice: <MonthPractice />,
-  };
+  // const layoutDict = {
+  //   LineChart: <LineChart dataset={sampleData} />,
+  //   Table: <Table data={stock && stock} />,
+  //   GaugeNeedle: <GaugeNeedle />,
+  //   MonthPractice: <MonthPractice />,
+  // };
   const LAYOUTS = {
     lg: [
       {
@@ -95,7 +95,6 @@ function Main({ farmList }) {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: layoutDict["LineChart"],
       },
       {
         i: "2",
@@ -105,8 +104,6 @@ function Main({ farmList }) {
         h: 3,
         minw: 1,
         maxh: 3,
-        // children: <DiseaseMap />,
-        children: layoutDict["Table"],
       },
       {
         i: "3",
@@ -116,7 +113,6 @@ function Main({ farmList }) {
         h: 3,
         minw: 1,
         maxh: 3,
-        children: layoutDict["GaugeNeedle"],
       },
       {
         i: "4",
@@ -126,9 +122,24 @@ function Main({ farmList }) {
         h: 4,
         minw: 1,
         maxh: 3,
-        children: layoutDict["MonthPractice"],
       },
     ],
+  };
+
+  // 컴포넌트 복원
+  const renderComponent = (id) => {
+    switch (id) {
+      case "1":
+        return <LineChart dataset={sampleData} />;
+      case "2":
+        return <Table data={stock && stock} />;
+      case "3":
+        return <GaugeNeedle />;
+      case "4":
+        return <MonthPractice />;
+      default:
+        return null;
+    }
   };
 
   // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
@@ -192,9 +203,14 @@ function Main({ farmList }) {
             onLayoutChange={onLayoutChange}
             isDraggable={edit}
           >
-            {LAYOUTS.lg.map((el) => (
+            {/* {LAYOUTS.lg.map((el) => (
               <div className={styles.item} key={el.i} {...el}>
                 {el.children}
+              </div>
+            ))} */}
+            {layout.lg.map((el) => (
+              <div className={styles.item} key={el.i} {...el}>
+                {renderComponent(el.i)}
               </div>
             ))}
           </ResponsiveGridLayout>
