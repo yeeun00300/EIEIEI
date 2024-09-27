@@ -42,7 +42,6 @@ function PieChartNeedle({
       </PieChart>
       <div className={styles.GaugeContainer}>
         <div className={styles.setValue}>
-          {/* <p>{setName}</p> */}
           <div>
             {setValue}
             {unit}
@@ -56,11 +55,6 @@ function PieChartNeedle({
             </div>
           </div>
         </div>
-        {/* <div>
-          {"-->"}
-          <br />
-          {"-->"}
-        </div> */}
         <div className={styles.nowValue}>
           <p>{nowName}</p>
           <div>
