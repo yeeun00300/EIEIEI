@@ -15,12 +15,12 @@ function MapSearch({ setMap }) {
   return (
     <div
       style={{
-        width: "700px",
-        marginLeft: "5px",
-        marginRight: "5px",
+        width: "31.25rem",
+        marginLeft: "0.3125rem",
+        marginRight: "0.3125rem",
       }}
     >
-      <div id="map" style={{ width: "99%", height: "700px" }}></div>
+      <div id="map" style={{ width: "99%", height: "43.75rem" }}></div>
     </div>
   );
 }

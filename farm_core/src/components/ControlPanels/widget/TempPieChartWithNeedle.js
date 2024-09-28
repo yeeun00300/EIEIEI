@@ -14,7 +14,7 @@ function TempPiNeedleWidget() {
   const RADIAN = Math.PI / 90;
 
   const data = [
-    { name: "A", value: 62, color: "#00C49F" },
+    { name: "A", value: 62, color: "#e05656" },
     { name: "B", value: 8, color: "#FFBB28" },
     { name: "C", value: 20, color: "#FF8042" },
   ];
