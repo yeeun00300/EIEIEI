@@ -66,8 +66,8 @@ function Payment() {
         )}
       </div>
 
-      <AddLiveStock />
-      <MyStockAddPage />
+      {/* <AddLiveStock />
+      <MyStockAddPage /> */}
     </div>
   );
 }

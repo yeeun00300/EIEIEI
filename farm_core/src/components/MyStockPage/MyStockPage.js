@@ -3,14 +3,9 @@ import styles from "./MyStockPage.module.scss";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import MedicalList from "../medicalList/MedicalList";
-import StockCondition from "../medicalList/StockCondition";
 import MedicalListSave from "../medicalList/MedicalListSave";
-import DiseaseInfo from "../diseaseInfo/DiseaseInfo";
 import MedicalListCheck from "../medicalList/MedicalListCheck";
-import MyLiveStockList from "../../pages/MyLiveStockInfo/MyLiveStockList";
 import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
-import SubMain from "../../pages/Main/subMain/SubMain";
-import DeleteAccount from "../DeleteAccount/DeleteAccount";
 import CCTVAnimal from "../CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
 
 function MyStockPage(props) {
