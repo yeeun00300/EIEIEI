@@ -119,4 +119,10 @@
       /* 2px 4px */ rgba(45, 35, 66, 0.3) 0 0.4375rem 0.8125rem -0.1875rem,
       /* 7px 13px -3px */ #d6d6e7 0 -0.1875rem 0 inset;
   }
+  .subToggleButton {
+    position: absolute;
+    z-index: 9999;
+    bottom: 20px;
+    right: 20px;
+  }
 }

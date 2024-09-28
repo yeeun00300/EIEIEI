@@ -240,6 +240,7 @@ function Layout(props) {
               )}
             </button>
           )}
+
           <div className={styles.wrapper}>
             {(isNavVisible || !isTabletOrMobile) && (
               <div
