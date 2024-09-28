@@ -13,9 +13,9 @@
 
 .modalContent {
   background: white;
-  padding: 20px;
+  padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 90%; /* 적절한 너비 설정 */
-  max-width: 600px; /* 최대 너비 설정 */
+  width: 100vh;
+  height: 70vh;
 }
