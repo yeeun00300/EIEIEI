@@ -7,6 +7,14 @@
     background-color: #80cbc4 !important; /* 원하는 색상 */
     color: white !important; /* 텍스트 색상 */
   }
+  .mobileBtn {
+    position: absolute;
+    z-index: 999;
+    top: 75px;
+    left: 10px;
+    width: 100px;
+    height: 100px;
+  }
 }
 
 .wrapper {
