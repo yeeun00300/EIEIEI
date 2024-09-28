@@ -8,6 +8,7 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
+import styles from "./MortalityRate.module.scss";
 
 const COLORS = ["#0088FE", "#FF8042"];
 
@@ -53,32 +54,34 @@ function MortalityRate({ stock }) {
     { name: "폐사된", value: dead.length },
   ];
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart width="100%" height="100%">
-        <Legend layout="vertical" verticalAlign="top" align="top" />
-        <Tooltip />
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={150}
-          fill="#8884d8"
-          dataKey="value"
-          style={{ outline: "none" }}
-        >
-          {data.map((entry, index) => (
-            <Cell
-              key={`cell-${index}`}
-              fill={COLORS[index % COLORS.length]}
-              style={{ outline: "none" }}
-            />
-          ))}
-        </Pie>
-      </PieChart>
-      {/* <div>총 개체수: {stock.length}</div> */}
-    </ResponsiveContainer>
+    <div className={styles.chartBox}>
+      <h5>총 개체수: {stock.length}</h5>
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart width="100%" height="100%">
+          <Legend layout="vertical" verticalAlign="top" align="top" />
+          <Tooltip />
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={renderCustomizedLabel}
+            outerRadius="100%"
+            fill="#8884d8"
+            dataKey="value"
+            style={{ outline: "none" }}
+          >
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+                style={{ outline: "none" }}
+              />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 

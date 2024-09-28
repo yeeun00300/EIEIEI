@@ -12,6 +12,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import styles from "./StockProduct.module.scss";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -152,32 +153,34 @@ function StockProduct({ stock, farmData }) {
     switch (farm_stockType) {
       case "한우":
         return (
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart width="100%" height="100%">
-              <Legend layout="vertical" verticalAlign="top" align="top" />
-              <Tooltip />
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                outerRadius={150}
-                fill="#8884d8"
-                dataKey="value"
-                style={{ outline: "none" }}
-              >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                    style={{ outline: "none" }}
-                  />
-                ))}
-              </Pie>
-            </PieChart>
-            <div>발정 개체수: {male.length + female.length}</div>
-          </ResponsiveContainer>
+          <div className={styles.chartBox}>
+            <h5>발정 개체수: {male.length + female.length}</h5>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart width="100%" height="100%">
+                <Legend layout="vertical" verticalAlign="top" align="top" />
+                <Tooltip />
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius="100%"
+                  fill="#8884d8"
+                  dataKey="value"
+                  style={{ outline: "none" }}
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                      style={{ outline: "none" }}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         );
       case "낙농":
         return (

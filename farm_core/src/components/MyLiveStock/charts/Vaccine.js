@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
+const COLORS = ["#00C49F", "#FF8042"];
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
   const {
@@ -68,7 +69,7 @@ const renderActiveShape = (props) => {
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {`(접종률 ${(percent * 100).toFixed(2)}%)`}
       </text>
     </g>
   );
@@ -129,8 +130,8 @@ function Vaccine({ stock }) {
           data={data} // 상태로부터 데이터 사용
           cx="50%"
           cy="50%"
-          innerRadius={65}
-          outerRadius={80}
+          innerRadius="60%"
+          outerRadius="70%"
           fill="#8884d8"
           dataKey="value"
           onMouseEnter={onPieEnter} // 호버 시 activeIndex 변경
