@@ -7,10 +7,10 @@ const MapModal = ({ isOpen, onClose, children }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>
+        {children}
+        <button className="squareGlobalDeleteBtn" onClick={onClose}>
           닫기
         </button>
-        {children}
       </div>
     </div>
   );

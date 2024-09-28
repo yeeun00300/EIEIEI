@@ -164,15 +164,12 @@ function CommentItem({
                 {localEmail === email && (
                   <>
                     <button
-                      className={styles.CommentButton}
+                      className="globalEditBtn"
                       onClick={() => setIsEditing(true)}
                     >
                       수정하기
                     </button>
-                    <button
-                      className={`${styles.CommentButton} ${styles.deleteButton}`}
-                      onClick={handleDelete}
-                    >
+                    <button className="globalDeleteBtn" onClick={handleDelete}>
                       삭제하기
                     </button>
                   </>

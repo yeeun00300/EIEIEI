@@ -120,7 +120,7 @@ function Community() {
             </button>
           </form>
           <button
-            className={styles.newButton}
+            className="globalBtn"
             type="button"
             onClick={handleNewBoardClick}
           >

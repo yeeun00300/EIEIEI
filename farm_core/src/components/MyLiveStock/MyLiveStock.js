@@ -155,55 +155,67 @@ function MyLiveStock(props) {
   return (
     <>
       {selectLoading && isLoading ? (
-        <div className="loadingPage">
+        <div className="page">
           <div>로딩중</div>
         </div>
       ) : (
         <>
           {farmList.length === 0 ? (
-            <div className="emptyPage">
+            <div className="page">
               <button onClick={handleAddClick}>축사를 추가해주세요</button>
             </div>
           ) : (
-            <div className={styles.container}>
-              <div className={styles.myFarmInfoBox}>
-                <div className={styles.selectDiv}>
-                  <h3>축사 선택</h3>
-                  <select
-                    className={styles.selectBox}
-                    value={selectedValue}
-                    onChange={handleChange}
-                  >
-                    {farmList.map((farm, idx) => (
-                      <option key={idx} value={farm.farmId}>
-                        {farm.farmName}
-                      </option>
-                    ))}
-                  </select>
-                  <button onClick={handleAddClick}>농장 추가</button>
-                  {stockLength === 0 && (
-                    <div className={styles.warn}>가축 정보가 없습니다</div>
-                  )}
-                  <button onClick={handleStockAddClick}>가축 추가</button>
-                  {showExcelUpload && <ExcelUpload />}
-                  <ExcelTemplateDownload />
-                </div>
+            <div className="page">
+              <div className={styles.container}>
+                <div className={styles.myFarmInfoBox}>
+                  <div className={styles.selectDiv}>
+                    <h3>축사 선택</h3>
+                    <select
+                      className={styles.selectBox}
+                      value={selectedValue}
+                      onChange={handleChange}
+                    >
+                      {farmList.map((farm, idx) => (
+                        <option key={idx} value={farm.farmId}>
+                          {farm.farmName}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      onClick={handleAddClick}
+                      className="squareGlobalBtn"
+                    >
+                      농장 추가
+                    </button>
+                    {stockLength === 0 && (
+                      <div className={styles.warn}>가축 정보가 없습니다</div>
+                    )}
+                    <button
+                      onClick={handleStockAddClick}
+                      className="squareGlobalBtn"
+                    >
+                      가축 추가
+                    </button>
+                    {showExcelUpload && <ExcelUpload />}
+                    <ExcelTemplateDownload />
+                  </div>
 
-                <div className={styles.cctv}>
-                  <CCTVandAnimalInfo
-                    onClick={handleChartChange}
-                    farmData={selectedFarm}
-                    length={stockList.length}
-                  />
+                  <div className={styles.cctv}>
+                    <CCTVandAnimalInfo
+                      onClick={handleChartChange}
+                      farmData={selectedFarm}
+                      length={stockList.length}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.farmInfoBox}>
-                <div className={styles.farmTable}>
-                  <Table data={stock} />
-                </div>
-                <div>
-                  <h3>축사 데이터 확인</h3>
-                  <div className={styles.chartContainer}>{renderChart()}</div>
+                <div className={styles.farmInfoBox}>
+                  <div className={styles.farmTable}>
+                    <Table data={stock} />
+                  </div>
+                  <div>
+                    <h3>축사 데이터 확인</h3>
+                    <div className={styles.chartContainer}>{renderChart()}</div>
+                  </div>
                 </div>
               </div>
             </div>

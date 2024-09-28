@@ -112,7 +112,7 @@ function PlaceSearch({ map, places, setPlaces, userPosition }) {
         />
         <button
           id="search-btn"
-          className={styles.searchButton}
+          className="squareGlobalBtn"
           onClick={() => searchPlaces(keyword, userPosition)}
         >
           검색

@@ -7,6 +7,9 @@
   border: 1px solid #ddd;
   margin-bottom: 10px;
   position: relative;
+  button {
+    padding: 0.5rem;
+  }
 }
 
 .profileSection {
@@ -93,27 +96,6 @@
   margin-top: 10px;
 }
 
-.CommentButton {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  font-size: 0.9rem;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-}
-
-.deleteButton {
-  background-color: #dc3545;
-
-  &:hover {
-    background-color: #c82333;
-  }
-}
 .reportButton {
   display: flex;
   align-items: center;
@@ -133,4 +115,95 @@
   width: 24px; // 이미지 크기 조정
   height: 24px; // 이미지 크기 조정
   margin-right: 5px; // 이미지와 텍스트 간격
+}
+@media (max-width: 768px) {
+  .container {
+    padding: 8px; /* 패딩 축소 */
+    margin-bottom: 8px; /* 간격 축소 */
+  }
+
+  .profileImage {
+    width: 35px; /* 이미지 크기 축소 */
+    height: 35px; /* 이미지 크기 축소 */
+    margin-right: 8px; /* 간격 축소 */
+  }
+
+  .nickname {
+    font-size: 1rem; /* 닉네임 폰트 크기 축소 */
+  }
+
+  .date {
+    font-size: 0.85rem; /* 날짜 폰트 크기 축소 */
+  }
+
+  .subContent {
+    padding: 8px 0; /* 콘텐츠 패딩 축소 */
+  }
+
+  .textarea {
+    padding: 6px; /* 입력창 패딩 축소 */
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 0.9rem; /* 입력창 폰트 크기 축소 */
+  }
+
+  .buttonContainer {
+    gap: 8px; /* 버튼 간격 축소 */
+  }
+
+  .reportButton {
+    margin-right: 8px; /* 버튼 간격 축소 */
+  }
+
+  .reportImage {
+    width: 22px; /* 이미지 크기 축소 */
+    height: 22px;
+    margin-right: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 6px; /* 패딩 더 축소 */
+    margin-bottom: 6px; /* 간격 더 축소 */
+  }
+
+  .profileImage {
+    width: 30px; /* 이미지 크기 더 축소 */
+    height: 30px; /* 이미지 크기 더 축소 */
+    margin-right: 6px; /* 간격 더 축소 */
+  }
+
+  .nickname {
+    font-size: 0.95rem; /* 닉네임 폰트 크기 더 축소 */
+  }
+
+  .date {
+    font-size: 0.8rem; /* 날짜 폰트 크기 더 축소 */
+  }
+
+  .subContent {
+    padding: 6px 0; /* 콘텐츠 패딩 더 축소 */
+  }
+
+  .textarea {
+    padding: 5px; /* 입력창 패딩 더 축소 */
+    margin-top: 6px;
+    margin-bottom: 6px;
+    font-size: 0.85rem; /* 입력창 폰트 크기 더 축소 */
+  }
+
+  .buttonContainer {
+    gap: 6px; /* 버튼 간격 더 축소 */
+  }
+
+  .reportButton {
+    margin-right: 6px; /* 버튼 간격 더 축소 */
+  }
+
+  .reportImage {
+    width: 20px; /* 이미지 크기 더 축소 */
+    height: 20px;
+    margin-right: 3px;
+  }
 }

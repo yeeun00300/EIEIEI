@@ -144,78 +144,80 @@ function NewBoardPage() {
     }
   };
   return (
-    <div className={styles.container}>
-      <h2>{postData ? "게시물 수정하기" : "새 글 쓰기"}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.group}>
-          <label htmlFor="boardType">게시판 선택</label>
-          <select
-            id="boardType"
-            value={selectedBoard}
-            onChange={(e) => setSelectedBoard(e.target.value)}
-            required
-          >
-            <option value="freeboard">자유게시판</option>
-            <option value="livestock">축산 관리 커뮤니티</option>
-          </select>
-        </div>
-        {selectedBoard === "livestock" && (
+    <div className="page">
+      <div className={styles.container}>
+        <h2>{postData ? "게시물 수정하기" : "새 글 쓰기"}</h2>
+        <form onSubmit={handleSubmit}>
           <div className={styles.group}>
-            <label htmlFor="livestockType">축산 업종 선택</label>
+            <label htmlFor="boardType">게시판 선택</label>
             <select
-              id="livestockType"
-              value={livestockType}
-              onChange={(e) => setLivestockType(e.target.value)}
+              id="boardType"
+              value={selectedBoard}
+              onChange={(e) => setSelectedBoard(e.target.value)}
               required
             >
-              <option value="한우">한우</option>
-              <option value="낙농">낙농</option>
-              <option value="양돈">양돈</option>
-              <option value="양계">양계</option>
-              <option value="산란계">산란계</option>
+              <option value="freeboard">자유게시판</option>
+              <option value="livestock">축산 관리 커뮤니티</option>
             </select>
           </div>
-        )}
-        <div className={styles.group}>
-          <label htmlFor="title">제목</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="제목을 입력해 주세요."
-            required
-          />
-        </div>
-        <div className={styles.group}>
-          <label htmlFor="content">내용</label>
-          <ImageUploader
-            onImageUpload={(file) => setImage(file)}
-            existingImageUrl={postData?.imgUrl} // 기존 이미지 URL을 전달
-          />
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="내용을 입력해 주세요."
-            required
-          ></textarea>
-        </div>
-        <button
-          type="submit"
-          className={styles.submitBtn}
-          disabled={isSubmitting}
-        >
-          {postData ? "수정하기" : "글 등록하기"}
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          className={styles.cancelBtn}
-        >
-          취소하기
-        </button>
-      </form>
+          {selectedBoard === "livestock" && (
+            <div className={styles.group}>
+              <label htmlFor="livestockType">축산 업종 선택</label>
+              <select
+                id="livestockType"
+                value={livestockType}
+                onChange={(e) => setLivestockType(e.target.value)}
+                required
+              >
+                <option value="한우">한우</option>
+                <option value="낙농">낙농</option>
+                <option value="양돈">양돈</option>
+                <option value="양계">양계</option>
+                <option value="산란계">산란계</option>
+              </select>
+            </div>
+          )}
+          <div className={styles.group}>
+            <label htmlFor="title">제목</label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="제목을 입력해 주세요."
+              required
+            />
+          </div>
+          <div className={styles.group}>
+            <label htmlFor="content">내용</label>
+            <ImageUploader
+              onImageUpload={(file) => setImage(file)}
+              existingImageUrl={postData?.imgUrl} // 기존 이미지 URL을 전달
+            />
+            <textarea
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="내용을 입력해 주세요."
+              required
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="squareGlobalBtn"
+            disabled={isSubmitting}
+          >
+            {postData ? "수정하기" : "글 등록하기"}
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="squareGlobalDeleteBtn"
+          >
+            취소하기
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -95,3 +95,54 @@
     }
   }
 }
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 1rem; /* 패딩 축소 */
+    max-width: 80%; /* 최대 너비 조정 */
+
+    .sirenImage {
+      width: 2rem; /* 이미지 크기 축소 */
+    }
+
+    h2 {
+      font-size: 1.25rem; /* 제목 폰트 크기 축소 */
+    }
+
+    .textarea {
+      height: 5rem; /* 텍스트 영역 높이 축소 */
+      font-size: 0.95rem; /* 텍스트 영역 폰트 크기 축소 */
+    }
+
+    .submitButton,
+    .cancelButton {
+      font-size: 0.95rem; /* 버튼 폰트 크기 축소 */
+      padding: 0.5rem 0.75rem; /* 버튼 패딩 축소 */
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 0.75rem; /* 패딩 더 축소 */
+    max-width: 90%; /* 최대 너비 더 조정 */
+
+    .sirenImage {
+      width: 1.75rem; /* 이미지 크기 더 축소 */
+    }
+
+    h2 {
+      font-size: 1rem; /* 제목 폰트 크기 더 축소 */
+    }
+
+    .textarea {
+      height: 4rem; /* 텍스트 영역 높이 더 축소 */
+      font-size: 0.85rem; /* 텍스트 영역 폰트 크기 더 축소 */
+    }
+
+    .submitButton,
+    .cancelButton {
+      font-size: 0.85rem; /* 버튼 폰트 크기 더 축소 */
+      padding: 0.4rem 0.6rem; /* 버튼 패딩 더 축소 */
+    }
+  }
+}

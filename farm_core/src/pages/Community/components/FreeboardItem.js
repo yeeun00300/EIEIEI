@@ -22,7 +22,9 @@ function FreeBoardItem({ item, onItemClick }) {
     ) {
       return (
         <>
-          {item.imgUrl && <img src={item.imgUrl} alt="게시물" />}
+          {item.imgUrl && (
+            <img src={item.imgUrl} alt="게시물" onClick={handleClick} />
+          )}
           <div className={styles.content}>
             <button className={styles.title} onClick={handleClick}>
               {item.title}
