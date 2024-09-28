@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Header.module.scss";
 import logoImg from "../../../img/TitleLogo.png";
 import { FaRegBell } from "react-icons/fa";
@@ -15,13 +15,21 @@ import {
 import { getQuery } from "../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { orderBy } from "firebase/firestore";
+import useGeolocation from "../../../components/DiseaseStatus/useGeolocation";
+import MapModal from "../../../components/DiseaseStatus/MapModal";
+import CurrentMarker from "./../../../components/DiseaseStatus/CurrentMarker";
 
-function Header({ title, userInfo, address }) {
+function Header({ title, userInfo }) {
   const dispatch = useDispatch();
   const { userAddress, email, farm, name, profileImages } = userInfo;
   const { weatherIssueAlarm, isLoading, onWeatherIssueAlarm } = useSelector(
     (state) => state.weatherSlice
   );
+  // 위치 가져오기
+  const address = useSelector((state) => state.mapAddrSlice.address);
+  useGeolocation();
+  const [isMapModalOpen, setMapModalOpen] = useState(false);
+
   // 실시간 날씨 알림
   const weatherConditions = [];
   const weatherOrderBys = [{ field: "weatherDate", direction: "desc" }];
@@ -40,7 +48,10 @@ function Header({ title, userInfo, address }) {
   });
   const [diseaseInfo] = useCollectionData(diseaseQ);
 
-  const hereAddress = address;
+  const handleAddressClick = () => {
+    setMapModalOpen(true);
+  };
+
   useEffect(() => {
     // const queryOptions = {
     //   orderBys: [{ field: "weatherDate", direction: "desc" }],
@@ -69,8 +80,8 @@ function Header({ title, userInfo, address }) {
         <img className={styles.logoImg} src={logoImg} alt="" />
         <div className={styles.logoText}>{title}</div>
       </div>
-      <div className={styles.address}>
-        {hereAddress ? hereAddress : "현재 정보가 없습니다"}
+      <div className={styles.address} onClick={handleAddressClick}>
+        {address ? address : "현재 정보가 없습니다"}
       </div>
       <div className={styles.userInfo}>
         <div className={styles.alarmInfo}>
@@ -101,6 +112,9 @@ function Header({ title, userInfo, address }) {
           </div>
         </div>
       </div>
+      <MapModal isOpen={isMapModalOpen} onClose={() => setMapModalOpen(false)}>
+        <CurrentMarker />
+      </MapModal>
     </div>
   );
 }
