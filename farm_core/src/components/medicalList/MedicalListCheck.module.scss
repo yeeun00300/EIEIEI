@@ -1,0 +1,19 @@
+.checkMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tableContainer {
+  margin: 3rem;
+  width: 85%;
+}
+.tableHead {
+  background-color: var(--main-color);
+  color: #fff;
+}
+
+/* 테이블 헤더 셀 */
+.tableCellHeader {
+  font-weight: 700;
+  padding: 1rem;
+}

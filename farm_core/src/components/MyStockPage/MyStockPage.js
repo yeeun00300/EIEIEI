@@ -35,7 +35,9 @@ function MyStockPage(props) {
             </div>
           </Tab>
           <Tab eventKey="four" title="문진표 내역">
-            <MedicalListSave />
+            <div className={styles.four}>
+              <MedicalListSave />
+            </div>
           </Tab>
           <Tab eventKey="five" title="질병 정보">
             <DiseaseSelect />

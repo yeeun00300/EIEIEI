@@ -49,12 +49,13 @@
   }
   .usermenu {
     display: none;
-    background-color: var(--point-color);
+    // background-color: var(--point-color);
+    background-color: #66c1b8;
     border-radius: 16px;
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.2);
     padding: 32px 16px;
     position: absolute;
-    top: 100%;
+    top: 165%;
     right: -15%;
     min-width: 9.375rem;
     // visibility: hidden;

@@ -173,7 +173,7 @@ function MedicalListSave() {
   }
 
   return (
-    <div className="container">
+    <div className={styles.dsads}>
       <div className={styles.save}>
         <TableContainer>
           <Table>

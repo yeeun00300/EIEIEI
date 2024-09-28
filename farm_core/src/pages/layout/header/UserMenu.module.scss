@@ -1,17 +1,6 @@
 .container {
-  height: 12rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  input {
-    padding: 8px;
-    background-color: #fff;
-    outline: none;
-    border: 2px solid var(--main-color);
-    margin-top: 2px;
-    border-radius: 8px;
-    // margin: 4px 0;
-  }
   .btns {
     height: 20%;
     display: flex;

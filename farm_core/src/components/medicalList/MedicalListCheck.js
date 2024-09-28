@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import styles from "../../pages/MyPage/MyCommunity/MyCommunity.module.scss";
+import styles from "./MedicalListCheck.module.scss";
 import {
   deleteFarmDocument,
   fetchFarmDocumentByEmail,
@@ -112,7 +112,7 @@ function MedicalListCheck() {
   };
 
   return (
-    <div>
+    <div className={styles.checkMain}>
       <TableContainer className={styles.tableContainer}>
         <Table>
           <TableHead className={styles.tableHead}>
