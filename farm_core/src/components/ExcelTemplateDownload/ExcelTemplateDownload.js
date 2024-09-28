@@ -211,7 +211,7 @@ function ExcelTemplateDownload(props) {
 
   return (
     <div className={styles.downloadContainer}>
-      <button onClick={downloadTemplate} className={styles.downloadButton}>
+      <button onClick={downloadTemplate} className="squareGlobalBtn">
         엑셀 다운로드
       </button>
     </div>
