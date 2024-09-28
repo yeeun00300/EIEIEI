@@ -600,24 +600,51 @@ function Main({ farmList }) {
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
+  const initialLayouts = useRef(null); // 레이아웃 초기 상태 저장
+
+  useEffect(() => {
+    const loadLayout = async () => {
+      const savedLayout = await fetchFarmLayout(currentFarm.docId);
+
+      if (savedLayout && !initialLayouts.current) {
+        // 초기 레이아웃 저장
+        initialLayouts.current = savedLayout;
+      }
+
+      setLayout({
+        ...savedLayout,
+        lg: savedLayout.lg || [],
+        md: savedLayout.md || [],
+        sm: savedLayout.sm || [],
+        xs: savedLayout.xs || [],
+        xxs: savedLayout.xxs || [],
+      });
+    };
+
+    loadLayout();
+  }, [currentFarm.docId]);
+
   const onLayoutChange = (newLayout, allLayouts) => {
     const updatedLayouts = { ...allLayouts };
 
     // 'md'와 'sm' 브레이크포인트의 w: 1, h: 3 설정
     ["md", "sm"].forEach((breakpoint) => {
       updatedLayouts[breakpoint] = updatedLayouts[breakpoint].map((item) => {
+        // 초기 x, y 값이 있다면 유지
+        const initialItem = initialLayouts.current[breakpoint].find(
+          (i) => i.i === item.i
+        );
+        const x = initialItem ? initialItem.x : item.x;
+        const y = initialItem ? initialItem.y : item.y;
+
         if (item.i == "4") {
-          return { ...item, w: 1, h: 6 };
+          return { ...item, w: 1, h: 6, x, y };
         } else if (item.i == "10") {
-          return { ...item, w: 2, h: 3 };
+          return { ...item, w: 2, h: 3, x, y };
         } else if (item.i == "15") {
-          return { ...item, w: 2, h: 3 };
+          return { ...item, w: 2, h: 3, x, y };
         } else {
-          return {
-            ...item,
-            w: 1,
-            h: 3,
-          };
+          return { ...item, w: 1, h: 3, x, y };
         }
       });
     });
@@ -626,8 +653,6 @@ function Main({ farmList }) {
       ...prevLayout,
       ...updatedLayouts,
     }));
-
-    // console.log(`json 확인용`, JSON.stringify(updatedLayouts));
   };
 
   const handleBreakpointChange = (newBreakpoint) => {
