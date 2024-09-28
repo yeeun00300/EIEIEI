@@ -54,46 +54,28 @@
     resize: vertical;
     min-height: 11.25rem;
   }
-
-  .submitBtn {
-    display: inline-block;
-    background-color: #007bff;
-    color: white;
-    padding: 0.75rem 1.25rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1.125rem;
-    font-weight: bold;
-    cursor: pointer;
+  button {
     width: 100%;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-
-    &:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-    }
+    margin: 0.2rem;
   }
+  @media (max-width: 480px) {
+    padding: 1rem; /* 패딩 추가 조정 */
 
-  .cancelBtn {
-    display: inline-block;
-    background-color: #f44336;
-    color: white;
-    padding: 0.75rem 1.25rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 1.125rem;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 0.625rem;
-    transition: background-color 0.3s ease;
+    h2 {
+      font-size: 1.125rem; /* 제목 크기 조정 */
+    }
 
-    &:hover {
-      background-color: #d32f2f;
+    input[type="text"],
+    textarea,
+    select {
+      padding: 0.5rem; /* 입력 필드 패딩 조정 */
+      font-size: 0.875rem; /* 글자 크기 조정 */
+    }
+
+    .submitBtn,
+    .cancelBtn {
+      font-size: 0.875rem; /* 버튼 글자 크기 조정 */
+      padding: 0.5rem; /* 버튼 패딩 조정 */
     }
   }
 }

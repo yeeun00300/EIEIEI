@@ -3,6 +3,9 @@
   height: 100%;
   display: grid;
   grid-template-columns: 2fr 1fr;
+  button {
+    padding: 0.5rem;
+  }
 
   .myFarmInfoBox {
     width: 100%;
@@ -24,13 +27,6 @@
         align-items: center;
         color: rgb(255, 94, 94);
         padding-right: 22px;
-      }
-      button {
-        border: none;
-        outline: none;
-        border-radius: 8px;
-        padding: 4px 8px;
-        background-color: rgb(166, 193, 243);
       }
     }
 
