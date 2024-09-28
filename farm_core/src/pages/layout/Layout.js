@@ -19,6 +19,7 @@ import { setAdminLogin } from "../../store/loginSlice/loginSlice";
 import { faR } from "@fortawesome/free-solid-svg-icons";
 import { useSpring, animated } from "@react-spring/web";
 import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
+import { useMediaQuery } from "react-responsive";
 
 // nav 애니메이션
 function TransitionComponent(props) {
@@ -56,6 +57,14 @@ const CustomTreeItem = styled(TreeItem)(({ theme }) => ({
 
 function Layout(props) {
   const dispatch = useDispatch();
+
+  // nav 반응형 구현-------------------------------------------------------
+
+  const [isNavVisible, setIsNavVisible] = useState(false);
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+  const toggleNav = () => {
+    setIsNavVisible(!isNavVisible);
+  };
 
   // nav navigate 구현-----------------------------------------------------
   const apiRef = useTreeViewApiRef();
@@ -215,23 +224,30 @@ function Layout(props) {
       ) : (
         <div className={styles.layout}>
           <Header title={"FarmCore"} userInfo={checkLogin} address={address} />
+          {isTabletOrMobile && (
+            <button className={styles.mobileBtn} onClick={toggleNav}>
+              {isNavVisible ? "Hide Menu" : "Show Menu"}
+            </button>
+          )}
           <div className={styles.wrapper}>
-            <div className={styles.nav}>
-              <Box sx={{ minHeight: 352, minWidth: 180 }}>
-                <RichTreeView
-                  slotProps={{
-                    item: { slots: { groupTransition: TransitionComponent } },
-                  }}
-                  slots={{ item: CustomTreeItem }}
-                  items={USER_PRODUCTS}
-                  apiRef={apiRef}
-                  selectedItems={selectedItem?.id ?? null}
-                  onSelectedItemsChange={handleSelectedItemsChange}
-                  // onItemClick={handleItemClick}
-                />
-              </Box>
-              <Footer />
-            </div>
+            {(isNavVisible || !isTabletOrMobile) && (
+              <div className={styles.nav}>
+                <Box sx={{ minHeight: 352, minWidth: 180 }}>
+                  <RichTreeView
+                    slotProps={{
+                      item: { slots: { groupTransition: TransitionComponent } },
+                    }}
+                    slots={{ item: CustomTreeItem }}
+                    items={USER_PRODUCTS}
+                    apiRef={apiRef}
+                    selectedItems={selectedItem?.id ?? null}
+                    onSelectedItemsChange={handleSelectedItemsChange}
+                  />
+                </Box>
+                <Footer />
+              </div>
+            )}
+
             {/* {renderUserContent()} */}
             <Outlet />
           </div>
