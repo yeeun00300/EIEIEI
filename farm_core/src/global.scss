@@ -55,15 +55,15 @@ body {
   overflow-y: auto;
   height: calc(100vh - 4.375rem);
   width: calc(100vw - 12.5rem);
-  @media (min-width: 768px) {
-    // height: 100vh;
-    // .page {
-    //   width: 100%;
-    // }
-  }
-  @media (min-width: 480px) {
-    // height: 100vh;
-  }
+  // @media (min-width: 768px) {
+  //   // height: 100vh;
+  //   // .page {
+  //   //   width: 100%;
+  //   // }
+  // }
+  // @media (min-width: 480px) {
+  //   // height: 100vh;
+  // }
 }
 
 .page::-webkit-scrollbar {
