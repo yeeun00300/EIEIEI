@@ -152,13 +152,13 @@ function MedicalListCheck() {
         </Table>
       </TableContainer>
 
-      <Dialog open={openModal} onClose={handleCloseModal}>
+      <Dialog open={openModal} onClose={handleCloseModal} fullWidth>
         <DialogTitle>{isEditing ? "수정하기" : "상세 정보"}</DialogTitle>
         <DialogContent>
           {selectedDocument && (
-            <div>
+            <div className={styles.farmClass}>
               {isEditing ? (
-                <div>
+                <div className={styles.inputTag}>
                   <TextField
                     label="주소"
                     name="farmAddress"
@@ -224,7 +224,7 @@ function MedicalListCheck() {
                   />
                 </div>
               ) : (
-                <div>
+                <div className={styles.subCheckClass}>
                   <p>
                     <strong>주소:</strong>{" "}
                     {selectedDocument.farmAddress || "정보 없음"}

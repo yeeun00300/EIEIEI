@@ -173,242 +173,234 @@ function MedicalListSave() {
   }
 
   return (
-    <div className={styles.dsads}>
-      <div className={styles.save}>
-        <TableContainer>
-          <Table>
-            <TableHead>
+    // <div className={styles.dsads}>
+    <div className={styles.save}>
+      <TableContainer className={styles.tableContainer}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>축사 번호</TableCell>
+              <TableCell>증상</TableCell>
+              <TableCell>마지막 수정일</TableCell>
+              <TableCell>상세보기</TableCell>
+              <TableCell>삭제하기</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {subCollectionData.length > 0 ? (
+              subCollectionData.map((subData) => {
+                return (
+                  <TableRow key={subData.docId}>
+                    <TableCell>{subData.farmId}</TableCell>
+                    <TableCell>{subData.symptom}</TableCell>
+                    <TableCell>
+                      {subData.lastModified || "수정 이력이 없습니다."}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleSubDataClick(subData)}
+                      >
+                        보기
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleDelete(subData)}
+                      >
+                        삭제
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
               <TableRow>
-                <TableCell>축사 번호</TableCell>
-                <TableCell>증상</TableCell>
-                <TableCell>마지막 수정일</TableCell>
-                <TableCell>상세보기</TableCell>
-                <TableCell>삭제하기</TableCell>
+                <TableCell colSpan={4}>문진표 작성 이력이 없습니다.</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {subCollectionData.length > 0 ? (
-                subCollectionData.map((subData) => {
-                  return (
-                    <TableRow key={subData.docId}>
-                      <TableCell>{subData.farmId}</TableCell>
-                      <TableCell>{subData.symptom}</TableCell>
-                      <TableCell>
-                        {subData.lastModified || "수정 이력이 없습니다."}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleSubDataClick(subData)}
-                        >
-                          보기
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleDelete(subData)}
-                        >
-                          삭제
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4}>
-                    문진표 작성 이력이 없습니다.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-
-        <Dialog
-          open={selectedSubData !== null}
-          onClose={() => setSelectedSubData(null)}
-        >
-          <DialogTitle>상세 증상</DialogTitle>
-          <DialogContent>
-            {selectedSubData && (
-              <div className={styles.subcontainer}>
-                <h2 className={styles.detailHeader}>상세 정보</h2>
-                <div className={styles.detailItem}>
-                  <strong>증상:</strong> {selectedSubData.symptom}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>영향을 받은 가축 수:</strong>{" "}
-                  {selectedSubData.symptomCount}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>열이 있습니까?</strong>{" "}
-                  {selectedSubData.fever ? "예" : "아니요"}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>평균 체온:</strong> {selectedSubData.feverMean}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>기침 여부:</strong>{" "}
-                  {selectedSubData.cough ? "예" : "아니요"}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>기침 빈도:</strong> {selectedSubData.coughCount}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>설사 증상:</strong>{" "}
-                  {selectedSubData.diarrhea ? "예" : "아니요"}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>설사 횟수:</strong> {selectedSubData.diarrheaCount}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>환기 상태:</strong> {selectedSubData.ventilation}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>조명 상태:</strong> {selectedSubData.lampCondition}
-                </div>
-                <div className={styles.detailItem}>
-                  <strong>사료 공급 상태:</strong> {selectedSubData.feedSupply}
-                </div>
-                <DialogActions className={styles.dialogActions}>
-                  <button className={styles.detailButton} onClick={handleEdit}>
-                    수정하기
-                  </button>
-                  <Button
-                    onClick={handleCloseModal}
-                    color="primary"
-                    className={styles.cancelbutton}
-                  >
-                    닫기
-                  </Button>
-                </DialogActions>
-              </div>
             )}
-          </DialogContent>
-        </Dialog>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-        <Dialog open={editing} onClose={handleCancel}>
-          <DialogTitle>수정하기</DialogTitle>
-          <DialogContent>
-            <TextField
-              label="증상"
-              name="symptom"
-              value={updatedData.symptom || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="영향을 받은 가축 수"
-              name="symptomCount"
-              value={updatedData.symptomCount || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <label>열이 있습니까?</label>
-            <RadioGroup
-              name="fever"
-              value={updatedData.fever ? "예" : "아니요"}
-              onChange={handleChange}
-            >
-              <FormControlLabel value="예" control={<Radio />} label="예" />
-              <FormControlLabel
-                value="아니요"
-                control={<Radio />}
-                label="아니요"
-              />
-            </RadioGroup>
-            <TextField
-              label="평균 체온"
-              name="feverMean"
-              value={updatedData.feverMean || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <label>기침 여부?</label>
-            <RadioGroup
-              name="cough"
-              value={updatedData.cough ? "예" : "아니요"}
-              onChange={handleChange}
-            >
-              <FormControlLabel value="예" control={<Radio />} label="예" />
-              <FormControlLabel
-                value="아니요"
-                control={<Radio />}
-                label="아니요"
-              />
-            </RadioGroup>
+      <Dialog
+        open={selectedSubData !== null}
+        onClose={() => setSelectedSubData(null)}
+      >
+        <DialogTitle>상세 증상</DialogTitle>
+        <DialogContent>
+          {selectedSubData && (
+            <div className={styles.subcontainer}>
+              <h2 className={styles.detailHeader}>상세 정보</h2>
+              <div className={styles.detailItem}>
+                <strong>증상:</strong> {selectedSubData.symptom}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>영향을 받은 가축 수:</strong>{" "}
+                {selectedSubData.symptomCount}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>열이 있습니까?</strong>{" "}
+                {selectedSubData.fever ? "예" : "아니요"}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>평균 체온:</strong> {selectedSubData.feverMean}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>기침 여부:</strong>{" "}
+                {selectedSubData.cough ? "예" : "아니요"}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>기침 빈도:</strong> {selectedSubData.coughCount}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>설사 증상:</strong>{" "}
+                {selectedSubData.diarrhea ? "예" : "아니요"}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>설사 횟수:</strong> {selectedSubData.diarrheaCount}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>환기 상태:</strong> {selectedSubData.ventilation}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>조명 상태:</strong> {selectedSubData.lampCondition}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>사료 공급 상태:</strong> {selectedSubData.feedSupply}
+              </div>
+              <DialogActions className={styles.dialogActions}>
+                <Button onClick={handleEdit}>수정하기</Button>
+                <Button onClick={handleCloseModal} color="primary">
+                  닫기
+                </Button>
+              </DialogActions>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
-            <TextField
-              label="기침 빈도"
-              name="coughCount"
-              value={updatedData.coughCount || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
+      <Dialog open={editing} onClose={handleCancel}>
+        <DialogTitle>수정하기</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="증상"
+            name="symptom"
+            value={updatedData.symptom || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="영향을 받은 가축 수"
+            name="symptomCount"
+            value={updatedData.symptomCount || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <label>열이 있습니까?</label>
+          <RadioGroup
+            name="fever"
+            value={updatedData.fever ? "예" : "아니요"}
+            onChange={handleChange}
+          >
+            <FormControlLabel value="예" control={<Radio />} label="예" />
+            <FormControlLabel
+              value="아니요"
+              control={<Radio />}
+              label="아니요"
             />
-            <label>설사 증상</label>
-            <RadioGroup
-              name="diarrhea"
-              value={updatedData.diarrhea ? "예" : "아니요"}
-              onChange={handleChange}
-            >
-              <FormControlLabel value="예" control={<Radio />} label="예" />
-              <FormControlLabel
-                value="아니요"
-                control={<Radio />}
-                label="아니요"
-              />
-            </RadioGroup>
+          </RadioGroup>
+          <TextField
+            label="평균 체온"
+            name="feverMean"
+            value={updatedData.feverMean || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <label>기침 여부?</label>
+          <RadioGroup
+            name="cough"
+            value={updatedData.cough ? "예" : "아니요"}
+            onChange={handleChange}
+          >
+            <FormControlLabel value="예" control={<Radio />} label="예" />
+            <FormControlLabel
+              value="아니요"
+              control={<Radio />}
+              label="아니요"
+            />
+          </RadioGroup>
 
-            <TextField
-              label="설사 횟수"
-              name="diarrheaCount"
-              value={updatedData.diarrheaCount || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
+          <TextField
+            label="기침 빈도"
+            name="coughCount"
+            value={updatedData.coughCount || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <label>설사 증상</label>
+          <RadioGroup
+            name="diarrhea"
+            value={updatedData.diarrhea ? "예" : "아니요"}
+            onChange={handleChange}
+          >
+            <FormControlLabel value="예" control={<Radio />} label="예" />
+            <FormControlLabel
+              value="아니요"
+              control={<Radio />}
+              label="아니요"
             />
-            <TextField
-              label="환기 상태"
-              name="ventilation"
-              value={updatedData.ventilation || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="조명 상태"
-              name="lampCondition"
-              value={updatedData.lampCondition || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="사료 공급 상태"
-              name="feedSupply"
-              value={updatedData.feedSupply || ""}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCancel} color="primary">
-              취소
-            </Button>
-            <Button onClick={handleSave} color="primary">
-              저장
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+          </RadioGroup>
+
+          <TextField
+            label="설사 횟수"
+            name="diarrheaCount"
+            value={updatedData.diarrheaCount || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="환기 상태"
+            name="ventilation"
+            value={updatedData.ventilation || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="조명 상태"
+            name="lampCondition"
+            value={updatedData.lampCondition || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="사료 공급 상태"
+            name="feedSupply"
+            value={updatedData.feedSupply || ""}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel} color="primary">
+            취소
+          </Button>
+          <Button onClick={handleSave} color="primary">
+            저장
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
+    // </div>
   );
 }
 

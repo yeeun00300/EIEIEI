@@ -20,7 +20,7 @@ function MyStockPage(props) {
         <Tabs
           defaultActiveKey="profile"
           id="justify-tab-example"
-          className="mb-3"
+          className={`mb-3 ${styles.customTabs}`}
           justify
         >
           <Tab eventKey="one" title="축사 정보">
@@ -41,11 +41,6 @@ function MyStockPage(props) {
           </Tab>
           <Tab eventKey="five" title="질병 정보">
             <DiseaseSelect />
-          </Tab>
-          <Tab eventKey="qwe" title="TEST">
-            {/* <DeleteAccount /> */}
-            {/* <SubMain /> */}
-            <CCTVAnimal />
           </Tab>
         </Tabs>
       </div>

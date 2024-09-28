@@ -1,6 +1,8 @@
 .save {
   width: 100%;
-  margin: 0 1rem;
+  display: flex;
+  justify-content: center;
+  // margin: 0 1rem;
 }
 h1 {
   margin-bottom: 30px;
@@ -173,30 +175,42 @@ h2 {
   }
 }
 
-.detailButton {
-  background-color: #2980b9;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+// .detailButton {
+//   background-color: #2980b9;
+//   color: white;
+//   border: none;
+//   border-radius: 0.5rem;
+//   cursor: pointer;
+//   font-weight: bold;
+//   font-size: 1rem;
+//   transition: background-color 0.3s ease;
 
-  &:hover {
-    background-color: darken(#2980b9, 10%);
-  }
-}
+//   &:hover {
+//     background-color: darken(#2980b9, 10%);
+//   }
+// }
 .dialogActions {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
+
+  Button {
+    background-color: #2980b9;
+    color: white;
+    &:hover {
+      background-color: #2980b6;
+    }
+  }
 }
 .cancelbutton {
-  background-color: #2980b9;
-  color: white;
-
   // &:hover {
   // background-color: ;
   // }
+}
+
+.tableContainer {
+  text-align: center;
+  width: 80%;
+  max-height: 80vh; // Define the height for the scrollable area
+  overflow-y: auto; // Enable vertical scrolling when content exceeds height
 }

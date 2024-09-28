@@ -276,7 +276,7 @@ function SignUp() {
       await addDatas("users", { ...userObj, email });
       // console.log(userObj);
       alert("회원가입에 성공했습니다.");
-      navigate("/");
+      navigate("/RegularPayment");
     } catch (error) {
       // console.error("회원가입 실패:", error);
       alert(`회원가입 실패: ${error.message}`);
