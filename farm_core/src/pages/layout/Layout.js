@@ -20,6 +20,8 @@ import { faR } from "@fortawesome/free-solid-svg-icons";
 import { useSpring, animated } from "@react-spring/web";
 import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
 import { useMediaQuery } from "react-responsive";
+import { RiSidebarUnfoldLine } from "react-icons/ri";
+import { RiSidebarFoldLine } from "react-icons/ri";
 
 // nav 애니메이션
 function TransitionComponent(props) {
@@ -226,7 +228,7 @@ function Layout(props) {
           <Header title={"FarmCore"} userInfo={checkLogin} address={address} />
           {isTabletOrMobile && (
             <button className={styles.mobileBtn} onClick={toggleNav}>
-              {isNavVisible ? "Hide Menu" : "Show Menu"}
+              {isNavVisible ? <RiSidebarUnfoldLine /> : <RiSidebarFoldLine />}
             </button>
           )}
           <div className={styles.wrapper}>

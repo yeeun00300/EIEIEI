@@ -11,20 +11,16 @@ import {
   addField,
   addLiveStockAction,
 } from "../../store/addLiveStockSlice/addLiveStockSlice";
-import kroDate from "../../utils/korDate";
-import { addFarmDataWithSubcollections, db, getDatas } from "../../firebase";
+import { getDatas } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 
 function AddLiveStock() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    zoneCode,
-    address = "",
-    isOpen,
-    detailedAddress = "",
-  } = useSelector((state) => state.addressSlice);
+  const { address = "", detailedAddress = "" } = useSelector(
+    (state) => state.addressSlice
+  );
   const {
     farmName = "",
     farmId = "",
@@ -116,7 +112,6 @@ function AddLiveStock() {
     console.log("Validation passed");
 
     const email = localStorage.getItem("email");
-    const saveLayoutString = localStorage.getItem("userLayout");
 
     const farmData = {
       farmName,
