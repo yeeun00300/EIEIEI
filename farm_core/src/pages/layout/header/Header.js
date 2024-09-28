@@ -80,8 +80,11 @@ function Header({ title, userInfo }) {
         <img className={styles.logoImg} src={logoImg} alt="" />
         <div className={styles.logoText}>{title}</div>
       </div>
-      <div className={styles.address} onClick={handleAddressClick}>
-        {address ? address : "현재 정보가 없습니다"}
+      <div className={styles.address}>
+        <span>{address ? address : "현재 정보가 없습니다"}</span>
+        <button className="globalBtn" onClick={handleAddressClick}>
+          위치 정보 찾기
+        </button>
       </div>
       <div className={styles.userInfo}>
         <div className={styles.alarmInfo}>
