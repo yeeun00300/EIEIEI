@@ -53,7 +53,7 @@
       width: 12.5rem;
       height: calc(100vh - 75px); /* Header 높이만큼 뺀 나머지 */
       z-index: 1000;
-      transition: transform 0.3s ease;
+      transition: left 0.3s ease;
     }
     &.nav-open {
       left: 0; /* nav가 보일 때 화면에 표시 */
