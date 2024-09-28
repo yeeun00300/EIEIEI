@@ -52,7 +52,7 @@ function RegularPayment() {
   };
 
   return (
-    <div className="page">
+    <div className="container">
       <div className={styles.wrapper}>
         <header className={styles.header}>
           <img src={logoImg} className={styles.logoImg} alt="FarmCore Logo" />
