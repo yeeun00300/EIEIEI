@@ -68,7 +68,9 @@ function MonthPractice(props) {
           onChange={handleMonthChange}
         />
       </div>
-      <KORMap data={data} selectedMonth={selectedMonth} />{" "}
+      <div className={styles.KORMapCard}>
+        <KORMap data={data} selectedMonth={selectedMonth} />{" "}
+      </div>
       {/* 선택된 월도 전달 */}
     </div>
   );
