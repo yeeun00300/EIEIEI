@@ -37,7 +37,7 @@ function PieChartNeedle({
             <Cell key={`cell-${index}`} fill={entry.color} />
           ))}
         </Pie>
-        {needle(value, data, cx, cy, iR, oR, "#4db6ac")}
+        {needle(value, data, cx, cy, iR, oR, "#e05656")}
         {/* {needle(value, data, cx, cy, iR, oR, "#d0d000")} */}
       </PieChart>
       <div className={styles.GaugeContainer}>

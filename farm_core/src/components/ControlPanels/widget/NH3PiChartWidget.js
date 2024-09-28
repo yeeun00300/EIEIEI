@@ -14,9 +14,9 @@ function NH3PiChartWidget() {
   const RADIAN = Math.PI / 90;
 
   const data = [
-    { name: "A", value: 55, color: "#0000ff" },
+    { name: "A", value: 55, color: "#80cbc4" },
     // { name: "B", value: 8, color: "#00ff00" },
-    { name: "C", value: 35, color: "#ff0000" },
+    { name: "C", value: 35, color: "#4db6ac" },
   ];
   const cx = 95; // X 위치 value-up:left
   const cy = 100; // Y 위치 value-up:down

@@ -108,7 +108,9 @@ function FanPieChart({
           src={propellerImg}
           className={`${styles.propeller} ${isOn ? styles.spin : ""}`}
         />
-        <button onClick={toggleOnOff}>{isOn ? "On" : "OFF"}</button>
+        <button onClick={toggleOnOff} className="globalBtn">
+          {isOn ? "On" : "OFF"}
+        </button>
         {/* <p>{isIncreasing ? "CO2 증가 중" : "CO2 감소 중"}</p> */}
       </div>
       <div className={styles.PieChart}>

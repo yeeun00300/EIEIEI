@@ -14,9 +14,9 @@ function TempPiNeedleWidget() {
   const RADIAN = Math.PI / 90;
 
   const data = [
-    { name: "A", value: 62, color: "#0000ff" },
-    { name: "B", value: 8, color: "#00ff00" },
-    { name: "C", value: 20, color: "#ff0000" },
+    { name: "A", value: 62, color: "#00C49F" },
+    { name: "B", value: 8, color: "#FFBB28" },
+    { name: "C", value: 20, color: "#FF8042" },
   ];
   const cx = 95; // X 위치 value-up:left
   const cy = 100; // Y 위치 value-up:down

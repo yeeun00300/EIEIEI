@@ -12,7 +12,7 @@ function LightPiChartWidget() {
   const RADIAN = Math.PI / 180;
 
   const dataOn = [
-    { name: "A", value: 120, color: "yellow" },
+    { name: "A", value: 120, color: "#4db6ac" },
     // { name: "B", value: 8, color: "#00ff00" },
     // { name: "C", value: 60, color: "#ff0000" },
   ];

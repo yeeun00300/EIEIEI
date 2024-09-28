@@ -15,18 +15,19 @@
   transition: all 0.3s ease;
   .turnOn {
     font-size: 48px;
-    color: gold;
+    color: var(--point-color);
     cursor: pointer;
     &:hover {
-      color: black;
+      color: #808080;
       transition: 0.5s ease-out;
     }
   }
   .turnOff {
     font-size: 48px;
+    color: #808080;
     cursor: pointer;
     &:hover {
-      color: gold;
+      color: var(--point-color);
       transition: 0.5s ease-out;
     }
   }

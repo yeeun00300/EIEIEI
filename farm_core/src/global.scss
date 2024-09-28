@@ -27,6 +27,12 @@
   --main-color: #b2dfdb;
   --second-color: #80cbc4;
   --point-color: #4db6ac;
+  --deep-color: #00c49f;
+  --normal-color: #0088fe;
+  --caution-color: #ffbb28;
+  --energy-color: #ff8042;
+  --warning-color: #ff6b6b;
+  --cancel-color: #e05656;
 }
 
 body {
@@ -90,11 +96,12 @@ body {
   }
 }
 
+/* 기본버튼 */
 .globalBtn {
   padding: 10px 20px;
   font-size: 1rem;
   color: #fff;
-  background-color: var(--main-color);
+  background-color: var(--second-color);
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -110,12 +117,10 @@ body {
 }
 
 .reverseGlobalBtn {
-  display: inline-flex;
-  align-items: center;
   padding: 10px 20px;
   font-size: 1rem;
   color: #fff;
-  background-color: var(--main-color);
+  background-color: var(--second-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -126,10 +131,93 @@ body {
   }
 
   &:hover {
-    background-color: var(--second-color);
+    background-color: var(--point-color);
   }
 
   &:active {
     background-color: var(--point-color);
+  }
+}
+
+/* 삭제버튼 */
+.globalDeleteBtn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #e05656;
+  }
+
+  &:active {
+    background-color: #e05656;
+  }
+}
+.reverseGlobalDeleteBtn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: #e05656;
+  }
+
+  &:active {
+    background-color: #e05656;
+  }
+}
+/* 수정버튼 */
+.globalEditBtn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #1abc9c;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #16a085;
+  }
+
+  &:active {
+    background-color: #16a085;
+  }
+}
+.reverseGlobalEditBtn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #1abc9c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: #16a085;
+  }
+
+  &:active {
+    background-color: #16a085;
   }
 }

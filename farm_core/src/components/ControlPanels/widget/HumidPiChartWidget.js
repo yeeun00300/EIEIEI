@@ -12,9 +12,9 @@ function HumidPiChartWidget() {
   const RADIAN = Math.PI / 180;
 
   const data = [
-    { name: "A", value: 160, color: "#0000ff" },
+    { name: "A", value: 160, color: " #80cbc4" },
     //   { name: "B", value: 8, color: "#00ff00" },
-    { name: "C", value: 20, color: "#ff0000" },
+    { name: "C", value: 20, color: "#4db6ac" },
   ];
   const cx = 95; // X 위치 value-up:left
   const cy = 100; // Y 위치 value-up:down
