@@ -28,6 +28,7 @@
   --second-color: #80cbc4;
   --point-color: #4db6ac;
 }
+
 body {
   height: 100%;
   margin: 0;
@@ -86,5 +87,49 @@ body {
   }
   @media (min-width: 990px) {
     padding: 0.3125rem;
+  }
+}
+
+.globalBtn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--point-color);
+  }
+
+  &:active {
+    background-color: var(--point-color);
+  }
+}
+
+.reverseGlobalBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: var(--second-color);
+  }
+
+  &:active {
+    background-color: var(--point-color);
   }
 }
