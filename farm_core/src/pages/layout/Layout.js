@@ -20,8 +20,8 @@ import { faR } from "@fortawesome/free-solid-svg-icons";
 import { useSpring, animated } from "@react-spring/web";
 import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
 import { useMediaQuery } from "react-responsive";
-import { RiSidebarUnfoldLine } from "react-icons/ri";
-import { RiSidebarFoldLine } from "react-icons/ri";
+import { MdOutlineMenuOpen } from "react-icons/md";
+import { MdOutlineMenu } from "react-icons/md";
 
 // nav 애니메이션
 function TransitionComponent(props) {
@@ -234,9 +234,9 @@ function Layout(props) {
           {isTabletOrMobile && (
             <button className={styles.mobileBtn} onClick={toggleNav}>
               {isNavVisible ? (
-                <RiSidebarFoldLine size="40" color="#555" />
+                <MdOutlineMenuOpen size="80" color="#555" />
               ) : (
-                <RiSidebarUnfoldLine size="40" color="#555" />
+                <MdOutlineMenu size="80" color="#555" />
               )}
             </button>
           )}
