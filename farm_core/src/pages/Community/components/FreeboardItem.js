@@ -17,7 +17,6 @@ function FreeBoardItem({ item, onItemClick }) {
       onItemClick(item);
     }
   };
-  console.log(item);
 
   useEffect(() => {
     const fetchComments = async () => {
