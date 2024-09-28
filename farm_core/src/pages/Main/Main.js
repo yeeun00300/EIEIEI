@@ -642,7 +642,7 @@ function Main({ farmList }) {
       const savedLayout = await fetchFarmLayout(currentFarm.docId);
 
       // 처음 로드된 경우에만 layoutIArr에 값을 넣고 업데이트
-      if (layoutIArr.current.length === 0) {
+      if (layoutIArr.current.length === 0 && savedLayout) {
         savedLayout["lg"].forEach((item) => layoutIArr.current.push(item.i));
 
         if (savedLayout) {
