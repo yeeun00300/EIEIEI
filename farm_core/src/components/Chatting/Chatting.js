@@ -41,6 +41,12 @@ function Chatting() {
       </header>
       <ChatRoom chattingUser={chattingUser} />
       {/* <ChatRoom /> */}
+      <button className={styles.button1}>button1</button>
+      <button className={styles.button2}>button2</button>
+      <button className={styles.button3}>button3</button>
+      <button className={styles.button4}>button4</button>
+      <button className={styles.button5}>button5</button>
+      <button className={styles.button6}>button6</button>
     </div>
   );
 }
