@@ -80,8 +80,10 @@ function Main({ farmList }) {
   const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
   useFetchCollectionData("stock", fetchExcelStock);
   // ????????????????????????????????????????????????????????????????????????????????
-
-  const [filteredStock, setFilteredStock] = useState([]);
+  const filteredStock = stock.filter((item) => item.farmId === Number(farmId));
+  const realStock = filteredStock.filter((item) => item.deceased === "N");
+  console.log(filteredStock);
+  // const [filteredStock, setFilteredStock] = useState([]);
 
   const sampleData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -446,7 +448,7 @@ function Main({ farmList }) {
   const renderComponent = (id) => {
     switch (id) {
       case "1":
-        return <Vaccine stock={stock && stock} />; //백신정보
+        return <Vaccine stock={filteredStock} />; //백신정보
       case "2":
         return <Table data={stock && stock} />; //가축별 총 데이터
       case "3":
@@ -466,13 +468,13 @@ function Main({ farmList }) {
       case "10":
         return <WeekWeatherWidget />; // 5일 날씨
       case "11":
-        return <StockNum stock={stock && stock} />; //현재 농장 가축 수
+        return <StockNum stock={realStock} />; //현재 농장 가축 수
       case "12":
-        return <StockProduct stock={stock && stock} farmData={currentFarm} />; //발정상태&생산량
+        return <StockProduct stock={realStock} farmData={currentFarm} />; //발정상태&생산량
       case "13":
-        return <HealthCondition stock={stock && stock} />; //건강 상태
+        return <HealthCondition stock={realStock} />; //건강 상태
       case "14":
-        return <MortalityRate stock={stock && stock} />; //폐사율
+        return <MortalityRate stock={filteredStock} />; //폐사율
       case "15":
         return <CCTVAnimal stockType={currentFarm.farm_stockType} />; //cctv
 
