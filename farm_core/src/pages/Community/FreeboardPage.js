@@ -238,10 +238,10 @@ function FreeboardPage() {
               </p>
               {isAuthor && (
                 <div className={styles.buttonGroup}>
-                  <button className={styles.button} onClick={handleUpdate}>
+                  <button className="globalEditBtn" onClick={handleUpdate}>
                     수정하기
                   </button>
-                  <button className={styles.button} onClick={handleDelete}>
+                  <button className="globalDeleteBtn" onClick={handleDelete}>
                     삭제하기
                   </button>
                 </div>

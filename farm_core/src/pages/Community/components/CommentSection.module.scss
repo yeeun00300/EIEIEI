@@ -29,14 +29,13 @@
       background: #aaa;
     }
   }
-}
-
-h2 {
-  margin-bottom: 1.25rem;
-  font-size: 1.125rem;
-  color: #333;
-  text-align: center;
-  font-weight: bold;
+  h2 {
+    margin-bottom: 1.25rem;
+    font-size: 1.125rem;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+  }
 }
 
 .textareaContainer {
@@ -90,5 +89,54 @@ h2 {
     color: red;
     margin-top: 0.625rem;
     text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .commentSection {
+    padding: 1rem; /* 패딩 축소 */
+    max-width: 100%; /* 최대 너비 조정 */
+  }
+
+  h2 {
+    font-size: 1rem; /* 제목 폰트 크기 축소 */
+  }
+
+  .commentText {
+    height: 5rem; /* 입력창 높이 축소 */
+    font-size: 0.875rem; /* 입력창 폰트 크기 축소 */
+  }
+
+  .addComment {
+    padding: 0.5rem 1rem; /* 버튼 패딩 축소 */
+    font-size: 0.875rem; /* 버튼 폰트 크기 축소 */
+  }
+
+  .error {
+    font-size: 0.875rem; /* 에러 메시지 폰트 크기 축소 */
+  }
+}
+
+@media (max-width: 480px) {
+  .commentSection {
+    padding: 0.75rem; /* 패딩 더 축소 */
+    max-width: 100%; /* 전체 화면 너비로 변경 */
+  }
+
+  h2 {
+    font-size: 0.875rem; /* 제목 폰트 크기 더 축소 */
+  }
+
+  .commentText {
+    height: 4.5rem; /* 입력창 높이 더 축소 */
+    font-size: 0.75rem; /* 입력창 폰트 크기 더 축소 */
+  }
+
+  .addComment {
+    padding: 0.375rem 0.875rem; /* 버튼 패딩 더 축소 */
+    font-size: 0.75rem; /* 버튼 폰트 크기 더 축소 */
+  }
+
+  .error {
+    font-size: 0.75rem; /* 에러 메시지 폰트 크기 더 축소 */
   }
 }

@@ -122,31 +122,66 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
               <br />
               {length}
             </p>
-            <button onClick={() => onClick("chart1")}>차트 보기</button>
+            <button
+              onClick={() => onClick("chart1")}
+              className="squareGlobalBtn"
+            >
+              차트 보기
+            </button>
           </div>
           <div>
             Data4: 사료/물 소비량
-            <button onClick={() => onClick("chart2")}>차트 보기</button>
+            <button
+              onClick={() => onClick("chart2")}
+              className="squareGlobalBtn"
+            >
+              차트 보기
+            </button>
           </div>
           <div>
             Data5: 온도/습도
-            <button onClick={() => onClick("chart3")}>차트 보기</button>
+            <button
+              onClick={() => onClick("chart3")}
+              className="squareGlobalBtn"
+            >
+              차트 보기
+            </button>
           </div>
           <div>
             {stockTypeProduct()}
-            <button onClick={() => onClick("chart4")}>차트 보기</button>
+            <button
+              onClick={() => onClick("chart4")}
+              className="squareGlobalBtn"
+            >
+              차트 보기
+            </button>
           </div>
           <div>
             Data7: 건강상태
-            <button onClick={() => onClick("chart5")}>차트 보기</button>
+            <button
+              onClick={() => onClick("chart5")}
+              className="squareGlobalBtn"
+            >
+              차트 보기
+            </button>
           </div>
           <div>
             Data8: 백신 및 접종기록
-            <button onClick={() => onClick("chart6")}>차트 보기</button>
+            <button
+              onClick={() => onClick("chart6")}
+              className="squareGlobalBtn"
+            >
+              차트 보기
+            </button>
           </div>
           <div>
             Data9: 폐사율
-            <button onClick={() => onClick("chart7")}>차트 보기</button>
+            <button
+              onClick={() => onClick("chart7")}
+              className="squareGlobalBtn"
+            >
+              차트 보기
+            </button>
           </div>
         </div>
       </div>

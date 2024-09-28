@@ -59,7 +59,7 @@ function CommentSection() {
           placeholder="댓글을 입력하세요..."
           className={styles.commentText}
         />
-        <button onClick={handleAddComment} className={styles.addComment}>
+        <button onClick={handleAddComment} className="squareGlobalBtn">
           댓글 추가
         </button>
       </div>
