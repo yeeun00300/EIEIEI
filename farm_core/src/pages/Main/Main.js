@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Line } from "react-chartjs-2";
 import { Box } from "@mui/material";
@@ -74,10 +74,12 @@ const LineChart = ({ dataset }) => {
 
 function Main({ farmList }) {
   const { farmId } = useParams();
+  const layoutIArr = useRef([]); // layoutIArr를 useRef로 선언하여 변화 추적
   const currentFarm = farmList.filter((item) => item.farmId === farmId)[0];
   // 선택 위젯 리스트
-  const [fetchLayout, setFetchLayout] = useState([]);
+  const [fetchLayoutCount, setFetchLayoutCount] = useState(0);
   const [widgetList, setWidgetList] = useState([]);
+  console.log(widgetList);
   const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
   useFetchCollectionData("stock", fetchExcelStock);
   const filteredStock = stock.filter((item) => item.farmId === Number(farmId));
@@ -95,6 +97,7 @@ function Main({ farmList }) {
       },
     ],
   };
+
   // const layoutDict = {
   //   LineChart: <LineChart dataset={sampleData} />,
   //   Table: <Table data={stock && stock} />,
@@ -529,7 +532,6 @@ function Main({ farmList }) {
 
   // 선택된 LAYOUTS
   const newLayouts = getSelectedLayouts(widgetList);
-
   // 컴포넌트 복원
   const renderComponent = (id) => {
     switch (id) {
@@ -598,24 +600,51 @@ function Main({ farmList }) {
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
+  const initialLayouts = useRef(null); // 레이아웃 초기 상태 저장
+
+  useEffect(() => {
+    const loadLayout = async () => {
+      const savedLayout = await fetchFarmLayout(currentFarm.docId);
+
+      if (savedLayout && !initialLayouts.current) {
+        // 초기 레이아웃 저장
+        initialLayouts.current = savedLayout;
+      }
+
+      setLayout({
+        ...savedLayout,
+        lg: savedLayout.lg || [],
+        md: savedLayout.md || [],
+        sm: savedLayout.sm || [],
+        xs: savedLayout.xs || [],
+        xxs: savedLayout.xxs || [],
+      });
+    };
+
+    loadLayout();
+  }, [currentFarm.docId]);
+
   const onLayoutChange = (newLayout, allLayouts) => {
     const updatedLayouts = { ...allLayouts };
 
     // 'md'와 'sm' 브레이크포인트의 w: 1, h: 3 설정
     ["md", "sm"].forEach((breakpoint) => {
       updatedLayouts[breakpoint] = updatedLayouts[breakpoint].map((item) => {
+        // 초기 x, y 값이 있다면 유지
+        const initialItem = initialLayouts.current[breakpoint].find(
+          (i) => i.i === item.i
+        );
+        const x = initialItem ? initialItem.x : item.x;
+        const y = initialItem ? initialItem.y : item.y;
+
         if (item.i == "4") {
-          return { ...item, w: 1, h: 6 };
+          return { ...item, w: 1, h: 6, x, y };
         } else if (item.i == "10") {
-          return { ...item, w: 2, h: 3 };
+          return { ...item, w: 2, h: 3, x, y };
         } else if (item.i == "15") {
-          return { ...item, w: 2, h: 3 };
+          return { ...item, w: 2, h: 3, x, y };
         } else {
-          return {
-            ...item,
-            w: 1,
-            h: 3,
-          };
+          return { ...item, w: 1, h: 3, x, y };
         }
       });
     });
@@ -624,8 +653,6 @@ function Main({ farmList }) {
       ...prevLayout,
       ...updatedLayouts,
     }));
-
-    // console.log(`json 확인용`, JSON.stringify(updatedLayouts));
   };
 
   const handleBreakpointChange = (newBreakpoint) => {
@@ -636,27 +663,55 @@ function Main({ farmList }) {
   // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
   useEffect(() => {
     const loadLayout = async () => {
-      let layoutIArr = [];
       setLayout(newLayouts);
       const savedLayout = await fetchFarmLayout(currentFarm.docId);
-      savedLayout["lg"].map((item) => layoutIArr.push(item.i));
-      setWidgetList(layoutIArr);
-      if (savedLayout) {
-        setLayout((prevLayout) => ({
-          ...prevLayout,
-          lg: savedLayout.lg || [],
-          md: savedLayout.md || [],
-          sm: savedLayout.sm || [],
-          xs: savedLayout.xs || [],
-          xxs: savedLayout.xxs || [],
-        }));
-      } else {
-        console.log(`저장된 정보없음`);
+
+      // 처음 로드된 경우에만 layoutIArr에 값을 넣고 업데이트
+      if (layoutIArr.current.length === 0 && savedLayout) {
+        savedLayout["lg"].forEach((item) => layoutIArr.current.push(item.i));
+
+        if (savedLayout) {
+          setLayout((prevLayout) => ({
+            ...prevLayout,
+            lg: savedLayout.lg || [],
+            md: savedLayout.md || [],
+            sm: savedLayout.sm || [],
+            xs: savedLayout.xs || [],
+            xxs: savedLayout.xxs || [],
+          }));
+        } else {
+          console.log("저장된 정보 없음");
+        }
+
+        // 처음 로드 시 widgetList 업데이트
+        setWidgetList([...layoutIArr.current]);
       }
-      // console.log(`테스트`, savedLayout);
     };
+
     loadLayout();
-  }, [currentFarm.docId]);
+  }, [currentFarm.docId, fetchLayoutCount]);
+  // useEffect(() => {
+  //   const loadLayout = async () => {
+  //     setLayout(newLayouts);
+  //     const savedLayout = await fetchFarmLayout(currentFarm.docId);
+  //     savedLayout["lg"].map((item) => layoutIArr.push(item.i));
+  //     if (savedLayout) {
+  //       setLayout((prevLayout) => ({
+  //         ...prevLayout,
+  //         lg: savedLayout.lg || [],
+  //         md: savedLayout.md || [],
+  //         sm: savedLayout.sm || [],
+  //         xs: savedLayout.xs || [],
+  //         xxs: savedLayout.xxs || [],
+  //       }));
+  //     } else {
+  //       console.log(`저장된 정보없음`);
+  //     }
+  //     // console.log(`테스트`, savedLayout);
+  //   };
+  //   loadLayout();
+  //   setWidgetList(layoutIArr);
+  // }, [currentFarm.docId, fetchLayoutCount]);
 
   const [edit, setEdit] = useState(false);
   //대시보드 편집중일때
@@ -717,6 +772,7 @@ function Main({ farmList }) {
               <WidgetList
                 setWidgetList={setWidgetList}
                 widgetList={widgetList}
+                setFetchLayoutCount={setFetchLayoutCount}
               />
             </div>
           ) : (

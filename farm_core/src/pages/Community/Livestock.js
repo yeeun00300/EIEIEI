@@ -15,7 +15,8 @@ function Livestock() {
   const [sortOption, setSortOption] = useState("최신순");
   const [keyword, setKeyword] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [visibleCount, setVisibleCount] = useState(6); // 한 번에 보여줄 게시글 수
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [selectedStockType, setSelectedStockType] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,9 +59,19 @@ function Livestock() {
     e.preventDefault();
     setSearchTerm(keyword);
   };
+  const handleStockTypeChange = (e) => {
+    setSelectedStockType(e.target.value);
+  };
 
   const getFilteredAndSortedContents = () => {
     let filteredContents = [...livestockContents];
+
+    // stockType에 따른 필터링
+    if (selectedStockType) {
+      filteredContents = filteredContents.filter(
+        (item) => item.stockType === selectedStockType
+      );
+    }
 
     // 검색어에 따른 필터링
     if (searchTerm) {
@@ -118,12 +129,24 @@ function Livestock() {
             새 글 쓰기
           </button>
           <select
-            className={styles.sortSelect}
+            className={styles.selectBox}
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
             <option value="최신순">최신순</option>
             <option value="추천순">추천순</option>
+          </select>
+          <select
+            className={styles.selectBox}
+            value={selectedStockType}
+            onChange={handleStockTypeChange}
+          >
+            <option value="">가축 종류</option>
+            <option value="koreanCow">한우</option>
+            <option value="dairyCow">낙농</option>
+            <option value="pork">양돈</option>
+            <option value="chicken">양계</option>
+            <option value="eggChicken">산란계</option>
           </select>
         </div>
 
