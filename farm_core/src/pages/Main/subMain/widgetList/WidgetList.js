@@ -6,7 +6,7 @@ import LightPiChartWidget from "./../../../../components/ControlPanels/widget/Li
 import CO2PiChartWidget from "./../../../../components/ControlPanels/widget/CO2PiChartWidget";
 import NH3PiChartWidget from "./../../../../components/ControlPanels/widget/NH3PiChartWidget";
 
-function WidgetList({ setWidgetList, widgetList, fetchLayout }) {
+function WidgetList({ setWidgetList, widgetList }) {
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setWidgetList((prevList) => {
@@ -20,7 +20,7 @@ function WidgetList({ setWidgetList, widgetList, fetchLayout }) {
     });
   };
 
-  console.log(fetchLayout);
+  console.log(widgetList);
   return (
     <>
       {/* {widgetList ? (

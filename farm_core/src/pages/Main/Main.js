@@ -76,13 +76,12 @@ function Main({ farmList }) {
   const { farmId } = useParams();
   const currentFarm = farmList.filter((item) => item.farmId === farmId)[0];
   // 선택 위젯 리스트
-  const [widgetList, setWidgetList] = useState(fetchLayout);
   const [fetchLayout, setFetchLayout] = useState([]);
+  const [widgetList, setWidgetList] = useState([]);
   const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
   useFetchCollectionData("stock", fetchExcelStock);
   const filteredStock = stock.filter((item) => item.farmId === Number(farmId));
   const realStock = filteredStock.filter((item) => item.deceased === "N");
-  // console.log(filteredStock);
   // const [filteredStock, setFilteredStock] = useState([]);
 
   const sampleData = {
@@ -641,7 +640,7 @@ function Main({ farmList }) {
       setLayout(newLayouts);
       const savedLayout = await fetchFarmLayout(currentFarm.docId);
       savedLayout["lg"].map((item) => layoutIArr.push(item.i));
-      setFetchLayout(layoutIArr);
+      setWidgetList(layoutIArr);
       if (savedLayout) {
         setLayout((prevLayout) => ({
           ...prevLayout,
@@ -657,7 +656,7 @@ function Main({ farmList }) {
       // console.log(`테스트`, savedLayout);
     };
     loadLayout();
-  }, [currentFarm.docId, widgetList.length]);
+  }, [currentFarm.docId]);
 
   const [edit, setEdit] = useState(false);
   //대시보드 편집중일때
@@ -718,7 +717,6 @@ function Main({ farmList }) {
               <WidgetList
                 setWidgetList={setWidgetList}
                 widgetList={widgetList}
-                fetchLayout={fetchLayout}
               />
             </div>
           ) : (
