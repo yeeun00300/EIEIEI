@@ -31,13 +31,9 @@ function UserMenu(props) {
 
   return (
     <div className={styles.container}>
-      <div>
-        Email
-        <input type="text" value={email} readOnly />
-      </div>
-      <div>
-        농장수
-        <input />
+      <div className={styles.userEmail}>
+        사용중인 이메일
+        <p>{email}</p>
       </div>
       <div className={styles.btns}>
         <Link className={styles.btn} to={"/My_Farm_MyPage"}>

@@ -67,6 +67,11 @@ function Layout(props) {
   const toggleNav = () => {
     setIsNavVisible(!isNavVisible);
   };
+  useEffect(() => {
+    if (isNavVisible && isTabletOrMobile) {
+      console.log("Nav가 보이면서 애니메이션 준비 완료!");
+    }
+  }, [isNavVisible, isTabletOrMobile]);
 
   // nav navigate 구현-----------------------------------------------------
   const apiRef = useTreeViewApiRef();
@@ -228,12 +233,18 @@ function Layout(props) {
           <Header title={"FarmCore"} userInfo={checkLogin} address={address} />
           {isTabletOrMobile && (
             <button className={styles.mobileBtn} onClick={toggleNav}>
-              {isNavVisible ? <RiSidebarUnfoldLine /> : <RiSidebarFoldLine />}
+              {isNavVisible ? (
+                <RiSidebarFoldLine size="40" color="#555" />
+              ) : (
+                <RiSidebarUnfoldLine size="40" color="#555" />
+              )}
             </button>
           )}
           <div className={styles.wrapper}>
             {(isNavVisible || !isTabletOrMobile) && (
-              <div className={styles.nav}>
+              <div
+                className={`${styles.nav} ${isNavVisible ? "nav-open" : ""}`}
+              >
                 <Box sx={{ minHeight: 352, minWidth: 180 }}>
                   <RichTreeView
                     slotProps={{

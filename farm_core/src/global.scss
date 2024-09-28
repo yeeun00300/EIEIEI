@@ -57,6 +57,9 @@ body {
   width: calc(100vw - 12.5rem);
   @media (min-width: 768px) {
     // height: 100vh;
+    // .page {
+    //   width: 100%;
+    // }
   }
   @media (min-width: 480px) {
     // height: 100vh;
@@ -94,12 +97,12 @@ body {
 
 /* 기본버튼 */
 .globalBtn {
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   font-size: 1rem;
   color: #fff;
   background-color: var(--second-color);
   border: none;
-  border-radius: 50px;
+  border-radius: 3.125rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -111,14 +114,14 @@ body {
     background-color: var(--point-color);
   }
 }
-
-.reverseGlobalBtn {
-  padding: 10px 20px;
+// 네모 기본 버튼
+.squareGlobalBtn {
+  padding: 0.625rem 1.25rem;
   font-size: 1rem;
   color: #fff;
   background-color: var(--second-color);
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -135,14 +138,15 @@ body {
   }
 }
 
-/* 삭제버튼 */
+/* 기본 삭제버튼 */
 .globalDeleteBtn {
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   font-size: 1rem;
   color: #fff;
   background-color: #ff6b6b;
   border: none;
-  border-radius: 50px;
+  border-radius: 3.125rem;
+
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -154,13 +158,14 @@ body {
     background-color: #e05656;
   }
 }
-.reverseGlobalDeleteBtn {
-  padding: 10px 20px;
+// 네모 삭제 버튼
+.squareGlobalDeleteBtn {
+  padding: 0.625rem 1.25rem;
   font-size: 1rem;
   color: #fff;
   background-color: #ff6b6b;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -176,14 +181,15 @@ body {
     background-color: #e05656;
   }
 }
-/* 수정버튼 */
+/* 기본수정버튼 */
 .globalEditBtn {
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   font-size: 1rem;
   color: #fff;
   background-color: #1abc9c;
   border: none;
-  border-radius: 50px;
+  border-radius: 3.125rem;
+
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -195,13 +201,14 @@ body {
     background-color: #16a085;
   }
 }
-.reverseGlobalEditBtn {
-  padding: 10px 20px;
+// 네모 수정버튼
+.squareGlobalEditBtn {
+  padding: 0.625rem 1.25rem;
   font-size: 1rem;
   color: #fff;
   background-color: #1abc9c;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 

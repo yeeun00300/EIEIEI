@@ -25,6 +25,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import { fetchFarmList } from "./store/checkLoginSlice/checkLoginSlice";
 import FirstPage from "./pages/FirstPage/FirstPage";
 import RedirectToFirstFarm from "./pages/redirect/RedirectToFirstFarm ";
+import Payment from "./pages/MyPage/Payment/Payment";
 
 function App() {
   const dispatch = useDispatch();

@@ -1,0 +1,67 @@
+.checkMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.tableContainer {
+  margin: 3rem auto;
+  width: 100%; // 100%로 설정하여 모달 내부에서 꽉 차도록
+  max-width: 900px; // 원하는 최대 너비로 설정
+}
+
+.tableHead {
+  background-color: var(--main-color);
+  color: #fff;
+}
+
+.tableCellHeader {
+  font-weight: 700;
+  padding: 1rem;
+  text-align: center;
+}
+
+.dialogTitle {
+  font-size: 1.5rem;
+  color: #2980b9;
+  margin-bottom: 1.5rem;
+}
+
+.dialogContent {
+  p {
+    margin: 0.75rem 0;
+    font-size: 1rem;
+    color: #34495e;
+  }
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #2980b9;
+    color: #fff;
+    border: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken(#2980b9, 10%);
+    }
+  }
+}
+
+.inputTag {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 20px 0;
+}
+
+strong {
+  color: #2980b9;
+}

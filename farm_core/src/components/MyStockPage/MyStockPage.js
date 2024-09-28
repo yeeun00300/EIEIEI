@@ -3,14 +3,9 @@ import styles from "./MyStockPage.module.scss";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import MedicalList from "../medicalList/MedicalList";
-import StockCondition from "../medicalList/StockCondition";
 import MedicalListSave from "../medicalList/MedicalListSave";
-import DiseaseInfo from "../diseaseInfo/DiseaseInfo";
 import MedicalListCheck from "../medicalList/MedicalListCheck";
-import MyLiveStockList from "../../pages/MyLiveStockInfo/MyLiveStockList";
 import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
-import SubMain from "../../pages/Main/subMain/SubMain";
-import DeleteAccount from "../DeleteAccount/DeleteAccount";
 import CCTVAnimal from "../CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
 
 function MyStockPage(props) {
@@ -20,7 +15,7 @@ function MyStockPage(props) {
         <Tabs
           defaultActiveKey="profile"
           id="justify-tab-example"
-          className="mb-3"
+          className={`mb-3 ${styles.customTabs}`}
           justify
         >
           <Tab eventKey="one" title="축사 정보">
@@ -35,15 +30,12 @@ function MyStockPage(props) {
             </div>
           </Tab>
           <Tab eventKey="four" title="문진표 내역">
-            <MedicalListSave />
+            <div className={styles.four}>
+              <MedicalListSave />
+            </div>
           </Tab>
           <Tab eventKey="five" title="질병 정보">
             <DiseaseSelect />
-          </Tab>
-          <Tab eventKey="qwe" title="TEST">
-            {/* <DeleteAccount /> */}
-            {/* <SubMain /> */}
-            <CCTVAnimal />
           </Tab>
         </Tabs>
       </div>
