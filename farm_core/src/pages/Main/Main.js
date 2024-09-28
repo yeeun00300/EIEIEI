@@ -602,28 +602,6 @@ function Main({ farmList }) {
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
   const initialLayouts = useRef(null); // 레이아웃 초기 상태 저장
 
-  useEffect(() => {
-    const loadLayout = async () => {
-      const savedLayout = await fetchFarmLayout(currentFarm.docId);
-
-      if (savedLayout && !initialLayouts.current) {
-        // 초기 레이아웃 저장
-        initialLayouts.current = savedLayout;
-      }
-
-      setLayout({
-        ...savedLayout,
-        lg: savedLayout.lg || [],
-        md: savedLayout.md || [],
-        sm: savedLayout.sm || [],
-        xs: savedLayout.xs || [],
-        xxs: savedLayout.xxs || [],
-      });
-    };
-
-    loadLayout();
-  }, [currentFarm.docId]);
-
   const onLayoutChange = (newLayout, allLayouts) => {
     const updatedLayouts = { ...allLayouts };
 
