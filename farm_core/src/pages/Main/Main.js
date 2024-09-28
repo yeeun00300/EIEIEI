@@ -718,9 +718,7 @@ function Main({ farmList }) {
               <WidgetList
                 setWidgetList={setWidgetList}
                 widgetList={widgetList}
-                newLayouts={newLayouts}
                 fetchLayout={fetchLayout}
-                layout={layout}
               />
             </div>
           ) : (
