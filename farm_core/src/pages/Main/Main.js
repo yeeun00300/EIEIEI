@@ -75,15 +75,15 @@ const LineChart = ({ dataset }) => {
 function Main({ farmList }) {
   const { farmId } = useParams();
   const currentFarm = farmList.filter((item) => item.farmId === farmId)[0];
-
-  // ????????????????????????????????????????????????????????????????????????????????
+  // 선택 위젯 리스트
+  const [widgetList, setWidgetList] = useState([]);
   const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
   useFetchCollectionData("stock", fetchExcelStock);
-  // ????????????????????????????????????????????????????????????????????????????????
   const filteredStock = stock.filter((item) => item.farmId === Number(farmId));
   const realStock = filteredStock.filter((item) => item.deceased === "N");
-  console.log(filteredStock);
+  // console.log(filteredStock);
   // const [filteredStock, setFilteredStock] = useState([]);
+  console.log(widgetList);
 
   const sampleData = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -136,9 +136,9 @@ function Main({ farmList }) {
         x: 2,
         y: 0,
         w: 2,
-        h: 3,
-        minw: 1,
-        maxh: 3,
+        h: 6,
+        minw: 2,
+        maxh: 6,
       },
       {
         i: "5",
@@ -340,6 +340,42 @@ function Main({ farmList }) {
         minw: 1,
         maxh: 3,
       },
+      {
+        i: "12",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "13",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "14",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "15",
+        x: 2,
+        y: 0,
+        w: 2,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
     ],
     sm: [
       {
@@ -441,6 +477,42 @@ function Main({ farmList }) {
         minw: 1,
         maxh: 3,
       },
+      {
+        i: "12",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "13",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "14",
+        x: 2,
+        y: 0,
+        w: 1,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
+      {
+        i: "15",
+        x: 2,
+        y: 0,
+        w: 2,
+        h: 3,
+        minw: 1,
+        maxh: 3,
+      },
     ],
   };
 
@@ -493,11 +565,21 @@ function Main({ farmList }) {
 
     // 'md'와 'sm' 브레이크포인트의 w: 1, h: 3 설정
     ["md", "sm"].forEach((breakpoint) => {
-      updatedLayouts[breakpoint] = updatedLayouts[breakpoint].map((item) => ({
-        ...item,
-        w: 1,
-        h: 3,
-      }));
+      updatedLayouts[breakpoint] = updatedLayouts[breakpoint].map((item) => {
+        if (item.i == "4") {
+          return { ...item, w: 1, h: 6 };
+        } else if (item.i == "10") {
+          return { ...item, w: 2, h: 3 };
+        } else if (item.i == "15") {
+          return { ...item, w: 2, h: 3 };
+        } else {
+          return {
+            ...item,
+            w: 1,
+            h: 3,
+          };
+        }
+      });
     });
 
     setLayout((prevLayout) => ({
@@ -591,7 +673,7 @@ function Main({ farmList }) {
           )}
           {edit ? (
             <div className={styles.checkList}>
-              <WidgetList />
+              <WidgetList setWidgetList={setWidgetList} />
             </div>
           ) : (
             <></>

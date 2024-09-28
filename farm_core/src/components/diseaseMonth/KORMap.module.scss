@@ -1,6 +1,6 @@
 .wrapper {
-  width: 100%; // 부모 컨테이너의 너비에 맞추기
-  height: 70%; // 높이를 0으로 설정
+  // width: 80%; // 부모 컨테이너의 너비에 맞추기
+  height: 150%; // 높이를 0으로 설정
   padding-bottom: 56.25%; // 16:9 비율 (높이: 너비 비율)
   position: relative; // 자식 요소의 절대 위치 지정을 위한 상대 위치
   margin: 0 auto;
