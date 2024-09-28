@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import styles from "./MapSearch.module.scss"; // SCSS 모듈 import
 const { kakao } = window;
 
 function MapSearch({ setMap }) {
@@ -13,15 +14,8 @@ function MapSearch({ setMap }) {
   }, [setMap]);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "60vh",
-        marginLeft: "0.3125rem",
-        marginRight: "0.3125rem",
-      }}
-    >
-      <div id="map" style={{ width: "99%", height: "100%" }}></div>
+    <div className={styles.mapContainer}>
+      <div id="map" className={styles.map}></div>
     </div>
   );
 }

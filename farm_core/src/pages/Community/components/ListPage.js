@@ -1,18 +1,19 @@
 import React from "react";
 import styles from "./ListPage.module.scss";
-import freeImg from "../../../img/게시판.png";
+import freeImg from "../../../img/게시글.png";
 import liveImg from "../../../img/농장.png";
 
 const dataDict = {
   freeBoard: {
     src: freeImg,
     title: "자유 게시판",
-    description: "FarmCore의 자유게시판 입니다.",
+    description: "자유롭게 이야기를 나눠보세요.",
     className: styles.freeBoard,
   },
   livestock: {
     src: liveImg,
-    title: "농장 관리에 관한 이야기를 나눠보세요.",
+    title: "축산 관리 커뮤니티",
+    description: "축사 관리에 관한 이야기를 나눠보세요.",
     className: styles.livestockBoard,
   },
 };

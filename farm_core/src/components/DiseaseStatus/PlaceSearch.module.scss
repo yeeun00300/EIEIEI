@@ -1,6 +1,12 @@
 .placeSearchContainer {
   width: 100%;
   height: 100%;
+
+  button {
+    margin-top: 0.5rem;
+    width: 100%;
+    font-size: 1rem; /* 기본 폰트 크기 */
+  }
 }
 
 .inputContainer {
@@ -11,19 +17,16 @@
   width: 100%;
   padding: 5px;
   box-sizing: border-box;
-}
-
-.searchButton {
-  width: 100%;
-  padding: 5px;
-  margin-top: 5px;
-  cursor: pointer;
+  font-size: 1rem; /* 기본 폰트 크기 */
 }
 
 .placesList {
   list-style: none;
   padding: 0;
   margin: 0;
+  height: auto;
+  max-height: 80vh; /* 최대 높이 설정, 화면이 작아지면 리스트 크기 조정 가능 */
+  overflow-y: auto; /* 리스트가 많을 경우 스크롤바 생성 */
 }
 
 .placeItem {
@@ -31,9 +34,62 @@
   cursor: pointer;
   border-bottom: 1px solid black;
   padding: 10px;
+  font-size: 1rem; /* 기본 폰트 크기 */
 }
+
 .placeholderItem {
   color: gray;
   display: flex;
   justify-content: center;
+  font-size: 1rem; /* 기본 폰트 크기 */
+}
+
+/* 768px 이하 */
+@media (max-width: 768px) {
+  .placeSearchContainer {
+    button {
+      font-size: 0.9rem; /* 폰트 크기 살짝 줄이기 */
+    }
+  }
+
+  .searchInput {
+    font-size: 0.9rem; /* 폰트 크기 살짝 줄이기 */
+  }
+
+  .placesList {
+    max-height: 60vh; /* 리스트 최대 높이 줄이기 */
+  }
+
+  .placeItem {
+    font-size: 0.9rem; /* 폰트 크기 살짝 줄이기 */
+  }
+
+  .placeholderItem {
+    font-size: 0.9rem; /* 폰트 크기 살짝 줄이기 */
+  }
+}
+
+/* 480px 이하 */
+@media (max-width: 480px) {
+  .placeSearchContainer {
+    button {
+      font-size: 0.8rem; /* 더 작은 화면에서 폰트 크기 줄이기 */
+    }
+  }
+
+  .searchInput {
+    font-size: 0.8rem; /* 더 작은 화면에서 폰트 크기 줄이기 */
+  }
+
+  .placesList {
+    max-height: 50vh; /* 리스트 영역 더 줄이기 */
+  }
+
+  .placeItem {
+    font-size: 0.8rem; /* 더 작은 화면에서 폰트 크기 줄이기 */
+  }
+
+  .placeholderItem {
+    font-size: 0.8rem; /* 더 작은 화면에서 폰트 크기 줄이기 */
+  }
 }

@@ -1,17 +1,54 @@
 .container {
-  display: flex; /* Flexbox를 사용하여 가로로 배치 */
-  height: 43.75rem; /* 화면 전체 높이 사용 */
+  display: flex;
+  height: 42.5rem;
 }
 
 .placeSearchContainer {
   width: 30%; /* 목록이 차지하는 너비 */
   height: 60vh;
-  overflow-y: auto; /* 스크롤 생성 */
-  padding: 10px;
+  padding: 0.625rem;
   box-sizing: border-box;
+  overflow-y: hidden;
 }
 
 .mapContainer {
   width: 70%; /* 지도가 차지하는 너비 */
   position: relative;
+}
+
+/* 768px 이하 */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* 세로 방향으로 배치 */
+    height: auto; /* 높이 자동 조정 */
+  }
+
+  .placeSearchContainer {
+    width: 100%; /* 화면의 전체 너비 차지 */
+    height: 30vh; /* 높이를 조정하여 절반 정도 사용 */
+  }
+
+  .mapContainer {
+    width: 100%; /* 화면의 전체 너비 차지 */
+    height: 40vh; /* 지도가 화면의 나머지 절반 차지 */
+  }
+}
+
+/* 480px 이하 */
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column; /* 세로 방향으로 배치 유지 */
+    height: auto;
+  }
+
+  .placeSearchContainer {
+    width: 100%; /* 전체 너비 차지 */
+    height: 25vh; /* 높이를 더 줄여 작은 화면에 맞춤 */
+    padding: 0.5rem; /* 패딩 줄이기 */
+  }
+
+  .mapContainer {
+    width: 100%; /* 전체 너비 차지 */
+    height: 50vh; /* 지도의 높이를 더 줄여 작은 화면에 맞춤 */
+  }
 }

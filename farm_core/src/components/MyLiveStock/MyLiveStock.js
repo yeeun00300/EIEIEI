@@ -180,11 +180,18 @@ function MyLiveStock(props) {
                       </option>
                     ))}
                   </select>
-                  <button onClick={handleAddClick}>농장 추가</button>
+                  <button onClick={handleAddClick} className="squareGlobalBtn">
+                    농장 추가
+                  </button>
                   {stockLength === 0 && (
                     <div className={styles.warn}>가축 정보가 없습니다</div>
                   )}
-                  <button onClick={handleStockAddClick}>가축 추가</button>
+                  <button
+                    onClick={handleStockAddClick}
+                    className="squareGlobalBtn"
+                  >
+                    가축 추가
+                  </button>
                   {showExcelUpload && <ExcelUpload />}
                   <ExcelTemplateDownload />
                 </div>

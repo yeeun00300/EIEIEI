@@ -14,6 +14,7 @@ import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
 import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
 import { useFetchCollectionData, useFetchUser } from "../../firebase";
+import RegularPayment from "../RegularPayment/RegularPayment";
 const dataObj = {
   UserInfo: { label: "회원정보수정" },
   myCommunity: { label: "내 게시글" },
