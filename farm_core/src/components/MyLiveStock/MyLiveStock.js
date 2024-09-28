@@ -28,6 +28,8 @@ import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 import TempControl from "../ControlPanels/TempControl";
 import Table from "./table/Table";
 import { useFetchCollectionData } from "../../firebase";
+import ExcelUpload from "../ExcelUpload/ExcelUpload";
+import ExcelTemplateDownload from "../ExcelTemplateDownload/ExcelTemplateDownload";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();
@@ -48,6 +50,8 @@ function MyLiveStock(props) {
   const [selectedValue, setSelectedValue] = useState(
     farmList.length > 0 ? farmList[0].farmId : ""
   );
+  const [showExcelUpload, setShowExcelUpload] = useState(false);
+  const [showExcelDownload, setShowExcelDownload] = useState(false);
   const [selectedFarm, setSelectedFarm] = useState(farmList[0]);
   const stockLength = selectedStock ? selectedStock.length : 0;
   const stockList = Array.isArray(selectedStock)
@@ -95,14 +99,18 @@ function MyLiveStock(props) {
     }
   };
 
-  // 추가 버튼 클릭 시 축사 추가 페이지로 이동
+  //농장 추가 버튼 클릭 시 축사 추가 페이지로 이동
   const handleAddClick = () => {
     navigate(`/My_Farm_Add`);
   };
 
-  // 가축 정보 없을 시 가축 추가 페이지로 이동
+  //  가축 추가 (엑셀 업로드)
   const handleStockAddClick = () => {
-    navigate(`/My_Farm_Add_stock`);
+    setShowExcelUpload((prev) => !prev);
+  };
+  // 엑셀 다운로드
+  const handleDownloadClick = () => {
+    setShowExcelDownload((prev) => !prev);
   };
 
   // 버튼 클릭 시 차트를 변경하는 함수
@@ -147,55 +155,55 @@ function MyLiveStock(props) {
   return (
     <>
       {selectLoading && isLoading ? (
-        <div className="page">
+        <div className="loadingPage">
           <div>로딩중</div>
         </div>
       ) : (
         <>
           {farmList.length === 0 ? (
-            <div className="page">
+            <div className="emptyPage">
               <button onClick={handleAddClick}>축사를 추가해주세요</button>
             </div>
           ) : (
-            <div className="page">
-              <div className={styles.container}>
-                <div className={styles.myFarmInfoBox}>
-                  <div className={styles.selectDiv}>
-                    <h3>축사 선택</h3>
-                    <select
-                      className={styles.selectBox}
-                      value={selectedValue}
-                      onChange={handleChange}
-                    >
-                      {farmList.map((farm, idx) => (
-                        <option key={idx} value={farm.farmId}>
-                          {farm.farmName}
-                        </option>
-                      ))}
-                    </select>
-                    {/* <button onClick={handleButtonClick}>확인</button> */}
-                    <button onClick={handleAddClick}>추가</button>
-                    {stockLength === 0 && (
-                      <div className={styles.warn}>가축 정보가 없습니다</div>
-                    )}
-                    <button onClick={handleStockAddClick}>가축 추가</button>
-                  </div>
-                  <div className={styles.cctv}>
-                    <CCTVandAnimalInfo
-                      onClick={handleChartChange}
-                      farmData={selectedFarm}
-                      length={stockList.length}
-                    />
-                  </div>
+            <div className={styles.container}>
+              <div className={styles.myFarmInfoBox}>
+                <div className={styles.selectDiv}>
+                  <h3>축사 선택</h3>
+                  <select
+                    className={styles.selectBox}
+                    value={selectedValue}
+                    onChange={handleChange}
+                  >
+                    {farmList.map((farm, idx) => (
+                      <option key={idx} value={farm.farmId}>
+                        {farm.farmName}
+                      </option>
+                    ))}
+                  </select>
+                  <button onClick={handleAddClick}>농장 추가</button>
+                  {stockLength === 0 && (
+                    <div className={styles.warn}>가축 정보가 없습니다</div>
+                  )}
+                  <button onClick={handleStockAddClick}>가축 추가</button>
+                  {showExcelUpload && <ExcelUpload />}
+                  <ExcelTemplateDownload />
                 </div>
-                <div className={styles.farmInfoBox}>
-                  <div className={styles.farmTable}>
-                    <Table data={stock} />
-                  </div>
-                  <div>
-                    <h3>축사 데이터 확인</h3>
-                    <div className={styles.chartContainer}>{renderChart()}</div>
-                  </div>
+
+                <div className={styles.cctv}>
+                  <CCTVandAnimalInfo
+                    onClick={handleChartChange}
+                    farmData={selectedFarm}
+                    length={stockList.length}
+                  />
+                </div>
+              </div>
+              <div className={styles.farmInfoBox}>
+                <div className={styles.farmTable}>
+                  <Table data={stock} />
+                </div>
+                <div>
+                  <h3>축사 데이터 확인</h3>
+                  <div className={styles.chartContainer}>{renderChart()}</div>
                 </div>
               </div>
             </div>
