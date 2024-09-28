@@ -6,21 +6,25 @@ import LightPiChartWidget from "./../../../../components/ControlPanels/widget/Li
 import CO2PiChartWidget from "./../../../../components/ControlPanels/widget/CO2PiChartWidget";
 import NH3PiChartWidget from "./../../../../components/ControlPanels/widget/NH3PiChartWidget";
 
-function WidgetList({ setWidgetList, widgetList }) {
+function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setWidgetList((prevList) => {
       if (checked) {
         // 체크된 경우 값 추가
-        return [...prevList, value];
+        const resultArr = [...prevList, value];
+        setFetchLayoutCount(resultArr.length);
+        return resultArr;
       } else {
         // 체크 해제된 경우 값 제거
-        return prevList?.filter((item) => item !== value);
+        const resultArr = prevList?.filter((item) => item !== value);
+        setFetchLayoutCount(resultArr.length);
+        return resultArr;
       }
     });
   };
 
-  console.log(widgetList);
+  // console.log(widgetList);
   return (
     <>
       {/* {widgetList ? (
