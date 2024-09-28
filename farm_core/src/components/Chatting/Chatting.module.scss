@@ -90,3 +90,122 @@ form input {
   border-radius: 9999px;
   width: 65%;
 }
+.button1 {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--second-color);
+  }
+
+  &:active {
+    background-color: var(--point-color);
+  }
+}
+.button2 {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: var(--second-color);
+  background-color: transparent;
+  border: 2px solid var(--second-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--point-color);
+    color: #fff;
+  }
+
+  &:active {
+    background-color: var(--point-color);
+    border-color: var(--point-color);
+  }
+}
+.button3 {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--point-color);
+  }
+
+  &:active {
+    background-color: var(--point-color);
+  }
+}
+.button4 {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(45deg, var(--main-color), var(--second-color));
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(45deg, var(--main-color), var(--second-color));
+  }
+
+  &:active {
+    background: linear-gradient(45deg, var(--point-color), var(--second-color));
+  }
+}
+.button5 {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+}
+.button6 {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: var(--second-color);
+  }
+
+  &:active {
+    background-color: var(--point-color);
+  }
+}

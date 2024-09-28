@@ -84,7 +84,7 @@ function WeatherIssue() {
               <></>
             ) : (
               <>
-                <ul key={tmFc}>
+                <ul key={tmFc} className={styles.weatherIssueCard}>
                   <li>
                     <h2>
                       {t1} <span>{weatherIssueDate}</span>
