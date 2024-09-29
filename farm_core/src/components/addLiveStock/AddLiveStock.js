@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./LiveStock.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import {
@@ -14,7 +13,7 @@ import {
 import { getDatas } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
-
+import styles from "./addLiveStock.module.scss";
 function AddLiveStock() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -182,8 +181,8 @@ function AddLiveStock() {
 
   return (
     <div className="page">
+      <h1 className={styles.addTitle}>축사 추가하기</h1>
       <div className={styles.box}>
-        <h1>축사 추가하기</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="farmName">축사 이름:</label>
