@@ -125,6 +125,7 @@ function AddLiveStock() {
       insuranceDetail,
       note,
       email,
+      createdAt: Date.now(), // 현재 시간을 밀리세컨드로 추가
     };
 
     try {

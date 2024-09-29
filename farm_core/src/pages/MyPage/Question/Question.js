@@ -6,6 +6,7 @@ import {
   deleteDatas,
   uploadImage,
   getDatas,
+  getSubCollection,
 } from "../../../firebase";
 import { useSelector } from "react-redux";
 import {
@@ -160,11 +161,17 @@ function UserInfo() {
   };
 
   const handleViewAnswers = async (question) => {
-    // 관리자의 답변을 가져오는 함수 (가정)
-    const adminResponse = await getDatas("community", {
-      conditions: [{ field: "questionId", operator: "==", value: question.id }],
-    });
-    setSelectedQuestion({ ...question, adminResponse }); // 선택한 질문과 답변 저장
+    try {
+      const adminResponse = await getSubCollection(
+        "community",
+        question.id,
+        "comments"
+      );
+      console.log("Admin Response:", adminResponse); // 추가된 로그
+      setSelectedQuestion({ ...question, adminResponse });
+    } catch (error) {
+      console.error("Error fetching answers: ", error);
+    }
   };
 
   return (

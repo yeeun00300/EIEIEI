@@ -30,53 +30,47 @@ const ScheduleList = ({ schedules, onEdit, onDelete }) => {
     <div className="schedule-list">
       <p>작성한 금일 일정: {totalContents}개</p> {/* 일정 개수를 표시 */}
       <ul className="schedule-list-items">
-        {schedules && schedules.length > 0 ? (
+        {schedules &&
+          schedules.length > 0 &&
           schedules.map((schedule, scheduleIndex) =>
-            schedule.content && schedule.content.length > 0 ? (
-              schedule.content.slice(0, 2).map((contentItem, contentIndex) => (
-                <li
-                  key={`${scheduleIndex}-${contentIndex}`}
-                  className="schedule-list-item"
-                >
-                  <div className="schedule-list-item-content">
-                    <span className="schedule-list-item-time">
-                      {contentItem.time}
-                    </span>
-                    <strong>{truncateText(contentItem.title, 10)}</strong>
-                    <p className="schedule-list-item-description">
-                      {truncateText(contentItem.description, 15)}
-                    </p>
-                    <small className="schedule-list-item-date">
-                      {contentItem.updatedAt
-                        ? contentItem.updatedAt.split("T")[0]
-                        : contentItem.createdAt.split("T")[0]}
-                    </small>
-                  </div>
-                  <div className="schedule-list-item-actions">
-                    <FaEdit
-                      size="1.5rem"
-                      className="schedule-list-item-edit"
-                      onClick={() => onEdit(scheduleIndex, contentIndex)}
-                    />
-                    <MdDelete
-                      size="1.5rem"
-                      className="schedule-list-item-delete"
-                      onClick={() => onDelete(scheduleIndex, contentIndex)}
-                    />
-                  </div>
-                </li>
-              ))
-            ) : (
-              <li key={scheduleIndex} className="schedule-list-item">
-                <p>No content available for this schedule.</p>
-              </li>
-            )
-          )
-        ) : (
-          <li className="schedule-list-item">
-            <p>아직 작성한 일정이 없어요!.</p>
-          </li>
-        )}
+            schedule.content && schedule.content.length > 0
+              ? schedule.content
+                  .slice(0, 2)
+                  .map((contentItem, contentIndex) => (
+                    <li
+                      key={`${scheduleIndex}-${contentIndex}`}
+                      className="schedule-list-item"
+                    >
+                      <div className="schedule-list-item-content">
+                        <span className="schedule-list-item-time">
+                          {contentItem.time}
+                        </span>
+                        <strong>{truncateText(contentItem.title, 5)}</strong>
+                        <p className="schedule-list-item-description">
+                          {truncateText(contentItem.description, 5)}
+                        </p>
+                        {/* <small className="schedule-list-item-date">
+                          {contentItem.updatedAt
+                            ? contentItem.updatedAt.split("T")[0]
+                            : contentItem.createdAt.split("T")[0]}
+                        </small> */}
+                      </div>
+                      <div className="schedule-list-item-actions">
+                        <FaEdit
+                          size="1.5rem"
+                          className="schedule-list-item-edit"
+                          onClick={() => onEdit(scheduleIndex, contentIndex)}
+                        />
+                        <MdDelete
+                          size="1.5rem"
+                          className="schedule-list-item-delete"
+                          onClick={() => onDelete(scheduleIndex, contentIndex)}
+                        />
+                      </div>
+                    </li>
+                  ))
+              : null
+          )}
       </ul>
       {schedules && schedules.length > 0 && schedules[0].content.length > 2 && (
         <button onClick={handleMoreClick} className="squareGlobalDeleteBtn">
