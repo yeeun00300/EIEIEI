@@ -117,21 +117,23 @@ function Header({ title, userInfo }) {
             )}
           </div>
         </div>
-        <div onClick={toggleUserMenu} className={styles.user}>
-          {profileImages ? (
-            <img
-              className={styles.profileImage}
-              src={profileImages}
-              alt="Profile"
-            />
-          ) : (
-            <FaRegUser size={25} />
-          )}
-          <div
-            className={styles.usermenu}
-            style={{ display: isMenuOpen ? "block" : "none" }}
-          >
-            <UserMenu />
+        <div className={styles.userImgInfo}>
+          <div onClick={toggleUserMenu} className={styles.user}>
+            {profileImages ? (
+              <img
+                className={styles.profileImage}
+                src={profileImages}
+                alt="Profile"
+              />
+            ) : (
+              <FaRegUser size={25} />
+            )}
+            <div
+              className={styles.usermenu}
+              style={{ display: isMenuOpen ? "block" : "none" }}
+            >
+              <UserMenu />
+            </div>
           </div>
         </div>
       </div>

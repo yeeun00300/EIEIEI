@@ -190,7 +190,7 @@ function MedicalListSave() {
             {subCollectionData.length > 0 ? (
               subCollectionData.map((subData) => {
                 return (
-                  <TableRow key={subData.docId}>
+                  <TableRow key={subData.docId} className="tableCellCenter">
                     <TableCell>{subData.farmId}</TableCell>
                     <TableCell>{subData.symptom}</TableCell>
                     <TableCell>

@@ -10,7 +10,11 @@ h1 {
   color: #2980b9; // 텍스트 색상 변경
   text-align: center;
 }
-
+.tableCellCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 h2 {
   margin: 20px 0;
   font-size: 1.8rem;
@@ -213,4 +217,178 @@ h2 {
   width: 80%;
   max-height: 80vh; // Define the height for the scrollable area
   overflow-y: auto; // Enable vertical scrolling when content exceeds height
+}
+
+@media (max-width: 1024px) {
+  .save {
+    width: 100%;
+    // display: flex;
+    // justify-content: center;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .imgBox {
+    width: 40%;
+    height: 40%;
+  }
+
+  .cardHeader {
+    padding: 10px;
+    height: 80px;
+  }
+
+  .cardBody p {
+    font-size: 0.9rem;
+  }
+
+  .detailHeader {
+    font-size: 1.4rem;
+  }
+
+  .detailItem {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .save {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .boxContainer {
+    padding: 0;
+  }
+
+  .imgBox {
+    width: 50%;
+    height: 50%;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  .formControl {
+    padding: 8px;
+    font-size: 0.875rem;
+  }
+
+  .card {
+    margin-bottom: 15px;
+  }
+
+  .cardHeader {
+    padding: 8px;
+    height: 70px;
+  }
+
+  .cardBody p {
+    font-size: 0.875rem;
+  }
+
+  .modalContent {
+    width: 90%;
+  }
+
+  .prevBtn,
+  .nextBtn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.875rem;
+  }
+
+  .detailHeader {
+    font-size: 1.3rem;
+  }
+
+  .detailItem {
+    font-size: 1rem;
+  }
+
+  .tableContainer {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .save {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .boxContainer {
+    padding: 0;
+  }
+
+  .imgBox {
+    width: 60%;
+    height: 60%;
+  }
+
+  .btn {
+    font-size: 0.875rem;
+    padding: 6px 12px;
+  }
+
+  .formControl {
+    padding: 6px;
+    font-size: 0.8125rem;
+  }
+
+  .card {
+    margin-bottom: 10px;
+  }
+
+  .cardHeader {
+    padding: 6px;
+    height: 60px;
+  }
+
+  .cardBody p {
+    font-size: 0.8125rem;
+  }
+
+  .modalContent {
+    width: 95%;
+  }
+
+  .prevBtn,
+  .nextBtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .detailHeader {
+    font-size: 1.2rem;
+  }
+
+  .detailItem {
+    font-size: 0.875rem;
+  }
+
+  .tableContainer {
+    width: 100%;
+  }
 }
