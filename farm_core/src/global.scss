@@ -55,6 +55,7 @@ body {
   overflow-y: auto;
   height: calc(100vh - 4.375rem);
   width: calc(100vw - 12.5rem);
+  overflow-x: hidden;
   // @media (min-width: 768px) {
   //   // height: 100vh;
   //   // .page {

@@ -114,7 +114,7 @@ function MedicalListCheck() {
   return (
     <div className={styles.checkMain}>
       <TableContainer className={styles.tableContainer}>
-        <Table>
+        <Table className={styles.tableWrapper}>
           <TableHead className={styles.tableHead}>
             <TableRow>
               <TableCell className={styles.tableCellHeader}>
@@ -135,16 +135,28 @@ function MedicalListCheck() {
           <TableBody>
             {documents.map((doc) => (
               <TableRow key={doc.id}>
-                <TableCell>{doc.farmName}</TableCell>
-                <TableCell>{doc.farmId}</TableCell>
-                <TableCell>{doc.lastModified || "정보 없음"}</TableCell>
-                <TableCell>
-                  <Button onClick={() => handleViewDetails(doc)}>
+                <TableCell className={styles.stockInfo}>
+                  {doc.farmName}
+                </TableCell>
+                <TableCell className={styles.stockInfo}>{doc.farmId}</TableCell>
+                <TableCell className={styles.stockInfo}>
+                  {doc.lastModified || "정보 없음"}
+                </TableCell>
+                <TableCell className={styles.stockInfo}>
+                  <Button
+                    onClick={() => handleViewDetails(doc)}
+                    className="globalBtn"
+                  >
                     자세히 보기
                   </Button>
                 </TableCell>
-                <TableCell>
-                  <Button onClick={() => handleDelete(doc.id)}>삭제</Button>
+                <TableCell className={styles.stockInfo}>
+                  <Button
+                    onClick={() => handleDelete(doc.id)}
+                    className="globalDeleteBtn"
+                  >
+                    삭제
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
