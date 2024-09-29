@@ -93,6 +93,11 @@
   opacity: 1;
 }
 
+.searchIcon {
+  display: none;
+  cursor: pointer;
+}
+
 /* 반응형 스타일 */
 @media (max-width: 1024px) {
   .logo {
@@ -109,5 +114,14 @@
 @media (max-width: 480px) {
   .logo {
     margin-left: calc(0.375rem + 60px); /* 50px 오른쪽으로 이동 */
+  }
+  .address {
+    display: none;
+  }
+
+  .searchIcon {
+    display: block;
+    position: absolute;
+    right: 7.3rem;
   }
 }

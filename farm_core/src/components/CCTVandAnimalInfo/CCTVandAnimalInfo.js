@@ -130,7 +130,7 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
             </button>
           </div>
           <div>
-            Data4: 사료/물 소비량
+            사료/물 소비량
             <button
               onClick={() => onClick("chart2")}
               className="squareGlobalBtn"
@@ -139,7 +139,7 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
             </button>
           </div>
           <div>
-            Data5: 온도/습도
+            온도/습도
             <button
               onClick={() => onClick("chart3")}
               className="squareGlobalBtn"
@@ -157,7 +157,7 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
             </button>
           </div>
           <div>
-            Data7: 건강상태
+            건강상태
             <button
               onClick={() => onClick("chart5")}
               className="squareGlobalBtn"
@@ -166,7 +166,7 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
             </button>
           </div>
           <div>
-            Data8: 백신 및 접종기록
+            백신 및 접종기록
             <button
               onClick={() => onClick("chart6")}
               className="squareGlobalBtn"
@@ -175,7 +175,7 @@ function CCTVandAnimalInfo({ onClick, farmData, length }) {
             </button>
           </div>
           <div>
-            Data9: 폐사율
+            폐사율
             <button
               onClick={() => onClick("chart7")}
               className="squareGlobalBtn"

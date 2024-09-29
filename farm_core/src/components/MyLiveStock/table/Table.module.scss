@@ -54,4 +54,11 @@
       margin: 0 auto; /* 중앙 정렬 */
     }
   }
+  @media (max-width: 480px) {
+    /* 반응형 미디어 쿼리 */
+    .styledTable {
+      width: 100%; /* 화면의 80% 차지하도록 설정 */
+      // margin: 0 auto; /* 중앙 정렬 */
+    }
+  }
 }
