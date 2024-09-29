@@ -14,6 +14,7 @@ import { getDatas } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
 import styles from "./addLiveStock.module.scss";
+
 function AddLiveStock() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -124,6 +125,7 @@ function AddLiveStock() {
       insuranceDetail,
       note,
       email,
+      createdAt: Date.now(), // 현재 시간을 밀리세컨드로 추가
     };
 
     try {
@@ -181,21 +183,22 @@ function AddLiveStock() {
 
   return (
     <div className="page">
-      <h1 className={styles.addTitle}>축사 추가하기</h1>
-      <div className={styles.box}>
+      <h1 className={styles.addLiveStockAddTitle}>축사 추가하기</h1>
+      <div className={styles.addLiveStockBox}>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="farmName">축사 이름:</label>
             <input
               type="text"
               name="farmName"
+              className={styles.addLiveStockInput} // 추가된 클래스명
               value={farmName}
               placeholder="축사 이름을 정해주세요"
               onChange={handleChange}
               required
             />
             {formErrors.farmName && (
-              <p className={styles.error}>{formErrors.farmName}</p>
+              <p className={styles.addLiveStockError}>{formErrors.farmName}</p>
             )}
           </div>
           <div>
@@ -203,16 +206,21 @@ function AddLiveStock() {
             <input
               type="number"
               name="farmId"
+              className={styles.addLiveStockInput} // 추가된 클래스명
               value={farmId}
               placeholder="축사 번호를 입력해주세요"
               onChange={handleChange}
               required
             />
-            <button type="button" onClick={handleFarmIdCheck} cal>
+            <button
+              type="button"
+              onClick={handleFarmIdCheck}
+              className={styles.addLiveStockBtn}
+            >
               중복 확인
             </button>
             {formErrors.farmId && (
-              <p className={styles.error}>{formErrors.farmId}</p>
+              <p className={styles.addLiveStockError}>{formErrors.farmId}</p>
             )}
           </div>
           <div>
@@ -220,13 +228,14 @@ function AddLiveStock() {
             <input
               name="farmAddress"
               type="text"
+              className={styles.addLiveStockInput} // 추가된 클래스명
               value={address} // Use address for the main address input
               onClick={openPostcodePopup}
               placeholder="상세 주소까지 입력해주세요"
               readOnly
             />
             {formErrors.address && (
-              <p className={styles.error}>{formErrors.address}</p>
+              <p className={styles.addLiveStockError}>{formErrors.address}</p>
             )}
           </div>
           <div>
@@ -234,13 +243,16 @@ function AddLiveStock() {
             <input
               name="detailedAddress"
               type="text"
+              className={styles.addLiveStockInput} // 추가된 클래스명
               value={detailedAddress}
               onChange={handleChange}
               placeholder="상세 주소를 입력해주세요"
               required
             />
             {formErrors.detailedAddress && (
-              <p className={styles.error}>{formErrors.detailedAddress}</p>
+              <p className={styles.addLiveStockError}>
+                {formErrors.detailedAddress}
+              </p>
             )}
           </div>
           <div>
@@ -248,6 +260,7 @@ function AddLiveStock() {
             <input
               type="text"
               name="farmScale"
+              className={styles.addLiveStockInput} // 추가된 클래스명
               value={farmScale}
               placeholder="예: 500m²"
               onChange={handleChange}
@@ -257,6 +270,7 @@ function AddLiveStock() {
             <label htmlFor="farm_stockType">축사 유형:</label>
             <select
               name="farm_stockType"
+              className={styles.addLiveStockSelect} // 추가된 클래스명
               value={farm_stockType}
               onChange={handleChange}
             >
@@ -266,61 +280,69 @@ function AddLiveStock() {
               <option value="산란계">산란계</option>
               <option value="양돈">양돈</option>
               <option value="육계">육계</option>
+              <option value="기타">기타</option>
             </select>
             {formErrors.farm_stockType && (
-              <p className={styles.error}>{formErrors.farm_stockType}</p>
+              <p className={styles.addLiveStockError}>
+                {formErrors.farm_stockType}
+              </p>
             )}
           </div>
           <div>
-            <label htmlFor="farmBuild">건축 연도:</label>
+            <label htmlFor="farmBuild">축사 건물:</label>
             <input
-              type="number"
+              type="text"
               name="farmBuild"
+              className={styles.addLiveStockInput} // 추가된 클래스명
               value={farmBuild}
-              placeholder="예: 1995"
+              placeholder="축사 건물의 형태를 입력하세요"
               onChange={handleChange}
             />
           </div>
           <div>
-            <label htmlFor="farmCondition">건물 상태:</label>
+            <label htmlFor="farmCondition">축사 상태:</label>
             <input
               type="text"
               name="farmCondition"
+              className={styles.addLiveStockInput} // 추가된 클래스명
               value={farmCondition}
-              placeholder="예: 양호, 보통, 불량"
+              placeholder="축사 상태를 입력하세요"
               onChange={handleChange}
             />
           </div>
           <div>
-            <label htmlFor="facilities">시설:</label>
-            <input
-              type="text"
+            <label htmlFor="facilities">부대시설:</label>
+            <textarea
               name="facilities"
+              className={styles.addLiveStockTextarea} // 추가된 클래스명
               value={facilities}
-              placeholder="예: 축사 내부 온도 조절기, 자동 급수기"
+              placeholder="부대시설을 입력하세요"
               onChange={handleChange}
             />
           </div>
           <div>
             <label htmlFor="insuranceDetail">보험 상세:</label>
-            <input
-              type="text"
+            <textarea
               name="insuranceDetail"
+              className={styles.addLiveStockTextarea} // 추가된 클래스명
               value={insuranceDetail}
-              placeholder="예: 화재보험, 재해보험"
+              placeholder="보험 상세를 입력하세요"
               onChange={handleChange}
             />
           </div>
           <div>
-            <label htmlFor="note">기타 메모:</label>
+            <label htmlFor="note">비고:</label>
             <textarea
               name="note"
+              className={styles.addLiveStockTextarea} // 추가된 클래스명
               value={note}
-              placeholder="추가적인 정보를 입력하세요"
+              placeholder="기타 비고를 입력하세요"
               onChange={handleChange}
             />
           </div>
-          <button type="submit">추가하기</button>
+          <button type="submit" className={styles.addLiveStockBtn}>
+            추가하기
+          </button>
         </form>
       </div>
     </div>

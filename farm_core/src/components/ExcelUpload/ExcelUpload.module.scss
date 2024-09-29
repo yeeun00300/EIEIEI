@@ -1,5 +1,14 @@
 .uploadContainer {
+  display: flex;
+  align-items: center;
   input {
-    width: 15rem;
+    width: 13rem;
+  }
+  .uploadButton {
+    width: 5.625rem;
+    height: 30px;
+  }
+  @media (max-width: 1024px) {
+    flex-direction: column;
   }
 }
