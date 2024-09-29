@@ -75,7 +75,7 @@ const LineChart = ({ dataset }) => {
 function Main({ farmList }) {
   const { farmId } = useParams();
   const layoutIArr = useRef([]); // layoutIArr를 useRef로 선언하여 변화 추적
-  const currentFarm = farmList.filter((item) => item.farmId === farmId)[0];
+  const currentFarm = farmList?.filter((item) => item.farmId === farmId)[0];
   // 선택 위젯 리스트
   const [fetchLayoutCount, setFetchLayoutCount] = useState(0);
   const [widgetList, setWidgetList] = useState([]);
@@ -570,37 +570,13 @@ function Main({ farmList }) {
         return null;
     }
   };
-  // const componentMap = {
-  //   0: <></>,
-  //   1: <Vaccine stock={filteredStock} />, // 백신 정보
-  //   2: <Table data={stock && stock} />, // 가축별 총 데이터
-  //   3: <FeedAndWater />, // 물 사료 소비량
-  //   4: <MonthPractice />, // 질병 지도 데이터
-  //   5: <TempPiNeedleWidget />, // 온도 조절
-  //   6: <HumidPiChartWidget />, // 습도 조절
-  //   7: <LightPiChartWidget />, // 조도 조절
-  //   8: <CO2PiChartWidget />, // CO2 조절
-  //   9: <NH3PiChartWidget />, // 암모니아 조절
-  //   10: <WeekWeatherWidget />, // 5일 날씨
-  //   11: <StockNum stock={realStock} />, // 현재 농장 가축 수
-  //   12: <StockProduct stock={realStock} farmData={currentFarm} />, // 발정 상태 & 생산량
-  //   13: <HealthCondition stock={realStock} />, // 건강 상태
-  //   14: <MortalityRate stock={filteredStock} />, // 폐사율
-  //   15: <CCTVAnimal stockType={currentFarm.farm_stockType} />, // CCTV
-  // };
-  // const renderComponent = (id) => {
-  //   return componentMap[id] || null;
-  // };
-  // const renderComponents = (ids) => {
-  //   return ids.map((id) => componentMap[id] || null);
-  // };
 
   // 3. 상태로 레이아웃 관리 (로컬 스토리지에서 불러옴)
   const [layout, setLayout] = useState({ lg: [], dm: [], sm: [] });
   const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
 
   // 4. 레이아웃 변경 시 상태와 로컬 스토리지 업데이트
-  const initialLayouts = useRef(null); // 레이아웃 초기 상태 저장
+  const initialLayouts = useRef({ lg: [], dm: [], sm: [] }); // 레이아웃 초기 상태 저장
 
   const onLayoutChange = (newLayout, allLayouts) => {
     const updatedLayouts = { ...allLayouts };
@@ -609,7 +585,7 @@ function Main({ farmList }) {
     ["md", "sm"].forEach((breakpoint) => {
       updatedLayouts[breakpoint] = updatedLayouts[breakpoint].map((item) => {
         // 초기 x, y 값이 있다면 유지
-        const initialItem = initialLayouts.current[breakpoint].find(
+        const initialItem = initialLayouts?.current[breakpoint]?.find(
           (i) => i.i === item.i
         );
         const x = initialItem ? initialItem.x : item.x;
@@ -640,6 +616,11 @@ function Main({ farmList }) {
 
   // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
   useEffect(() => {
+    if (!currentFarm || !currentFarm.docId) {
+      console.log("Farm data not loaded yet.");
+      return;
+    }
+
     const loadLayout = async () => {
       setLayout(newLayouts);
       const savedLayout = await fetchFarmLayout(currentFarm.docId);
@@ -667,29 +648,7 @@ function Main({ farmList }) {
     };
 
     loadLayout();
-  }, [currentFarm.docId, fetchLayoutCount]);
-  // useEffect(() => {
-  //   const loadLayout = async () => {
-  //     setLayout(newLayouts);
-  //     const savedLayout = await fetchFarmLayout(currentFarm.docId);
-  //     savedLayout["lg"].map((item) => layoutIArr.push(item.i));
-  //     if (savedLayout) {
-  //       setLayout((prevLayout) => ({
-  //         ...prevLayout,
-  //         lg: savedLayout.lg || [],
-  //         md: savedLayout.md || [],
-  //         sm: savedLayout.sm || [],
-  //         xs: savedLayout.xs || [],
-  //         xxs: savedLayout.xxs || [],
-  //       }));
-  //     } else {
-  //       console.log(`저장된 정보없음`);
-  //     }
-  //     // console.log(`테스트`, savedLayout);
-  //   };
-  //   loadLayout();
-  //   setWidgetList(layoutIArr);
-  // }, [currentFarm.docId, fetchLayoutCount]);
+  }, [currentFarm?.docId, fetchLayoutCount]);
 
   const [edit, setEdit] = useState(false);
   //대시보드 편집중일때
@@ -721,11 +680,6 @@ function Main({ farmList }) {
             onBreakpointChange={handleBreakpointChange}
             isDraggable={edit}
           >
-            {/* {LAYOUTS.lg.map((el) => (
-              <div className={styles.item} key={el.i} {...el}>
-                {el.children}
-              </div>
-            ))} */}
             {layout[currentBreakpoint]?.map((el) => (
               <div className={styles.item} key={el.i} {...el}>
                 {renderComponent(el.i)}
