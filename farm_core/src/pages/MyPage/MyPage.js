@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./MyPage.module.scss";
-import { FaAngleDoubleRight } from "react-icons/fa";
-import { Link, Outlet, useParams } from "react-router-dom";
-import ListItem from "@mui/material/ListItem";
 import { useDispatch, useSelector } from "react-redux";
-import userInfoEditSlice, {
-  fetchUser,
-} from "./../../store/userInfoEditSlice/UserInfoEditSlice";
-import { startEditingUser } from "../../store/myPageSlice/userEditSlice";
+import { fetchUser } from "./../../store/userInfoEditSlice/UserInfoEditSlice";
 import UserInfo from "./UserInfo/UserInfo";
 import Question from "./Question/Question";
 import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
-import { fetchLogin } from "../../store/checkLoginSlice/checkLoginSlice";
 import { useFetchCollectionData, useFetchUser } from "../../firebase";
-import RegularPayment from "../RegularPayment/RegularPayment";
 const dataObj = {
   UserInfo: { label: "회원정보수정" },
   myCommunity: { label: "내 게시글" },

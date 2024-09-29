@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Modal from "react-modal";
 import moment from "moment";
-import "./styles.css";
+import "./MyCalender.css";
 import ScheduleModal from "./ScheduleModal"; // 모달 컴포넌트 임포트
 import ScheduleList from "./ScheduleList"; // 스케줄 리스트 컴포넌트 임포트
 import {
@@ -13,7 +13,6 @@ import {
   updateSchedule,
 } from "../../store/scheduleSlice/scheduleSlice";
 import { useDispatch, useSelector } from "react-redux";
-import scheduleSlice from "./../../store/scheduleSlice/scheduleSlice";
 
 Modal.setAppElement("#root");
 
@@ -29,8 +28,10 @@ const MyCalendar = () => {
   const [editingSchedule, setEditingSchedule] = useState(null);
   // 사용자가 선택한날짜
   const [selectedDate, setSelectedDate] = useState(today);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(true);
   const email = localStorage.getItem("email");
-
+  const [refresh, setRefresh] = useState(false);
+  const [isScheduleListOpen, setIsScheduleListOpen] = useState(true);
   const dispatch = useDispatch();
   const { schedules, loading, error } = useSelector(
     (state) => state.scheduleSlice
@@ -97,7 +98,9 @@ const MyCalendar = () => {
       alert("날짜를 먼저 선택하세요.");
     }
   };
-
+  const toggleCalendar = () => {
+    setIsCalendarOpen((prevState) => !prevState);
+  };
   // 새로운 일정이 추가되거나 기존 일정이 업데이트 됌. 즉 배열이 생김
   const handleSaveSchedule = async (schedule) => {
     console.log("Received schedule object:", schedule);
@@ -149,6 +152,15 @@ const MyCalendar = () => {
         })
       );
     }
+
+    // 새 스케줄을 추가한 후 schedules를 다시 가져옴
+    const queryOptions = {
+      conditions: [{ field: "email", operator: "==", value: email }],
+    };
+    await dispatch(
+      fetchSchedules({ collectionName: "schedules", queryOptions })
+    );
+
     setModalOpen(false);
   };
 
@@ -210,11 +222,50 @@ const MyCalendar = () => {
     }
   };
 
-  const handleDeleteSchedule = (schedule) => {
-    console.log(schedules);
-    dispatch(
-      deleteSchedule({ collectionName: "schedules", docId: schedule.docId })
-    );
+  const handleDeleteSchedule = async (scheduleIndex) => {
+    const scheduleToDelete = schedules[scheduleIndex];
+
+    if (!scheduleToDelete) {
+      console.error("No schedule found at the provided index");
+      return;
+    }
+
+    const collectionName = "schedules";
+    const email = scheduleToDelete.email;
+
+    const existingSchedules = schedules.find((sch) => sch.email === email);
+
+    if (existingSchedules) {
+      const contentIndex = scheduleIndex; // 화면에서 보여지는 인덱스
+      const updatedContent = existingSchedules.content.filter(
+        (_, index) => index !== contentIndex
+      );
+
+      const docId = existingSchedules.docId;
+
+      if (updatedContent.length === 0) {
+        await dispatch(deleteSchedule({ collectionName, docId }));
+      } else {
+        await dispatch(
+          updateSchedule({
+            collectionName,
+            docId,
+            updatedData: { ...existingSchedules, content: updatedContent },
+          })
+        );
+      }
+
+      // 로컬 상태 업데이트 (schedules를 다시 fetch)
+      const queryOptions = {
+        conditions: [{ field: "email", operator: "==", value: email }],
+      };
+      await dispatch(
+        fetchSchedules({ collectionName: "schedules", queryOptions })
+      );
+
+      setModalOpen(false);
+      setRefresh((prev) => !prev); // 상태 업데이트 후 재렌더링 강제
+    }
   };
 
   // 날짜에 대한 점 표시
@@ -242,61 +293,59 @@ const MyCalendar = () => {
   // console.log("editingSchedule", editingSchedule);
   return (
     <div className="calendar-wrapper">
-      <Calendar
-        className="calendar"
-        value={date}
-        onChange={handleDateChange}
-        formatDay={(locale, date) => date.getDate()}
-        formatYear={(locale, date) => date.getFullYear()}
-        formatMonthYear={(locale, date) =>
-          `${date.getFullYear()}. ${date.getMonth() + 1}`
-        }
-        calendarType="gregory"
-        showNeighboringMonth={false}
-        next2Label={null}
-        prev2Label={null}
-        minDetail="year"
-        activeStartDate={activeStartDate}
-        onActiveStartDateChange={({ activeStartDate }) =>
-          setActiveStartDate(activeStartDate)
-        }
-        tileContent={({ date, view }) => {
-          let html = [];
-          if (
-            view === "month" &&
-            date.getMonth() === today.getMonth() &&
-            date.getDate() === today.getDate()
-          ) {
-            html.push(<div className="today-text" key="today"></div>);
-          }
-          html.push(renderDotForDate(date));
-          return <>{html}</>;
-        }}
-      />
-      <div className="today-button" onClick={handleTodayClick}>
-        오늘
-      </div>
-      <div className="schedule-info">
-        {selectedDate && (
-          <div className="selected-date-info">
-            선택된 날짜:{" "}
-            <span className="selected-date-info-num">
-              {moment(selectedDate).format("YYYY-MM-DD")}
-            </span>
+      <button className="squareGlobalDeleteBtn" onClick={toggleCalendar}>
+        {isCalendarOpen ? "캘린더 접기" : "캘린더 펼치기"}
+      </button>
+      {isCalendarOpen && (
+        <>
+          <Calendar
+            className="calendar"
+            value={date}
+            onChange={handleDateChange}
+            formatDay={(locale, date) => date.getDate()}
+            formatYear={(locale, date) => date.getFullYear()}
+            formatMonthYear={(locale, date) =>
+              `${date.getFullYear()}. ${date.getMonth() + 1}`
+            }
+            calendarType="gregory"
+            showNeighboringMonth={false}
+            next2Label={null}
+            prev2Label={null}
+            minDetail="year"
+          />
+          <div className="today-button" onClick={handleTodayClick}>
+            오늘 날짜
           </div>
-        )}
-        <span>일정 추가 : </span>
-        <button className="add-schedule-button" onClick={handleAddSchedule}>
-          +
-        </button>
-      </div>
-      <ScheduleList
-        schedules={filteredSchedules}
-        // 선택된 날짜의 일정만 전달
-        onEdit={handleEditSchedule}
-        editingSchedule={editingSchedule}
-        onDelete={handleDeleteSchedule}
-      ></ScheduleList>
+          <div className="schedule-info">
+            {selectedDate && (
+              <div className="selected-date-info">
+                날짜:{" "}
+                <span className="selected-date-info-num">
+                  {moment(selectedDate).format("YYYY-MM-DD")}
+                </span>
+              </div>
+            )}
+            <span>일정 추가 : </span>
+            <button className="add-schedule-button" onClick={handleAddSchedule}>
+              +
+            </button>
+          </div>
+        </>
+      )}
+      <button
+        className="squareGlobalDeleteBtn"
+        onClick={() => setIsScheduleListOpen((prev) => !prev)}
+      >
+        {isScheduleListOpen ? "일정 숨기기" : "일정 보기"}
+      </button>
+      {isScheduleListOpen && (
+        <ScheduleList
+          schedules={filteredSchedules}
+          onEdit={handleEditSchedule}
+          editingSchedule={editingSchedule}
+          onDelete={handleDeleteSchedule}
+        />
+      )}
       <ScheduleModal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}

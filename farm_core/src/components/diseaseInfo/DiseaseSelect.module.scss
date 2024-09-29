@@ -5,7 +5,7 @@
   margin-bottom: 2rem;
 
   @media (max-width: 768px) {
-    flex-direction: column; // 화면이 좁아지면 버튼이 수직으로 배치되도록
+    // flex-direction: column; // 화면이 좁아지면 버튼이 수직으로 배치되도록
     align-items: center;
   }
 }

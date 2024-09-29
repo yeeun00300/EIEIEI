@@ -12,7 +12,7 @@
 .select {
   margin-bottom: 1rem;
   width: 100%;
-  max-width: 20rem;
+  max-width: 20rem; /* 고정된 최대 너비를 유지 */
 }
 
 /* 게시판 테이블 컨테이너 */
@@ -92,7 +92,7 @@
 
 /* 이미지 미리보기 */
 .imagePreview {
-  width: 6rem;
+  width: 6rem; /* 크기를 rem으로 설정 */
   height: 6rem;
   object-fit: cover;
   border-radius: 0.5rem;
@@ -145,14 +145,59 @@
   border-radius: 0.5rem;
 }
 
-/* 버튼 */
-// .button {
-//   border-color: var(--main-color);
-//   color: #007bff;
-//   font-weight: 600;
-// }
+/* 반응형 스타일 추가 */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 1rem; /* 여백 줄이기 */
+  }
 
-// .button:hover {
-//   border-color: var(--main-color);
-//   color: #0056b3;
-// }
+  .select {
+    max-width: 100%; /* 카테고리 선택 폭을 전체로 조정 */
+  }
+
+  .tableContainer {
+    margin-top: 0.5rem; /* 여백 조정 */
+  }
+
+  .tableCellHeader,
+  .tableCellBody {
+    padding: 0.5rem; /* 테이블 셀 패딩 줄이기 */
+  }
+
+  .imagePreview {
+    width: 4rem; /* 이미지 미리보기 크기 조정 */
+    height: 4rem;
+  }
+
+  .title {
+    font-size: 1rem; /* 제목 크기 줄이기 */
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 0.5rem; /* 여백 더 줄이기 */
+  }
+
+  .select {
+    margin-bottom: 0.5rem; /* 카테고리 선택 여백 줄이기 */
+  }
+
+  .tableContainer {
+    margin-top: 0.25rem; /* 여백 조정 */
+  }
+
+  .tableCellHeader,
+  .tableCellBody {
+    padding: 0.25rem; /* 테이블 셀 패딩 줄이기 */
+  }
+
+  .imagePreview {
+    width: 3rem; /* 이미지 미리보기 크기 조정 */
+    height: 3rem;
+  }
+
+  .title {
+    font-size: 0.9rem; /* 제목 크기 줄이기 */
+  }
+}

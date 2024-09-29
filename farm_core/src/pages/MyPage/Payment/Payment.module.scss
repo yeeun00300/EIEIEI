@@ -1,57 +1,89 @@
-.cardContainer {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  max-width: 1000px;
-  margin: 0 auto;
-}
+/* 기본 스타일은 이전과 동일 */
 
-.customCard {
-  width: 300px;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease-in-out;
+.tableContainer {
+  margin: 2rem auto;
+  max-width: 70rem;
   background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 
-  &:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  .MuiTableHead-root {
+    background-color: #00796b;
+    color: #ffffff;
+  }
+
+  .MuiTableCell-root {
+    padding: 1rem;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .MuiTableBody-root {
+    background-color: #f9f9f9;
+  }
+
+  .MuiTableRow-root:hover {
+    background-color: #e0f2f1;
+  }
+
+  .checkButton {
+    background-color: var(--second-color);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .checkButton:hover {
+    background-color: #005b4f;
+  }
+
+  .remainingTime {
+    margin-top: 1.5rem;
+    font-weight: 600;
+    color: #333;
   }
 }
 
-.cardTitle {
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 10px;
+@media (max-width: 768px) {
+  .tableContainer {
+    padding: 1rem;
+    max-width: 90%;
+  }
+
+  .MuiTableCell-root {
+    font-size: 0.9rem;
+  }
+
+  .checkButton {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .remainingTime {
+    font-size: 0.9rem;
+  }
 }
 
-.cardContent {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 20px;
-}
+@media (max-width: 480px) {
+  .tableContainer {
+    padding: 0.5rem;
+    max-width: 100%;
+  }
 
-.cardPrice {
-  font-size: 20px;
-  font-weight: bold;
-  color: #00796b;
-}
+  .MuiTableCell-root {
+    font-size: 0.8rem;
+  }
 
-.cardActions {
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px;
-}
+  .checkButton {
+    padding: 0.4rem;
+    font-size: 0.7rem;
+  }
 
-.subscribeButton {
-  background-color: #00796b;
-  color: white;
-  border-radius: 6px;
-  padding: 10px 20px;
-  text-transform: none;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #004d40;
+  .remainingTime {
+    font-size: 0.8rem;
   }
 }

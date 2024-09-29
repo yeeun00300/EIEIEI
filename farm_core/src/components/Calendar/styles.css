@@ -182,7 +182,8 @@
   margin-bottom: 0.625rem;
 }
 .selected-date-info-num {
-  background-color: rgb(248, 114, 203);
+  background-color: rgb(255, 172, 227);
+  font-weight: bold;
   padding: 0.5rem;
   border-radius: 0.425rem;
   font-size: 0.78rem;
@@ -198,7 +199,7 @@
   cursor: pointer;
 }
 .dot {
-  background-color: rgb(248, 114, 203);
+  background-color: rgb(255, 172, 227);
   border-radius: 50%;
   width: 0.3rem;
   height: 0.3rem;

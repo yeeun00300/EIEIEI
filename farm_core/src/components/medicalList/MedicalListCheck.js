@@ -166,117 +166,134 @@ function MedicalListCheck() {
 
       <Dialog open={openModal} onClose={handleCloseModal} fullWidth>
         <DialogTitle>{isEditing ? "수정하기" : "상세 정보"}</DialogTitle>
-        <DialogContent>
-          {selectedDocument && (
-            <div className={styles.farmClass}>
+        <DialogContent className={styles.dialogContentWrapper}>
+          <div className={styles.subCheckClass}>
+            {" "}
+            {/* 중앙 정렬된 배경 */}
+            {selectedDocument && (
+              <div className={styles.farmClass}>
+                {isEditing ? (
+                  <div className={styles.inputTag}>
+                    <TextField
+                      label="주소"
+                      name="farmAddress"
+                      value={selectedDocument.farmAddress || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="축사 이름"
+                      name="farmName"
+                      value={selectedDocument.farmName || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="축사 번호"
+                      name="farmId"
+                      value={selectedDocument.farmId || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="축사 유형"
+                      name="farm_stockType"
+                      value={selectedDocument.farm_stockType || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="면적"
+                      name="farmScale"
+                      value={selectedDocument.farmScale || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="건축 연도"
+                      name="farmBuild"
+                      value={selectedDocument.farmBuild || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="건물 상태"
+                      name="farmCondition"
+                      value={selectedDocument.farmCondition || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="시설"
+                      name="facilities"
+                      value={selectedDocument.facilities || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="보험 세부사항"
+                      name="insuranceDetail"
+                      value={selectedDocument.insuranceDetail || ""}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </div>
+                ) : (
+                  <div className={styles.subCheck}>
+                    <p>
+                      <strong>주소:</strong>{" "}
+                      {selectedDocument.farmAddress || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>축사 이름:</strong>{" "}
+                      {selectedDocument.farmName || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>축사 번호:</strong>{" "}
+                      {selectedDocument.farmId || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>축사 유형:</strong>{" "}
+                      {selectedDocument.farm_stockType || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>면적:</strong>{" "}
+                      {selectedDocument.farmScale || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>건축 연도:</strong>{" "}
+                      {selectedDocument.farmBuild || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>건물 상태:</strong>{" "}
+                      {selectedDocument.farmCondition || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>시설:</strong>{" "}
+                      {selectedDocument.facilities || "정보 없음"}
+                    </p>
+                    <p>
+                      <strong>보험 세부사항:</strong>{" "}
+                      {selectedDocument.insuranceDetail || "정보 없음"}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+            {/* <div className={styles.dialogActionsInside}>
               {isEditing ? (
-                <div className={styles.inputTag}>
-                  <TextField
-                    label="주소"
-                    name="farmAddress"
-                    value={selectedDocument.farmAddress || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="축사 이름"
-                    name="farmName"
-                    value={selectedDocument.farmName || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="축사 번호"
-                    name="farmId"
-                    value={selectedDocument.farmId || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="축사 유형"
-                    name="farm_stockType"
-                    value={selectedDocument.farm_stockType || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="면적"
-                    name="farmScale"
-                    value={selectedDocument.farmScale || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="건축 연도"
-                    name="farmBuild"
-                    value={selectedDocument.farmBuild || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="건물 상태"
-                    name="farmCondition"
-                    value={selectedDocument.farmCondition || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="시설"
-                    name="facilities"
-                    value={selectedDocument.facilities || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                  <TextField
-                    label="보험 세부사항"
-                    name="insuranceDetail"
-                    value={selectedDocument.insuranceDetail || ""}
-                    onChange={handleChange}
-                    fullWidth
-                  />
-                </div>
+                <>
+                  <Button onClick={handleSave}>저장</Button>
+                  <Button onClick={handleCloseModal}>취소</Button>
+                </>
               ) : (
-                <div className={styles.subCheckClass}>
-                  <p>
-                    <strong>주소:</strong>{" "}
-                    {selectedDocument.farmAddress || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>축사 이름:</strong>{" "}
-                    {selectedDocument.farmName || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>축사 번호:</strong>{" "}
-                    {selectedDocument.farmId || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>축사 유형:</strong>{" "}
-                    {selectedDocument.farm_stockType || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>면적:</strong>{" "}
-                    {selectedDocument.farmScale || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>건축 연도:</strong>{" "}
-                    {selectedDocument.farmBuild || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>건물 상태:</strong>{" "}
-                    {selectedDocument.farmCondition || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>시설:</strong>{" "}
-                    {selectedDocument.facilities || "정보 없음"}
-                  </p>
-                  <p>
-                    <strong>보험 세부사항:</strong>{" "}
-                    {selectedDocument.insuranceDetail || "정보 없음"}
-                  </p>
-                </div>
+                <>
+                  <Button onClick={handleEdit}>수정</Button>
+                  <Button onClick={handleCloseModal}>닫기</Button>
+                </>
               )}
-            </div>
-          )}
+            </div> */}
+          </div>
         </DialogContent>
         <DialogActions>
           {isEditing ? (
@@ -303,5 +320,4 @@ function MedicalListCheck() {
     </div>
   );
 }
-
 export default MedicalListCheck;

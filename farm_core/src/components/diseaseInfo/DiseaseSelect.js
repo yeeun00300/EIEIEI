@@ -11,7 +11,7 @@ function DiseaseSelect(props) {
   };
 
   return (
-    <div className="page">
+    <div className="container">
       <div className={styles.headerTitle}></div>
       <div className={styles.boxContainer}>{/* 동물 선택 버튼들 */}</div>
 

@@ -37,9 +37,10 @@ function ExcelUpload(props) {
       <button
         onClick={handleFileUpload}
         disabled={uploading}
-        className={styles.uploadButton}
+        // className={styles.uploadButton}
+        className="globalEditBtn"
       >
-        {uploading ? "업로드 중..." : "엑셀 파일 업로드"}
+        {uploading ? "업로드 중..." : "저장하기"}
       </button>
       {error && <p className={styles.errorMessage}>{error}</p>}
     </div>

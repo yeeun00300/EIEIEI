@@ -3,17 +3,18 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
   button {
     padding: 0.5rem;
   }
   .stockInfo {
-    padding: 1rem 3rem;
+    // padding: 1rem 3rem;
   }
 }
 
 .tableContainer {
   margin: 3rem auto;
-  width: 100%; // 100%로 설정하여 모달 내부에서 꽉 차도록
+  width: 100%;
   max-width: 56.25rem; /* 900px -> 56.25rem */
 }
 
@@ -34,116 +35,173 @@
   margin-bottom: 1.5rem;
 }
 
-.dialogContent {
-  p {
-    margin: 0.75rem 0;
-    font-size: 1rem;
-    color: #34495e;
+.dialogContentWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subCheckClass {
+  width: 500px;
+  padding: 1.5rem;
+  background-color: #ecf0f1;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  strong {
+    color: #2980b9;
   }
 }
 
-.dialogActions {
+.dialogActionsInside {
   display: flex;
   justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
 
-  button {
-    margin-left: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    background-color: #2980b9;
-    color: #fff;
-    border: none;
-    transition: background-color 0.3s ease;
+.dialogActionsInside Button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #2980b9;
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease;
+}
 
-    &:hover {
-      background-color: darken(#2980b9, 10%);
-    }
-  }
+.dialogActionsInside Button:hover {
+  background-color: darken(#2980b9, 10%);
 }
 
 .inputTag {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin: 1.25rem 0; /* 20px -> 1.25rem */
+  margin: 1.25rem 0;
 }
 
-strong {
-  color: #2980b9;
+.subCheck {
+  width: 100%;
 }
 
-/* 반응형 추가 */
+/* 1024px 이하 */
 @media (max-width: 1024px) {
+  .subCheckClass {
+    width: 90%;
+    padding: 1.25rem;
+  }
+
   .tableContainer {
-    max-width: 50rem; /* 800px -> 50rem */
+    max-width: 90%;
+  }
+
+  .tableCellHeader {
+    font-size: 0.9rem;
+    padding: 0.75rem;
   }
 
   .dialogTitle {
-    font-size: 1.375rem; /* 1.5rem -> 1.375rem */
+    font-size: 1.25rem;
   }
 
   .dialogContent p {
-    font-size: 0.9375rem; /* 1rem -> 0.9375rem */
-  }
-  .tableHead {
-    flex-direction: column;
+    font-size: 0.9375rem;
   }
 }
 
+/* 768px 이하 */
 @media (max-width: 768px) {
+  body {
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+  }
+  .checkMain button {
+    padding: 0.6rem; /* 버튼 패딩 증가 */
+    font-size: 0.9rem; /* 작은 화면에서 폰트 크기 조정 */
+    width: 100%; /* 버튼 너비를 100%로 설정 */
+    max-width: 300px; /* 최대 너비 설정 */
+  }
+
+  .subCheckClass {
+    width: 90%;
+    padding: 1rem;
+  }
+
   .tableContainer {
-    max-width: 40rem; /* 640px -> 40rem */
+    max-width: 95%;
+    padding: 0;
+    overflow-x: auto; /* 테이블이 길어질 경우 가로 스크롤 가능 */
   }
 
   .tableCellHeader {
-    padding: 0.75rem; /* 1rem -> 0.75rem */
-  }
-  .tableHead {
-    flex-direction: column;
+    font-size: 1rem; /* 헤더 폰트 크기를 약간 증가 */
+    padding: 0.75rem; /* 패딩 증가로 여백 확보 */
+    text-align: left; /* 텍스트 정렬 */
   }
 
   .dialogTitle {
-    font-size: 1.25rem; /* 1.5rem -> 1.25rem */
-  }
-
-  .dialogContent p {
-    font-size: 0.875rem; /* 1rem -> 0.875rem */
-  }
-
-  .dialogActions button {
-    padding: 0.5rem 0.75rem; /* 버튼 크기 축소 */
+    font-size: 1.2rem; /* 제목 폰트 크기 증가 */
   }
 
   .inputTag {
-    gap: 1rem; /* 간격 축소 */
+    gap: 1rem;
+  }
+
+  .dialogActionsInside Button {
+    padding: 0.6rem 1rem; /* 버튼 패딩 증가 */
+    font-size: 0.9rem; /* 버튼 폰트 크기 증가 */
+    min-width: 100px; /* 버튼 최소 너비 설정 */
+  }
+
+  /* 추가: 버튼과 축사 이름 간 간격 조정 */
+  .tableCell {
+    padding: 0.5rem; /* 각 셀의 패딩 증가 */
+    text-align: center; /* 셀 내용 중앙 정렬 */
+  }
+
+  /* 추가: '자세히 보기' 버튼 스타일 */
+  .detailsButton {
+    padding: 0.5rem 1rem; /* 버튼 패딩 */
+    font-size: 0.9rem; /* 버튼 폰트 크기 */
+    background-color: #007bff; /* 버튼 배경 색상 */
+    color: white; /* 버튼 텍스트 색상 */
+    border: none; /* 테두리 제거 */
+    border-radius: 0.25rem; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 포인터 변화 */
   }
 }
 
+/* 480px 이하 */
 @media (max-width: 480px) {
+  .checkMain {
+    width: 100%;
+  }
+
+  .subCheckClass {
+    width: 100%;
+    padding: 0.75rem;
+  }
+
   .tableContainer {
-    max-width: 100%; /* 화면 너비에 맞게 조정 */
+    max-width: 100%;
   }
-  .tableHead {
-    flex-direction: column;
-  }
+
   .tableCellHeader {
-    padding: 0.5rem; /* 1rem -> 0.5rem */
+    font-size: 0.8rem;
+    padding: 0.4rem;
   }
 
   .dialogTitle {
-    font-size: 1.125rem; /* 1.5rem -> 1.125rem */
-  }
-
-  .dialogContent p {
-    font-size: 0.8125rem; /* 1rem -> 0.8125rem */
-  }
-
-  .dialogActions button {
-    padding: 0.5rem 0.5rem; /* 버튼 크기 더 축소 */
-    font-size: 0.875rem; /* 버튼 텍스트 크기 축소 */
+    font-size: 1rem;
   }
 
   .inputTag {
-    gap: 0.75rem; /* 간격 더 축소 */
+    gap: 0.75rem;
+  }
+
+  .dialogActionsInside Button {
+    padding: 0.35rem 0.7rem;
+  }
+
+  .dialogActionsInside {
+    gap: 0.3rem;
   }
 }

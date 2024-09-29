@@ -49,29 +49,34 @@
 
 .user {
   position: relative;
-  cursor: pointer;
-  // &:hover .usermenu,
-  // .usermenu:hover {
-  //   display: block;
-  // }
+  // cursor: pointer;
+  padding: 1.375rem 0;
 
   .profileImage {
     width: 1.875rem;
     height: 1.875rem;
   }
 
-  .usermenu {
-    display: none;
-    background-color: var(--point-color);
-    border-radius: 1rem;
-    box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.2);
-    padding: 1.5rem 1rem;
-    position: absolute;
-    top: 165%;
-    right: -15%;
-    min-width: 9.375rem;
-    z-index: 100;
+  &:hover .usermenu {
+    display: block !important;
+    opacity: 1;
   }
+}
+.usermenu {
+  display: none; /* 기본적으로 숨김 */
+  background-color: var(--point-color);
+  border-radius: 1rem;
+  box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.2);
+  padding: 1.5rem 1rem;
+  position: absolute;
+  top: 95%;
+  right: -15%;
+  min-width: 9.375rem;
+  z-index: 100;
+}
+
+.userImgInfo {
+  padding: 1.3125rem 0;
 }
 
 .alarmInfo {
