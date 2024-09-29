@@ -764,12 +764,12 @@ function useFetchCollectionData(collectionName, fetchAction) {
           .then((resultAction) => {
             if (fetchAction.fulfilled.match(resultAction)) {
               const userData = resultAction.payload;
-              console.log("Fetched data with IDs from Redux: ", userData);
+              // console.log("Fetched data with IDs from Redux: ", userData);
 
               // 예: 첫 번째 문서 ID
               if (userData.length > 0) {
                 const firstDocumentId = userData[0].docId; // 'docId'로 문서 ID 접근
-                console.log("First document ID: ", firstDocumentId);
+                // console.log("First document ID: ", firstDocumentId);
               }
             }
           })
@@ -863,7 +863,7 @@ export const fetchFarmLayout = async (docId) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const savedLayout = JSON.parse(docSnap.data().userFarmLayout);
+      const savedLayout = JSON.parse(docSnap?.data().userFarmLayout);
       return savedLayout; // 레이아웃 데이터를 복원하여 반환
     } else {
       console.log("해당 문서가 없습니다!");

@@ -18,7 +18,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
 import { useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
@@ -78,8 +78,7 @@ function Main({ farmList }) {
   const currentFarm = farmList?.filter((item) => item.farmId === farmId)[0];
   // 선택 위젯 리스트
   const [fetchLayoutCount, setFetchLayoutCount] = useState(0);
-  const [widgetList, setWidgetList] = useState([]);
-  console.log(widgetList);
+  const [widgetList, setWidgetList] = useState(["10"]);
   const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
   useFetchCollectionData("stock", fetchExcelStock);
   const filteredStock = stock.filter((item) => item.farmId === Number(farmId));
@@ -520,9 +519,6 @@ function Main({ farmList }) {
 
   const getSelectedLayouts = (selectedIds) => {
     const filteredLayouts = {
-      // lg: LAYOUTS.lg.filter((item) => item.i.includes(selectedIds)),
-      // md: LAYOUTS.md.filter((item) => item.i.includes(selectedIds)),
-      // sm: LAYOUTS.sm.filter((item) => item.i.includes(selectedIds)),
       lg: LAYOUTS.lg.filter((item) => selectedIds.includes(item.i)),
       md: LAYOUTS.md.filter((item) => selectedIds.includes(item.i)),
       sm: LAYOUTS.sm.filter((item) => selectedIds.includes(item.i)),
@@ -532,6 +528,7 @@ function Main({ farmList }) {
 
   // 선택된 LAYOUTS
   const newLayouts = getSelectedLayouts(widgetList);
+
   // 컴포넌트 복원
   const renderComponent = (id) => {
     switch (id) {
@@ -583,13 +580,14 @@ function Main({ farmList }) {
 
     // 'md'와 'sm' 브레이크포인트의 w: 1, h: 3 설정
     ["md", "sm"].forEach((breakpoint) => {
-      updatedLayouts[breakpoint] = updatedLayouts[breakpoint].map((item) => {
+      updatedLayouts[breakpoint] = updatedLayouts[breakpoint]?.map((item) => {
         // 초기 x, y 값이 있다면 유지
         const initialItem = initialLayouts?.current[breakpoint]?.find(
           (i) => i.i === item.i
         );
         const x = initialItem ? initialItem.x : item.x;
         const y = initialItem ? initialItem.y : item.y;
+        console.log(updatedLayouts[breakpoint]);
 
         if (item.i == "4") {
           return { ...item, w: 1, h: 6, x, y };
@@ -614,6 +612,27 @@ function Main({ farmList }) {
     // console.log("Current breakpoint:", newBreakpoint);
   };
 
+  const [edit, setEdit] = useState(false);
+  //대시보드 편집중일때
+  const editMode = () => {
+    setEdit(true);
+  };
+  //대시보드 편집 완료(파이어베이스에 등록하는거 추가예정)
+  const fixedMode = async () => {
+    // 수정 모드를 비활성화
+    setEdit(false);
+    const farmDocId = currentFarm.docId;
+
+    // docId와 newLayout 값을 적절히 전달하여 호출
+    await saveFarmLayout(farmDocId, layout); // farmId와 현재 레이아웃 전달
+  };
+
+  useEffect(() => {
+    setEdit(false);
+    if (!edit) {
+      layoutIArr.current = [];
+    }
+  }, [currentFarm.farmId]);
   // 5. 로컬 스토리지로부터 불러온 레이아웃 적용
   useEffect(() => {
     if (!currentFarm || !currentFarm.docId) {
@@ -624,10 +643,11 @@ function Main({ farmList }) {
     const loadLayout = async () => {
       setLayout(newLayouts);
       const savedLayout = await fetchFarmLayout(currentFarm.docId);
+      // 초기값 설정 여부를 위한 상태 추가
 
       // 처음 로드된 경우에만 layoutIArr에 값을 넣고 업데이트
       if (layoutIArr.current.length === 0 && savedLayout) {
-        savedLayout["lg"].forEach((item) => layoutIArr.current.push(item.i));
+        savedLayout["lg"]?.forEach((item) => layoutIArr.current.push(item.i));
 
         if (savedLayout) {
           setLayout((prevLayout) => ({
@@ -650,20 +670,6 @@ function Main({ farmList }) {
     loadLayout();
   }, [currentFarm?.docId, fetchLayoutCount]);
 
-  const [edit, setEdit] = useState(false);
-  //대시보드 편집중일때
-  const editMode = () => {
-    setEdit(true);
-  };
-  //대시보드 편집 완료(파이어베이스에 등록하는거 추가예정)
-  const fixedMode = async () => {
-    // 수정 모드를 비활성화
-    setEdit(false);
-    const farmDocId = currentFarm.docId;
-
-    // docId와 newLayout 값을 적절히 전달하여 호출
-    await saveFarmLayout(farmDocId, layout); // farmId와 현재 레이아웃 전달
-  };
   return (
     <div className="page">
       <div className={styles.box}>

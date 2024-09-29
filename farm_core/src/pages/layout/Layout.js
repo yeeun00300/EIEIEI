@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Layout.module.scss";
 import Header from "./header/Header";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import Footer from "./footer/Footer";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
 import { useDispatch } from "react-redux";
