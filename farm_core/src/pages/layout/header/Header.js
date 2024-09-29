@@ -76,6 +76,13 @@ function Header({ title, userInfo }) {
 
   useEffect(() => {}, []);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // UserMenu 열고 닫기 함수
+  const toggleUserMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
@@ -110,7 +117,7 @@ function Header({ title, userInfo }) {
             )}
           </div>
         </div>
-        <div className={styles.user}>
+        <div onClick={toggleUserMenu} className={styles.user}>
           {profileImages ? (
             <img
               className={styles.profileImage}
@@ -120,7 +127,10 @@ function Header({ title, userInfo }) {
           ) : (
             <FaRegUser size={25} />
           )}
-          <div className={styles.usermenu}>
+          <div
+            className={styles.usermenu}
+            style={{ display: isMenuOpen ? "block" : "none" }}
+          >
             <UserMenu />
           </div>
         </div>
