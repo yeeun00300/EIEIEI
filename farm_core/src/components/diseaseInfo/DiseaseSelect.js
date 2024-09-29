@@ -20,13 +20,13 @@ function DiseaseSelect(props) {
       {/* 버튼들 추가 */}
       <div className={styles.buttonContainer}>
         <button
-          className={styles.SelectBtn}
+          className="globalBtn"
           onClick={() => handleViewChange("monthPractice")}
         >
           월별 질병 발생 데이터 보기
         </button>
         <button
-          className={styles.SelectBtn}
+          className="globalBtn"
           onClick={() => handleViewChange("diseaseDictionary")}
         >
           질병 사전 보기
@@ -35,14 +35,18 @@ function DiseaseSelect(props) {
 
       {/* 조건부 렌더링 */}
       {view === "monthPractice" && (
-        <div className={styles.monthPracticeContainer}>
-          <MonthPractice />
+        <div className="container">
+          <div className={styles.monthPracticeContainer}>
+            <MonthPractice />
+          </div>
         </div>
       )}
 
       {view === "diseaseDictionary" && (
-        <div className={styles.diseaseDictionaryContainer}>
-          <DiseaseInfo />
+        <div className="container">
+          <div className={styles.diseaseDictionaryContainer}>
+            <DiseaseInfo />
+          </div>
         </div>
       )}
     </div>
