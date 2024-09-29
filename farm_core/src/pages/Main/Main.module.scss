@@ -107,13 +107,14 @@
     bottom: 100px;
     right: 30px;
     display: flex;
-    background-color: #c4c4c4;
+    background-color: #fff;
     flex-direction: column;
     height: 400px;
+    overflow-y: auto;
     width: 200px;
     padding: 16px;
     text-align: left;
-    gap: 8px;
+    gap: 16px;
     border-radius: 16px;
     box-shadow: rgba(45, 35, 66, 0.4) 0 0.125rem 0.25rem,
       /* 2px 4px */ rgba(45, 35, 66, 0.3) 0 0.4375rem 0.8125rem -0.1875rem,
