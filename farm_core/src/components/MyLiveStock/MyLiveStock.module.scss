@@ -82,28 +82,28 @@
       height: 400px;
     }
   }
-}
-
-.loadingPage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.emptyPage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  .warnDiv {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
 }
 
 /* 반응형 스타일 */
 @media (max-width: 1024px) {
   .container {
+    font-size: 0.7813rem;
     display: grid;
     grid-template-columns: 1fr; /* 1:1 비율 */
     grid-template-rows: 1fr 2fr; /* 세로 1:2 비율 */
+
     .farmInfoBox {
       width: 100%;
       height: 96%;
@@ -132,6 +132,13 @@
   .container {
     grid-template-columns: 1fr; /* 1:1 비율 */
     grid-template-rows: 1fr 2fr; /* 세로 1:2 비율 */
+  }
+  .selectDiv {
+    display: flex !important;
+    flex-direction: column;
+    select {
+      width: 100%;
+    }
   }
 }
 
