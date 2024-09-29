@@ -150,6 +150,8 @@
   .selectDiv {
     display: flex !important;
     flex-direction: column;
+    align-items: stretch !important;
+    // flex-grow: 1;
     select {
       width: 100%;
     }
