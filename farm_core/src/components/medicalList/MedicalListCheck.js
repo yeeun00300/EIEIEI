@@ -281,13 +281,21 @@ function MedicalListCheck() {
         <DialogActions>
           {isEditing ? (
             <>
-              <Button onClick={handleSave}>저장</Button>
-              <Button onClick={handleCloseModal}>취소</Button>
+              <Button onClick={handleSave} className="globalBtn">
+                저장
+              </Button>
+              <Button onClick={handleCloseModal} className="globalDeleteBtn">
+                취소
+              </Button>
             </>
           ) : (
             <>
-              <Button onClick={handleEdit}>수정</Button>
-              <Button onClick={handleCloseModal}>닫기</Button>
+              <Button onClick={handleEdit} className="globalEditBtn">
+                수정
+              </Button>
+              <Button onClick={handleCloseModal} className="globalDeleteBtn">
+                닫기
+              </Button>
             </>
           )}
         </DialogActions>
