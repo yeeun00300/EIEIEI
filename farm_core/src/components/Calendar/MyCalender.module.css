@@ -11,3 +11,7 @@
   padding: 0.5rem;
   border-radius: 0.25rem;
 }
+.add-schedule-button {
+  width: 20px;
+  height: 20px;
+}

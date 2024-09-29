@@ -131,7 +131,7 @@ function DiseaseInfo() {
         <h2>가축 종류 선택</h2>
       </div>
       <div className={styles.boxContainer}>
-        <div className="text-center mb-4">
+        <div className={styles.diseaseTypeBtn}>
           <div className={styles.imgBox}>
             <button
               className={`${styles.btn} btn btn-primary mx-2`}
@@ -187,7 +187,9 @@ function DiseaseInfo() {
                     onClick={() => handleSelectDisease(disease)}
                   >
                     <div className={styles.cardHeader}>
-                      <h5 className="mb-0">{disease.diseaseName}</h5>
+                      <h5 className={styles.diseaseTitle}>
+                        {disease.diseaseName}
+                      </h5>
                     </div>
                     {isAdmin && (
                       <div className={styles.adminActions}>

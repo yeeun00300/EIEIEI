@@ -1,0 +1,47 @@
+.dialogTitle {
+  font-weight: bold; /* 제목 두껍게 */
+  font-size: 1.5rem; /* 제목 크기 조정 */
+  text-align: center; /* 중앙 정렬 */
+}
+
+.dialogContent {
+  background-color: #f9f9f9; /* 배경색 조정 */
+}
+
+.modalScheduleList {
+  max-height: 500px; /* 모달 높이 제한 */
+  overflow-y: auto; /* 스크롤 가능 */
+}
+
+.modalScheduleItem {
+  padding: 16px; /* 패딩 추가 */
+}
+
+.dialogActions {
+  justify-content: center; /* 버튼 중앙 정렬 */
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .dialogTitle {
+    font-size: 1.25rem; /* 작은 화면에서 제목 크기 조정 */
+  }
+
+  .modalScheduleItem {
+    padding: 12px; /* 작은 화면에서 패딩 줄이기 */
+  }
+
+  .modalScheduleList {
+    max-height: 400px; /* 작은 화면에서 모달 높이 조정 */
+  }
+}
+
+@media (max-width: 480px) {
+  .dialogTitle {
+    font-size: 1rem; /* 더 작은 화면에서 제목 크기 조정 */
+  }
+
+  .modalScheduleItem {
+    padding: 8px; /* 더 작은 화면에서 패딩 줄이기 */
+  }
+}

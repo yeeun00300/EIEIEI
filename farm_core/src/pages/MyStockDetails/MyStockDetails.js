@@ -450,7 +450,7 @@ function MyStockDetails(props) {
                     <TableCell onClick={() => handleSort("deceased")}>
                       폐사여부{getSortIcon("deceased")}
                     </TableCell>
-                    <TableCell>작업</TableCell>
+                    <TableCell>확인하기</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -488,7 +488,7 @@ function MyStockDetails(props) {
                           onClick={handleUpdateDeceased}
                           className={styles.deceasedButton}
                         >
-                          폐사하기
+                          폐사
                         </Button>
                       </TableCell>
                     </TableRow>

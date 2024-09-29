@@ -198,24 +198,24 @@ function UserInfo() {
                   dispatch(updateUserInfo({ detailedAddress: e.target.value }))
                 }
               />
-              <button className={styles.addrBtn} onClick={openAddressPopup}>
+              <button className="squareGlobalBtn" onClick={openAddressPopup}>
                 주소 검색
               </button>
             </div>
 
             <div className={styles.btnWrap}>
               {isEditing ? (
-                <>
-                  <button className={styles.editBtn} onClick={handleSave}>
+                <div>
+                  <button className="globalBtn " onClick={handleSave}>
                     저장
                   </button>
                   <button
-                    className={styles.cancelBtn}
+                    className="globalDeleteBtn"
                     onClick={() => setIsEditing(false)}
                   >
                     취소
                   </button>
-                </>
+                </div>
               ) : (
                 <button
                   className={styles.editBtn}
@@ -224,8 +224,8 @@ function UserInfo() {
                   수정
                 </button>
               )}
-              <DeleteAccount />
             </div>
+            <DeleteAccount />
           </div>
         </div>
         {/* <KORMap /> */}

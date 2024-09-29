@@ -30,7 +30,7 @@ const MyCalendar = () => {
   // 사용자가 선택한날짜
   const [selectedDate, setSelectedDate] = useState(today);
   const email = localStorage.getItem("email");
-
+  const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
   const { schedules, loading, error } = useSelector(
     (state) => state.scheduleSlice
@@ -149,6 +149,15 @@ const MyCalendar = () => {
         })
       );
     }
+
+    // 새 스케줄을 추가한 후 schedules를 다시 가져옴
+    const queryOptions = {
+      conditions: [{ field: "email", operator: "==", value: email }],
+    };
+    await dispatch(
+      fetchSchedules({ collectionName: "schedules", queryOptions })
+    );
+
     setModalOpen(false);
   };
 
@@ -210,11 +219,50 @@ const MyCalendar = () => {
     }
   };
 
-  const handleDeleteSchedule = (schedule) => {
-    console.log(schedules);
-    dispatch(
-      deleteSchedule({ collectionName: "schedules", docId: schedule.docId })
-    );
+  const handleDeleteSchedule = async (scheduleIndex) => {
+    const scheduleToDelete = schedules[scheduleIndex];
+
+    if (!scheduleToDelete) {
+      console.error("No schedule found at the provided index");
+      return;
+    }
+
+    const collectionName = "schedules";
+    const email = scheduleToDelete.email;
+
+    const existingSchedules = schedules.find((sch) => sch.email === email);
+
+    if (existingSchedules) {
+      const contentIndex = scheduleIndex; // 화면에서 보여지는 인덱스
+      const updatedContent = existingSchedules.content.filter(
+        (_, index) => index !== contentIndex
+      );
+
+      const docId = existingSchedules.docId;
+
+      if (updatedContent.length === 0) {
+        await dispatch(deleteSchedule({ collectionName, docId }));
+      } else {
+        await dispatch(
+          updateSchedule({
+            collectionName,
+            docId,
+            updatedData: { ...existingSchedules, content: updatedContent },
+          })
+        );
+      }
+
+      // 로컬 상태 업데이트 (schedules를 다시 fetch)
+      const queryOptions = {
+        conditions: [{ field: "email", operator: "==", value: email }],
+      };
+      await dispatch(
+        fetchSchedules({ collectionName: "schedules", queryOptions })
+      );
+
+      setModalOpen(false);
+      setRefresh((prev) => !prev); // 상태 업데이트 후 재렌더링 강제
+    }
   };
 
   // 날짜에 대한 점 표시

@@ -11,7 +11,7 @@ import { db, auth } from "../../firebase"; // auth 추가 필요
 import { signOut } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setNotLogin } from "../../store/loginSlice/loginSlice";
-
+import styles from "./DeleteAccount.module.scss";
 function DeleteAccount() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -69,7 +69,11 @@ function DeleteAccount() {
   };
 
   return (
-    <button type="button" onClick={handleDeleteAccount}>
+    <button
+      type="button"
+      onClick={handleDeleteAccount}
+      className={styles.deleteAccountBtn}
+    >
       회원 탈퇴
     </button>
   );

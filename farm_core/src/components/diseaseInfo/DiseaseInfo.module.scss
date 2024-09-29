@@ -14,23 +14,38 @@
 
   @media (max-width: 768px) {
     h1 {
-      font-size: 1.8rem; // 작은 화면에서는 글씨 크기를 줄임
+      font-size: 1.8rem;
     }
     h2 {
       font-size: 1.4rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+    h2 {
+      font-size: 1.2rem;
     }
   }
 }
 
 .boxContainer {
   display: flex;
-
+  justify-content: center;
+  align-items: center;
+  .diseaseTypeBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
   .imgBox {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30%;
-    margin: 0 auto;
+    width: 100%;
 
     .Img {
       width: 100%;
@@ -38,28 +53,65 @@
   }
 
   @media (max-width: 768px) {
-    flex-direction: column; // 작은 화면에서 세로 배치
+    flex-direction: column;
     .imgBox {
-      width: 70%;
+      width: 100%;
       margin-bottom: 20px;
     }
   }
-}
 
-.btn {
-  font-size: 1rem;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #2980b9;
-    color: white;
+  @media (max-width: 480px) {
+    .imgBox {
+      width: 90%;
+      margin-bottom: 15px;
+    }
   }
 
-  @media (max-width: 768px) {
-    font-size: 0.8rem; // 작은 화면에서 버튼 크기 줄이기
-    padding: 8px 15px;
+  .btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* 이미지와 버튼이 함께 축소되도록 inline-block 사용 */
+
+    &:hover {
+      background-color: #2980b9;
+      color: white;
+    }
+
+    img {
+      width: 100%; /* 버튼 크기에 맞게 이미지가 100%로 늘어나거나 줄어듦 */
+      height: auto; /* 이미지 비율을 유지 */
+    }
+
+    @media (max-width: 768px) {
+      font-size: 0.8rem;
+      padding: 8px 15px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.7rem;
+      padding: 6px 12px;
+    }
+  }
+
+  .imgBox {
+    width: 30%; /* 버튼의 부모 요소 크기 */
+    margin: 0 auto;
+    text-align: center; /* 이미지가 가운데 정렬되도록 설정 */
+
+    img {
+      width: 100%; /* 버튼 크기에 맞게 이미지 크기를 설정 */
+      height: auto; /* 비율을 유지하며 축소/확대 */
+    }
+
+    @media (max-width: 768px) {
+      width: 70%; /* 화면이 줄어들 때 이미지 박스 크기 조정 */
+    }
+
+    @media (max-width: 480px) {
+      width: 90%; /* 작은 화면에서는 더 큰 비율로 박스 설정 */
+    }
   }
 }
 
@@ -78,7 +130,13 @@
 
   @media (max-width: 768px) {
     .formControl {
-      font-size: 0.9rem; // 검색창 글씨 크기 조정
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .formControl {
+      font-size: 0.8rem;
     }
   }
 
@@ -93,13 +151,15 @@
     font-weight: bold;
     font-size: 1rem;
     transition: background-color 0.3s ease;
-  }
 
-  @media (max-width: 768px) {
-    .prevBtn,
-    .nextBtn {
-      font-size: 0.8rem; // 페이지네이션 버튼 크기 줄이기
+    @media (max-width: 768px) {
+      font-size: 0.8rem;
       padding: 0.5rem 1rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.7rem;
+      padding: 0.4rem 0.8rem;
     }
   }
 
@@ -123,12 +183,22 @@
       color: var(--point-color);
       border-radius: 10px;
       height: 6rem;
-    }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+      overflow: hidden; /* 넘치는 텍스트 숨김 */
+      text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
 
-    @media (max-width: 768px) {
-      .cardHeader {
-        font-size: 1rem; // 카드 헤더 글씨 크기 줄이기
+      @media (max-width: 768px) {
+        font-size: 1rem;
         padding: 10px;
+      }
+
+      @media (max-width: 480px) {
+        font-size: 0.9rem;
+        padding: 8px;
       }
     }
   }
@@ -160,8 +230,13 @@
       padding: 2%;
 
       @media (max-width: 768px) {
-        font-size: 0.9rem; // 모달 내부 글씨 크기 줄이기
+        font-size: 0.9rem;
         padding: 10px;
+      }
+
+      @media (max-width: 480px) {
+        font-size: 0.8rem;
+        padding: 8px;
       }
     }
 
@@ -174,87 +249,65 @@
       position: absolute;
       top: 0;
       right: 3%;
-    }
-  }
-}
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+      @media (max-width: 768px) {
+        font-size: 1.8rem;
+      }
 
-  span {
-    margin: 0 10px;
-  }
-
-  @media (max-width: 768px) {
-    button {
-      font-size: 0.8rem;
-      padding: 0.5rem 1rem;
-    }
-    span {
-      font-size: 0.8rem;
-    }
-  }
-}
-@media (max-width: 480px) {
-  .headerTitle {
-    h1 {
-      font-size: 1.5rem; // 더 작은 화면에서 글씨 크기 줄임
-    }
-    h2 {
-      font-size: 1.2rem;
-    }
-  }
-
-  .boxContainer {
-    .imgBox {
-      width: 90%;
-      margin-bottom: 15px;
-    }
-  }
-
-  .btn {
-    font-size: 0.7rem; // 작은 화면에서 버튼 크기 더 줄이기
-    padding: 6px 12px;
-  }
-
-  .rowBox {
-    .formControl {
-      font-size: 0.8rem; // 검색창 글씨 크기 더 줄이기
-    }
-
-    .prevBtn,
-    .nextBtn {
-      font-size: 0.7rem;
-      padding: 0.4rem 0.8rem;
-    }
-
-    .cardHeader {
-      font-size: 0.9rem; // 카드 헤더 글씨 크기 더 줄이기
-      padding: 8px;
-    }
-  }
-
-  .modalDisease {
-    .modalContent {
-      font-size: 0.8rem; // 모달 내부 글씨 크기 더 줄이기
-      padding: 8px;
-    }
-
-    .close {
-      font-size: 1.5rem; // 닫기 버튼 크기 줄이기
+      @media (max-width: 480px) {
+        font-size: 1.5rem;
+      }
     }
   }
 
   .pagination {
-    button {
-      font-size: 0.7rem;
-      padding: 0.4rem 0.8rem;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
     span {
-      font-size: 0.7rem;
+      margin: 0 10px;
+    }
+
+    @media (max-width: 768px) {
+      button {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+      }
+      span {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      button {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.8rem;
+      }
+      span {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .diseaseTitle {
+    font-size: 1rem;
+    text-align: center;
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 글자를 숨김 */
+    text-overflow: ellipsis; /* 넘치는 부분을 ...으로 처리 */
+
+    @media (max-width: 968px) {
+      font-size: 1.3rem; /* 화면이 줄어들 때 글씨 크기 조정 */
+    }
+
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1rem;
     }
   }
 }
