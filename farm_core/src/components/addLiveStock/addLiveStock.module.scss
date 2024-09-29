@@ -1,16 +1,17 @@
-.addTitle {
+.addLiveStockTitle {
   text-align: center;
   color: #333;
   margin-bottom: 1.5rem; /* 제목과 박스 사이 간격 추가 */
 }
-.box {
+
+.addLiveStockBox {
   max-width: 1200px;
   margin: 1rem auto;
   padding: 1.5rem; /* 내부 여백 추가 */
   background-color: #f9f9f9; /* 배경색 추가 */
   border-radius: 8px; /* 모서리 둥글게 */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  /* 그림자 효과 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+
   form {
     display: flex;
     flex-direction: column;
@@ -33,10 +34,9 @@
     color: #555; /* label 색상 변경 */
   }
 
-  input[type="text"],
-  input[type="number"],
-  textarea,
-  select {
+  .addLiveStockInput,
+  .addLiveStockSelect,
+  .addLiveStockTextarea {
     flex: 1; /* 남은 공간을 차지하도록 설정 */
     padding: 0.75rem; /* 패딩을 rem으로 설정 */
     border: 1px solid #ccc;
@@ -45,18 +45,17 @@
     transition: border-color 0.3s; /* 테두리 색상 변화 애니메이션 */
   }
 
-  input[type="text"]:focus,
-  input[type="number"]:focus,
-  select:focus {
+  .addLiveStockInput:focus,
+  .addLiveStockSelect:focus {
     border-color: var(--main-color); /* 포커스 시 테두리 색상 변경 */
     outline: none; /* 기본 테두리 제거 */
   }
 
-  textarea {
+  .addLiveStockTextarea {
     resize: vertical; /* textarea의 세로 크기 조정 가능 */
   }
 
-  button {
+  .addLiveStockBtn {
     background-color: var(--main-color);
     color: #fff;
     border: none;
@@ -67,12 +66,12 @@
     transition: background-color 0.3s, transform 0.2s; /* 배경색과 크기 변화 애니메이션 */
   }
 
-  button:hover {
+  .addLiveStockBtn:hover {
     background-color: var(--point-color); /* hover 색상 설정 */
     transform: translateY(-2px); /* 버튼 위로 약간 떠오르는 효과 */
   }
 
-  button:focus {
+  .addLiveStockBtn:focus {
     outline: none; /* 기본 포커스 테두리 제거 */
   }
 
@@ -84,52 +83,50 @@
 }
 
 @media (max-width: 768px) {
-  .box {
+  .addLiveStockBox {
     padding: 1rem; /* 박스 안쪽 여백 조정 */
   }
 
-  label {
+  .addLiveStockBox label {
     width: 50%; /* label 너비 조정 */
     margin-right: 0.5rem; /* margin 조정 */
   }
 
-  input[type="text"],
-  input[type="number"],
-  textarea,
-  select {
+  .addLiveStockInput,
+  .addLiveStockSelect,
+  .addLiveStockTextarea {
     font-size: 0.875rem; /* 폰트 크기 조정 */
   }
 
-  button {
+  .addLiveStockBtn {
     font-size: 0.875rem; /* 폰트 크기 조정 */
   }
 }
 
 @media (max-width: 480px) {
-  .box {
+  .addLiveStockBox {
     padding: 0.5rem; /* 박스 안쪽 여백 조정 */
   }
 
-  label {
+  .addLiveStockBox label {
     width: 100%; /* label 너비를 100%로 변경 */
     text-align: left; /* 왼쪽 정렬 */
     margin-right: 0; /* margin 제거 */
   }
 
-  div {
+  .addLiveStockBox div {
     flex-direction: column; /* 세로 방향으로 배치 */
     align-items: flex-start; /* 아이템을 왼쪽 정렬 */
   }
 
-  input[type="text"],
-  input[type="number"],
-  textarea,
-  select {
+  .addLiveStockInput,
+  .addLiveStockSelect,
+  .addLiveStockTextarea {
     width: 100%; /* 입력 필드 너비를 100%로 설정 */
     margin-bottom: 0.5rem; /* 아래쪽 여백 추가 */
   }
 
-  button {
+  .addLiveStockBtn {
     width: 100%; /* 버튼 너비를 100%로 설정 */
   }
 }

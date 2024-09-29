@@ -18,9 +18,6 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import KoreaMap from "../../../components/KoreaMap/KoreaMap";
-import KoreaBubble from "../../../components/KoreaMap/KoreaBubble";
-import { KoreaBubbleMap } from "@tenqube/react-korea-bubble-map";
 
 function UserInfo() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
@@ -36,7 +33,9 @@ function UserInfo() {
   const [isEditing, setIsEditing] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(null); // 선택한 질문을 저장할 상태
   const email = localStorage.getItem("email");
+
   useEffect(() => {
     const fetchQuestions = async () => {
       const queryOptions = {
@@ -158,6 +157,14 @@ function UserInfo() {
       isEditing: false,
     });
     setIsAdding(true);
+  };
+
+  const handleViewAnswers = async (question) => {
+    // 관리자의 답변을 가져오는 함수 (가정)
+    const adminResponse = await getDatas("community", {
+      conditions: [{ field: "questionId", operator: "==", value: question.id }],
+    });
+    setSelectedQuestion({ ...question, adminResponse }); // 선택한 질문과 답변 저장
   };
 
   return (
@@ -284,17 +291,37 @@ function UserInfo() {
                   >
                     삭제
                   </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleViewAnswers(question)} // 문의 내역 보기
+                    className={styles.viewAnswerBtn}
+                  >
+                    답변 보기
+                  </Button>
                 </Box>
               </ListItem>
             ))}
           </List>
+        </Box>
+      )}
+      {/* 선택한 문의의 관리자 답변 표시 */}
+      {selectedQuestion && (
+        <Box className={styles.adminResponseContainer}>
+          <Typography variant="h5">문의 내용</Typography>
+          <Typography variant="body1">{selectedQuestion.message}</Typography>
+          <Typography variant="h6">관리자 답변</Typography>
+          {selectedQuestion.adminResponse &&
+            selectedQuestion.adminResponse.map((response, index) => (
+              <Typography key={index} variant="body2">
+                {response.subContent}
+              </Typography>
+            ))}
           <Button
             variant="contained"
-            color="primary"
-            className={styles.questionAddBtn}
-            onClick={handleAddClick}
+            onClick={() => setSelectedQuestion(null)} // 선택 해제
+            className={styles.closeResponseBtn}
           >
-            문의 추가
+            닫기
           </Button>
         </Box>
       )}
