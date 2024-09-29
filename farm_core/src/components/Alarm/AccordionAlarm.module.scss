@@ -1,18 +1,34 @@
 .AccordionAlarm {
   width: 25%;
   border-top: 1px solid black;
-  border-bottom: 1px solid black;
   position: fixed;
   top: 70px;
   right: 60px;
   z-index: 10;
+
   h2 {
     font-size: 8px;
   }
+
   button {
     padding: 8px 10px;
   }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 0 20px;
+    right: 0;
+    left: 0;
+    border-radius: 0;
+    max-height: 50vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+  }
 }
+
 .weatherAlarmDate {
   font-size: 8px;
   color: gray;
@@ -22,19 +38,13 @@
   flex: 1;
   margin-right: 10px;
   margin-top: 3px;
+
+  @media (max-width: 480px) {
+    font-size: 7px; /* 폰트 크기 적당히 조정 */
+    margin-right: 5px;
+  }
 }
-// .AccordionAlarm > div > h2 {
-//   background-color: var(--point-color);
-// }
-// .AccordionAlarm > div > div > div {
-//   padding: 8px 10px;
-//   border-radius: 0;
-// }
-// .AccordionAlarm > div > div > div > div {
-//     border: none;
-//     border-bottom: 1px solid black;
-//     border-radius: 0;
-// }
+
 .AlarmCount {
   font-size: 12px;
   background-color: #ff0000a4;
@@ -46,7 +56,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 480px) {
+    padding: 6px;
+    font-size: 10px;
+  }
 }
+
 .diseaseContents {
   p {
     margin: 5px 0;
@@ -60,6 +76,17 @@
       padding: 4px 8px;
       border-radius: 4px;
       margin-right: 4px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    p {
+      font-size: 0.85rem; /* 폰트 크기 적당히 조정 */
+    }
+
+    span {
+      font-size: 0.75rem;
+      padding: 3px 6px;
     }
   }
 }
