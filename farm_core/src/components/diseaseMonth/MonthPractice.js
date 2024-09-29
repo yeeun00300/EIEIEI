@@ -59,19 +59,21 @@ function MonthPractice(props) {
 
   console.log(selectedMonth);
   return (
-    <div className={styles.mapbox}>
-      <div className={styles.wrapper}>
-        <h1>월별 질병 데이터</h1>
-        <input
-          type="month"
-          value={selectedMonth.slice(0, 4) + "-" + selectedMonth.slice(4)}
-          onChange={handleMonthChange}
-        />
+    <div className="container">
+      <div className={styles.mapbox}>
+        <div className={styles.wrapper}>
+          <h1>월별 질병 데이터</h1>
+          <input
+            type="month"
+            value={selectedMonth.slice(0, 4) + "-" + selectedMonth.slice(4)}
+            onChange={handleMonthChange}
+          />
+        </div>
+        <div className={styles.KORMapCard}>
+          <KORMap data={data} selectedMonth={selectedMonth} />{" "}
+        </div>
+        {/* 선택된 월도 전달 */}
       </div>
-      <div className={styles.KORMapCard}>
-        <KORMap data={data} selectedMonth={selectedMonth} />{" "}
-      </div>
-      {/* 선택된 월도 전달 */}
     </div>
   );
 }
