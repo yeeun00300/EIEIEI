@@ -268,18 +268,21 @@ function SignUp() {
     };
 
     try {
-      // await dispatch(addUser({ collectionName: "users", userObj }));
-      await addDatas("users", { ...userObj, email });
+      // `dispatch`로 유저 정보 추가
+      const resultAction = await dispatch(
+        addUser({ collectionName: "users", userObj })
+      );
 
-      // addUser가 완료된 후에 navigate 호출
+      // `unwrap()`을 사용해 반환된 값에서 docId를 추출
+      const { docId } = resultAction.payload;
+
+      // 회원가입 완료 후, `docId`와 함께 페이지 이동
       alert("회원가입에 성공했습니다.");
-      navigate("/", { state: { docId: id, userInfo: userObj } });
-      // navigate("/");
+      navigate("/RegularPayment", { state: { docId, userObj } });
     } catch (error) {
       alert(`회원가입 실패: ${error.message}`);
     }
   };
-
   // const saveImgFile = () => {
   //   const file = imgRef.current.files[0];
   //   if (file) {

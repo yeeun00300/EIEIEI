@@ -178,9 +178,25 @@ function Login() {
     const kakaoAPIKey = `${process.env.REACT_APP_REST_API_KEY}`;
     const redirectURI = `${process.env.REACT_APP_REDIRECT_URI}`;
     const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoAPIKey}&redirect_uri=${redirectURI}&response_type=code`;
-    const handleLogin = () => {
+    const handleLogin = async () => {
       window.location.href = kakaoAuthURL;
+
+      // 카카오 로그인 후 추가 처리
+      try {
+        const userEmail = "user's email from Kakao"; // 카카오에서 사용자 이메일 가져오기
+        const paymentInfo = {
+          paymentDate: new Date().toISOString(),
+          amount: 1000, // 결제 금액
+          paymentId: `kakao-${Date.now()}`,
+        };
+
+        await addPaymentHistory("users", userEmail, paymentInfo); // 결제 정보 추가
+        alert("카카오 로그인 후 결제 이력이 추가되었습니다.");
+      } catch (error) {
+        console.error("카카오 로그인 후 결제 정보 추가 오류:", error);
+      }
     };
+
     return (
       <>
         <button className={styles.kakao} onClick={handleLogin} type="button">
@@ -192,6 +208,7 @@ function Login() {
 
   // 구글 로그인
   // 구글 로그인 후 추가 정보 처리
+  // 구글 로그인
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
@@ -204,8 +221,14 @@ function Login() {
           localStorage.setItem("email", user.email);
           dispatch(setNotLogin(false));
 
-          // paymentHistory에 정보 추가 (Firestore 예시)
-          await addPaymentHistory(user.email); // 이 함수에서 결제 이력 추가 처리
+          // paymentHistory에 정보 추가
+          const paymentInfo = {
+            paymentDate: new Date().toISOString(),
+            amount: 1000, // 결제 금액
+            paymentId: `google-${Date.now()}`,
+          };
+
+          await addPaymentHistory("users", user.email, paymentInfo); // 결제 정보 추가
 
           navigate("/");
         } else {

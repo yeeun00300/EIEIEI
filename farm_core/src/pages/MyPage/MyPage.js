@@ -11,7 +11,7 @@ const dataObj = {
   UserInfo: { label: "회원정보수정" },
   myCommunity: { label: "내 게시글" },
   question: { label: "1:1 문의하기" },
-  // payment: { label: "결제내역" },
+  payment: { label: "결제내역" },
 };
 
 function MyPage() {
@@ -52,7 +52,7 @@ function MyPage() {
         {activeComponent === "UserInfo" && <UserInfo />}
         {activeComponent === "myCommunity" && <MyCommunity />}
         {activeComponent === "question" && <Question />}
-        {/* {activeComponent === "payment" && <Payment />} */}
+        {activeComponent === "payment" && <Payment />}
       </div>
     </div>
   );
