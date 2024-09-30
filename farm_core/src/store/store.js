@@ -23,6 +23,7 @@ import markVaccineCompleteSlice from "./myPageSlice/markVaccineCompleteSlice";
 import markDiseaseCompleteSlice from "./myPageSlice/markDiseaseCompleteSlice";
 import diseaseSlice from "./diseaseSlice/diseaseSlice";
 import scheduleSlice from "./scheduleSlice/scheduleSlice";
+import widgetSlice from "./widgetSlice/widgetSlice";
 
 const store = configureStore({
   reducer: {
@@ -50,6 +51,7 @@ const store = configureStore({
     markDiseaseCompleteSlice,
     diseaseSlice,
     scheduleSlice,
+    widgetSlice,
   },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({ serializableCheck: false }),

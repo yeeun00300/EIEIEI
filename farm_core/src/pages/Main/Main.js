@@ -618,13 +618,53 @@ function Main({ farmList }) {
   //대시보드 편집중일때
   const editMode = () => {
     setEdit(true);
+    if (widgetList === 0) {
+      let zero = [];
+      zero = {
+        lg: [
+          {
+            i: "10",
+            x: 2,
+            y: 0,
+            w: 3,
+            h: 3,
+            minw: 1,
+            maxh: 3,
+          },
+        ],
+        md: [
+          {
+            i: "10",
+            x: 2,
+            y: 0,
+            w: 3,
+            h: 3,
+            minw: 1,
+            maxh: 3,
+          },
+        ],
+        sm: [
+          {
+            i: "10",
+            x: 2,
+            y: 0,
+            w: 3,
+            h: 3,
+            minw: 1,
+            maxh: 3,
+          },
+        ],
+      };
+      setLayout(zero);
+    }
+    setLayout(newLayouts);
   };
   //대시보드 편집 완료(파이어베이스에 등록하는거 추가예정)
   const fixedMode = async () => {
     // 수정 모드를 비활성화
     setEdit(false);
     const farmDocId = currentFarm.docId;
-    //레이아웃 비어있을때 초기값 추가
+    //체크리스트 비어있을때 초기값 추가
     let basic = [];
     if (
       layout.lg.length === 0 &&
@@ -667,8 +707,8 @@ function Main({ farmList }) {
         ],
       };
       await saveFarmLayout(farmDocId, basic);
+      setFetchLayoutCount(0); // farmId와 현재 레이아웃 전달
       setLayout(basic);
-      setFetchLayoutCount(1); // farmId와 현재 레이아웃 전달
     } else {
       // docId와 newLayout 값을 적절히 전달하여 호출
       await saveFarmLayout(farmDocId, layout);
@@ -691,6 +731,45 @@ function Main({ farmList }) {
     }
 
     const loadLayout = async () => {
+      if (widgetList === 0) {
+        let zero = [];
+        zero = {
+          lg: [
+            {
+              i: "10",
+              x: 2,
+              y: 0,
+              w: 3,
+              h: 3,
+              minw: 1,
+              maxh: 3,
+            },
+          ],
+          md: [
+            {
+              i: "10",
+              x: 2,
+              y: 0,
+              w: 3,
+              h: 3,
+              minw: 1,
+              maxh: 3,
+            },
+          ],
+          sm: [
+            {
+              i: "10",
+              x: 2,
+              y: 0,
+              w: 3,
+              h: 3,
+              minw: 1,
+              maxh: 3,
+            },
+          ],
+        };
+        setLayout(zero);
+      }
       setLayout(newLayouts);
       const savedLayout = await fetchFarmLayout(currentFarm.docId);
       // 초기값 설정 여부를 위한 상태 추가
