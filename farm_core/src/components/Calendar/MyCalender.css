@@ -127,6 +127,13 @@
 }
 
 /* 반응형 디자인 */
+
+@media (max-width: 1024px) {
+  .squareGlobalDeleteBtn {
+    width: 7rem;
+    font-size: 0.8rem;
+  }
+}
 /* 태블릿 이하 화면 (768px 이하) */
 @media (max-width: 768px) {
   .react-calendar {
@@ -149,6 +156,10 @@
   .schedule-info {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .squareGlobalDeleteBtn {
+    width: 6rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -174,5 +185,9 @@
   .schedule-info {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .squareGlobalDeleteBtn {
+    width: 4rem;
+    font-size: 0.5rem;
   }
 }
