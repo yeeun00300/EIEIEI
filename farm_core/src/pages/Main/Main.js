@@ -43,6 +43,7 @@ import HealthCondition from "../../components/MyLiveStock/charts/HealthCondition
 import StockProduct from "../../components/MyLiveStock/charts/StockProduct";
 import MortalityRate from "../../components/MyLiveStock/charts/MortalityRate";
 import CCTVAnimal from "../../components/CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
+import plus from "../../img/plus-solid.svg";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -692,6 +693,9 @@ function Main({ farmList }) {
               </div>
             ))}
           </ResponsiveGridLayout>
+          {/* <div className={styles.plusBtn}>
+            <img src={plus} alt="" />
+          </div> */}
         </div>
         <div className={styles.sub}>
           {/* <div className={styles.alarm}>날씨, 질병 정보 들어갈 곳</div> */}
