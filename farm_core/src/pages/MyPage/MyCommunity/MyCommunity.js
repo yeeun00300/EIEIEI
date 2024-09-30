@@ -238,7 +238,7 @@ function MyCommunity() {
                 </Button>
               </DialogActions>
             </Dialog>
-            <RegularPayment />
+            {/* <RegularPayment /> */}
           </>
         )}
       </div>

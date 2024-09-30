@@ -272,7 +272,7 @@ function SignUp() {
 
       // addUser가 완료된 후에 navigate 호출
       alert("회원가입에 성공했습니다.");
-      navigate("/RegularPayment", { state: { docId: id, userInfo: userObj } });
+      navigate("/", { state: { docId: id, userInfo: userObj } });
     } catch (error) {
       alert(`회원가입 실패: ${error.message}`);
     }
