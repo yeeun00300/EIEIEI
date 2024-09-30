@@ -55,6 +55,18 @@ const userInfoEditSlice = createSlice({
       .addCase(fetchUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(addUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addUser.fulfilled, (state, action) => {
+        state.userInfo.push(action.payload);
+        state.isLoading = false;
+        console.log(state.userInfo); // Redux 상태 확인
+      })
+      .addCase(addUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

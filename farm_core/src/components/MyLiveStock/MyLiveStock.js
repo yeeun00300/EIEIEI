@@ -31,6 +31,7 @@ import { useFetchCollectionData } from "../../firebase";
 import ExcelUpload from "../ExcelUpload/ExcelUpload";
 import ExcelTemplateDownload from "../ExcelTemplateDownload/ExcelTemplateDownload";
 import warn from "../../img/warn.svg";
+import FirstPage from "../../pages/FirstPage/FirstPage";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();
@@ -162,15 +163,7 @@ function MyLiveStock(props) {
       ) : (
         <>
           {farmList.length === 0 ? (
-            <div className="page">
-              <div className={styles.warnDiv}>
-                <img src={warn} alt="" />
-                <h2>등록된 농장이 없습니다.</h2>
-                <button className="squareGlobalBtn" onClick={handleAddClick}>
-                  농장 추가하러가기
-                </button>
-              </div>
-            </div>
+            <FirstPage />
           ) : (
             <div className="page">
               <div className={styles.container}>

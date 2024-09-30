@@ -43,12 +43,13 @@ function EmailSignUp(props) {
       // }
       // 이메일 인증 링크 전송
 
-      const actionCodeSettings = {
-        // 이메일 인증 후 리디렉션할 URL을 설정
-        url: "http://localhost:3000/verify-email", // 개발 환경 URL
-        handleCodeInApp: true,
-      };
-      await sendEmailVerification(user, actionCodeSettings);
+      // 주석 해제 ----------------------------
+      // const actionCodeSettings = {
+      //   // 이메일 인증 후 리디렉션할 URL을 설정
+      //   url: "http://localhost:3000/verify-email", // 개발 환경 URL
+      //   handleCodeInApp: true,
+      // };
+      // await sendEmailVerification(user, actionCodeSettings);
 
       localStorage.setItem("email", email);
       localStorage.setItem("uid", user.uid);
@@ -57,8 +58,8 @@ function EmailSignUp(props) {
         setUser({ email: user.email, token: user.refreshToken, uid: user.uid })
       );
       alert("인증 링크가 발송 되었습니다. 확인해주세요.");
-      navigate("/verify-email"); // 회원가입 완료 후 이동할 페이지
-      // navigate("/signup"); // 지울거
+      // navigate("/verify-email"); // 회원가입 완료 후 이동할 페이지
+      navigate("/signup"); // 지울거
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         // Firebase에서 이메일이 이미 사용 중일 때의 에러

@@ -69,13 +69,15 @@ function DeleteAccount() {
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleDeleteAccount}
-      className={styles.deleteAccountBtn}
-    >
-      회원 탈퇴
-    </button>
+    <div className="container">
+      <button
+        type="button"
+        onClick={handleDeleteAccount}
+        className={styles.deleteAccountBtn}
+      >
+        회원 탈퇴
+      </button>
+    </div>
   );
 }
 

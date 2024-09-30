@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdPayment } from "react-icons/md";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import logoImg from "../../img/TitleLogo.png";
 import styles from "./RegularPayment.module.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addPaymentHistory } from "../../firebase";
 import kroDate from "../../utils/korDate";
 import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
+import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
 
 function RegularPayment() {
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+  const dispatch = useDispatch();
   console.log(userInfo);
+  useEffect(() => {
+    if (!userInfo || userInfo.length === 0) {
+      dispatch(fetchUser({ collectionName: "users", queryOpstions: {} }));
+    }
+  }, [userInfo, dispatch]);
   const requestPayment = async () => {
     if (PortOne && userInfo && userInfo.length > 0) {
       const customerEmail = userInfo[0].email;
