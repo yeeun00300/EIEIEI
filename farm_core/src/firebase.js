@@ -612,7 +612,7 @@ export const updateComment = async (postId, commentId, updatedContent) => {
     const commentRef = doc(db, "community", postId, "comments", commentId);
     await updateDoc(commentRef, {
       subContent: updatedContent,
-      subUpdatedAt: Timestamp.fromDate(new Date()),
+      subUpdatedAt: new Date().getTime(),
     });
     console.log("댓글 수정 성공!");
   } catch (error) {

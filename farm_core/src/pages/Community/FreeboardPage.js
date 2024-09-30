@@ -7,6 +7,7 @@ import CommentSection from "./components/CommentSection";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteCommunityPost,
+  fetchCommunityPosts,
   reportPost,
   updatePostReactions,
 } from "../../store/communitySlice/communitySlice";
@@ -69,7 +70,32 @@ function FreeboardPage() {
       setUserHasReported(reportedPosts[id] === userEmail);
     }
   }, [postData]);
+  useEffect(() => {
+    if (!postData) {
+      console.log("postData가 없습니다. 데이터를 불러옵니다."); // 로그 추가
+      const fetchPostData = async () => {
+        try {
+          const post = await dispatch(
+            fetchCommunityPosts({
+              communityType: "freeboard", // 혹은 livestock 등 적절한 타입 사용
+              queryOptions: {
+                conditions: [{ field: "id", operator: "==", value: id }],
+              },
+            })
+          ).unwrap();
+          if (post) {
+            console.log("post 불러오기 성공:", post); // 데이터 성공 여부 확인
+          }
+        } catch (error) {
+          console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
+        }
+      };
 
+      fetchPostData();
+    } else {
+      console.log("postData:", postData); // postData 확인
+    }
+  }, [postData, dispatch, id]);
   const handleUpdate = () => {
     navigate(`/My_Farm_Board_NewBoard/${id}`, { state: { postData } });
   };
