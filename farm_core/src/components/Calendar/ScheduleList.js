@@ -72,9 +72,9 @@ const ScheduleList = ({ schedules, onEdit, onDelete }) => {
               : null
           )}
       </ul>
-      {schedules && schedules.length > 0 && schedules[0].content.length > 2 && (
+      {schedules && schedules.length > 0 && schedules[0].content.length > 1 && (
         <button onClick={handleMoreClick} className="squareGlobalDeleteBtn">
-          금일 일정 전체 보기
+          더보기
         </button>
       )}
       {isModalOpen && (
