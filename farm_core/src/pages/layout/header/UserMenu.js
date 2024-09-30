@@ -32,14 +32,14 @@ function UserMenu(props) {
   return (
     <div className={styles.container}>
       <div className={styles.userEmail}>
-        사용중인 이메일
+        로그인된 이메일
         <p>{email}</p>
       </div>
       <div className={styles.btns}>
         <Link className={styles.btn} to={"/My_Farm_MyPage"}>
-          <button>회원정보수정</button>
+          <button className="squareGlobalEditBtn">회원정보수정</button>
         </Link>
-        <button className={styles.logoutBtn} onClick={handleLogout}>
+        <button className="squareGlobalDeleteBtn" onClick={handleLogout}>
           로그아웃
         </button>
       </div>

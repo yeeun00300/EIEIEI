@@ -11,7 +11,7 @@ import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
 
 function RegularPayment() {
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
-
+  console.log(userInfo);
   const requestPayment = async () => {
     if (PortOne && userInfo && userInfo.length > 0) {
       const customerEmail = userInfo[0].email;
@@ -34,8 +34,9 @@ function RegularPayment() {
           fullName: customerName,
           email: customerEmail,
         },
-        redirectURL: "localhost:3000/",
+        redirectURL: "http://localhost:3000/",
       });
+      console.log("결제 응답 결과:", response);
 
       if (response && response.txId) {
         await addPaymentHistory("users", docId, {
