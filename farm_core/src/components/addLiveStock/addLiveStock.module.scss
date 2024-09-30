@@ -33,8 +33,8 @@
     display: block;
     font-weight: bold;
     margin-right: 1rem; /* margin을 rem으로 설정 */
-    width: 20%; /* label의 너비를 %로 설정 */
-    text-align: right;
+    width: 10%; /* label의 너비를 %로 설정 */
+    // text-align: right;
     line-height: 2rem; /* 줄 높이를 rem으로 설정 */
     color: #555; /* label 색상 변경 */
   }
@@ -93,7 +93,7 @@
   }
 
   .addLiveStockBox label {
-    width: 50%; /* label 너비 조정 */
+    // width: 50%; /* label 너비 조정 */
     margin-right: 0.5rem; /* margin 조정 */
   }
 
@@ -114,7 +114,7 @@
   }
 
   .addLiveStockBox label {
-    width: 100%; /* label 너비를 100%로 변경 */
+    // width: 100%; /* label 너비를 100%로 변경 */
     text-align: left; /* 왼쪽 정렬 */
     margin-right: 0; /* margin 제거 */
   }
@@ -128,10 +128,10 @@
   .addLiveStockSelect,
   .addLiveStockTextarea {
     width: 100%; /* 입력 필드 너비를 100%로 설정 */
-    margin-bottom: 0.5rem; /* 아래쪽 여백 추가 */
+    // margin-bottom: 0.5rem; /* 아래쪽 여백 추가 */
   }
 
   .addLiveStockBtn {
-    width: 100%; /* 버튼 너비를 100%로 설정 */
+    // width: 100%; /* 버튼 너비를 100%로 설정 */
   }
 }
