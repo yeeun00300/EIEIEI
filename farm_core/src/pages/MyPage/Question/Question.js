@@ -100,9 +100,18 @@ function Question() {
       if (isEditing) {
         await updateDatas("community", editingQuestion.docId, addObj);
         alert("문의 사항이 성공적으로 수정되었습니다");
+        setQuestions((prevQuestions) => {
+          prevQuestions.map((q) =>
+            q.id === editingQuestion.id ? { ...q, addObj } : q
+          );
+        });
       } else {
         await addDatas("community", addObj);
         alert("문의 사항이 성공적으로 저장되었습니다");
+        setQuestions((prevQuestions) => [
+          ...prevQuestions,
+          { ...addObj, id: addDatas.id },
+        ]);
       }
 
       setFormData({
