@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addField } from "../../store/addLiveStockSlice/addLiveStockSlice";
 import { fetchFarmDocumentByEmail, addMessage } from "../../firebase";
 import styles from "./MedicalList.module.scss";
+import { MenuItem, Select } from "@mui/material";
 
 function MedicalList(props) {
   const dispatch = useDispatch();
@@ -108,19 +109,23 @@ function MedicalList(props) {
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <label className={styles.label}>축사 번호</label>
-            <select
+            <Select
               name="farmNumber"
               value={farmData.farmNumber || ""}
               onChange={handleSelectChange}
               className={styles.input}
             >
-              <option value="">축사 번호를 선택해주세요</option>
+              <MenuItem value="">축사 번호를 선택해주세요</MenuItem>
               {farmIdList.map((farmId, index) => (
-                <option key={index} value={farmId}>
+                <MenuItem
+                  key={index}
+                  value={farmId}
+                  className={styles.subInput}
+                >
                   {farmId}
-                </option>
+                </MenuItem>
               ))}
-            </select>
+            </Select>
           </div>
 
           <div className={styles.formGroup}>

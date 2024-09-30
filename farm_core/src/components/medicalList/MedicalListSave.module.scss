@@ -14,6 +14,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+  // width: 100%;
 }
 h2 {
   margin: 20px 0;
@@ -109,7 +110,7 @@ h2 {
     padding: 20px;
     border-radius: 10px;
     width: 80%;
-    max-width: 500px;
+    // max-width: 500px;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -227,35 +228,38 @@ h2 {
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .imgBox {
-    width: 40%;
-    height: 40%;
+    width: 50%;
+    height: 50%;
   }
 
   .cardHeader {
-    padding: 10px;
-    height: 80px;
+    padding: 15px;
+    height: 100px;
   }
 
   .cardBody p {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .detailHeader {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 
   .detailItem {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 }
+// .tableCellCenter {
+//   font-size: 1rem;
+// }
 
 @media (max-width: 768px) {
   .save {
@@ -390,5 +394,8 @@ h2 {
 
   .tableContainer {
     width: 100%;
+  }
+  .subcontainer {
+    width: 15.625rem;
   }
 }
