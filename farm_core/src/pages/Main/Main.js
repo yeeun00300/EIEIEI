@@ -694,7 +694,7 @@ function Main({ farmList }) {
           </ResponsiveGridLayout>
         </div>
         <div className={styles.sub}>
-          <div className={styles.alarm}>날씨, 질병 정보 들어갈 곳</div>
+          {/* <div className={styles.alarm}>날씨, 질병 정보 들어갈 곳</div> */}
           <MyCalendar />
           {edit ? (
             <button className={styles.button} onClick={fixedMode}>
