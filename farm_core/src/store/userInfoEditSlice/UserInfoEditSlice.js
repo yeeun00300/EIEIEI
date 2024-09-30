@@ -60,9 +60,9 @@ const userInfoEditSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addUser.fulfilled, (state, action) => {
-        state.userInfo.push(action.payload);
+        state.userInfo.push(action.payload); // 여기에 로그 추가
+        console.log("User added:", action.payload); // 여기서 유저 정보 확인
         state.isLoading = false;
-        console.log(state.userInfo); // Redux 상태 확인
       })
       .addCase(addUser.rejected, (state, action) => {
         state.isLoading = false;

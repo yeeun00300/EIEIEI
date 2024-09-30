@@ -784,21 +784,32 @@ function useFetchCollectionData(collectionName, fetchAction) {
 }
 
 // 결제를 이력으로 남기기
+
 async function addPaymentHistory(collectionName, docId, paymentInfo) {
-  const docRef = doc(db, collectionName, docId);
-  const docSnapshot = await getDoc(docRef);
+  try {
+    // Firestore에서 해당 문서를 참조
+    const docRef = doc(db, collectionName, docId);
+    const docSnapshot = await getDoc(docRef);
 
-  if (docSnapshot.exists()) {
-    const docData = docSnapshot.data();
-    const paymentHistory = docData.paymentHistory || [];
+    // 문서가 존재할 경우
+    if (docSnapshot.exists()) {
+      const docData = docSnapshot.data();
+      // 기존 결제 내역이 있으면 배열로 가져오고, 없으면 빈 배열로 초기화
+      const paymentHistory = docData.paymentHistory || [];
 
-    paymentHistory.push(paymentInfo);
+      // 새로운 결제 정보를 배열에 추가
+      paymentHistory.push(paymentInfo);
 
-    await updateDoc(docRef, {
-      paymentHistory: paymentHistory,
-    });
-  } else {
-    console.error("문서가 존재하지 않습니다");
+      // 결제 내역을 업데이트
+      await updateDoc(docRef, {
+        paymentHistory: paymentHistory, // 배열로 업데이트
+      });
+      console.log("결제 내역이 성공적으로 추가되었습니다.");
+    } else {
+      console.error("문서가 존재하지 않습니다");
+    }
+  } catch (error) {
+    console.error("결제 내역 추가 중 오류 발생: ", error);
   }
 }
 
