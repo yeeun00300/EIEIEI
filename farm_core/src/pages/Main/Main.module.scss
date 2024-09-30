@@ -25,6 +25,9 @@
     width: 85%;
     height: 100%;
     overflow-y: auto;
+    &.fullWidth {
+      width: 100%; // Full width when .sub is hidden
+    }
 
     // 위젯 아이템 사이즈 설정
     .item {

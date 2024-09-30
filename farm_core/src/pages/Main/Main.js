@@ -728,7 +728,7 @@ function Main({ farmList }) {
   return (
     <div className="page">
       <div className={styles.box}>
-        <div className={styles.widget}>
+        <div className={`${styles.widget} ${plus ? styles.fullWidth : ""}`}>
           <ResponsiveGridLayout
             className="layout"
             layouts={layout}
@@ -747,21 +747,12 @@ function Main({ farmList }) {
               </div>
             ))}
           </ResponsiveGridLayout>
-          {plus ? (
-            <div className={styles.plusBtn} onClick={handlePlusClick}>
-              <img src={plusIcon} alt="" />
-            </div>
-          ) : (
-            <div className={styles.plusBtn} onClick={handlePlusClick}>
-              <img src={removeIcon} alt="" />
-            </div>
-          )}
+          <div className={styles.plusBtn} onClick={handlePlusClick}>
+            <img src={plus ? plusIcon : removeIcon} alt="" />
+          </div>
         </div>
-        {plus ? (
-          <></>
-        ) : (
+        {!plus && (
           <div className={styles.sub}>
-            {/* <div className={styles.alarm}>날씨, 질병 정보 들어갈 곳</div> */}
             <MyCalendar />
             {edit ? (
               <button className={styles.button} onClick={fixedMode}>
@@ -772,7 +763,7 @@ function Main({ farmList }) {
                 대시보드 편집하기
               </button>
             )}
-            {edit ? (
+            {edit && (
               <div className={styles.checkList}>
                 <WidgetList
                   setWidgetList={setWidgetList}
@@ -780,8 +771,6 @@ function Main({ farmList }) {
                   setFetchLayoutCount={setFetchLayoutCount}
                 />
               </div>
-            ) : (
-              <></>
             )}
           </div>
         )}
