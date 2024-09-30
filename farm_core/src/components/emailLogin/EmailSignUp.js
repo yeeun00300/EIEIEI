@@ -43,12 +43,13 @@ function EmailSignUp(props) {
       // }
       // 이메일 인증 링크 전송
 
-      const actionCodeSettings = {
-        // 이메일 인증 후 리디렉션할 URL을 설정
-        url: "http://localhost:3000/verify-email", // 개발 환경 URL
-        handleCodeInApp: true,
-      };
-      await sendEmailVerification(user, actionCodeSettings);
+      // 주석 해제 ----------------------------
+      // const actionCodeSettings = {
+      //   // 이메일 인증 후 리디렉션할 URL을 설정
+      //   url: "http://localhost:3000/verify-email", // 개발 환경 URL
+      //   handleCodeInApp: true,
+      // };
+      // await sendEmailVerification(user, actionCodeSettings);
 
       localStorage.setItem("email", email);
       localStorage.setItem("uid", user.uid);
