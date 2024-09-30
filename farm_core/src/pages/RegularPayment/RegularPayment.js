@@ -43,7 +43,7 @@ function RegularPayment() {
         },
         // redirectURL: "http://localhost:3000/",
       });
-      navigate("/");
+      navigate("/FirstPage");
       console.log("결제 응답 결과:", response);
 
       if (response && response.txId) {
