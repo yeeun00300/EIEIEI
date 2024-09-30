@@ -32,6 +32,7 @@ function UserInfo() {
 
   const [file, setFile] = useState(null);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
+  console.log(initialDataLoaded);
   const [previewUrl, setPreviewUrl] = useState(img);
   const [isEditing, setIsEditing] = useState(true);
 
@@ -39,7 +40,7 @@ function UserInfo() {
 
   useEffect(() => {
     if (!initialDataLoaded) {
-      dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
+      dispatch(fetchUser({ collectionName: "users", queryOptions: { email } }));
       setInitialDataLoaded(true);
     }
   }, [dispatch, initialDataLoaded]);
@@ -47,6 +48,7 @@ function UserInfo() {
   useEffect(() => {
     if (userInfo.length > 0) {
       const user = userInfo[0];
+      console.log(user);
       dispatch(
         updateUserInfo({
           name: user.name || "",
