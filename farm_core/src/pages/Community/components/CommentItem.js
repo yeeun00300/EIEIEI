@@ -53,8 +53,8 @@ function CommentItem({
     if (!updatedContent.trim()) return;
 
     try {
-      const commentRef = doc(db, "community", postId, "comments", id);
-      await updateComment(commentRef, { subContent: updatedContent });
+      const commentRef = doc(db, "community", postId, "comments", id); // 여기서 postId와 id 값 확인
+      await updateComment(postId, id, updatedContent); // updateComment 함수로 postId와 id 전달
       setIsEditing(false);
       refreshComments();
     } catch (error) {
