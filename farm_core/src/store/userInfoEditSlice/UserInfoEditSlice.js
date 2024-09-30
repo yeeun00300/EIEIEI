@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDatas } from "../../firebase";
+import { addDatas, getDatas } from "../../firebase";
 
 const initialState = {
   userInfo: [],
@@ -72,6 +72,18 @@ const fetchUser = createAsyncThunk(
   }
 );
 
+const addUser = createAsyncThunk(
+  "user/addUser",
+  async ({ collectionName, userObj }) => {
+    try {
+      const numData = await addDatas(collectionName, userObj);
+      return numData;
+    } catch (error) {
+      throw new Error("유저 정보를 추가하는 데 실패했습니다.");
+    }
+  }
+);
+
 export default userInfoEditSlice.reducer;
-export { fetchUser };
+export { fetchUser, addUser };
 export const { updateUserInfo } = userInfoEditSlice.actions;

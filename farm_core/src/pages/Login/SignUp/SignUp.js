@@ -37,6 +37,7 @@ import { uploadProfileImage } from "../../../store/profileImageSlice/profileImag
 import profileImageSlice from "./../../../store/profileImageSlice/profileImageSlice";
 import { joinUser } from "./../../../firebase";
 import kroDate from "../../../utils/korDate";
+import { addUser } from "../../../store/userInfoEditSlice/UserInfoEditSlice";
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -272,11 +273,17 @@ function SignUp() {
       // userObj.payLog.push({ registDate: kroDate(), cardId: "", price: "" });
 
       // console.log(`테스트용${userObj.detailedAddress}`);
-      // await addDatas("users", userObj);
-      await addDatas("users", { ...userObj, email });
+      await dispatch(
+        addUser({
+          collectionName: "users",
+          userObj: userObj,
+        })
+      );
+
+      // await addDatas("users", { ...userObj, email });
       // console.log(userObj);
       alert("회원가입에 성공했습니다.");
-      navigate("/RegularPayment");
+      navigate("/RegularPayment", { state: { docId: id } });
     } catch (error) {
       // console.error("회원가입 실패:", error);
       alert(`회원가입 실패: ${error.message}`);
