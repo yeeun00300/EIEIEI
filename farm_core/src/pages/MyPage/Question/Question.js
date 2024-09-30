@@ -19,6 +19,8 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
+import StockAddfromExcel from "../../../components/StockAdd/StockAddfromExcel";
+import MyStockAddPage from "../../MyStockAddPage/MyStockAddPage";
 
 function UserInfo() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
@@ -309,6 +311,7 @@ function UserInfo() {
               </ListItem>
             ))}
           </List>
+          <MyStockAddPage />
         </Box>
       )}
       {/* 선택한 문의의 관리자 답변 표시 */}
