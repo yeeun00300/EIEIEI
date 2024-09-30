@@ -157,7 +157,7 @@ function Question() {
       filePreview: null,
       isEditing: false,
     });
-    setIsAdding(true);
+    setIsAdding(true); // 문의 추가 모드로 변경
   };
 
   const handleViewAnswers = async (question) => {
@@ -167,7 +167,6 @@ function Question() {
         question.id,
         "comments"
       );
-      console.log("Admin Response:", adminResponse); // 추가된 로그
       setSelectedQuestion({ ...question, adminResponse });
     } catch (error) {
       console.error("Error fetching answers: ", error);
@@ -176,6 +175,18 @@ function Question() {
 
   return (
     <div className="container">
+      {/* 문의 추가 버튼 */}
+      {!isAdding && !isEditing && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddClick}
+          className={styles.addButton}
+        >
+          문의 추가
+        </Button>
+      )}
+
       {(isAdding || isEditing) && (
         <Box className={styles.contact}>
           <Typography variant="h2">
@@ -262,6 +273,7 @@ function Question() {
           </form>
         </Box>
       )}
+
       {!isAdding && !isEditing && (
         <Box className={styles.listContainer}>
           <Typography variant="h4" className={styles.listHeader}>
@@ -311,6 +323,7 @@ function Question() {
           </List>
         </Box>
       )}
+
       {/* 선택한 문의의 관리자 답변 표시 */}
       {selectedQuestion && (
         <Box className={styles.adminResponseContainer}>
