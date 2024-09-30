@@ -269,7 +269,7 @@ function SignUp() {
         registDate: kroDate(),
         // payLog: [],
       };
-
+      console.log(userObj);
       // userObj.payLog.push({ registDate: kroDate(), cardId: "", price: "" });
 
       // console.log(`테스트용${userObj.detailedAddress}`);
@@ -283,7 +283,7 @@ function SignUp() {
       // await addDatas("users", { ...userObj, email });
       // console.log(userObj);
       alert("회원가입에 성공했습니다.");
-      navigate("/RegularPayment", { state: { docId: id } });
+      navigate("/RegularPayment", { state: { docId: id, userInfo: userObj } });
     } catch (error) {
       // console.error("회원가입 실패:", error);
       alert(`회원가입 실패: ${error.message}`);

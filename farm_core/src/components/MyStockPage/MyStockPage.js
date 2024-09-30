@@ -21,9 +21,9 @@ function MyStockPage(props) {
           <Tab eventKey="one" title="축사 정보">
             <MedicalListCheck />
           </Tab>
-          <Tab eventKey="two" title="축사 제어">
+          {/* <Tab eventKey="two" title="축사 제어">
             Tab content for Home
-          </Tab>
+          </Tab> */}
           <Tab eventKey="three" title="문진표 작성">
             <div className={styles.one}>
               <MedicalList />
