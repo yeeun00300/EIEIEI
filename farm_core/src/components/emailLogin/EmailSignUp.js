@@ -58,8 +58,8 @@ function EmailSignUp(props) {
         setUser({ email: user.email, token: user.refreshToken, uid: user.uid })
       );
       alert("인증 링크가 발송 되었습니다. 확인해주세요.");
-      navigate("/verify-email"); // 회원가입 완료 후 이동할 페이지
-      // navigate("/signup"); // 지울거
+      // navigate("/verify-email"); // 회원가입 완료 후 이동할 페이지
+      navigate("/signup"); // 지울거
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         // Firebase에서 이메일이 이미 사용 중일 때의 에러
