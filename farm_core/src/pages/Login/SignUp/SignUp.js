@@ -241,7 +241,6 @@ function SignUp() {
       return;
     }
 
-    // 이미지 업로드 실패 시 경고 메시지 출력
     if (!downloadURL) {
       alert("이미지 업로드에 실패했습니다. 이미지를 다시 선택해주세요.");
       return;
@@ -250,42 +249,31 @@ function SignUp() {
     const email = e.target.email.value;
     localStorage.setItem("email", email);
 
+    const userObj = {
+      id,
+      name: username,
+      email,
+      address,
+      detailedAddress,
+      farm,
+      nickname,
+      birthday,
+      phone,
+      profileImages: downloadURL,
+      createdAt: kroDate(),
+      isActive: "Y",
+      blackState: "green",
+      payDate: kroDate(),
+      registDate: kroDate(),
+    };
+
     try {
-      const userObj = {
-        id,
-        name: username,
-        email,
-        address,
-        detailedAddress,
-        farm,
-        nickname,
-        birthday,
-        phone,
-        profileImages: downloadURL,
-        createdAt: kroDate(),
-        isActive: "Y",
-        blackState: "green",
-        payDate: kroDate(),
-        registDate: kroDate(),
-        // payLog: [],
-      };
-      console.log(userObj);
-      // userObj.payLog.push({ registDate: kroDate(), cardId: "", price: "" });
+      await dispatch(addUser({ collectionName: "users", userObj }));
 
-      // console.log(`테스트용${userObj.detailedAddress}`);
-      await dispatch(
-        addUser({
-          collectionName: "users",
-          userObj: userObj,
-        })
-      );
-
-      // await addDatas("users", { ...userObj, email });
-      // console.log(userObj);
+      // addUser가 완료된 후에 navigate 호출
       alert("회원가입에 성공했습니다.");
       navigate("/RegularPayment", { state: { docId: id, userInfo: userObj } });
     } catch (error) {
-      // console.error("회원가입 실패:", error);
       alert(`회원가입 실패: ${error.message}`);
     }
   };

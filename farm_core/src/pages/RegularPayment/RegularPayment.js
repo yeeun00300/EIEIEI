@@ -9,16 +9,23 @@ import { addPaymentHistory, useFetchCollectionData } from "../../firebase";
 import kroDate from "../../utils/korDate";
 import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
 import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function RegularPayment() {
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { docId } = location.state || {};
+
+  console.log("Doc ID:", docId);
+  console.log("User Info:", userInfo);
   useEffect(() => {
     dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
+    console.log(userInfo);
   }, [dispatch]);
   console.log(userInfo);
   const navigate = useNavigate();
+
   const requestPayment = async () => {
     if (PortOne && userInfo && userInfo.length > 0) {
       const customerEmail = userInfo[0].email;
@@ -41,17 +48,22 @@ function RegularPayment() {
           fullName: customerName,
           email: customerEmail,
         },
-        // redirectURL: "http://localhost:3000/",
       });
+
       navigate("/");
       console.log("결제 응답 결과:", response);
 
       if (response && response.txId) {
-        await addPaymentHistory("users", docId, {
+        // 결제 정보 객체 생성
+        const paymentInfo = {
           paymentDate: payDate,
           amount: 1000,
           paymentId: response.paymentId,
-        });
+        };
+
+        // Firestore에 결제 내역 추가
+        await addPaymentHistory("users", docId, paymentInfo);
+        navigate("/FirstPage");
       } else {
         console.error("결제 실패");
       }

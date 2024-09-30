@@ -26,7 +26,7 @@ function Payment() {
     if (!phoneNumber) return "N/A";
     return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
-
+  console.log(users);
   const formatAmount = (amount) => {
     if (amount === undefined || amount === null) return "₩0";
     return `₩${amount.toLocaleString()}`;
