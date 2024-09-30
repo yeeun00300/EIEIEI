@@ -62,6 +62,13 @@ function NewBoardPage() {
 
     setIsSubmitting(true);
 
+    // 이미지가 없을 경우 alert를 띄우고 제출 중단
+    if (!image && !postData?.imgUrl) {
+      alert("이미지를 등록해야 합니다.");
+      setIsSubmitting(false);
+      return; // 함수 종료
+    }
+
     let imageUrl = postData?.imgUrl; // 기존 이미지를 우선 사용
 
     // 이미지가 새로 선택된 경우에만 업로드
@@ -75,7 +82,6 @@ function NewBoardPage() {
         return; // 업로드 실패 시 함수 종료
       }
     }
-
     const dataObj = {
       title,
       content,
