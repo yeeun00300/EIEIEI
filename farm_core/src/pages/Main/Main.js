@@ -43,7 +43,8 @@ import HealthCondition from "../../components/MyLiveStock/charts/HealthCondition
 import StockProduct from "../../components/MyLiveStock/charts/StockProduct";
 import MortalityRate from "../../components/MyLiveStock/charts/MortalityRate";
 import CCTVAnimal from "../../components/CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
-import plus from "../../img/plus-solid.svg";
+import plusIcon from "../../img/plus-solid.svg";
+import removeIcon from "../../img/xmark-solid.svg";
 
 // Category 스케일을 등록
 ChartJS.register(
@@ -623,9 +624,57 @@ function Main({ farmList }) {
     // 수정 모드를 비활성화
     setEdit(false);
     const farmDocId = currentFarm.docId;
-
-    // docId와 newLayout 값을 적절히 전달하여 호출
-    await saveFarmLayout(farmDocId, layout); // farmId와 현재 레이아웃 전달
+    //레이아웃 비어있을때 초기값 추가
+    let basic = [];
+    if (
+      layout.lg.length === 0 &&
+      layout.md.length === 0 &&
+      layout.sm.length === 0
+    ) {
+      basic = {
+        lg: [
+          {
+            i: "10",
+            x: 2,
+            y: 0,
+            w: 3,
+            h: 3,
+            minw: 1,
+            maxh: 3,
+          },
+        ],
+        md: [
+          {
+            i: "10",
+            x: 2,
+            y: 0,
+            w: 3,
+            h: 3,
+            minw: 1,
+            maxh: 3,
+          },
+        ],
+        sm: [
+          {
+            i: "10",
+            x: 2,
+            y: 0,
+            w: 3,
+            h: 3,
+            minw: 1,
+            maxh: 3,
+          },
+        ],
+      };
+      await saveFarmLayout(farmDocId, basic);
+      setLayout(basic);
+      setFetchLayoutCount(1); // farmId와 현재 레이아웃 전달
+    } else {
+      // docId와 newLayout 값을 적절히 전달하여 호출
+      await saveFarmLayout(farmDocId, layout);
+      setLayout(layout);
+      setFetchLayoutCount(widgetList.length);
+    }
   };
 
   useEffect(() => {
@@ -671,6 +720,11 @@ function Main({ farmList }) {
     loadLayout();
   }, [currentFarm?.docId, fetchLayoutCount]);
 
+  const [plus, setPlus] = useState(true);
+  const handlePlusClick = () => {
+    setPlus((prev) => !prev);
+  };
+
   return (
     <div className="page">
       <div className={styles.box}>
@@ -693,34 +747,44 @@ function Main({ farmList }) {
               </div>
             ))}
           </ResponsiveGridLayout>
-          {/* <div className={styles.plusBtn}>
-            <img src={plus} alt="" />
-          </div> */}
-        </div>
-        <div className={styles.sub}>
-          {/* <div className={styles.alarm}>날씨, 질병 정보 들어갈 곳</div> */}
-          <MyCalendar />
-          {edit ? (
-            <button className={styles.button} onClick={fixedMode}>
-              대시보드 저장하기
-            </button>
-          ) : (
-            <button className={styles.button} onClick={editMode}>
-              대시보드 편집하기
-            </button>
-          )}
-          {edit ? (
-            <div className={styles.checkList}>
-              <WidgetList
-                setWidgetList={setWidgetList}
-                widgetList={widgetList}
-                setFetchLayoutCount={setFetchLayoutCount}
-              />
+          {plus ? (
+            <div className={styles.plusBtn} onClick={handlePlusClick}>
+              <img src={plusIcon} alt="" />
             </div>
           ) : (
-            <></>
+            <div className={styles.plusBtn} onClick={handlePlusClick}>
+              <img src={removeIcon} alt="" />
+            </div>
           )}
         </div>
+        {plus ? (
+          <></>
+        ) : (
+          <div className={styles.sub}>
+            {/* <div className={styles.alarm}>날씨, 질병 정보 들어갈 곳</div> */}
+            <MyCalendar />
+            {edit ? (
+              <button className={styles.button} onClick={fixedMode}>
+                대시보드 저장하기
+              </button>
+            ) : (
+              <button className={styles.button} onClick={editMode}>
+                대시보드 편집하기
+              </button>
+            )}
+            {edit ? (
+              <div className={styles.checkList}>
+                <WidgetList
+                  setWidgetList={setWidgetList}
+                  widgetList={widgetList}
+                  setFetchLayoutCount={setFetchLayoutCount}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

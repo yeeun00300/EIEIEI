@@ -5,16 +5,20 @@
   // 캘린더 접었다 피기
   .plusBtn {
     border-radius: 50%;
-    padding: 10px;
+    padding: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 3dvb;
     position: absolute;
-    background-color: red;
+    background-color: var(--point-color);
     right: 10px;
-    bottom: 10px;
+    top: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .widget {
