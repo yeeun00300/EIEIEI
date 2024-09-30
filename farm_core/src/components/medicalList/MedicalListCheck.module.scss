@@ -8,7 +8,7 @@
     padding: 0.5rem;
   }
   .stockInfo {
-    padding: 1rem 3rem;
+    // padding: 1rem 3rem;
   }
 }
 
@@ -115,7 +115,7 @@
   }
   .checkMain button {
     padding: 0.6rem; /* 버튼 패딩 증가 */
-    font-size: 0.9rem; /* 작은 화면에서 폰트 크기 조정 */
+    // font-size: 0.5rem; /* 작은 화면에서 폰트 크기 조정 */
     width: 100%; /* 버튼 너비를 100%로 설정 */
     max-width: 300px; /* 최대 너비 설정 */
   }
@@ -171,8 +171,11 @@
 
 /* 480px 이하 */
 @media (max-width: 480px) {
-  .checkMain {
-    width: 100%;
+  .checkMain button {
+    padding: 0.6rem; /* 버튼 패딩 증가 */
+    font-size: 0.5rem; /* 작은 화면에서 폰트 크기 조정 */
+    width: 100%; /* 버튼 너비를 100%로 설정 */
+    max-width: 300px; /* 최대 너비 설정 */
   }
 
   .subCheckClass {
