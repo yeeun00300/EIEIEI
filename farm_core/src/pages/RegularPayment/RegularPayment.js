@@ -5,20 +5,20 @@ import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import logoImg from "../../img/TitleLogo.png";
 import styles from "./RegularPayment.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { addPaymentHistory } from "../../firebase";
+import { addPaymentHistory, useFetchCollectionData } from "../../firebase";
 import kroDate from "../../utils/korDate";
 import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
 import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
+import { useNavigate } from "react-router-dom";
 
 function RegularPayment() {
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
   const dispatch = useDispatch();
-  console.log(userInfo);
   useEffect(() => {
-    if (!userInfo || userInfo.length === 0) {
-      dispatch(fetchUser({ collectionName: "users", queryOpstions: {} }));
-    }
-  }, [userInfo, dispatch]);
+    dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
+  }, [dispatch]);
+  console.log(userInfo);
+  const navigate = useNavigate();
   const requestPayment = async () => {
     if (PortOne && userInfo && userInfo.length > 0) {
       const customerEmail = userInfo[0].email;
@@ -41,8 +41,9 @@ function RegularPayment() {
           fullName: customerName,
           email: customerEmail,
         },
-        redirectURL: "http://localhost:3000/",
+        // redirectURL: "http://localhost:3000/",
       });
+      navigate("/");
       console.log("결제 응답 결과:", response);
 
       if (response && response.txId) {

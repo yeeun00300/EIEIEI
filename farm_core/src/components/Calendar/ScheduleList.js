@@ -35,7 +35,7 @@ const ScheduleList = ({ schedules, onEdit, onDelete }) => {
           schedules.map((schedule, scheduleIndex) =>
             schedule.content && schedule.content.length > 0
               ? schedule.content
-                  .slice(0, 2)
+                  .slice(0, 1)
                   .map((contentItem, contentIndex) => (
                     <li
                       key={`${scheduleIndex}-${contentIndex}`}
