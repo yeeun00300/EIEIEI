@@ -7,6 +7,7 @@ import MedicalListSave from "../medicalList/MedicalListSave";
 import MedicalListCheck from "../medicalList/MedicalListCheck";
 import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
 import CCTVAnimal from "../CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
+import Controller from "./Controller";
 
 function MyStockPage(props) {
   return (
@@ -22,7 +23,7 @@ function MyStockPage(props) {
             <MedicalListCheck />
           </Tab>
           <Tab eventKey="two" title="축사 제어">
-            Tab content for Home
+            <Controller />
           </Tab>
           <Tab eventKey="three" title="문진표 작성">
             <div className={styles.one}>
