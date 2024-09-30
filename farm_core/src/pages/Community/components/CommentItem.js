@@ -138,13 +138,10 @@ function CommentItem({
                 onChange={(e) => setUpdatedContent(e.target.value)}
               />
               <div className={styles.buttonContainer}>
-                <button className={styles.CommentButton} onClick={handleUpdate}>
+                <button className="globalEditBtn" onClick={handleUpdate}>
                   수정 완료
                 </button>
-                <button
-                  className={`${styles.CommentButton} ${styles.deleteButton}`}
-                  onClick={handleDelete}
-                >
+                <button className="globalDeleteBtn" onClick={handleDelete}>
                   삭제하기
                 </button>
               </div>
