@@ -50,11 +50,9 @@ function RegularPayment() {
         },
       });
 
-      navigate("/");
       console.log("결제 응답 결과:", response);
 
       if (response && response.txId) {
-        // 결제 정보 객체 생성
         const paymentInfo = {
           paymentDate: payDate,
           amount: 1000,
@@ -63,12 +61,10 @@ function RegularPayment() {
 
         // Firestore에 결제 내역 추가
         await addPaymentHistory("users", docId, paymentInfo);
-        navigate("/FirstPage");
+        navigate("/");
       } else {
         console.error("결제 실패");
       }
-    } else {
-      console.error("PortOne SDK is not loaded or userInfo is missing.");
     }
   };
 

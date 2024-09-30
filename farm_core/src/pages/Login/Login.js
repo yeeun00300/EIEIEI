@@ -16,7 +16,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { checkUserInFirestore, db } from "../../firebase";
+import { addPaymentHistory, checkUserInFirestore, db } from "../../firebase";
 import kakaoImg from "../../img/kakao_login.png";
 import googleSvg from "../../img/web_light_sq_SU.svg";
 import {
@@ -191,22 +191,25 @@ function Login() {
   };
 
   // 구글 로그인
+  // 구글 로그인 후 추가 정보 처리
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
         const isUserExists = await checkUserInFirestore(user.email);
-        console.log(isUserExists);
+
         if (isUserExists) {
-          // 이미 가입한 사용자
-          console.log(`true확인용`);
+          // 이미 가입한 사용자라면 paymentHistory에 추가
           localStorage.setItem("email", user.email);
           dispatch(setNotLogin(false));
+
+          // paymentHistory에 정보 추가 (Firestore 예시)
+          await addPaymentHistory(user.email); // 이 함수에서 결제 이력 추가 처리
+
           navigate("/");
         } else {
-          // 구글 최초 회원가입 -> 추가정보입력페이지로 이동
-          console.log(`false확인용`);
+          // 최초 회원가입 -> 추가정보입력페이지로 이동
           localStorage.setItem("email", user.email);
           navigate("/SignUp");
         }
