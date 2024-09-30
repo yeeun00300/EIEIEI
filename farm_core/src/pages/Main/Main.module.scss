@@ -2,11 +2,32 @@
   display: flex;
   width: 100%;
   height: calc(100vh - 4.375rem);
+  // 캘린더 접었다 피기
+  .plusBtn {
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 3dvb;
+    position: absolute;
+    background-color: var(--point-color);
+    right: 10px;
+    top: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 
   .widget {
     width: 85%;
     height: 100%;
     overflow-y: auto;
+    &.fullWidth {
+      width: 100%; // Full width when .sub is hidden
+    }
 
     // 위젯 아이템 사이즈 설정
     .item {
