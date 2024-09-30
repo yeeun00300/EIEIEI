@@ -769,7 +769,6 @@ function useFetchCollectionData(collectionName, fetchAction) {
               // 예: 첫 번째 문서 ID
               if (userData.length > 0) {
                 const firstDocumentId = userData[0].docId; // 'docId'로 문서 ID 접근
-                console.log("First document ID: ", firstDocumentId);
               }
             }
           })
@@ -894,6 +893,20 @@ const deleteDocument = async (
 ) => {
   const docRef = doc(db, collectionName, docId, subCollectionName, subDocId); // 서브컬렉션 문서 참조
   await deleteDoc(docRef); // 문서 삭제
+};
+
+export const fetchUserByEmail = async (email) => {
+  try {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    let userData = [];
+    querySnapshot.forEach((doc) => {
+      userData.push({ ...doc.data(), docId: doc.id }); // 사용자 데이터와 문서 ID를 포함
+    });
+    return userData; // 해당 사용자의 데이터 반환
+  } catch (error) {
+    console.error("사용자 데이터를 불러오는 중 오류 발생:", error);
+  }
 };
 
 export {

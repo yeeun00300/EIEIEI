@@ -3,6 +3,7 @@ import styles from "./UserInfo.module.scss";
 import img from "../../../img/person.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  fetchUserByEmail,
   updateDatas,
   uploadProfileImage,
   useFetchCollectionData,
@@ -32,7 +33,6 @@ function UserInfo() {
 
   const [file, setFile] = useState(null);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
-  console.log(initialDataLoaded);
   const [previewUrl, setPreviewUrl] = useState(img);
   const [isEditing, setIsEditing] = useState(true);
 
@@ -46,23 +46,29 @@ function UserInfo() {
   }, [dispatch, initialDataLoaded]);
 
   useEffect(() => {
-    if (userInfo.length > 0) {
-      const user = userInfo[0];
-      console.log(user);
-      dispatch(
-        updateUserInfo({
-          name: user.name || "",
-          email: user.email || "",
-          nickname: user.nickname || "",
-          phone: user.phone || "",
-          address: user.address || "",
-          detailedAddress: user.detailedAddress || "",
-          profileImages: user.profileImages || img,
-        })
-      );
-      setPreviewUrl(user.profileImages || img);
+    const currentUserEmail = email;
+
+    if (!initialDataLoaded && currentUserEmail) {
+      fetchUserByEmail(currentUserEmail).then((userData) => {
+        if (userData.length > 0) {
+          const user = userData[0];
+          dispatch(
+            updateUserInfo({
+              name: user.name || "",
+              email: user.email || "",
+              nickname: user.nickname || "",
+              phone: user.phone || "",
+              address: user.address || "",
+              detailedAddress: user.detailedAddress || "",
+              profileImages: user.profileImages || img,
+            })
+          );
+          setPreviewUrl(user.profileImages || img);
+        }
+        setInitialDataLoaded(true);
+      });
     }
-  }, [userInfo, dispatch]);
+  }, [dispatch, email, initialDataLoaded]);
 
   const completeHandler = (data) => {
     console.log("Address Data:", data); // 확인
