@@ -24,11 +24,12 @@ function StockModal({ onClose, stock }) {
   const [selectedDiseases, setSelectedDiseases] = useState([]);
   const [selectedVaccines, setSelectedVaccines] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
+  // console.log(selectedStock);
 
   useEffect(() => {
-    console.log(stock);
+    // console.log(stock);
     if (selectedStock) {
-      setFormData(stock); // 선택된 가축 정보 설정
+      setFormData(selectedStock); // 선택된 가축 정보 설정
     }
   }, [stock]);
   const handleChange = (e) => {

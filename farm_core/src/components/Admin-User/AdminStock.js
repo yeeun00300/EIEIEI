@@ -55,6 +55,8 @@ function AdminStock(props) {
   }, []);
 
   const handleEdit = (stockItem) => {
+    console.log(stockItem);
+
     dispatch(setSelectedStock(stockItem));
     setModalOpen(true);
   };

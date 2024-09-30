@@ -95,10 +95,10 @@ function Admin({ userInfo, address }) {
     //     { id: "alarm-disease", label: "질병 정보" },
     //   ],
     // },
-    {
-      id: "chatting",
-      label: "채팅기록",
-    },
+    // {
+    //   id: "chatting",
+    //   label: "채팅기록",
+    // },
   ];
 
   // 선택된 리스트(컴포넌트)의 id와 label 을 가져온다-----------------------
@@ -129,7 +129,7 @@ function Admin({ userInfo, address }) {
    ○ 풍랑 예비특보(27일 오전(06~12시)): 남해동부바깥먼바다
    사용 예시`;
     const componentsMap = {
-      "": " ",
+      "": <AdminUser />,
       user: <AdminUser />,
       customer: <CustomerManagement />,
       weather: <WeatherIssue />,
@@ -186,7 +186,7 @@ function Admin({ userInfo, address }) {
           {/* <LineChart01 /> */}
           {/* <BiLineChart /> */}
           {/* <BarChart01 /> */}
-          <Chatting />
+          {/* <Chatting /> */}
           {/* <WidgetList /> */}
         </>
       ),

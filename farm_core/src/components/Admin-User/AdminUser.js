@@ -15,8 +15,12 @@ import { updateDatas } from "../../firebase";
 function AdminUser() {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState(""); // 검색 상태
-  const [blackState, setBlackState] = useState("a");
-  const [secessionState, setSecessionState] = useState("b");
+  const [blackState, setBlackState] = useState({});
+  const [secessionState, setSecessionState] = useState({});
+  // const [blackState, setBlackState] = useState("a");
+  // const [secessionState, setSecessionState] = useState("b");
+  console.log(blackState, secessionState);
+
   const { userList } = useSelector((state) => state.checkLoginSlice);
   // const [search, setSearch] = useState("");
   // const [sort, setSort] = useState("");
@@ -248,7 +252,7 @@ function AdminUser() {
       fetchUserList({ collectionName: "users", queryOptions: queryOptions })
     );
     console.log("확인용");
-  }, [dispatch, blackState, secessionState]);
+  }, [dispatch, blackState.blackState, secessionState.isActive]);
 
   return (
     <div className={styles.AdminUser}>
