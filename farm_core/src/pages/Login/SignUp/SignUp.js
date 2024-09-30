@@ -268,11 +268,13 @@ function SignUp() {
     };
 
     try {
-      await dispatch(addUser({ collectionName: "users", userObj }));
+      // await dispatch(addUser({ collectionName: "users", userObj }));
+      await addDatas("users", { ...userObj, email });
 
       // addUser가 완료된 후에 navigate 호출
       alert("회원가입에 성공했습니다.");
-      navigate("/RegularPayment", { state: { docId: id, userInfo: userObj } });
+      navigate("/", { state: { docId: id, userInfo: userObj } });
+      // navigate("/");
     } catch (error) {
       alert(`회원가입 실패: ${error.message}`);
     }

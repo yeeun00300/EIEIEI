@@ -769,7 +769,7 @@ function useFetchCollectionData(collectionName, fetchAction) {
               // 예: 첫 번째 문서 ID
               if (userData.length > 0) {
                 const firstDocumentId = userData[0].docId; // 'docId'로 문서 ID 접근
-                // console.log("First document ID: ", firstDocumentId);
+                console.log("First document ID: ", firstDocumentId);
               }
             }
           })
