@@ -228,7 +228,6 @@ function UserInfo() {
             <DeleteAccount />
           </div>
         </div>
-        {/* <KORMap /> */}
       </div>
     </div>
   );
