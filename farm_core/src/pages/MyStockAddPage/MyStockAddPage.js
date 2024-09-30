@@ -33,7 +33,7 @@ function MyStockAddPage() {
             )}
             <div className={styles.stockListBox}>
               {/* 엑셀 데이터만 테이블 바디에 렌더링 */}
-              <StockAddfromExcel items={stock} />
+              {/* <StockAddfromExcel items={stock} /> */}
             </div>
           </>
         )}

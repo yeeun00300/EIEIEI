@@ -19,10 +19,8 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import StockAddfromExcel from "../../../components/StockAdd/StockAddfromExcel";
-import MyStockAddPage from "../../MyStockAddPage/MyStockAddPage";
 
-function UserInfo() {
+function Question() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
   const [formData, setFormData] = useState({
     stockType: "koreanCow",
@@ -311,7 +309,6 @@ function UserInfo() {
               </ListItem>
             ))}
           </List>
-          <MyStockAddPage />
         </Box>
       )}
       {/* 선택한 문의의 관리자 답변 표시 */}
@@ -339,4 +336,4 @@ function UserInfo() {
   );
 }
 
-export default UserInfo;
+export default Question;
