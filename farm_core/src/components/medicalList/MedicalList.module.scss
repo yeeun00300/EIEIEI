@@ -38,10 +38,10 @@
 
   .input {
     width: 100%;
-    padding: 0.625rem; /* 10px */
+    // padding: 0.625rem; /* 10px */
     border-radius: 0.3125rem; /* 5px */
     border: 1px solid #ccc;
-    font-size: 1rem; /* 16px */
+    font-size: 0.8rem; /* 16px */
     margin-bottom: 0.625rem; /* 10px */
     transition: border-color 0.3s ease;
 
@@ -49,6 +49,9 @@
       border-color: #007bff;
       outline: none;
     }
+  }
+  .subInput {
+    // padding: 80px; /* 패딩을 추가하여 클릭 영역 확대 */
   }
 
   .checkboxGroup {

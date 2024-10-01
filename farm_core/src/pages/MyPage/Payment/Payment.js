@@ -33,14 +33,25 @@ function Payment() {
   };
 
   const calculateRemainingTime = (paymentDate) => {
-    const nextPaymentDate = new Date(paymentDate);
+    // paymentDate 형식을 ISO 8601 형식으로 변환
+    const formattedPaymentDate = new Date(
+      paymentDate
+        .replace(/(\d{4}):(\d{2}):(\d{2})/, "$1-$2-$3")
+        .replace(" ", "T")
+    );
+
+    const nextPaymentDate = new Date(formattedPaymentDate);
     nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+    nextPaymentDate.setHours(0, 0, 0, 0); // 시간을 00:00:00으로 설정
+
     const now = new Date();
+    now.setHours(0, 0, 0, 0); // 현재 날짜도 시간을 00:00:00으로 설정
+
     const timeDiff = nextPaymentDate - now;
     const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
     if (daysRemaining > 0) {
-      return `${daysRemaining}일 남음`;
+      return `만료일까지 ${daysRemaining}일 남음`;
     } else if (daysRemaining === 0) {
       return "오늘 결제일";
     } else {

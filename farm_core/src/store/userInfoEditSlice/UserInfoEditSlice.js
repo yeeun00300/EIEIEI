@@ -88,8 +88,9 @@ const addUser = createAsyncThunk(
   "user/addUser",
   async ({ collectionName, userObj }) => {
     try {
-      const numData = await addDatas(collectionName, userObj);
-      return numData;
+      const docId = await addDatas(collectionName, userObj);
+      // Firestore 문서 ID 대신 입력된 데이터를 반환
+      return { ...userObj, docId };
     } catch (error) {
       throw new Error("유저 정보를 추가하는 데 실패했습니다.");
     }
