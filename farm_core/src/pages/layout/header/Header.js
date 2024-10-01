@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Header.module.scss";
 import logoImg from "../../../img/TitleLogo.png";
 import { FaRegBell, FaSearch, FaSearchLocation } from "react-icons/fa"; // 돋보기 아이콘 추가
@@ -29,7 +29,7 @@ function Header({ title, userInfo }) {
   const address = useSelector((state) => state.mapAddrSlice.address);
   useGeolocation();
   const [isMapModalOpen, setMapModalOpen] = useState(false);
-
+  const [isAlarmOpen, setIsAlarmOpen] = useState(false);
   // 실시간 날씨 알림
   const weatherConditions = [];
   const weatherOrderBys = [{ field: "weatherDate", direction: "desc" }];
@@ -51,36 +51,43 @@ function Header({ title, userInfo }) {
   const handleAddressClick = () => {
     setMapModalOpen(true);
   };
-
+  const fixedWeatherInfo = useRef();
+  const fixedDiseaseInfo = useRef();
+  // const fixedDiseaseInfo = useRef(diseaseInfo && diseaseInfo);
+  // 알람을 확인했을 때 빨간 점 없애기
+  const [hasNewAlarm, setHasNewAlarm] = useState(false);
   useEffect(() => {
-    // const queryOptions = {
-    //   orderBys: [{ field: "weatherDate", direction: "desc" }],
-    // };
-    // dispatch(
-    //   fetchWeatherData({
-    //     collectionName: "weatherInfo",
-    //     queryOptions: queryOptions,
-    //   })
-    // );
-    // dispatch(
-    //   fetchOnData({
-    //     collectionName: "weatherInfo",
-    //     queryOptions: queryOptions,
-    //   })
-    // );
-  }, [dispatch]);
+    weatherInfo && (fixedWeatherInfo.current = weatherInfo);
+    diseaseInfo && (fixedDiseaseInfo.current = diseaseInfo);
+  }, []);
 
   useEffect(() => {
     dispatch(setOnWeatherIssueAlarm(weatherInfo));
-  }, [weatherInfo, weatherIssueAlarm]);
-
-  useEffect(() => {}, []);
+    // if (weatherInfo?.length > 0 || diseaseInfo?.length > 0) {
+    //   setHasNewAlarm(true);
+    // }
+    if (
+      weatherInfo?.length > fixedWeatherInfo.current?.length ||
+      diseaseInfo?.length > fixedDiseaseInfo.current?.length
+    ) {
+      setHasNewAlarm(true);
+    }
+  }, [weatherInfo, diseaseInfo, weatherIssueAlarm, dispatch]);
+  // }, [weatherInfo, diseaseInfo, hasNewAlarm, weatherIssueAlarm, dispatch]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleAlarmClick = () => {
+    setHasNewAlarm(false);
+  };
 
   // UserMenu 열고 닫기 함수
   const toggleUserMenu = () => {
     setIsMenuOpen((prev) => !prev);
+  };
+  // Alarm 열고 닫기 함수
+  const toggleAlarmMenu = () => {
+    setIsAlarmOpen((prev) => !prev);
   };
 
   return (
@@ -105,17 +112,23 @@ function Header({ title, userInfo }) {
 
       <div className={styles.userInfo}>
         <div className={styles.alarmInfo}>
-          <FaRegBell size={25} />
-          <div className={styles.alarmList}>
-            {isLoading ? (
-              <div>알람 로딩</div>
-            ) : (
-              <AccordionAlarm
-                weatherIssueAlarm={weatherInfo}
-                diseaseAlarm={diseaseInfo}
-              />
-            )}
+          <div className={styles.bellWrapper} onClick={handleAlarmClick}>
+            <FaRegBell size={25} onClick={toggleAlarmMenu} />
+            {hasNewAlarm && <span className={styles.redDot} />}
+            {/* 빨간 점 표시 */}
           </div>
+          {isAlarmOpen && (
+            <div className={styles.alarmList}>
+              {isLoading ? (
+                <div>알람 로딩</div>
+              ) : (
+                <AccordionAlarm
+                  weatherIssueAlarm={weatherInfo}
+                  diseaseAlarm={diseaseInfo}
+                />
+              )}
+            </div>
+          )}
         </div>
         <div className={styles.userImgInfo}>
           <div onClick={toggleUserMenu} className={styles.user}>

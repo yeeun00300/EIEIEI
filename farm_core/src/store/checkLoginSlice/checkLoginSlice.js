@@ -34,7 +34,7 @@ const checkLoginSlice = createSlice({
       })
       .addCase(fetchUserList.fulfilled, (state, action) => {
         state.userLoading = false;
-        console.log(action.payload);
+        // console.log(action.payload);
         state.userList = action.payload;
       })
       .addCase(fetchUserList.rejected, (state, action) => {

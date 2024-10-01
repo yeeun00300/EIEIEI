@@ -19,7 +19,6 @@ function AdminUser() {
   const [secessionState, setSecessionState] = useState({});
   // const [blackState, setBlackState] = useState("a");
   // const [secessionState, setSecessionState] = useState("b");
-  console.log(blackState, secessionState);
 
   const { userList } = useSelector((state) => state.checkLoginSlice);
   // const [search, setSearch] = useState("");
@@ -251,7 +250,6 @@ function AdminUser() {
     dispatch(
       fetchUserList({ collectionName: "users", queryOptions: queryOptions })
     );
-    console.log("확인용");
   }, [dispatch, blackState.blackState, secessionState.isActive]);
 
   return (

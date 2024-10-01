@@ -84,19 +84,25 @@
   padding: 1.375rem 0;
   width: 80%;
   text-align: center;
+  cursor: pointer;
+  svg {
+    &:hover {
+      color: var(--background-color);
+    }
+  }
 }
 
-.alarmList {
-  display: none;
-  opacity: 0;
-  transition: 0.2s all ease-in-out;
-}
+// .alarmList {
+//   display: none;
+//   opacity: 0;
+//   transition: 0.2s all ease-in-out;
+// }
 
-.alarmInfo:hover .alarmList,
-.alarmList:hover {
-  display: block;
-  opacity: 1;
-}
+// .alarmInfo:hover .alarmList,
+// .alarmList:hover {
+//   display: block;
+//   opacity: 1;
+// }
 
 .searchIcon {
   display: none;
@@ -129,4 +135,18 @@
     position: absolute;
     right: 7.3rem;
   }
+}
+.bellWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.redDot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
 }

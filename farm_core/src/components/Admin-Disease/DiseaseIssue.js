@@ -7,12 +7,23 @@ import {
 import DiseaseIssueItem from "./DiseaseIssueItem/DiseaseIssueItem";
 import styles from "./DiseaseIssue.module.scss";
 import Search from "../../pages/Admin/components/Search";
-import { getDatas } from "../../firebase";
+import { getDatas, getQuery } from "../../firebase";
 import Alarm from "../Alarm/Alarm";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function DiseaseIssue() {
   const [search, setSearch] = useState("");
   const [diseaseAlarm, setDiseaseAlarm] = useState([]);
+
+  // // 실시간 질병 알림
+  const diseaseConditions = [];
+  const diseaseOrderBys = [{ field: "createdAt", direction: "desc" }];
+  const diseaseQ = getQuery("diseaseInfo", {
+    conditions: diseaseConditions,
+    orderBys: diseaseOrderBys,
+  });
+  const [diseaseInfo] = useCollectionData(diseaseQ);
+
   const handleLoad = async () => {
     const query = ("send", "==", "true");
     try {
@@ -23,7 +34,7 @@ function DiseaseIssue() {
   };
   useEffect(() => {
     handleLoad();
-  }, [search]);
+  }, [search, diseaseInfo?.length]);
   return (
     <div className={styles.DiseaseAlarm}>
       {/* <Search setSearch={setSearch} /> */}

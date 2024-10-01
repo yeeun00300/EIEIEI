@@ -37,49 +37,51 @@ function DiseaseMedicalList() {
   const [selectedSubData, setSelectedSubData] = useState(null);
   const [editing, setEditing] = useState(false);
   const [updatedData, setUpdatedData] = useState({});
+  const [isFetchLoading, setIsFetchLoading] = useState(true);
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
 
-  useEffect(() => {
-    const email = localStorage.getItem("email");
+  const fetchData = async () => {
+    let userArr = [];
+    try {
+      // 각 user에 대해 데이터를 fetch
+      const fetchPromises = userInfo.map(async (userInfo) => {
+        const documents = await fetchFarmDocumentByEmail(userInfo.email);
+        if (documents && documents.length > 0) {
+          setMedicalData(documents); // 축사 데이터를 상태에 저장
+          const allSubCollectionData = [];
 
-    const fetchData = async () => {
-      let userArr = [];
-      userInfo.map(async (userInfo) => {
-        try {
-          const documents = await fetchFarmDocumentByEmail(userInfo.email);
-          if (documents && documents.length > 0) {
-            // 모든 문서 가져오기
-            setMedicalData(documents); // 모든 축사 데이터를 상태에 저장
-            const allSubCollectionData = []; // 모든 서브 컬렉션 데이터를 담을 배열
-
-            // 각 문서에 대해 서브컬렉션 데이터 가져오기
-            for (const document of documents) {
-              const subData = await getSubCollection(
-                "farm",
-                document.id,
-                "farmCureList"
-              );
-              // subData에 farmId를 추가하여 allSubCollectionData에 저장
-              const subDataWithFarmId = subData.map((item) => ({
-                ...item,
-                farmId: document.farmId, // 축사 번호 추가
-              }));
-              allSubCollectionData.push(...subDataWithFarmId); // 모든 서브 데이터를 추가
-            }
-            // setSubCollectionData(allSubCollectionData); // 모든 서브 컬렉션 데이터 설정
-            userArr.push(allSubCollectionData);
+          // 각 문서에 대해 서브 컬렉션 데이터 가져오기
+          for (const document of documents) {
+            const subData = await getSubCollection(
+              "farm",
+              document.id,
+              "farmCureList"
+            );
+            // subData에 farmId 추가
+            const subDataWithFarmId = subData.map((item) => ({
+              ...item,
+              farmId: document.farmId,
+            }));
+            allSubCollectionData.push(...subDataWithFarmId);
           }
-          setSubCollectionData(userArr.flat()); // 모든 서브 컬렉션 데이터 설정
-        } catch (error) {
-          console.error("문서 검색 실패:", error.message || error);
+          userArr.push(allSubCollectionData);
         }
       });
-    };
 
-    fetchData();
+      await Promise.all(fetchPromises); // 모든 fetch가 완료되기를 기다림
+      setSubCollectionData(userArr.flat()); // 서브 컬렉션 데이터를 상태에 설정
+      setIsFetchLoading(false);
+    } catch (error) {
+      console.error("문서 검색 실패:", error.message || error);
+    } finally {
+      setIsFetchLoading(false);
+    }
+  };
 
-    dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
+  //   fetchData();
+  // }, [dispatch, isFetchLoading, filteredList?.length]);
 
   // 검색 기능
   const handleSearch = (e) => {
@@ -169,6 +171,11 @@ function DiseaseMedicalList() {
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
+    fetchData();
+  }, [dispatch, userInfo.length]);
+
   if (!medicalData) {
     return <p>로딩 중...</p>;
   }
@@ -187,8 +194,8 @@ function DiseaseMedicalList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredList.length > 0 ? (
-                filteredList.map((subData) => (
+              {filteredList?.length > 0 ? (
+                filteredList?.map((subData) => (
                   <TableRow
                     key={subData.docId}
                     onClick={() => handleSubDataClick(subData)}
