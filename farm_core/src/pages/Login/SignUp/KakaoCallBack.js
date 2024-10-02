@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { OAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth, checkUserInFirestore } from "../../../firebase";
+import { auth, checkUserInFirestore, db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setEmail,
   setNickname,
 } from "../../../store/joinUserSlice/joinUserSlice";
 import { setNotLogin } from "../../../store/loginSlice/loginSlice";
+import { collection, query, where, getDocs } from "firebase/firestore"; // Firestore 관련 모듈 추가
 
 function KakaoCallBack(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const email = useSelector((state) => state.user.email);
-  const nickname = useSelector((state) => state.user.nickname);
   useEffect(() => {
     const fetchData = async () => {
       const params = new URL(document.location.toString()).searchParams;
@@ -31,12 +30,8 @@ function KakaoCallBack(props) {
         payload.append("redirect_uri", redirectURI);
         payload.append("code", code);
         if (client_secret) {
-          payload.append("client_secret", client_secret); // 필요 없으면 생략 가능
+          payload.append("client_secret", client_secret);
         }
-
-        // console.log(
-        //   `카카오API:${kakaoAPIKey},redirectURI:${redirectURI},코드:${code}`
-        // );
 
         try {
           const tokenResponse = await axios.post(
@@ -66,27 +61,49 @@ function KakaoCallBack(props) {
 
           const email = userInfoResponse.data.kakao_account.email;
           const nickname = userInfoResponse.data.kakao_account.profile.nickname;
-          const username = nickname;
-
           dispatch(setEmail(email));
-          dispatch(setNickname(username));
+          dispatch(setNickname(nickname));
 
-          const isUserExists = await checkUserInFirestore(email);
+          // Firestore에서 이메일 주소로 사용자 데이터 조회
+          const usersQuery = query(
+            collection(db, "users"),
+            where("email", "==", email)
+          );
+          const querySnapshot = await getDocs(usersQuery);
 
-          const provider = new OAuthProvider("oidc.kakao");
-          const credential = provider.credential({
-            idToken: id_token,
-          });
+          if (!querySnapshot.empty) {
+            const userData = querySnapshot.docs[0].data(); // 첫 번째 문서의 데이터 가져오기
 
-          // Firebase 인증
-          await signInWithCredential(auth, credential);
+            // 사용자의 상태 확인
+            if (userData.isActive === "N") {
+              alert(
+                "해당 계정은 탈퇴된 상태입니다. 관리자에게 문의해주세요. 042-314-4741"
+              );
+              dispatch(setNotLogin(true));
+              await auth.signOut(); // 로그인 세션 종료
+              navigate("/"); // 메인 페이지로 리디렉션
+              return; // 로그인 절차 중단
+            }
 
-          // 인증 성공 후 사용자 상태 확인 및 리디렉션
-          if (isUserExists) {
-            // 이미 등록된 사용자
-            alert("가입된 정보입니다. 로그인을 성공했습니다.");
-            // navigate("/"); // 메인 페이지로 리디렉션
-            // dispatch()
+            if (userData.blackState === "black") {
+              alert(
+                "블랙처리된 계정입니다. 관리자에게 문의해주세요. 042-314-4741"
+              );
+              dispatch(setNotLogin(true));
+              await auth.signOut(); // 로그인 세션 종료
+              navigate("/"); // 메인 페이지로 리디렉션
+              return; // 로그인 절차 중단
+            }
+
+            // Firebase 인증
+            const provider = new OAuthProvider("oidc.kakao");
+            const credential = provider.credential({
+              idToken: id_token,
+            });
+            await signInWithCredential(auth, credential); // Firebase 인증
+
+            // 로그인 성공 처리
+            alert("로그인 성공!");
             localStorage.setItem("email", email);
             dispatch(setNotLogin(false));
             navigate("/"); // 메인 페이지로 리디렉션
@@ -97,7 +114,7 @@ function KakaoCallBack(props) {
         } catch (error) {
           console.error("응답 데이터:", error.response?.data);
           console.error("응답 상태 코드:", error.response?.status);
-          console.error("오류 발생:", error.message);
+          alert("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
       }
     };

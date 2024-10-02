@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { checkUserInFirestore, getUserAuth, joinUser } from "../../firebase";
+import { getUserAuth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
@@ -9,7 +9,6 @@ import {
 } from "firebase/auth";
 import { setUser } from "../../store/userSlice/userSlice";
 import Form from "../../pages/Login/Form/Form";
-import { setEmail, setPassword } from "../../store/joinUserSlice/joinUserSlice";
 import styles from "./EmailSignUp.module.scss";
 
 function EmailSignUp(props) {
@@ -62,8 +61,6 @@ function EmailSignUp(props) {
         setUser({ email: user.email, token: user.refreshToken, uid: user.uid })
       );
       alert("인증 링크가 발송 되었습니다. 확인해주세요.");
-      // navigate("/verify-email"); // 회원가입 완료 후 이동할 페이지
-      // navigate("/signup"); // 지울거
       navigate("/verify-email"); // 회원가입 완료 후 이동할 페이지
       // navigate("/signup"); // 지울거
     } catch (error) {

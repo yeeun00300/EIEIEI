@@ -4,11 +4,12 @@
   justify-content: center;
   flex-direction: column;
   width: 100%;
+
   button {
     padding: 0.5rem;
   }
+
   .stockInfo {
-    // padding: 1rem 3rem;
     text-align: center;
   }
 }
@@ -16,7 +17,7 @@
 .tableContainer {
   margin: 3rem auto;
   width: 100%;
-  max-width: 56.25rem; /* 900px -> 56.25rem */
+  max-width: 56.25rem; /* 900px */
 }
 
 .tableHead {
@@ -42,14 +43,41 @@
   align-items: center;
 }
 
+/* 리스트 항목 스타일 */
 .subCheckClass {
-  width: 500px;
-  padding: 1.5rem;
-  background-color: #ecf0f1;
+  width: 100%;
+  max-width: 500px;
+  background-color: #f7f9fa;
+  padding: 1rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  list-style: none; /* 리스트처럼 보이게 만들기 위한 기본 스타일 */
+  border: 1px solid #dcdde1;
   strong {
     color: #2980b9;
+  }
+
+  /* 항목 구분을 위한 스타일 */
+  p {
+    padding: 0.75rem 0;
+    margin: 0;
+    font-size: 1rem;
+    border-bottom: 1px solid #dcdde1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:last-child {
+      border-bottom: none; /* 마지막 항목은 구분선 제거 */
+    }
+  }
+
+  /* 각 항목에 대한 텍스트 강조 */
+  strong {
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+    font-weight: bold;
   }
 }
 
@@ -60,7 +88,7 @@
   margin-top: 1rem;
 }
 
-.dialogActionsInside Button {
+.dialogActionsInside button {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   background-color: #2980b9;
@@ -69,7 +97,7 @@
   transition: background-color 0.3s ease;
 }
 
-.dialogActionsInside Button:hover {
+.dialogActionsInside button:hover {
   background-color: darken(#2980b9, 10%);
 }
 
@@ -83,6 +111,8 @@
 .subCheck {
   width: 100%;
 }
+
+/* 반응형 디자인 */
 
 /* 1024px 이하 */
 @media (max-width: 1024px) {
@@ -104,78 +134,76 @@
     font-size: 1.25rem;
   }
 
-  .dialogContent p {
-    font-size: 0.9375rem;
+  .dialogContentWrapper {
+    padding: 1rem;
   }
 }
 
 /* 768px 이하 */
 @media (max-width: 768px) {
   body {
-    overflow-x: hidden; /* 가로 스크롤 방지 */
+    overflow-x: hidden;
   }
+
   .checkMain button {
-    padding: 0.6rem; /* 버튼 패딩 증가 */
-    // font-size: 0.5rem; /* 작은 화면에서 폰트 크기 조정 */
-    width: 100%; /* 버튼 너비를 100%로 설정 */
-    max-width: 300px; /* 최대 너비 설정 */
+    padding: 0.6rem;
+    width: 100%;
+    max-width: 300px;
   }
 
   .subCheckClass {
-    width: 90%;
-    // padding: 1rem;
+    width: 100%;
+    padding: 1rem;
   }
 
   .tableContainer {
     max-width: 95%;
     padding: 0;
-    overflow-x: auto; /* 테이블이 길어질 경우 가로 스크롤 가능 */
+    overflow-x: auto;
   }
 
   .tableCellHeader {
-    font-size: 1rem; /* 헤더 폰트 크기를 약간 증가 */
-    padding: 0.75rem; /* 패딩 증가로 여백 확보 */
+    font-size: 1rem;
+    padding: 0.75rem;
   }
 
   .dialogTitle {
-    font-size: 1.2rem; /* 제목 폰트 크기 증가 */
+    font-size: 1.2rem;
   }
 
   .inputTag {
     gap: 1rem;
   }
 
-  .dialogActionsInside Button {
-    padding: 0.6rem 1rem; /* 버튼 패딩 증가 */
-    font-size: 0.9rem; /* 버튼 폰트 크기 증가 */
-    min-width: 100px; /* 버튼 최소 너비 설정 */
+  .dialogActionsInside button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    min-width: 100px;
   }
 
-  /* 추가: 버튼과 축사 이름 간 간격 조정 */
   .tableCell {
-    padding: 0.5rem; /* 각 셀의 패딩 증가 */
-    text-align: center; /* 셀 내용 중앙 정렬 */
+    padding: 0.5rem;
+    text-align: center;
   }
 
-  /* 추가: '자세히 보기' 버튼 스타일 */
   .detailsButton {
-    padding: 0.5rem 1rem; /* 버튼 패딩 */
-    font-size: 0.9rem; /* 버튼 폰트 크기 */
-    background-color: #007bff; /* 버튼 배경 색상 */
-    color: white; /* 버튼 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    border-radius: 0.25rem; /* 모서리 둥글게 */
-    cursor: pointer; /* 마우스 포인터 변화 */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
   }
 }
 
 /* 480px 이하 */
 @media (max-width: 480px) {
   .checkMain button {
-    padding: 0.6rem; /* 버튼 패딩 증가 */
-    font-size: 0.5rem; /* 작은 화면에서 폰트 크기 조정 */
-    width: 100%; /* 버튼 너비를 100%로 설정 */
-    max-width: 300px; /* 최대 너비 설정 */
+    padding: 0.6rem;
+    font-size: 0.8rem;
+    width: 100%;
+    max-width: 300px;
   }
 
   .subCheckClass {
@@ -200,11 +228,16 @@
     gap: 0.75rem;
   }
 
-  .dialogActionsInside Button {
+  .dialogActionsInside button {
     padding: 0.35rem 0.7rem;
   }
 
   .dialogActionsInside {
     gap: 0.3rem;
+  }
+
+  .detailsButton {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 }

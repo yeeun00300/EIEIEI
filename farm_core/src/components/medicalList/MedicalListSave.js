@@ -41,6 +41,7 @@ function MedicalListSave() {
       const fetchData = async () => {
         try {
           const documents = await fetchFarmDocumentByEmail(email);
+          console.log(documents);
           if (documents && documents.length > 0) {
             // 모든 문서 가져오기
             setMedicalData(documents); // 모든 축사 데이터를 상태에 저장
@@ -59,11 +60,14 @@ function MedicalListSave() {
                 farmDocId: document.id,
                 farmId: document.farmId, // 축사 번호 추가
               }));
+              console.log("Sub data with farmId:", subDataWithFarmId);
               allSubCollectionData.push(...subDataWithFarmId); // 모든 서브 데이터를 추가
             }
             setSubCollectionData(allSubCollectionData); // 모든 서브 컬렉션 데이터 설정
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("문서 검색 실패:", error.message || error);
+        }
       };
 
       fetchData();
@@ -117,12 +121,12 @@ function MedicalListSave() {
       console.log("Saving updated data:", updatedSubData);
 
       // medicalData[0]와 selectedSubData.docId가 유효한지 확인
-      if (!medicalData.length || !selectedSubData?.docId) {
+      if (!selectedSubData?.docId || !selectedSubData?.farmDocId) {
         throw new Error("업데이트할 문서 또는 서브컬렉션 문서 ID가 없습니다.");
       }
 
       await updateSubcollectionDocument(
-        medicalData[0].id, // 첫 번째 문서의 ID 사용
+        selectedSubData.farmDocId, // 첫 번째 문서의 ID 사용
         "farmCureList",
         selectedSubData.docId,
         updatedSubData
@@ -157,7 +161,9 @@ function MedicalListSave() {
       );
 
       alert("삭제가 완료되었습니다!");
-    } catch (error) {}
+    } catch (error) {
+      console.error("삭제 실패:", error.message || error);
+    }
   };
 
   if (!medicalData) {
@@ -190,7 +196,6 @@ function MedicalListSave() {
                     </TableCell>
                     <TableCell>
                       <Button
-                        variant="outlined"
                         onClick={() => handleSubDataClick(subData)}
                         className="globalBtn"
                       >
@@ -199,7 +204,6 @@ function MedicalListSave() {
                     </TableCell>
                     <TableCell>
                       <Button
-                        variant="outlined"
                         onClick={() => handleDelete(subData)}
                         className="globalDeleteBtn"
                       >
@@ -211,7 +215,7 @@ function MedicalListSave() {
               })
             ) : (
               <TableRow>
-                <TableCell colSpan={4}>문진표 작성 이력이 없습니다.</TableCell>
+                <TableCell colSpan={5}>문진표 작성 이력이 없습니다.</TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -265,14 +269,10 @@ function MedicalListSave() {
                 <strong>사료 공급 상태:</strong> {selectedSubData.feedSupply}
               </div>
               <DialogActions className={styles.dialogActions}>
-                <Button onClick={handleEdit} className="globalEditBtn">
+                <Button onClick={handleEdit} className="globalBtn">
                   수정하기
                 </Button>
-                <Button
-                  onClick={handleCloseModal}
-                  color="primary"
-                  className="globalEditBtn"
-                >
+                <Button onClick={handleCloseModal} className="globalDeleteBtn">
                   닫기
                 </Button>
               </DialogActions>
@@ -391,14 +391,10 @@ function MedicalListSave() {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleCancel}
-            color="primary"
-            className="globalDeleteBtn"
-          >
+          <Button onClick={handleCancel} className="globalDeleteBtn">
             취소
           </Button>
-          <Button onClick={handleSave} color="primary" className="globalBtn">
+          <Button onClick={handleSave} className="globalBtn">
             저장
           </Button>
         </DialogActions>
