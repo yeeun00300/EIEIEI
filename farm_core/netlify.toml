@@ -7,6 +7,7 @@
   from = "/api6/*"
   to = "http://211.237.50.150:7080/"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
