@@ -66,9 +66,13 @@ function DiseaseInfo() {
   };
 
   const handleUpdateDisease = (diseaseId) => {
-    alert(`질병 ID ${diseaseId} 업데이트`);
+    // 여기에서 선택된 질병 정보를 가져와서 폼에 전달합니다.
+    const diseaseToUpdate = diseases.find(
+      (disease) => disease.id === diseaseId
+    );
+    setShowAddDiseaseForm(true);
+    setSelectedDisease(diseaseToUpdate); // 선택된 질병 정보 저장
   };
-
   const handleDiseaseAdded = async (newDisease) => {
     const animalIdMap = {
       cows: "cow",
@@ -231,6 +235,7 @@ function DiseaseInfo() {
             onClose={() => setShowAddDiseaseForm(false)}
             onDiseaseAdded={handleDiseaseAdded}
             selectedAnimal={selectedAnimal}
+            diseaseToUpdate={selectedDisease} // 수정할 질병 정보 전달
           />
         )}
 

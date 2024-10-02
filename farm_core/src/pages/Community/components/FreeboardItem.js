@@ -5,8 +5,6 @@ import {
   FaRegThumbsDown,
   FaRegCommentDots,
 } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { collection, doc, getDocs, getFirestore } from "firebase/firestore";
 import { getSubCollection } from "../../../firebase";
 
 function FreeBoardItem({ item, onItemClick }) {
