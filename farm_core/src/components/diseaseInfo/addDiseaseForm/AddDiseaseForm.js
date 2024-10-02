@@ -1,12 +1,25 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./AddDiseaseForm.module.scss";
-function AddDiseaseForm({ onClose, selectedAnimal, onDiseaseAdded }) {
+function AddDiseaseForm({
+  onClose,
+  onDiseaseAdded,
+  selectedAnimal,
+  diseaseToUpdate,
+}) {
   const dispatch = useDispatch();
-  const [diseaseName, setDiseaseName] = useState("");
-  const [symptoms, setSymptoms] = useState("");
-  const [diagnosisTool, setDiagnosisTool] = useState("");
-  const [therapy, setTherapy] = useState("");
+  const [diseaseName, setDiseaseName] = useState(
+    diseaseToUpdate ? diseaseToUpdate.diseaseName : ""
+  );
+  const [symptoms, setSymptoms] = useState(
+    diseaseToUpdate ? diseaseToUpdate.symptoms : ""
+  );
+  const [diagnosisTool, setDiagnosisTool] = useState(
+    diseaseToUpdate ? diseaseToUpdate.diagnosisTool : ""
+  );
+  const [therapy, setTherapy] = useState(
+    diseaseToUpdate ? diseaseToUpdate.therapy : ""
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,10 +42,10 @@ function AddDiseaseForm({ onClose, selectedAnimal, onDiseaseAdded }) {
   };
 
   return (
-    <div className="container">
-      <div className={styles.wrapper}>
+    <div className={styles.modal}>
+      <div className={styles.modalContent}>
         <h3>질병 추가</h3>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.AddDiseaseForm}>
           <input
             type="text"
             placeholder="질병 이름"
@@ -61,10 +74,14 @@ function AddDiseaseForm({ onClose, selectedAnimal, onDiseaseAdded }) {
             onChange={(e) => setTherapy(e.target.value)}
             required
           />
-          <button type="submit">추가</button>
-          <button type="button" onClick={onClose}>
-            취소
-          </button>
+          <div className={styles.btnBox}>
+            <button type="submit" className="globalBtn">
+              추가
+            </button>
+            <button type="button" onClick={onClose} className="globalDeleteBtn">
+              취소
+            </button>
+          </div>
         </form>
       </div>
     </div>
