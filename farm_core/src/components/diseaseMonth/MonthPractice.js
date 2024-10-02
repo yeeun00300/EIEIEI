@@ -11,7 +11,7 @@ function MonthPractice(props) {
     console.log(`Selected Month: ${month}`);
     setSelectedMonth(month);
 
-    const apiURL = `/api6/openapi/ef47786d3eabcb9f87d0c7d3b301f869312d4cf9af878855b06ed3c153a53290/json/Grid_20220621000000000615_1/1/5/?QRANT_COMPT_MT=${month}`;
+    const apiURL = `https://66fcf8eecdb31f86372c0bec--moonlit-puppy-7f7f1f.netlify.app/api6/openapi/ef47786d3eabcb9f87d0c7d3b301f869312d4cf9af878855b06ed3c153a53290/json/Grid_20220621000000000615_1/1/5/?QRANT_COMPT_MT=${month}`;
     console.log(apiURL);
 
     try {
