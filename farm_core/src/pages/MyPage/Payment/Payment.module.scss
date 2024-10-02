@@ -1,59 +1,58 @@
+/* 기본 스타일 유지 */
 .tableContainer {
   margin: 2rem auto;
   max-width: 70rem;
   background-color: #ffffff;
   border-radius: 0.5rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  overflow-x: auto; /* 가로 스크롤 추가 */
-}
+  overflow-x: auto; /* 작은 화면에서 가로 스크롤 활성화 */
 
-.MuiTableHead-root {
-  background-color: #00796b;
-  color: #ffffff;
-}
+  .MuiTableHead-root {
+    background-color: #00796b;
+    color: #ffffff;
+  }
 
-.MuiTableCell-root {
-  padding: 1rem;
-  font-weight: 500;
-  text-align: center;
-  white-space: nowrap; /* 긴 텍스트 줄바꿈 방지 */
-}
+  .MuiTableCell-root {
+    padding: 1rem;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap; /* 긴 텍스트 줄바꿈 방지 */
+  }
 
-.MuiTableBody-root {
-  background-color: #f9f9f9;
-}
+  .MuiTableBody-root {
+    background-color: #f9f9f9;
+  }
 
-.MuiTableRow-root:hover {
-  background-color: #e0f2f1;
-}
+  .MuiTableRow-root:hover {
+    background-color: #e0f2f1;
+  }
 
-.checkButton {
-  background-color: var(--second-color);
-  color: #ffffff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  .checkButton {
+    background-color: var(--second-color);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
 
-.checkButton:hover {
-  background-color: #005b4f;
-}
+  .checkButton:hover {
+    background-color: #005b4f;
+  }
 
-.remainingTime {
-  margin-top: 1.5rem;
-  font-weight: 600;
-  color: #333;
+  .remainingTime {
+    margin-top: 1.5rem;
+    font-weight: 600;
+    color: #333;
+  }
 }
-
-/* 반응형 디자인: 최대 768px 너비 */
+/* 768px 이하에서 반응형 스타일 */
 @media (max-width: 768px) {
   .tableContainer {
     padding: 1rem;
     max-width: 90%;
   }
-
   .MuiTableCell-root {
     font-size: 0.9rem;
   }
@@ -68,15 +67,16 @@
   }
 }
 
-/* 반응형 디자인: 최대 480px 너비 */
+/* 480px 이하에서 반응형 스타일 */
 @media (max-width: 480px) {
   .tableContainer {
     padding: 0.5rem;
     max-width: 100%;
+    overflow-x: auto; /* 가로 스크롤 추가 */
   }
 
   .MuiTableCell-root {
-    font-size: 0.8rem;
+    font-size: 0.75rem; /* 텍스트 크기 축소 */
   }
 
   .checkButton {
@@ -90,7 +90,7 @@
 
   /* 작은 화면에서 결제 이메일과 남은 기간 열 숨기기 */
   .MuiTableCell-root:nth-child(1), /* 결제 이메일 */
-  .MuiTableCell-root:nth-child(6)  /* 남은 기간 확인 버튼 */ {
-    display: none;
+  .MuiTableCell-root:nth-child(5) /* 남은 기간 확인 버튼 */ {
+    display: block; /* 작은 화면에서 숨기지 않고 보이게 수정 */
   }
 }

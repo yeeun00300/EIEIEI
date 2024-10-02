@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -26,7 +26,6 @@ function Payment() {
     if (!phoneNumber) return "N/A";
     return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
-  console.log(users);
   const formatAmount = (amount) => {
     if (amount === undefined || amount === null) return "₩0";
     return `₩${amount.toLocaleString()}`;
@@ -83,7 +82,6 @@ function Payment() {
                 <TableCell>결제 이메일</TableCell>
                 <TableCell>결제일</TableCell>
                 <TableCell>결제 금액</TableCell>
-                <TableCell>결제 이메일</TableCell>
                 <TableCell>핸드폰 번호</TableCell>
                 <TableCell>남은 기간 확인</TableCell>
               </TableRow>
@@ -95,7 +93,6 @@ function Payment() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{payment.paymentDate || "N/A"}</TableCell>
                     <TableCell>{formatAmount(payment.amount)}</TableCell>
-                    <TableCell>{payment.paymentId || "N/A"}</TableCell>
                     <TableCell>
                       {formatPhoneNumber(user.phone) || "N/A"}
                     </TableCell>
