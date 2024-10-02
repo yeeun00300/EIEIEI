@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserAuth } from "../../../firebase";
 import { signOut } from "firebase/auth";
 import { setNotLogin } from "../../../store/loginSlice/loginSlice";
-import UserInfo from "../../MyPage/UserInfo/UserInfo";
 
 function UserMenu(props) {
   const navigate = useNavigate();

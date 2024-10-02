@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import styles from "./Intro.module.scss";
 import { useNavigate } from "react-router-dom";
 import Login from "../Login/Login";

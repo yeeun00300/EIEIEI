@@ -31,8 +31,13 @@ function AddDiseaseForm({
       therapy,
     };
 
-    // handleDiseaseAdded 호출
-    onDiseaseAdded(newDisease);
+    // 질병 수정인 경우
+    if (diseaseToUpdate) {
+      onDiseaseAdded(newDisease); // 업데이트 시 onDiseaseAdded 호출
+    } else {
+      // 질병 추가
+      onDiseaseAdded(newDisease);
+    }
 
     // 입력 필드 초기화
     setDiseaseName("");
@@ -44,7 +49,7 @@ function AddDiseaseForm({
   return (
     <div className={styles.modal}>
       <div className={styles.modalContent}>
-        <h3>질병 추가</h3>
+        <h3>{diseaseToUpdate ? "질병 수정" : "질병 추가"}</h3>
         <form onSubmit={handleSubmit} className={styles.AddDiseaseForm}>
           <input
             type="text"
@@ -76,7 +81,7 @@ function AddDiseaseForm({
           />
           <div className={styles.btnBox}>
             <button type="submit" className="globalBtn">
-              추가
+              {diseaseToUpdate ? "수정" : "추가"}
             </button>
             <button type="button" onClick={onClose} className="globalDeleteBtn">
               취소

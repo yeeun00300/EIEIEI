@@ -8,8 +8,10 @@ import {
   deleteDisease,
   fetchDiseases,
   addDisease,
+  updateDisease,
 } from "../../store/diseaseSlice/diseaseSlice";
 import AddDiseaseForm from "./addDiseaseForm/AddDiseaseForm";
+import { updateDatas } from "../../firebase";
 
 function DiseaseInfo() {
   const dispatch = useDispatch();
@@ -65,14 +67,16 @@ function DiseaseInfo() {
     }
   };
 
-  const handleUpdateDisease = (diseaseId) => {
-    // 여기에서 선택된 질병 정보를 가져와서 폼에 전달합니다.
+  const handleUpdateDisease = async (diseaseId) => {
     const diseaseToUpdate = diseases.find(
       (disease) => disease.id === diseaseId
     );
     setShowAddDiseaseForm(true);
     setSelectedDisease(diseaseToUpdate); // 선택된 질병 정보 저장
+    closeModal();
   };
+
+  // handleDiseaseAdded를 수정하여 질병 수정 기능 구현
   const handleDiseaseAdded = async (newDisease) => {
     const animalIdMap = {
       cows: "cow",
@@ -84,19 +88,35 @@ function DiseaseInfo() {
     const existingDiseases = diseases.filter((disease) =>
       disease.id.startsWith(animalType)
     );
-    const newId = `${animalType}${existingDiseases.length + 1}`;
 
-    const diseaseToAdd = {
-      ...newDisease,
-      id: newId,
-    };
+    // 선택된 질병 수정인 경우
+    if (selectedDisease) {
+      const updatedDisease = {
+        ...newDisease,
+        id: selectedDisease.id, // 기존 ID 유지
+      };
 
-    dispatch(
-      await addDisease({
-        collectionName: "DiseaseInfoMock",
-        addObj: diseaseToAdd,
-      })
-    );
+      dispatch(
+        await updateDisease({
+          collectionName: "DiseaseInfoMock",
+          diseaseId: selectedDisease.docId,
+          updateObj: updatedDisease,
+        })
+      );
+    } else {
+      const newId = `${animalType}${existingDiseases.length + 1}`;
+      const diseaseToAdd = {
+        ...newDisease,
+        id: newId,
+      };
+
+      dispatch(
+        await addDisease({
+          collectionName: "DiseaseInfoMock",
+          addObj: diseaseToAdd,
+        })
+      );
+    }
     setShowAddDiseaseForm(false);
   };
 
@@ -239,7 +259,7 @@ function DiseaseInfo() {
           />
         )}
 
-        {selectedDisease && (
+        {selectedDisease && !showAddDiseaseForm && (
           <div className={styles.modalDisease}>
             <div className={styles.modalContent}>
               <span className={styles.close} onClick={closeModal}>
