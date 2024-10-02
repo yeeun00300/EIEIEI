@@ -4,7 +4,6 @@ import {
   fetchSelectedStock,
   updateStock,
 } from "../../store/stockSlice/stockSlice";
-import Modal from "./Modal";
 import {
   Dialog,
   DialogActions,

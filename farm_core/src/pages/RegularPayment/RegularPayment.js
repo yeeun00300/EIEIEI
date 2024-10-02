@@ -1,36 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MdPayment } from "react-icons/md";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import logoImg from "../../img/TitleLogo.png";
 import styles from "./RegularPayment.module.scss";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addPaymentHistory,
-  getDatas,
-  useFetchCollectionData,
-} from "../../firebase";
+import { useSelector } from "react-redux";
+import { addPaymentHistory } from "../../firebase";
 import kroDate from "../../utils/korDate";
 import * as PortOne from "https://cdn.portone.io/v2/browser-sdk.esm.js";
-import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function RegularPayment() {
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
-  const dispatch = useDispatch();
-  console.log(userInfo);
-  // console.log(userInfo[0].docId);
-
-  // const location = useLocation();
-  // const { docId } = location.state || {};
-
-  // console.log("Doc ID:", docId);
-  // console.log("User Info:", userInfo);
-  // useEffect(() => {
-  //   dispatch(fetchUser({ collectionName: "users", queryOptions: {} }));
-  //   console.log(userInfo);
-  // }, [dispatch]);
-  // console.log(userInfo);
   const navigate = useNavigate();
 
   const requestPayment = async () => {
