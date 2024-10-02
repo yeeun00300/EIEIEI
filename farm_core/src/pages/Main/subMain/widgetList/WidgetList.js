@@ -1,10 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import Checkbox from "@mui/joy/Checkbox";
-import TempPiNeedleWidget from "./../../../../components/ControlPanels/widget/TempPieChartWithNeedle";
-import HumidPiChartWidget from "./../../../../components/ControlPanels/widget/HumidPiChartWidget";
-import LightPiChartWidget from "./../../../../components/ControlPanels/widget/LightPiChartWidget";
-import CO2PiChartWidget from "./../../../../components/ControlPanels/widget/CO2PiChartWidget";
-import NH3PiChartWidget from "./../../../../components/ControlPanels/widget/NH3PiChartWidget";
 
 function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
   const handleCheckboxChange = (e) => {

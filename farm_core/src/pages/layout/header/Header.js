@@ -1,20 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Header.module.scss";
 import logoImg from "../../../img/TitleLogo.png";
-import { FaRegBell, FaSearch, FaSearchLocation } from "react-icons/fa"; // 돋보기 아이콘 추가
+import { FaRegBell, FaSearchLocation } from "react-icons/fa"; // 돋보기 아이콘 추가
 import { FaRegUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
-import { fetchLogin } from "../../../store/checkLoginSlice/checkLoginSlice";
 import AccordionAlarm from "../../../components/Alarm/AccordionAlarm";
-import {
-  fetchOnData,
-  fetchWeatherData,
-  setOnWeatherIssueAlarm,
-} from "../../../store/weatherSlice/weatherSlice";
+import { setOnWeatherIssueAlarm } from "../../../store/weatherSlice/weatherSlice";
 import { getQuery } from "../../../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { orderBy } from "firebase/firestore";
 import useGeolocation from "../../../components/DiseaseStatus/useGeolocation";
 import MapModal from "../../../components/DiseaseStatus/MapModal";
 import CurrentMarker from "./../../../components/DiseaseStatus/CurrentMarker";
