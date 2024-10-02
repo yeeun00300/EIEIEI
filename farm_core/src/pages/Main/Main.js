@@ -617,8 +617,8 @@ function Main({ farmList }) {
   //대시보드 편집중일때
   const editMode = () => {
     setEdit(true);
+    let zero = [];
     if (widgetList === 0) {
-      let zero = [];
       zero = {
         lg: [
           {
@@ -656,7 +656,8 @@ function Main({ farmList }) {
       };
       setLayout(zero);
     }
-    setLayout(newLayouts);
+
+    setLayout(newLayouts ? newLayouts : zero);
   };
   //대시보드 편집 완료(파이어베이스에 등록하는거 추가예정)
   const fixedMode = async () => {
