@@ -83,7 +83,7 @@ function Payment() {
                 <TableCell>결제 이메일</TableCell>
                 <TableCell>결제일</TableCell>
                 <TableCell>결제 금액</TableCell>
-                <TableCell>결제 아이디</TableCell>
+                <TableCell>결제 이메일</TableCell>
                 <TableCell>핸드폰 번호</TableCell>
                 <TableCell>남은 기간 확인</TableCell>
               </TableRow>
@@ -120,7 +120,12 @@ function Payment() {
       )}
 
       {/* 모달 추가 */}
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        disableAutoFocus
+        disableEnforceFocus
+      >
         <DialogTitle>남은 기간 확인</DialogTitle>
         <DialogContent>
           <Typography>
