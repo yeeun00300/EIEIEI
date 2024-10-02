@@ -6,7 +6,6 @@ import PasswordConfirm from "../../pages/Login/Password/PasswordConfirm"; // 파
 
 function EmailCheck() {
   const [searchParams] = useSearchParams();
-  console.log(searchParams);
   const navigate = useNavigate();
   const auth = getAuth();
   const [loading, setLoading] = useState(true);
@@ -15,8 +14,6 @@ function EmailCheck() {
   useEffect(() => {
     const mode = searchParams.get("mode"); // mode 확인
     const oobCodeFromURL = searchParams.get("oobCode");
-    console.log("mode:", mode); // 콘솔에 mode 값 출력
-    console.log("oobCode:", oobCodeFromURL);
 
     if (oobCodeFromURL) {
       if (mode === "verifyEmail") {
@@ -29,7 +26,6 @@ function EmailCheck() {
           })
           .catch((error) => {
             setLoading(false);
-            console.error("이메일 인증 중 오류가 발생했습니다: ", error);
             setError("이메일 인증에 실패했습니다. 다시 시도해주세요.");
           });
       } else if (mode === "resetPassword") {
@@ -42,7 +38,6 @@ function EmailCheck() {
     // else {
     //   setLoading(false);
     //   setError("왜 오류가 날까 회원가입은 되는데 흐으음...");
-    //   console.log("oobCode가 없습니다."); // 디버깅을 위한 로그
     // }
   }, [navigate, searchParams]);
 

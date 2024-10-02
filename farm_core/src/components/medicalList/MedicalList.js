@@ -25,11 +25,8 @@ function MedicalList(props) {
               documents.map((doc) => doc.farmId).filter((id) => id)
             );
           } else {
-            console.log("No documents found for this email.");
           }
-        } catch (error) {
-          console.error("문서 검색 실패:", error.message || error);
-        }
+        } catch (error) {}
       };
 
       fetchData();
@@ -97,7 +94,6 @@ function MedicalList(props) {
         alert("유효한 문서 ID가 없습니다.");
       }
     } catch (error) {
-      console.error("데이터 저장 실패:", error.message || error);
       alert("데이터 저장에 실패했습니다.");
     }
   };

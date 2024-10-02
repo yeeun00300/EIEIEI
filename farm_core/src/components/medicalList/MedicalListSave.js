@@ -41,7 +41,6 @@ function MedicalListSave() {
       const fetchData = async () => {
         try {
           const documents = await fetchFarmDocumentByEmail(email);
-          console.log(documents);
           if (documents && documents.length > 0) {
             // 모든 문서 가져오기
             setMedicalData(documents); // 모든 축사 데이터를 상태에 저장
@@ -60,14 +59,11 @@ function MedicalListSave() {
                 farmDocId: document.id,
                 farmId: document.farmId, // 축사 번호 추가
               }));
-              console.log("Sub data with farmId:", subDataWithFarmId);
               allSubCollectionData.push(...subDataWithFarmId); // 모든 서브 데이터를 추가
             }
             setSubCollectionData(allSubCollectionData); // 모든 서브 컬렉션 데이터 설정
           }
-        } catch (error) {
-          console.error("문서 검색 실패:", error.message || error);
-        }
+        } catch (error) {}
       };
 
       fetchData();
@@ -118,8 +114,6 @@ function MedicalListSave() {
         lastModified: currentTime,
       };
 
-      console.log("Saving updated data:", updatedSubData);
-
       // medicalData[0]와 selectedSubData.docId가 유효한지 확인
       if (!medicalData.length || !selectedSubData?.docId) {
         throw new Error("업데이트할 문서 또는 서브컬렉션 문서 ID가 없습니다.");
@@ -145,9 +139,7 @@ function MedicalListSave() {
       setSelectedSubData((prev) => ({ ...prev, ...updatedSubData }));
       alert("수정이 완료되었습니다!");
       handleCancel();
-    } catch (error) {
-      console.error("업데이트 실패:", error);
-    }
+    } catch (error) {}
   };
 
   const handleDelete = async (subData) => {
@@ -161,9 +153,7 @@ function MedicalListSave() {
       );
 
       alert("삭제가 완료되었습니다!");
-    } catch (error) {
-      console.error("삭제 실패:", error.message || error);
-    }
+    } catch (error) {}
   };
 
   if (!medicalData) {

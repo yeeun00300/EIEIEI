@@ -15,12 +15,10 @@ function EmailSignUp(props) {
   const dispatch = useDispatch();
   const auth = getUserAuth();
   const navigate = useNavigate();
-  console.log(auth);
 
   const handleSignUpAndLogin = async (email, password) => {
     try {
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-      console.log(signInMethods);
 
       if (signInMethods.length > 0) {
         return;
@@ -31,7 +29,6 @@ function EmailSignUp(props) {
         password
       );
       const { user } = userCredential;
-      console.log(user);
 
       // 주석 해제 ----------------------------
       const actionCodeSettings = {
@@ -56,7 +53,6 @@ function EmailSignUp(props) {
         alert("이미 가입된 이메일입니다.");
         navigate("/"); // 로그인 페이지로 이동
       } else {
-        console.log("에러 발생: ", error); // 기타 에러를 로그로 출력
         alert("관리자 문의");
       }
     }
