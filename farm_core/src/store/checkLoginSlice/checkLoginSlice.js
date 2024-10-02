@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getData, getDatas } from "../../firebase";
-// import { getDatasRest } from "../../api";
 
 const initialState = {
   checkLogin: {},

@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteDatas, getDatas, updateDatas } from "../../firebase";
-import Auction from "./../../components/auction/Auction";
 
 const initialState = {
   stock: [],

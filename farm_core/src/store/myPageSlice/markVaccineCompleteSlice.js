@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { arrayUnion, doc, Firestore, updateDoc } from "firebase/firestore";
-import { db, updateDatas } from "../../firebase";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const initialState = {
   stocks: [],

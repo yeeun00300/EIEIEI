@@ -11,7 +11,6 @@ import profileImageSlice from "./profileImageSlice/profileImageSlice";
 import stockSlice from "./stockSlice/stockSlice";
 import weatherSlice from "./weatherSlice/weatherSlice";
 import checkLoginSlice from "./checkLoginSlice/checkLoginSlice";
-import userSlice from "./userSlice/userSlice";
 import paymentSlice from "./myPageSlice/paymentSlice";
 import medicalSlice from "./medicalSlice/medicalSlice";
 import chattingSlice from "./chattingSlice/chattingSlice";

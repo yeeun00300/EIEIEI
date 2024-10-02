@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addDatas, getData, getDatas, getSubCollection } from "../../firebase";
+import { addDatas, getDatas, getSubCollection } from "../../firebase";
 
 const createdAt = new Date();
 const message = [{ createdAt: createdAt, photoUrl: "", text: "", uid: "" }];

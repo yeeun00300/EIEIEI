@@ -2,18 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addDatas,
   addFarmDataWithSubcollections,
-  addFarmWithSubcollections,
   db,
   deleteDatas,
-  updateDatas,
 } from "../../firebase";
-import {
-  collection,
-  doc,
-  getDoc,
-  updateDoc,
-  writeBatch,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const initialState = {
   farmName: "",

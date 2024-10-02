@@ -1,10 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  addDatas,
-  deleteDatas,
-  updateDatas,
-  uploadImage,
-} from "../../firebase";
+import { addDatas, uploadImage } from "../../firebase";
 import kroDate from "../../utils/korDate";
 
 const initialState = {
