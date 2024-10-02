@@ -69,9 +69,21 @@ function Header({ title, userInfo }) {
       diseaseInfo?.length > fixedDiseaseInfo.current?.length
     ) {
       setHasNewAlarm(true);
+    } else if (
+      weatherInfo?.length < fixedWeatherInfo.current?.length ||
+      diseaseInfo?.length < fixedDiseaseInfo.current?.length
+    ) {
+      setHasNewAlarm(false);
+      weatherInfo && (fixedWeatherInfo.current = weatherInfo);
+      diseaseInfo && (fixedDiseaseInfo.current = diseaseInfo);
+    } else if (
+      weatherInfo?.length == fixedWeatherInfo.current?.length ||
+      diseaseInfo?.length == fixedDiseaseInfo.current?.length
+    ) {
+      return;
     }
-    // }, [weatherInfo, diseaseInfo, weatherIssueAlarm, dispatch]);
-  }, [weatherInfo, diseaseInfo, hasNewAlarm, weatherIssueAlarm, dispatch]);
+  }, [weatherInfo, diseaseInfo, weatherIssueAlarm, dispatch]);
+  // }, [weatherInfo, diseaseInfo, hasNewAlarm, weatherIssueAlarm, dispatch]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
