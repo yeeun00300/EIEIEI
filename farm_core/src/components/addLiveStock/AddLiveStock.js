@@ -109,6 +109,13 @@ function AddLiveStock() {
     }
 
     const email = localStorage.getItem("email");
+    const initialLayouts = `{"lg":[{"i":"1","x":0,"y":0,"w":20,"h":1,minw: 20,
+            minh: 1,static: true,
+            isDraggable: false,}],"md":[{"i":"1","x":0,"y":0,"w":10,"h":1,minw: 10,
+            minh: 1,static: true,
+            isDraggable: false,}],"sm":[{"i":"1","x":0,"y":0,"w":10,"h":1,minw: 10,
+            minh: 1,static: true,
+            isDraggable: false,}]}`;
 
     const farmData = {
       farmName,
@@ -123,6 +130,7 @@ function AddLiveStock() {
       note,
       email,
       createdAt: Date.now(), // 현재 시간을 밀리세컨드로 추가
+      userFarmLayout: initialLayouts,
     };
 
     try {

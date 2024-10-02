@@ -59,7 +59,7 @@ function Main({ farmList }) {
   const currentFarm = farmList?.filter((item) => item.farmId === farmId)[0];
   // 선택 위젯 리스트
   const [fetchLayoutCount, setFetchLayoutCount] = useState(0);
-  const [widgetList, setWidgetList] = useState(["10"]);
+  const [widgetList, setWidgetList] = useState(["1"]);
   const { stock = [], isLoading } = useSelector((state) => state.stockSlice);
   useFetchCollectionData("stock", fetchExcelStock);
   const filteredStock = stock.filter((item) => item.farmId === Number(farmId));
@@ -501,35 +501,38 @@ function Main({ farmList }) {
   // 컴포넌트 복원
   const renderComponent = (id) => {
     switch (id) {
+      /* 타이틀 추가 */
       case "1":
-        return <Vaccine stock={filteredStock} />; //백신정보
+        return <div className={styles.farmTitle}>{currentFarm?.farmName} </div>; //축사 이름
       case "2":
-        return <Table data={stock && stock} />; //가축별 총 데이터
+        return <Vaccine stock={filteredStock} />; //백신정보
       case "3":
-        return <FeedAndWater />; //물 사료 소비량
+        return <Table data={stock && stock} />; //가축별 총 데이터
       case "4":
-        return <MonthPractice />; // 질병 지도 데이터
+        return <FeedAndWater />; //물 사료 소비량
       case "5":
-        return <TempPiNeedleWidget />; // 온도 조절
+        return <MonthPractice />; // 질병 지도 데이터
       case "6":
-        return <HumidPiChartWidget />; // 습도 조절
+        return <TempPiNeedleWidget />; // 온도 조절
       case "7":
-        return <LightPiChartWidget />; // 조도 조절
+        return <HumidPiChartWidget />; // 습도 조절
       case "8":
-        return <CO2PiChartWidget />; //co2 조절
+        return <LightPiChartWidget />; // 조도 조절
       case "9":
-        return <NH3PiChartWidget />; //암모니아 조절
+        return <CO2PiChartWidget />; //co2 조절
       case "10":
-        return <WeekWeatherWidget />; // 5일 날씨
+        return <NH3PiChartWidget />; //암모니아 조절
       case "11":
-        return <StockNum stock={realStock} />; //현재 농장 가축 수
+        return <WeekWeatherWidget />; // 5일 날씨
       case "12":
-        return <StockProduct stock={realStock} farmData={currentFarm} />; //발정상태&생산량
+        return <StockNum stock={realStock} />; //현재 농장 가축 수
       case "13":
-        return <HealthCondition stock={realStock} />; //건강 상태
+        return <StockProduct stock={realStock} farmData={currentFarm} />; //발정상태&생산량
       case "14":
-        return <MortalityRate stock={filteredStock} />; //폐사율
+        return <HealthCondition stock={realStock} />; //건강 상태
       case "15":
+        return <MortalityRate stock={filteredStock} />; //폐사율
+      case "16":
         return <CCTVAnimal stockType={currentFarm.farm_stockType} />; //cctv
 
       default:
@@ -557,12 +560,22 @@ function Main({ farmList }) {
         const x = initialItem ? initialItem.x : item.x;
         const y = initialItem ? initialItem.y : item.y;
 
-        if (item.i == "4") {
+        if (item.i == "5") {
           return { ...item, w: 1, h: 6, x, y };
-        } else if (item.i == "10") {
+        } else if (item.i == "11") {
           return { ...item, w: 2, h: 3, x, y };
-        } else if (item.i == "15") {
+        } else if (item.i == "16") {
           return { ...item, w: 2, h: 3, x, y };
+        } else if (item.i == "1") {
+          return {
+            ...item,
+            w: 10,
+            h: 1,
+            x,
+            y,
+            static: true,
+            isDraggable: false,
+          };
         } else {
           return { ...item, w: 1, h: 3, x, y };
         }
@@ -589,35 +602,35 @@ function Main({ farmList }) {
       zero = {
         lg: [
           {
-            i: "10",
-            x: 2,
+            i: "1",
+            x: 0,
             y: 0,
-            w: 3,
-            h: 3,
-            minw: 1,
-            maxh: 3,
+            w: 10,
+            h: 1,
+            minw: 10,
+            minh: 1,
           },
         ],
         md: [
           {
-            i: "10",
-            x: 2,
+            i: "1",
+            x: 0,
             y: 0,
-            w: 3,
-            h: 3,
-            minw: 1,
-            maxh: 3,
+            w: 10,
+            h: 1,
+            minw: 10,
+            minh: 1,
           },
         ],
         sm: [
           {
-            i: "10",
-            x: 2,
+            i: "1",
+            x: 0,
             y: 0,
-            w: 3,
-            h: 3,
-            minw: 1,
-            maxh: 3,
+            w: 10,
+            h: 1,
+            minw: 10,
+            minh: 1,
           },
         ],
       };
@@ -641,35 +654,35 @@ function Main({ farmList }) {
       basic = {
         lg: [
           {
-            i: "10",
-            x: 2,
+            i: "1",
+            x: 0,
             y: 0,
-            w: 3,
-            h: 3,
-            minw: 1,
-            maxh: 3,
+            w: 10,
+            h: 1,
+            minw: 10,
+            minh: 1,
           },
         ],
         md: [
           {
-            i: "10",
-            x: 2,
+            i: "1",
+            x: 0,
             y: 0,
-            w: 3,
-            h: 3,
-            minw: 1,
-            maxh: 3,
+            w: 10,
+            h: 1,
+            minw: 10,
+            minh: 1,
           },
         ],
         sm: [
           {
-            i: "10",
-            x: 2,
+            i: "1",
+            x: 0,
             y: 0,
-            w: 3,
-            h: 3,
-            minw: 1,
-            maxh: 3,
+            w: 10,
+            h: 1,
+            minw: 10,
+            minh: 1,
           },
         ],
       };
@@ -703,35 +716,35 @@ function Main({ farmList }) {
         zero = {
           lg: [
             {
-              i: "10",
-              x: 2,
+              i: "1",
+              x: 0,
               y: 0,
-              w: 3,
-              h: 3,
-              minw: 1,
-              maxh: 3,
+              w: 10,
+              h: 1,
+              minw: 10,
+              minh: 1,
             },
           ],
           md: [
             {
-              i: "10",
-              x: 2,
+              i: "1",
+              x: 0,
               y: 0,
-              w: 3,
-              h: 3,
-              minw: 1,
-              maxh: 3,
+              w: 10,
+              h: 1,
+              minw: 10,
+              minh: 1,
             },
           ],
           sm: [
             {
-              i: "10",
-              x: 2,
+              i: "1",
+              x: 0,
               y: 0,
-              w: 3,
-              h: 3,
-              minw: 1,
-              maxh: 3,
+              w: 10,
+              h: 1,
+              minw: 10,
+              minh: 1,
             },
           ],
         };
@@ -778,7 +791,7 @@ function Main({ farmList }) {
           <ResponsiveGridLayout
             className="layout"
             layouts={layout}
-            breakpoints={{ lg: 1400, md: 700, sm: 400 }}
+            breakpoints={{ lg: 8000, md: 700, sm: 400 }}
             cols={{ lg: 5, md: 3, sm: 1 }}
             rowHeight={83}
             // width={1000}

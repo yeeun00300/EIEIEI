@@ -24,17 +24,17 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
     <>
       {/* {widgetList ? (
         <> */}
-      <Checkbox
+      {/* <Checkbox
         color="primary"
-        label="백신정보"
+        label="축사이름"
         value="1"
         variant="outlined"
         onChange={handleCheckboxChange}
         checked={widgetList.filter((item) => item == "1") == "1" ? true : false}
-      />
+      /> */}
       <Checkbox
         color="primary"
-        label="가축별 총 데이터"
+        label="백신정보"
         value="2"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -42,7 +42,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="물 사료 소비량"
+        label="가축별 총 데이터"
         value="3"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -50,7 +50,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="질병 지도 데이터"
+        label="물 사료 소비량"
         value="4"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -58,7 +58,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="온도 조절"
+        label="질병 지도 데이터"
         value="5"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -66,7 +66,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="습도 조절"
+        label="온도 조절"
         value="6"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -74,7 +74,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="조도 조절"
+        label="습도 조절"
         value="7"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -82,7 +82,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="CO2 조절"
+        label="조도 조절"
         value="8"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -90,7 +90,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="NH3 조절"
+        label="CO2 조절"
         value="9"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -98,7 +98,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="5일 날씨"
+        label="NH3 조절"
         value="10"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -108,7 +108,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="현재 농장 가축 수"
+        label="5일 날씨"
         value="11"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -118,7 +118,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="발정상태&생산량"
+        label="현재 농장 가축 수"
         value="12"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -128,7 +128,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="건강 상태"
+        label="발정상태&생산량"
         value="13"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -138,7 +138,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="폐사율"
+        label="건강 상태"
         value="14"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -148,7 +148,7 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
       />
       <Checkbox
         color="primary"
-        label="cctv"
+        label="폐사율"
         value="15"
         variant="outlined"
         onChange={handleCheckboxChange}
@@ -156,191 +156,16 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
           widgetList.filter((item) => item == "15") == "15" ? true : false
         }
       />
-      {/* </>
-      ) : (
-        <>
-          <Checkbox
-            color="primary"
-            label="백신정보"
-            value="1"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "1").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="가축별 총 데이터"
-            value="2"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "2").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="물 사료 소비량"
-            value="3"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "3").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="질병 지도 데이터"
-            value="4"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "4").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="온도 조절"
-            value="5"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "5").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="습도 조절"
-            value="6"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "6").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="조도 조절"
-            value="7"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "7").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="CO2 조절"
-            value="8"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "8").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="NH3 조절"
-            value="9"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "9").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="5일 날씨"
-            value="10"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "10").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="현재 농장 가축 수"
-            value="11"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "11").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="발정상태&생산량"
-            value="12"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "12").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="건강 상태"
-            value="13"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "13").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="폐사율"
-            value="14"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "14").length > 0
-                ? true
-                : false
-            }
-          />
-          <Checkbox
-            color="primary"
-            label="cctv"
-            value="15"
-            variant="outlined"
-            onChange={handleCheckboxChange}
-            checked={
-              layout["lg"].filter((item) => item.i == "15").length > 0
-                ? true
-                : false
-            }
-          />
-        </>
-      )} */}
+      <Checkbox
+        color="primary"
+        label="cctv"
+        value="16"
+        variant="outlined"
+        onChange={handleCheckboxChange}
+        checked={
+          widgetList.filter((item) => item == "16") == "16" ? true : false
+        }
+      />
 
       {/* <div> */}
       {/* 온도 조절 */}
