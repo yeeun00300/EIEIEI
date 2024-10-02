@@ -15,7 +15,6 @@ import {
 import { toggleOpen } from "../../../store/myPageSlice/addressSlice";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import DeleteAccount from "./../../../components/DeleteAccount/DeleteAccount";
-import KORMap from "../../../components/diseaseMonth/KORMap";
 
 function UserInfo() {
   useFetchCollectionData("users", fetchUser);
