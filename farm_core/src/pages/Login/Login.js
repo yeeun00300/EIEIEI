@@ -34,7 +34,6 @@ function Login() {
   const { userid, password, isLoading, notLogin, email } = useSelector(
     (state) => state.loginSlice
   );
-  console.log(notLogin);
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,7 +50,6 @@ function Login() {
     const unsubscribe = onSnapshot(userDocQuery, (snapshot) => {
       if (!snapshot.empty) {
         const userData = snapshot.docs[0].data();
-        console.log("실시간 사용자 상태:", userData);
 
         if (userData.blackState === "black") {
           alert("블랙처리된 계정입니다. 자동으로 로그아웃됩니다.");
@@ -72,9 +70,7 @@ function Login() {
       localStorage.removeItem("email");
       dispatch(setNotLogin(true));
       navigate("/");
-    } catch (error) {
-      console.error("로그아웃 실패:", error);
-    }
+    } catch (error) {}
   };
 
   const handleLogin = async (e) => {
@@ -102,7 +98,6 @@ function Login() {
           where("email", "==", user.email)
         );
         const querySnapshot = await getDocs(usersQuery);
-        console.log(querySnapshot);
 
         if (!querySnapshot.empty) {
           const userData = querySnapshot.docs[0].data(); // 첫 번째 문서의 데이터 가져오기
@@ -134,12 +129,10 @@ function Login() {
           monitorUserStatus(user.email); // 실시간 상태 감시 함수 호출
           navigate("/"); // 메인 페이지로 리디렉션
         } else {
-          console.error("사용자 문서가 존재하지 않습니다.");
           alert("사용자 데이터가 존재하지 않습니다.");
           dispatch(setNotLogin(true));
         }
       } else {
-        console.error("로그인된 사용자 정보가 없습니다.");
         alert("로그인 실패: 사용자 정보가 없습니다.");
         dispatch(setNotLogin(true));
       }
@@ -162,8 +155,6 @@ function Login() {
         default:
           errorMessage = "로그인 실패: " + error.message;
       }
-
-      console.error(errorMessage);
       alert(errorMessage);
       dispatch(setError(errorMessage));
       dispatch(setNotLogin(true));
@@ -192,9 +183,7 @@ function Login() {
 
         await addPaymentHistory("users", userEmail, paymentInfo); // 결제 정보 추가
         alert("결제 및 로그인 성공");
-      } catch (error) {
-        console.error("카카오 로그인 후 결제 정보 추가 오류:", error);
-      }
+      } catch (error) {}
     };
 
     return (
@@ -239,7 +228,6 @@ function Login() {
         }
       })
       .catch((error) => {
-        console.error("Google login error:", error);
         alert("로그인 실패: " + error.message);
       });
   }

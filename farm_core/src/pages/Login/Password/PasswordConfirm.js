@@ -29,7 +29,6 @@ function PasswordConfirm({
       alert("비밀번호가 성공적으로 재설정되었습니다.");
       navigate("/"); // 비밀번호 재설정 후 홈으로 이동
     } catch (error) {
-      console.error("비밀번호 재설정 중 오류 발생했습니다: ", error);
       setError("비밀번호 재설정에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false); // 로딩 완료

@@ -85,7 +85,6 @@ function AddLiveStock() {
     };
     const snapshot = await getDatas("farm", queryOptions);
 
-    console.log("Farm ID exists check:", snapshot); // 디버깅을 위한 로그
     setIsFarmIdExists(snapshot.length > 0); // 결과에 따라 상태 업데이트
   };
 
@@ -106,10 +105,8 @@ function AddLiveStock() {
     e.preventDefault();
 
     if (!validateForm()) {
-      console.log("Form Errors:", formErrors);
       return;
     }
-    console.log("Validation passed");
 
     const email = localStorage.getItem("email");
 
@@ -135,9 +132,7 @@ function AddLiveStock() {
       );
 
       if (addLiveStockAction.fulfilled.match(resultAction)) {
-        console.log("Farm added successfully:", resultAction.payload);
       } else {
-        console.error("Failed to add farm:", resultAction.error.message);
       }
 
       // Clear form fields
@@ -178,8 +173,6 @@ function AddLiveStock() {
       console.error("Error adding farm:", error);
     }
   };
-
-  console.log(farm_stockType);
 
   return (
     <div className="page">
