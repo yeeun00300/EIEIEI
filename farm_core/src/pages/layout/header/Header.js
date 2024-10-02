@@ -54,6 +54,7 @@ function Header({ title, userInfo }) {
   const fixedWeatherInfo = useRef();
   const fixedDiseaseInfo = useRef();
   // const fixedDiseaseInfo = useRef(diseaseInfo && diseaseInfo);
+
   // 알람을 확인했을 때 빨간 점 없애기
   const [hasNewAlarm, setHasNewAlarm] = useState(false);
   useEffect(() => {
@@ -63,17 +64,14 @@ function Header({ title, userInfo }) {
 
   useEffect(() => {
     dispatch(setOnWeatherIssueAlarm(weatherInfo));
-    // if (weatherInfo?.length > 0 || diseaseInfo?.length > 0) {
-    //   setHasNewAlarm(true);
-    // }
     if (
       weatherInfo?.length > fixedWeatherInfo.current?.length ||
       diseaseInfo?.length > fixedDiseaseInfo.current?.length
     ) {
       setHasNewAlarm(true);
     }
-  }, [weatherInfo, diseaseInfo, weatherIssueAlarm, dispatch]);
-  // }, [weatherInfo, diseaseInfo, hasNewAlarm, weatherIssueAlarm, dispatch]);
+    // }, [weatherInfo, diseaseInfo, weatherIssueAlarm, dispatch]);
+  }, [weatherInfo, diseaseInfo, hasNewAlarm, weatherIssueAlarm, dispatch]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -114,8 +112,8 @@ function Header({ title, userInfo }) {
         <div className={styles.alarmInfo}>
           <div className={styles.bellWrapper} onClick={handleAlarmClick}>
             <FaRegBell size={25} onClick={toggleAlarmMenu} />
-            {hasNewAlarm && <span className={styles.redDot} />}
             {/* 빨간 점 표시 */}
+            {hasNewAlarm && <span className={styles.redDot} />}
           </div>
           {isAlarmOpen && (
             <div className={styles.alarmList}>
