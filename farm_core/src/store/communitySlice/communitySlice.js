@@ -7,7 +7,7 @@ import {
   updateComment,
   updateCommunityDatas,
 } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const initialState = {
   noticeContents: [],
@@ -333,44 +333,32 @@ const reportPost = createAsyncThunk(
 // 비동기 작업: 댓글 신고
 const reportComment = createAsyncThunk(
   "community/reportComment",
-  async ({ postId, commentId, reason, state }, { rejectWithValue }) => {
+  async ({ postId, commentId, reason }, { getState, rejectWithValue }) => {
     try {
-      if (!state) {
-        const commentRef = doc(db, "community", postId, "comments", commentId);
-        const commentSnap = await getDoc(commentRef);
-        const commentData = commentSnap.data();
+      const commentRef = doc(db, "community", postId, "comments", commentId);
+      const commentSnap = await getDoc(commentRef);
+      const commentData = commentSnap.data();
 
-        // 기존 필드값을 가져옵니다.
-        const existingReasons = commentData?.subDeclareReason || [];
-        const updatedCount = (commentData?.subDeclareCount || 0) + 1;
+      // 기존 필드값을 가져옵니다.
+      const existingReasons = commentData?.subDeclareReason || [];
+      const updatedCount = (commentData?.subDeclareCount || 0) + 1;
 
-        // 신고 상태 업데이트
-        const updatedState = "reported";
+      // 신고 상태 업데이트
+      const updatedState = "reported";
 
-        // 신고 이유 배열에 새로운 이유 추가
-        const updatedReasons = [...new Set([...existingReasons, reason])]; // 중복 제거를 위해 Set 사용
+      // 신고 이유 배열에 새로운 이유 추가
+      const updatedReasons = [...new Set([...existingReasons, reason])]; // 중복 제거를 위해 Set 사용
 
-        const updates = {
-          subDeclareState: updatedState, // 상태 업데이트
-          subDeclareReason: updatedReasons, // 신고 이유 업데이트
-          subDeclareCount: updatedCount, // 신고 횟수 업데이트
-        };
+      const updates = {
+        subDeclareState: updatedState, // 상태 업데이트
+        subDeclareReason: updatedReasons, // 신고 이유 업데이트
+        subDeclareCount: updatedCount, // 신고 횟수 업데이트
+      };
 
-        // Firestore에서 해당 댓글 문서 업데이트
-        await updateComment(commentRef, updates); // 댓글 참조를 전달
+      // Firestore에서 해당 댓글 문서 업데이트
+      await setDoc(commentRef, updates, { merge: true }); // merge 옵션을 사용하여 기존 필드 유지
 
-        return { postId, commentId, updates };
-      } else {
-        const commentRef = doc(db, "community", postId, "comments", commentId);
-        const updates = {
-          subDeclareState: state, // 상태 업데이트
-        };
-
-        // Firestore에서 해당 댓글 문서 업데이트
-        await updateComment(commentRef, updates); // 댓글 참조를 전달
-
-        return { postId, commentId, updates };
-      }
+      return { postId, commentId, updates };
     } catch (error) {
       return rejectWithValue(error.message);
     }
