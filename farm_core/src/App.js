@@ -14,7 +14,6 @@ import KakaoCallBack from "./pages/Login/SignUp/KakaoCallBack";
 import RegularPayment from "./pages/RegularPayment/RegularPayment";
 import MyLiveStock from "./components/MyLiveStock/MyLiveStock";
 import AddLiveStock from "./components/addLiveStock/AddLiveStock";
-import MyStockAddPage from "./pages/MyStockAddPage/MyStockAddPage";
 import MyStockPage from "./components/MyStockPage/MyStockPage";
 import MyStockDetails from "./pages/MyStockDetails/MyStockDetails";
 import Community from "./pages/Community/Community";
@@ -100,8 +99,6 @@ function App() {
             <Route path="My_Farm_Details_Disease" element={<MyStockPage />} />
             {/* 가축 현황 및 관리 */}
             <Route path="My_Farm_Info_stock" element={<MyStockDetails />} />
-            {/* 가축 추가 */}
-            <Route path="My_Farm_Add_stock" element={<MyStockAddPage />} />
             {/* 자유게시판 */}
             <Route path="My_Farm_Board_FreeBoard" element={<Community />} />
             <Route
