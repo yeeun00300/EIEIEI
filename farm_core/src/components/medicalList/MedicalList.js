@@ -291,7 +291,7 @@ function MedicalList(props) {
             />
           </div>
 
-          <button type="submit" className={styles.button}>
+          <button type="submit" className="globalBtn">
             제출하기
           </button>
         </form>
