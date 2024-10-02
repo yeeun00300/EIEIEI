@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setMapAddr } from "../../store/addressSlice/mapAddrSlice";
 const { kakao } = window;
