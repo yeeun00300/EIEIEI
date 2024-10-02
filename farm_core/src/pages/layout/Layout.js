@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Layout.module.scss";
 import Header from "./header/Header";
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "./footer/Footer";
 import { useTreeViewApiRef } from "@mui/x-tree-view/hooks";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { alpha, Box, Collapse, styled } from "@mui/material";
+import { Box, Collapse, styled } from "@mui/material";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Admin from "../Admin/Admin";
 import {
   fetchFarmList,
   fetchLogin,
 } from "../../store/checkLoginSlice/checkLoginSlice";
-import { onUserStateChange } from "../../firebase";
-import { getAuth } from "firebase/auth";
 import { setAdminLogin } from "../../store/loginSlice/loginSlice";
-import { faR } from "@fortawesome/free-solid-svg-icons";
 import { useSpring, animated } from "@react-spring/web";
 import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
 import { useMediaQuery } from "react-responsive";

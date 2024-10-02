@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import SignUp from "../Login/SignUp/SignUp";
 import styles from "./Intro.module.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Login from "../Login/Login";
-import logoImg from "../../img/TitleLogo.png";
 
 function Intro(props) {
   const navigate = useNavigate();

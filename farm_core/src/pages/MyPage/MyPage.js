@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./MyPage.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./../../store/userInfoEditSlice/UserInfoEditSlice";
@@ -6,7 +6,7 @@ import UserInfo from "./UserInfo/UserInfo";
 import Question from "./Question/Question";
 import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
-import { useFetchCollectionData, useFetchUser } from "../../firebase";
+import { useFetchCollectionData } from "../../firebase";
 const dataObj = {
   UserInfo: { label: "회원정보수정" },
   myCommunity: { label: "내 게시글" },

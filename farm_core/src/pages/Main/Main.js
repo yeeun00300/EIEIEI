@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { Line } from "react-chartjs-2";
-import { Box } from "@mui/material";
 import styles from "./Main.module.scss";
-import Weather from "./../../api/Weather/Weather";
-import DiseaseMap from "./../../components/DiseaseStatus/DiseaseMap";
-import GaugeNeedle from "./../../components/Gauge/GaugeNeedle";
 import MyCalendar from "./../../components/Calendar/MyCalendar";
 import Table from "./../../components/MyLiveStock/table/Table";
 import {
@@ -18,8 +13,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useLocation, useParams } from "react-router-dom";
-import CurrentMarker from "../../components/DiseaseStatus/CurrentMarker";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
 import {
@@ -34,7 +28,6 @@ import CO2PiChartWidget from "./../../components/ControlPanels/widget/CO2PiChart
 import HumidPiChartWidget from "../../components/ControlPanels/widget/HumidPiChartWidget";
 import LightPiChartWidget from "../../components/ControlPanels/widget/LightPiChartWidget";
 import NH3PiChartWidget from "../../components/ControlPanels/widget/NH3PiChartWidget";
-import TodayWeatherWidget from "../../components/ControlPanels/WeatherWidget/TodayWeatherWidget";
 import WeekWeatherWidget from "../../components/ControlPanels/WeatherWidget/WeekWeatherWidget";
 import StockNum from "../../components/MyLiveStock/charts/StockNum";
 import Vaccine from "../../components/MyLiveStock/charts/Vaccine";
@@ -60,20 +53,6 @@ ChartJS.register(
 // responsive grid 생성
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const LineChart = ({ dataset }) => {
-  return (
-    <Box width="98%" height="98%">
-      <Line
-        data={dataset}
-        options={{
-          responsive: true,
-          maintainAspectRatio: false, // 부모 요소 크기에 맞추기 위해 필요
-        }}
-      />
-    </Box>
-  );
-};
-
 function Main({ farmList }) {
   const { farmId } = useParams();
   const layoutIArr = useRef([]); // layoutIArr를 useRef로 선언하여 변화 추적
@@ -86,18 +65,6 @@ function Main({ farmList }) {
   const filteredStock = stock.filter((item) => item.farmId === Number(farmId));
   const realStock = filteredStock.filter((item) => item.deceased === "N");
   // const [filteredStock, setFilteredStock] = useState([]);
-
-  const sampleData = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-      {
-        label: "My First dataset",
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)",
-        data: [65, 59, 80, 81, 56, 55, 40],
-      },
-    ],
-  };
 
   // const layoutDict = {
   //   LineChart: <LineChart dataset={sampleData} />,

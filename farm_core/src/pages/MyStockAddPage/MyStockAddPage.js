@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ExcelTemplateDownload from "../../components/ExcelTemplateDownload/ExcelTemplateDownload";
 import ExcelUpload from "./../../components/ExcelUpload/ExcelUpload";
 import { fetchExcelStock } from "../../store/stockSlice/stockSlice";
-import StockAddfromExcel from "../../components/StockAdd/StockAddfromExcel";
 import styles from "./MyStockAddPage.module.scss";
 
 function MyStockAddPage() {
