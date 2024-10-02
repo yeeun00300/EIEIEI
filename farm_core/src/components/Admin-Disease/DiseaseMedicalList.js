@@ -270,7 +270,7 @@ function DiseaseMedicalList() {
                   <strong>사료 공급 상태:</strong> {selectedSubData.feedSupply}
                 </div>
                 <DialogActions className={styles.dialogActions}>
-                  <button className={styles.detailButton} onClick={handleEdit}>
+                  <button className="squareGlobalBtn" onClick={handleEdit}>
                     수정하기
                   </button>
                   <Button

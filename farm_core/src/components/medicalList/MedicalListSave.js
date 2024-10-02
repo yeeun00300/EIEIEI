@@ -280,125 +280,126 @@ function MedicalListSave() {
           )}
         </DialogContent>
       </Dialog>
-
-      <Dialog open={editing} onClose={handleCancel}>
-        <DialogTitle>수정하기</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="증상"
-            name="symptom"
-            value={updatedData.symptom || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="영향을 받은 가축 수"
-            name="symptomCount"
-            value={updatedData.symptomCount || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <label>열이 있습니까?</label>
-          <RadioGroup
-            name="fever"
-            value={updatedData.fever ? "예" : "아니요"}
-            onChange={handleChange}
-          >
-            <FormControlLabel value="예" control={<Radio />} label="예" />
-            <FormControlLabel
-              value="아니요"
-              control={<Radio />}
-              label="아니요"
+      <div className={styles.openPopUp}>
+        <Dialog open={editing} onClose={handleCancel}>
+          <DialogTitle>수정하기</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="증상"
+              name="symptom"
+              value={updatedData.symptom || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
             />
-          </RadioGroup>
-          <TextField
-            label="평균 체온"
-            name="feverMean"
-            value={updatedData.feverMean || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <label>기침 여부?</label>
-          <RadioGroup
-            name="cough"
-            value={updatedData.cough ? "예" : "아니요"}
-            onChange={handleChange}
-          >
-            <FormControlLabel value="예" control={<Radio />} label="예" />
-            <FormControlLabel
-              value="아니요"
-              control={<Radio />}
-              label="아니요"
+            <TextField
+              label="영향을 받은 가축 수"
+              name="symptomCount"
+              value={updatedData.symptomCount || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
             />
-          </RadioGroup>
-
-          <TextField
-            label="기침 빈도"
-            name="coughCount"
-            value={updatedData.coughCount || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <label>설사 증상</label>
-          <RadioGroup
-            name="diarrhea"
-            value={updatedData.diarrhea ? "예" : "아니요"}
-            onChange={handleChange}
-          >
-            <FormControlLabel value="예" control={<Radio />} label="예" />
-            <FormControlLabel
-              value="아니요"
-              control={<Radio />}
-              label="아니요"
+            <label>열이 있습니까?</label>
+            <RadioGroup
+              name="fever"
+              value={updatedData.fever ? "예" : "아니요"}
+              onChange={handleChange}
+            >
+              <FormControlLabel value="예" control={<Radio />} label="예" />
+              <FormControlLabel
+                value="아니요"
+                control={<Radio />}
+                label="아니요"
+              />
+            </RadioGroup>
+            <TextField
+              label="평균 체온"
+              name="feverMean"
+              value={updatedData.feverMean || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
             />
-          </RadioGroup>
+            <label>기침 여부?</label>
+            <RadioGroup
+              name="cough"
+              value={updatedData.cough ? "예" : "아니요"}
+              onChange={handleChange}
+            >
+              <FormControlLabel value="예" control={<Radio />} label="예" />
+              <FormControlLabel
+                value="아니요"
+                control={<Radio />}
+                label="아니요"
+              />
+            </RadioGroup>
 
-          <TextField
-            label="설사 횟수"
-            name="diarrheaCount"
-            value={updatedData.diarrheaCount || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="환기 상태"
-            name="ventilation"
-            value={updatedData.ventilation || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="조명 상태"
-            name="lampCondition"
-            value={updatedData.lampCondition || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="사료 공급 상태"
-            name="feedSupply"
-            value={updatedData.feedSupply || ""}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancel} className="globalDeleteBtn">
-            취소
-          </Button>
-          <Button onClick={handleSave} className="globalBtn">
-            저장
-          </Button>
-        </DialogActions>
-      </Dialog>
+            <TextField
+              label="기침 빈도"
+              name="coughCount"
+              value={updatedData.coughCount || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <label>설사 증상</label>
+            <RadioGroup
+              name="diarrhea"
+              value={updatedData.diarrhea ? "예" : "아니요"}
+              onChange={handleChange}
+            >
+              <FormControlLabel value="예" control={<Radio />} label="예" />
+              <FormControlLabel
+                value="아니요"
+                control={<Radio />}
+                label="아니요"
+              />
+            </RadioGroup>
+
+            <TextField
+              label="설사 횟수"
+              name="diarrheaCount"
+              value={updatedData.diarrheaCount || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="환기 상태"
+              name="ventilation"
+              value={updatedData.ventilation || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="조명 상태"
+              name="lampCondition"
+              value={updatedData.lampCondition || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="사료 공급 상태"
+              name="feedSupply"
+              value={updatedData.feedSupply || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancel} className="globalDeleteBtn">
+              취소
+            </Button>
+            <Button onClick={handleSave} className="globalBtn">
+              저장
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
     // </div>
   );

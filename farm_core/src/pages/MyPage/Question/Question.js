@@ -24,7 +24,7 @@ function Question() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
   const [formData, setFormData] = useState({
     stockType: "koreanCow",
-    nickname: users[0]?.authorNickName || "",
+    authorNickName: users[0]?.nickname || "",
     message: "",
     file: null,
     filePreview: null,
@@ -116,7 +116,7 @@ function Question() {
 
       setFormData({
         stockType: "koreanCow",
-        nickname: users[0]?.authorNickName || "",
+        authorNickName: users[0]?.nickname || "",
         message: "",
         file: null,
         filePreview: null,
@@ -160,7 +160,7 @@ function Question() {
   const handleAddClick = () => {
     setFormData({
       stockType: "koreanCow",
-      authorNickName: users[0]?.authorNickName || "",
+      authorNickName: users[0]?.nickname || "",
       message: "",
       file: null,
       filePreview: null,
@@ -221,9 +221,9 @@ function Question() {
             </Box>
             <Box className={styles.box}>
               <TextField
-                id="authorNickName
+                id="nickname
 "
-                name="authorNickName
+                name="nickname
 "
                 label="닉네임"
                 value={formData.authorNickName}
