@@ -59,7 +59,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter>
       <Routes>
         {notLogin ? (
           <Route path="/">
