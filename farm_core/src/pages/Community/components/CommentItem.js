@@ -85,14 +85,7 @@ function CommentItem({
       return;
     }
 
-    dispatch(reportComment({ postId, commentId: id, reason }));
-
-    const reportRef = doc(db, "reports", `${localEmail}_${id}`);
-    await setDoc(reportRef, {
-      email: localEmail,
-      commentId: id,
-      reason,
-    });
+    await dispatch(reportComment({ postId, commentId: id, reason }));
 
     setHasReported(true);
     refreshComments();
