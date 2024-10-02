@@ -1,9 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -13,14 +9,11 @@ import {
   getDocs,
   getFirestore,
   limit,
-  onSnapshot,
   orderBy,
   query,
   setDoc,
-  Timestamp,
   updateDoc,
   where,
-  writeBatch,
 } from "firebase/firestore";
 import {
   getDownloadURL,
@@ -32,11 +25,9 @@ import {
 } from "firebase/storage";
 import * as XLSX from "xlsx";
 import { v4 as uuidv4 } from "uuid";
-import kroDate from "./utils/korDate";
 import { createPath } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchUser } from "./store/userInfoEditSlice/UserInfoEditSlice";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBRL6QencG9EqD3fCrDW8zEUOW42s2qtYQ",

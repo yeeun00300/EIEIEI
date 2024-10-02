@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { deleteDatas, getDatas } from "../../../firebase";
 import { DataGrid } from "@mui/x-data-grid";
-import { useSelector } from "react-redux";
 
 function QuestionList(props) {
   const [questions, setQuestions] = useState([]);
