@@ -191,7 +191,7 @@ function Login() {
         };
 
         await addPaymentHistory("users", userEmail, paymentInfo); // 결제 정보 추가
-        alert("카카오 로그인 후 결제 이력이 추가되었습니다.");
+        alert("결제 및 로그인 성공");
       } catch (error) {
         console.error("카카오 로그인 후 결제 정보 추가 오류:", error);
       }
@@ -229,7 +229,7 @@ function Login() {
           };
 
           await addPaymentHistory("users", user.email, paymentInfo); // 결제 정보 추가
-          alert("구글 로그인 후 결제 이력이 추가되었습니다.");
+          alert("결제 및 로그인 성공");
 
           navigate("/");
         } else {

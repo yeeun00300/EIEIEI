@@ -24,7 +24,7 @@ function Question() {
   const users = useSelector((state) => state.userInfoEditSlice.userInfo);
   const [formData, setFormData] = useState({
     stockType: "koreanCow",
-    nickname: users[0]?.nickname || "",
+    nickname: users[0]?.authorNickName || "",
     message: "",
     file: null,
     filePreview: null,
@@ -87,7 +87,7 @@ function Question() {
 
       const addObj = {
         stockType: formData.stockType,
-        authorNickName: formData.nickname,
+        authorNickName: formData.authorNickName,
         message: formData.message,
         docId: users[0].docId,
         email: users[0].email,
@@ -98,25 +98,25 @@ function Question() {
       };
 
       if (isEditing) {
-        await updateDatas("community", editingQuestion.docId, addObj);
+        // 이미 존재하는 문서일 경우 업데이트
+        await updateDatas("community", editingQuestion.id, addObj);
         alert("문의 사항이 성공적으로 수정되었습니다");
-        setQuestions((prevQuestions) => {
+        setQuestions((prevQuestions) =>
           prevQuestions.map((q) =>
-            q.id === editingQuestion.id ? { ...q, addObj } : q
-          );
-        });
+            q.id === editingQuestion.id ? { ...q, ...addObj } : q
+          )
+        );
       } else {
-        await addDatas("community", addObj);
+        // 새로운 문서 추가
+        const addedDocRef = await addDatas("community", addObj);
+        const newQuestion = { ...addObj, id: addedDocRef.id }; // Firestore에서 반환된 ID 사용
         alert("문의 사항이 성공적으로 저장되었습니다");
-        setQuestions((prevQuestions) => [
-          ...prevQuestions,
-          { ...addObj, id: addDatas.id },
-        ]);
+        setQuestions((prevQuestions) => [...prevQuestions, newQuestion]);
       }
 
       setFormData({
         stockType: "koreanCow",
-        nickname: users[0]?.nickname || "",
+        nickname: users[0]?.authorNickName || "",
         message: "",
         file: null,
         filePreview: null,
@@ -135,7 +135,7 @@ function Question() {
     setEditingQuestion(question);
     setFormData({
       stockType: question.stockType,
-      nickname: question.nickname,
+      authorNickName: question.authorNickName,
       message: question.message,
       file: null,
       filePreview: question.imageUrl || null,
@@ -160,7 +160,7 @@ function Question() {
   const handleAddClick = () => {
     setFormData({
       stockType: "koreanCow",
-      nickname: users[0]?.nickname || "",
+      authorNickName: users[0]?.authorNickName || "",
       message: "",
       file: null,
       filePreview: null,
@@ -181,7 +181,6 @@ function Question() {
       console.error("Error fetching answers: ", error);
     }
   };
-
   return (
     <div className="container">
       {/* 문의 추가 버튼 */}
@@ -222,10 +221,12 @@ function Question() {
             </Box>
             <Box className={styles.box}>
               <TextField
-                id="nickname"
-                name="nickname"
+                id="authorNickName
+"
+                name="authorNickName
+"
                 label="닉네임"
-                value={formData.nickname}
+                value={formData.authorNickName}
                 onChange={handleChange}
                 fullWidth
                 variant="outlined"

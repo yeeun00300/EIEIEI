@@ -144,18 +144,18 @@ function MyCommunity() {
                     </TableCell>
                     <TableCell className={styles.tableCellHeader}>
                       타입
-                    </TableCell>{" "}
-                    {/* 게시글 타입 추가 */}
+                    </TableCell>
                     {selectedCategory === "livestock" && (
                       <TableCell className={styles.tableCellHeader}>
                         가축 유형
-                      </TableCell> // 가축 유형 열 추가
+                      </TableCell>
                     )}
                     <TableCell className={styles.tableCellHeader}>
                       상세 보기
                     </TableCell>
                   </TableRow>
                 </TableHead>
+
                 <TableBody>
                   {myPosts.map((post, index) => (
                     <TableRow key={post.docId}>

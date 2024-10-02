@@ -44,7 +44,7 @@ function RegularPayment() {
 
       const response = await PortOne.requestPayment({
         storeId: "store-8ead5501-fb96-4f25-a67c-2c9f4d8fed3a",
-        paymentId: uniquePaymentId,
+        paymentId: customerEmail,
         orderName: "EIEIEI 프로그램 정기구독",
         totalAmount: 1000,
         currency: "KRW",
