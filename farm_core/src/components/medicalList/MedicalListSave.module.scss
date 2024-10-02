@@ -4,39 +4,44 @@
   justify-content: center;
   // margin: 0 1rem;
 }
+
 h1 {
   margin-bottom: 30px;
   font-size: 2.5rem;
-  color: #2980b9; // 텍스트 색상 변경
-  text-align: center;
+  // text-align: center;
 }
+
 .tableCellCenter {
   display: flex;
   justify-content: center;
   align-items: center;
   // width: 100%;
 }
+
 h2 {
   margin: 20px 0;
   font-size: 1.8rem;
-  color: #2c3e50;
-  text-align: center;
+  // text-align: center;
 }
+
 .boxContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+
 .imgBox {
   display: flex;
   width: 30%;
   height: 30%;
+
   .Img {
     width: 100%;
     height: 100%;
   }
 }
+
 .btn {
   font-size: 1rem;
   padding: 10px 20px;
@@ -44,7 +49,7 @@ h2 {
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #2980b9;
+    // background-color: #2980b9;
     color: white;
   }
 }
@@ -73,22 +78,22 @@ h2 {
   }
 
   .cardHeader {
-    background-color: #ecf0f1;
+    // background-color: #ecf0f1;
     font-weight: bold;
     padding: 15px;
-    color: var(--point-color);
+    // color: var(--point-color);
     border-radius: 10px;
     height: 100px;
   }
 
   .cardBody {
-    background-color: #ffffff;
+    // background-color: #ffffff;
     padding: 15px;
 
     p {
       margin: 5px 0;
       font-size: 1rem;
-      color: #34495e; // 텍스트 색상 변경
+      // color: #34495e;
     }
   }
 }
@@ -99,14 +104,14 @@ h2 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  // background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 
   .modalContent {
-    background-color: #ffffff;
+    // background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
     width: 80%;
@@ -122,7 +127,7 @@ h2 {
 
   .close {
     cursor: pointer;
-    color: #2980b9;
+    // color: #2980b9;
     font-weight: bold;
     float: right;
     font-size: 2rem;
@@ -138,15 +143,16 @@ h2 {
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  background-color: var(--main-color);
-  color: #ffffff;
+  // background-color: var(--main-color);
+  // color: #ffffff;
   font-weight: bold;
   font-size: 1rem;
   transition: background-color 0.3s ease;
 }
+
 .prevBtn:hover,
 .nextBtn:hover {
-  background-color: var(--second-color);
+  // background-color: var(--second-color);
 }
 
 .prevBtn:disabled,
@@ -156,7 +162,7 @@ h2 {
 }
 
 .subcontainer {
-  width: 500px;
+  width: 31.25rem;
   padding: 1rem;
   background-color: #ecf0f1;
   border-radius: 0.5rem;
@@ -165,18 +171,27 @@ h2 {
 
 .detailHeader {
   font-size: 1.5rem;
-  color: #2980b9;
+  // color: #2980b9;
   margin-bottom: 1rem;
   text-align: left;
 }
 
 .detailItem {
+  // width: 10rem;
   margin: 0.5rem 0;
   font-size: 1.2rem;
-  color: #34495e;
+  color: #7f8c8d;
+  // display: flex; /* Flexbox 사용 */
+  // flex-direction: column;
+  // justify-content: center; /* 수평 중앙 정렬 */
+  // align-items: center; /* 수직 중앙 정렬 (선택 사항) */
 
   strong {
-    color: #2980b9;
+    // color: #2980b9;
+    display: inline-block;
+    width: 40%;
+    text-align: right; /* strong 텍스트 중앙 정렬 */
+    margin-right: 1rem;
   }
 }
 
@@ -200,13 +215,15 @@ h2 {
   padding: 1rem;
 
   Button {
-    background-color: #2980b9;
-    color: white;
+    // background-color: #2980b9;
+    // color: white;
+
     &:hover {
-      background-color: #2980b6;
+      // background-color: #2980b6;
     }
   }
 }
+
 .cancelbutton {
   // &:hover {
   // background-color: ;
@@ -257,9 +274,6 @@ h2 {
     font-size: 1.3rem;
   }
 }
-// .tableCellCenter {
-//   font-size: 1rem;
-// }
 
 @media (max-width: 768px) {
   .save {
@@ -395,6 +409,7 @@ h2 {
   .tableContainer {
     width: 100%;
   }
+
   .subcontainer {
     width: 15.625rem;
   }

@@ -114,6 +114,8 @@ function MedicalListSave() {
         lastModified: currentTime,
       };
 
+      console.log("Saving updated data:", updatedSubData);
+
       // medicalData[0]와 selectedSubData.docId가 유효한지 확인
       if (!medicalData.length || !selectedSubData?.docId) {
         throw new Error("업데이트할 문서 또는 서브컬렉션 문서 ID가 없습니다.");
@@ -139,7 +141,9 @@ function MedicalListSave() {
       setSelectedSubData((prev) => ({ ...prev, ...updatedSubData }));
       alert("수정이 완료되었습니다!");
       handleCancel();
-    } catch (error) {}
+    } catch (error) {
+      console.error("업데이트 실패:", error);
+    }
   };
 
   const handleDelete = async (subData) => {
@@ -188,6 +192,7 @@ function MedicalListSave() {
                       <Button
                         variant="outlined"
                         onClick={() => handleSubDataClick(subData)}
+                        className="globalBtn"
                       >
                         보기
                       </Button>
@@ -196,6 +201,7 @@ function MedicalListSave() {
                       <Button
                         variant="outlined"
                         onClick={() => handleDelete(subData)}
+                        className="globalDeleteBtn"
                       >
                         삭제
                       </Button>
@@ -259,8 +265,14 @@ function MedicalListSave() {
                 <strong>사료 공급 상태:</strong> {selectedSubData.feedSupply}
               </div>
               <DialogActions className={styles.dialogActions}>
-                <Button onClick={handleEdit}>수정하기</Button>
-                <Button onClick={handleCloseModal} color="primary">
+                <Button onClick={handleEdit} className="globalEditBtn">
+                  수정하기
+                </Button>
+                <Button
+                  onClick={handleCloseModal}
+                  color="primary"
+                  className="globalEditBtn"
+                >
                   닫기
                 </Button>
               </DialogActions>
@@ -379,10 +391,14 @@ function MedicalListSave() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel} color="primary">
+          <Button
+            onClick={handleCancel}
+            color="primary"
+            className="globalDeleteBtn"
+          >
             취소
           </Button>
-          <Button onClick={handleSave} color="primary">
+          <Button onClick={handleSave} color="primary" className="globalBtn">
             저장
           </Button>
         </DialogActions>
