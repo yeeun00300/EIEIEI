@@ -15,7 +15,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { addPaymentHistory, checkUserInFirestore, db } from "../../firebase";
+import { addPaymentHistory, db } from "../../firebase";
 import kakaoImg from "../../img/kakao_login.png";
 import googleSvg from "../../img/web_light_sq_SU.svg";
 import {
@@ -47,18 +47,18 @@ function Login() {
       where("email", "==", userEmail)
     );
 
-    const unsubscribe = onSnapshot(userDocQuery, (snapshot) => {
+    const unsubscribe = onSnapshot(userDocQuery, async (snapshot) => {
       if (!snapshot.empty) {
         const userData = snapshot.docs[0].data();
 
         if (userData.blackState === "black") {
           alert("블랙처리된 계정입니다. 자동으로 로그아웃됩니다.");
-          handleLogout();
+          await handleLogout(); // 로그아웃 과정이 완료될 때까지 기다립니다
         }
       }
     });
 
-    return unsubscribe; // 감시를 해제하는 함수를 반환
+    return unsubscribe; // 정리할 수 있는 unsubscribe 함수 반환
   };
 
   // 로그아웃 처리 함수
@@ -198,15 +198,44 @@ function Login() {
   // 구글 로그인
   // 구글 로그인 후 추가 정보 처리
   // 구글 로그인
-  function handleGoogleLogin() {
+  async function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-        const isUserExists = await checkUserInFirestore(user.email);
 
-        if (isUserExists) {
-          // 이미 가입한 사용자라면 paymentHistory에 추가
+        // Firestore에서 이메일 주소로 사용자 데이터 조회
+        const usersQuery = query(
+          collection(db, "users"),
+          where("email", "==", user.email)
+        );
+        const querySnapshot = await getDocs(usersQuery);
+
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data(); // 첫 번째 문서의 데이터 가져오기
+
+          // 사용자의 상태 확인
+          if (userData.isActive === "N") {
+            alert(
+              "해당 계정은 탈퇴된 상태입니다. 관리자에게 문의해주세요. 042-314-4741"
+            );
+            dispatch(setNotLogin(true));
+            await auth.signOut(); // 로그인 세션 종료
+            navigate("/"); // 로그인 페이지로 리디렉션
+            return; // 로그인 절차 중단
+          }
+
+          if (userData.blackState === "black") {
+            alert(
+              "블랙처리된 계정입니다. 관리자에게 문의해주세요. 042-314-4741"
+            );
+            dispatch(setNotLogin(true));
+            await auth.signOut(); // 로그인 세션 종료
+            navigate("/"); // 로그인 페이지로 리디렉션
+            return; // 로그인 절차 중단
+          }
+
+          // 로그인 성공 처리
           localStorage.setItem("email", user.email);
           dispatch(setNotLogin(false));
 
@@ -220,7 +249,7 @@ function Login() {
           await addPaymentHistory("users", user.email, paymentInfo); // 결제 정보 추가
           alert("결제 및 로그인 성공");
 
-          navigate("/");
+          navigate("/"); // 메인 페이지로 리디렉션
         } else {
           // 최초 회원가입 -> 추가정보입력페이지로 이동
           localStorage.setItem("email", user.email);
@@ -231,7 +260,6 @@ function Login() {
         alert("로그인 실패: " + error.message);
       });
   }
-
   return (
     <div className={styles.container}>
       <form onSubmit={handleLogin}>

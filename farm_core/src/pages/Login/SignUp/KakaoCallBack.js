@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { OAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth, checkUserInFirestore, db } from "../../../firebase";
+import { auth, db } from "../../../firebase"; // 필요에 따라 Firestore 모듈 가져오기
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -9,11 +9,48 @@ import {
   setNickname,
 } from "../../../store/joinUserSlice/joinUserSlice";
 import { setNotLogin } from "../../../store/loginSlice/loginSlice";
-import { collection, query, where, getDocs } from "firebase/firestore"; // Firestore 관련 모듈 추가
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore"; // Firestore 관련 모듈 추가
 
-function KakaoCallBack(props) {
+function KakaoCallBack() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const monitorUserStatus = (userEmail) => {
+    const userDocQuery = query(
+      collection(db, "users"),
+      where("email", "==", userEmail)
+    );
+
+    const unsubscribe = onSnapshot(userDocQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const userData = snapshot.docs[0].data();
+
+        if (userData.blackState === "black") {
+          alert("블랙처리된 계정입니다. 자동으로 로그아웃됩니다.");
+          handleLogout();
+        }
+      }
+    });
+
+    return unsubscribe; // 감시를 해제하는 함수를 반환
+  };
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      dispatch(setNotLogin(true));
+      localStorage.removeItem("email");
+      navigate("/"); // 메인 페이지로 리디렉션
+    } catch (error) {
+      console.error("로그아웃 중 오류 발생:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +71,7 @@ function KakaoCallBack(props) {
         }
 
         try {
+          // Step 1: Access Token 요청
           const tokenResponse = await axios.post(
             "https://kauth.kakao.com/oauth/token",
             payload,
@@ -47,6 +85,7 @@ function KakaoCallBack(props) {
 
           const { access_token, id_token } = tokenResponse.data;
 
+          // Step 2: 사용자 정보 요청
           const userInfoResponse = await axios.post(
             `https://kapi.kakao.com/v2/user/me`,
             {},
@@ -79,9 +118,7 @@ function KakaoCallBack(props) {
               alert(
                 "해당 계정은 탈퇴된 상태입니다. 관리자에게 문의해주세요. 042-314-4741"
               );
-              dispatch(setNotLogin(true));
-              await auth.signOut(); // 로그인 세션 종료
-              navigate("/"); // 메인 페이지로 리디렉션
+              await handleLogout(); // 로그인 세션 종료
               return; // 로그인 절차 중단
             }
 
@@ -89,9 +126,7 @@ function KakaoCallBack(props) {
               alert(
                 "블랙처리된 계정입니다. 관리자에게 문의해주세요. 042-314-4741"
               );
-              dispatch(setNotLogin(true));
-              await auth.signOut(); // 로그인 세션 종료
-              navigate("/"); // 메인 페이지로 리디렉션
+              await handleLogout(); // 로그인 세션 종료
               return; // 로그인 절차 중단
             }
 
@@ -105,6 +140,7 @@ function KakaoCallBack(props) {
             // 로그인 성공 처리
             alert("로그인 성공!");
             localStorage.setItem("email", email);
+            monitorUserStatus(email); // 사용자 상태 모니터링 시작
             dispatch(setNotLogin(false));
             navigate("/"); // 메인 페이지로 리디렉션
           } else {

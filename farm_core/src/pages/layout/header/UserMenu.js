@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./UserMenu.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,10 @@ function UserMenu(props) {
   const auth = getUserAuth();
 
   const email = useSelector((state) => state.loginSlice.email);
+  useEffect(() => {
+    // 이메일이 변경될 때마다 리렌더링
+    console.log("이메일이 변경되었습니다:", email);
+  }, [email]);
   // console.log(email);
   const handleLogout = () => {
     signOut(auth)

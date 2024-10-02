@@ -53,11 +53,12 @@
   padding: 1.375rem 0;
 
   .profileImage {
-    width: 1.875rem;
-    height: 1.875rem;
+    width: 2.875rem;
+    height: 2.875rem;
+    cursor: pointer;
   }
 
-  &:hover .usermenu {
+  &:active .usermenu {
     display: block !important;
     opacity: 1;
   }
@@ -69,7 +70,7 @@
   box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.2);
   padding: 1.5rem 1rem;
   position: absolute;
-  top: 95%;
+  top: 88%;
   right: -15%;
   min-width: 9.375rem;
   z-index: 100;
