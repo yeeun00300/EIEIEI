@@ -214,21 +214,6 @@ async function uploadFile(file) {
     );
   });
 }
-// export const checkUserInFirestore = async (email) => {
-//   try {
-//     const userDoc = doc(db, "users", email);
-//     const docSnap = await getDoc(userDoc);
-//     if (docSnap.exists()) {
-//       console.log(`303유저 정보확인:${docSnap}`);
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   } catch (error) {
-//     console.error("Error checking user in Firestore:", error);
-//     return false;
-//   }
-// };
 
 export const checkUserInFirestore = async (email) => {
   try {
@@ -349,47 +334,63 @@ async function uploadExcelAndSaveData(file, collectionName) {
     // localStorage에서 이메일 값을 가져옴
     const email = localStorage.getItem("email");
 
-    const dataObjects = values.map((row) => {
-      const dataObject = headers.reduce((acc, header, index) => {
-        let cellValue = row[index] !== undefined ? row[index] : null;
+    const dataObjects = values
+      .map((row) => {
+        if (row.length === 0) return null; // 빈 행은 건너뜀
 
-        // 날짜 시리얼 값인지 확인하고 변환
-        if (typeof cellValue === "number" && header.includes("날짜")) {
-          const jsDate = new Date((cellValue - 25569) * 86400 * 1000); // 엑셀 날짜 시리얼 값을 JavaScript 날짜로 변환
-          cellValue = jsDate.toISOString().split("T")[0]; // 'YYYY-MM-DD' 형식으로 변환
+        const dataObject = headers.reduce((acc, header, index) => {
+          let cellValue = row[index] !== undefined ? row[index] : null;
+
+          // 날짜 시리얼 값인지 확인하고 변환
+          if (typeof cellValue === "number" && header.includes("날짜")) {
+            const jsDate = new Date((cellValue - 25569) * 86400 * 1000); // 엑셀 날짜 시리얼 값을 JavaScript 날짜로 변환
+            cellValue = jsDate.toISOString().split("T")[0]; // 'YYYY-MM-DD' 형식으로 변환
+          }
+
+          acc[header] = cellValue;
+          return acc;
+        }, {});
+
+        // 필드명을 영어로 변환
+        let convertedObject = convertFieldNamesToEnglish(dataObject);
+
+        // 특수 필드 처리
+        convertedObject = processSpecialFields(convertedObject);
+
+        // undefined 값을 null로 변환
+        for (const key in convertedObject) {
+          if (convertedObject[key] === undefined) {
+            convertedObject[key] = null;
+          }
         }
 
-        acc[header] = cellValue;
-        return acc;
-      }, {});
+        // 이메일 필드를 추가
+        convertedObject.email = email;
 
-      // 필드명을 영어로 변환
-      let convertedObject = convertFieldNamesToEnglish(dataObject);
+        // Firestore에 전송하기 전에 데이터 확인
+        console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
 
-      // 특수 필드 처리
-      convertedObject = processSpecialFields(convertedObject);
-
-      // undefined 값을 null로 변환
-      for (const key in convertedObject) {
-        if (convertedObject[key] === undefined) {
-          convertedObject[key] = null;
-        }
-      }
-
-      // 이메일 필드를 추가
-      convertedObject.email = email;
-
-      // Firestore에 전송하기 전에 데이터 확인
-      console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
-
-      return convertedObject;
-    });
+        return convertedObject;
+      })
+      .filter((dataObject) => {
+        // 모든 필드가 null인 경우 필터링
+        return (
+          dataObject &&
+          Object.values(dataObject).some((value) => value !== null)
+        );
+      });
 
     // Firestore에 저장
     const db = getFirestore(); // Firestore 인스턴스 가져오기
     const collectionRef = collection(db, collectionName);
     for (const dataObject of dataObjects) {
-      await addDoc(collectionRef, dataObject);
+      // Firestore에 데이터 객체가 비어있지 않은 경우에만 저장
+      if (
+        dataObject &&
+        Object.values(dataObject).some((value) => value !== null)
+      ) {
+        await addDoc(collectionRef, dataObject);
+      }
     }
 
     console.log("엑셀 파일 업로드 및 Firestore 저장이 완료되었습니다.");
