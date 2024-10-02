@@ -16,14 +16,12 @@ function DeleteAccount() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  console.log(email);
 
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
       setEmail(user.email); // 현재 유저의 이메일을 상태에 저장
     }
-    console.log(user);
   }, []);
 
   const handleDeleteAccount = async () => {
@@ -48,22 +46,18 @@ function DeleteAccount() {
         alert("회원 탈퇴 성공.");
 
         signOut(auth).then(() => {
-          console.log("로그아웃 성공");
           dispatch(setNotLogin(true));
           localStorage.removeItem("authToken");
           localStorage.removeItem("userId");
           localStorage.removeItem("email");
           navigate("/");
         });
-        // await signOut(auth);
-        // console.log("로그아웃 성공");
 
         navigate("/"); // 로그인 페이지로 리디렉션
       } else {
         alert("유저 문서를 찾을 수 없습니다. 문서 경로를 확인하세요.");
       }
     } catch (error) {
-      console.error("Error deleting account:", error);
       alert(`회원 탈퇴 실패: ${error.message}`);
     }
   };
