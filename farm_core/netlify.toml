@@ -2,12 +2,13 @@
   publish = "build"
   command = "npm run build"
 
+
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/api/*"
+  to = "https://www.smartfarmkorea.net/:splat"
   status = 200
 
 [[redirects]]
-  from = "/api"
-  to = "https://www.smartfarmkorea.net/"
+  from = "/*"
+  to = "/index.html"
   status = 200
