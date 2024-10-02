@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getAuth, applyActionCode } from "firebase/auth";
-import PasswordConfirm from "../../pages/Login/Password/PasswordConfirm"; // 파일 경로 수정
-// import styles from "../../pages/Login/Password/PasswordConfirm";
+import PasswordConfirm from "../../pages/Login/Password/PasswordConfirm";
 
 function EmailCheck() {
   const [searchParams] = useSearchParams();

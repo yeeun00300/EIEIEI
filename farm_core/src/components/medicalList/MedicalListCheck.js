@@ -40,9 +40,7 @@ function MedicalListCheck() {
           const documents = await fetchFarmDocumentByEmail(email);
           console.log("Fetched documents:", documents); // 디버깅용 로그
           setDocuments(documents); // 다수의 문서 상태에 설정
-        } catch (error) {
-          console.error("문서 검색 실패:", error.message || error);
-        }
+        } catch (error) {}
       };
 
       fetchData();
@@ -94,9 +92,7 @@ function MedicalListCheck() {
       setIsEditing(false);
       setOpenModal(false);
       window.alert("수정이 완료되었습니다!");
-    } catch (error) {
-      console.error("업데이트 실패:", error);
-    }
+    } catch (error) {}
   };
 
   const handleDelete = async (docId) => {
