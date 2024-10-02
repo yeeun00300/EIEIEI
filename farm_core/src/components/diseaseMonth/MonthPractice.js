@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import KORMap from "./KORMap";
 import styles from "./MonthPractice.module.scss";
 

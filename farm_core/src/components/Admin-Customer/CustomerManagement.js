@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CustomerManagement.module.scss";
-import AdminList from "./AdminList/AdminList";
 import Sort from "../../pages/Admin/components/Sort";
 import Search from "../../pages/Admin/components/Search";
-import DateRangePickerValue from "../../pages/Admin/components/DateRangePickerValue";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommunityPosts } from "../../store/communitySlice/communitySlice";
 import Table from "react-bootstrap/Table";

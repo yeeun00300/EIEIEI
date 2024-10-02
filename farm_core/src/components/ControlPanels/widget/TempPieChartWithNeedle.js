@@ -1,5 +1,4 @@
-import React, { PureComponent, useEffect, useState } from "react";
-import { PieChart, Pie, Cell } from "recharts";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import PieChartNeedle from "../../Gauge/PieChartNeedle";
 import styles from "./TempPiNeedleWidget.module.scss";

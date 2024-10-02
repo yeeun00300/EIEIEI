@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./Login.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,6 @@ import {
   setIsLoading,
   setNotLogin,
   setPassword,
-  setUsername,
 } from "../../store/loginSlice/loginSlice";
 import {
   getAuth,

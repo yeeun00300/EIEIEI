@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from "./WeatherIssue.module.scss";
-import Search from "../../pages/Admin/components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import { setWeatherIssueContent } from "../../store/weatherSlice/weatherSlice";
 import { addDatas, getDatas } from "../../firebase";

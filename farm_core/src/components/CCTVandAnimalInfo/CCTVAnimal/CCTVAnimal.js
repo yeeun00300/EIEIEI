@@ -10,7 +10,6 @@ import pig from "../../../video/pig.mp4";
 import pig2 from "../../../video/swine.mp4";
 import hen from "../../../video/hen1.mp4";
 import hen2 from "../../../video/hen2.mp4";
-import { useSelector } from "react-redux";
 
 function CCTVAnimal({ stockType }) {
   // const farm_stockType = useSelector(

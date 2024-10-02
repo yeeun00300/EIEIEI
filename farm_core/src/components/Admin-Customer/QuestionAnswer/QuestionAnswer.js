@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./QuestionAnswer.module.scss";
 import { useSelector } from "react-redux";
 import { addComment, deleteComment, getComments } from "../../../firebase";
-import { Button, Card, Collapse } from "@mui/material";
-import DeclareStateCard from "../DeclareStateCard/DeclareStateCard";
 
 function QuestionAnswer({ sortedCommunity }) {
   const [answer, setAnswer] = useState([]);

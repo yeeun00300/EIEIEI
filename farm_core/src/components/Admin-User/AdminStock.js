@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import StockModal from "./StockModal";
-import stockSlice, {
+import {
   deleteStock,
   fetchExcelStock,
   setSelectedStock,
   updateStock,
 } from "./../../store/stockSlice/stockSlice";
-import { useFetchCollectionData } from "../../firebase";
 import {
   Button,
   Table,

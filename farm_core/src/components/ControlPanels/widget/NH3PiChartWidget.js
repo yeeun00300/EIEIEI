@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./NH3PiChartWidget.module.scss";
-import propellerImg from "../../../img/프로펠러.png";
-import PieChartNeedle from "../../Gauge/PieChartNeedle";
 import FanPieChart from "./FanPieChart";
 // import ToggleCont from "../ContextToggle";
 function NH3PiChartWidget() {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addDisease } from "../../../store/diseaseSlice/diseaseSlice";
 import styles from "./AddDiseaseForm.module.scss";
 function AddDiseaseForm({ onClose, selectedAnimal, onDiseaseAdded }) {
   const dispatch = useDispatch();

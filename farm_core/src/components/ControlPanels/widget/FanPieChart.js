@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./FanPieChart.module.scss";
 import propellerImg from "../../../img/프로펠러.png";
 import PieChartNeedle from "../../Gauge/PieChartNeedle";

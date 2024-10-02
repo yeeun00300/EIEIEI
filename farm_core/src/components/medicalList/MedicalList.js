@@ -91,7 +91,7 @@ function MedicalList(props) {
           "farmCureList",
           subCollections.farmCureList
         );
-        window.alert("데이터가 성공적으로 저장되었습니다!");
+        window.alert("문진표 작성이 완료되었습니다.");
         window.location.reload();
       } else {
         alert("유효한 문서 ID가 없습니다.");

@@ -1,11 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as XLSX from "xlsx";
-import {
-  setFileData,
-  uploadExcelFile,
-} from "../../store/excelStroageSlice/PRexcelSlice";
-import { uploadFile } from "../../firebase";
 
 function StockMedicalExcel() {
   const dispatch = useDispatch();

@@ -1,20 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./SignUp.module.scss";
-import { useForm } from "react-hook-form";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  signInWithPhoneNumber,
-  RecaptchaVerifier,
-} from "firebase/auth";
-import { addDatas, checkUserIdExists, saveUserData } from "../../../firebase";
+import { getAuth } from "firebase/auth";
+import { checkUserIdExists } from "../../../firebase";
 import Address from "./../../../api/address/Address";
-import logoImg from "./../../../img/TitleLogo.png";
-import { FaRegUser, FaImage } from "react-icons/fa";
-// import { FaImage } from "react-icons/fa6";
-import { collection, doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { getDatabase } from "firebase/database";
 import {
   setAddress,
   setAddressPopup,
@@ -22,22 +11,18 @@ import {
   setEmail,
   setFarm,
   setIdCheck,
-  setImgFile,
-  setIsPhoneVerified,
   setNickname,
   setPhone,
   setPhoneVerificationCode,
-  setPhoneVerificationStatus,
-  setRecaptchaVerifier,
   setUsername,
 } from "../../../store/joinUserSlice/joinUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import { uploadProfileImage } from "../../../store/profileImageSlice/profileImageSlice";
-import profileImageSlice from "./../../../store/profileImageSlice/profileImageSlice";
-import { joinUser } from "./../../../firebase";
+
 import kroDate from "../../../utils/korDate";
 import { addUser } from "../../../store/userInfoEditSlice/UserInfoEditSlice";
+import { FaImage } from "react-icons/fa";
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -74,11 +59,6 @@ function SignUp() {
     const kakaoKey = "6d4fbd00bc61fb974013babde4a96588";
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoKey);
-      //   const kakaoKey = "6d4fbd00bc61fb974013babde4a96588";
-      //   if (window.Kakao && !window.Kakao.isInitialized()) {
-      //     window.Kakao.init(kakaoKey);
-      //   }
-      // }, []);
     }
     const emailFromStorage = localStorage.getItem("email");
     // console.log("LocalStorage에서 가져온 이메일:", emailFromStorage);
@@ -89,59 +69,7 @@ function SignUp() {
     }
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (!recaptchaVerifier) {
-  //     const verifier = new RecaptchaVerifier(
-  //       "recaptcha-container",
-  //       {
-  //         size: "invisible",
-  //         callback: (response) => {
-  //           console.log("reCAPTCHA solved");
-  //         },
-  //         "expired-callback": () => {
-  //           console.log("reCAPTCHA expired");
-  //         },
-  //       },
-  //       auth
-  //     );
-  //     dispatch(setRecaptchaVerifier(verifier));
-  //   }
-  // }, [recaptchaVerifier, dispatch, auth]);
-
-  // window.recaptchaVerifier = new RecaptchaVerifier(
-  //   "sign-in-button",
-  //   {
-  //     size: "invisible",
-  //     callback: (response) => {
-  //       // reCAPTCHA solved, allow signInWithPhoneNumber.
-  //       // onSignInSubmit();
-  //       console.log(`캡차 인증 확인`);
-  //     },
-  //   },
-  //   auth
-  // );
-
   const handleChange = (e) => {
-    // const { name, value } = e.target;
-    // if (name === "username") {
-    //   dispatch(setUsername(value));
-    // } else if (name === "email") {
-    //   dispatch(setEmail(value));
-    // } else if (name === "address") {
-    //   dispatch(
-    //     setAddress({ address: value, detailedAddress: detailedAddress })
-    //   );
-    // } else if (name === "detailedAddress") {
-    //   dispatch(setAddress({ address: address, detailedAddress: value }));
-    // } else if (name === "farm") {
-    //   dispatch(setFarm(value));
-    // } else if (name === "phone") {
-    //   dispatch(setPhone(value));
-    // } else if (name === "phoneVerificationCode") {
-    //   dispatch(setPhoneVerificationCode(value));
-    // } else if (name === "nickname") {
-    //   dispatch(setNickname(value));
-    // }
     const { name, value } = e.target;
 
     if (name === "phone") {
@@ -186,52 +114,9 @@ function SignUp() {
     const file = e.target.files[0];
 
     if (file) {
-      // console.log("File Info:", file);
-      // console.log("File Size:", file.size);
-      // console.log("File Type:", file.type);
       dispatch(uploadProfileImage(file));
     }
   };
-  // const handlePhoneVerification = async () => {
-  //   if (!phone) {
-  //     alert("전화번호를 입력해주세요.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const confirmationResult = await signInWithPhoneNumber(
-  //       auth,
-  //       `+${phone}`,
-  //       recaptchaVerifier
-  //     );
-  //     window.confirmationResult = confirmationResult;
-  //     dispatch(setPhoneVerificationStatus("인증 코드가 발송되었습니다."));
-  //   } catch (error) {
-  //     dispatch(
-  //       setPhoneVerificationStatus(`인증 코드 요청 실패: ${error.message}`)
-  //     );
-  //   }
-  // };
-
-  // // 인증 코드 확인
-  // const handlePhoneVerificationSubmit = async () => {
-  //   if (!phoneVerificationCode) {
-  //     alert("인증 코드를 입력해주세요.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const result = await window.confirmationResult.confirm(
-  //       phoneVerificationCode
-  //     );
-  //     dispatch(setIsPhoneVerified(true));
-  //     dispatch(setPhoneVerificationStatus("전화번호 인증이 완료되었습니다."));
-  //   } catch (error) {
-  //     dispatch(
-  //       setPhoneVerificationStatus(`인증 코드 확인 실패: ${error.message}`)
-  //     );
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

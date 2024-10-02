@@ -25,7 +25,6 @@ import {
 } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
-import userInfoEditSlice from "./../../store/userInfoEditSlice/UserInfoEditSlice";
 import Search from "../../pages/Admin/components/Search";
 
 function DiseaseMedicalList() {

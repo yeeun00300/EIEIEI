@@ -1,30 +1,58 @@
 .AccordionAlarm {
   width: 25%;
-  border-top: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
   position: fixed;
   top: 70px;
   right: 60px;
   z-index: 10;
-  background-color: #f9f9f9;
+  max-height: 50vh;
+  background-color: var(--second-color-);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   h2 {
+    border-radius: 8px;
     font-size: 10px;
     font-weight: bold;
     color: #333;
   }
-
-  button {
+  div {
+    display: flex;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: var(--main-color);
+    flex-direction: column;
+    background-color: var(--background-color);
+    border-radius: 8px;
+    div {
+      div {
+        div {
+          button {
+            margin-bottom: 4px;
+          }
+        }
+      }
     }
   }
 
+  button {
+    border: 0.05px solid var(--second-color);
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: var(--background-color);
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: var(--point-color);
+    }
+  }
+
+  @media (max-width: 786px) {
+    width: 80%;
+    right: 0;
+    border-radius: 0;
+    border-top: none;
+    // border-bottom: 1px solid #ddd;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
   @media (max-width: 480px) {
     width: 100%;
     right: 0;
@@ -37,6 +65,11 @@
   }
 }
 
+.accordion {
+  padding: 10px;
+  border: 10px solid black;
+}
+
 .weatherAlarmDate {
   font-size: 8px;
   color: #888;
@@ -47,6 +80,10 @@
   margin-right: 10px;
   margin-top: 5px;
 
+  @media (max-width: 786px) {
+    font-size: 12px;
+    margin-right: 5px;
+  }
   @media (max-width: 480px) {
     font-size: 7px;
     margin-right: 5px;
@@ -65,6 +102,10 @@
   justify-content: center;
   align-items: center;
 
+  @media (max-width: 786px) {
+    padding: 6px;
+    font-size: 10px;
+  }
   @media (max-width: 480px) {
     padding: 6px;
     font-size: 10px;
@@ -78,20 +119,31 @@
   margin-bottom: 10px;
 
   p {
-    margin: 8px 0;
+    margin: 4px 0;
     font-size: 0.95rem;
     color: #333;
 
     span {
       font-size: 0.85rem;
       color: #555;
-      background-color: #eef1f4;
-      padding: 6px 10px;
+      background-color: var(--main-color);
+      padding: 3px 5px;
+      margin: 0 2px;
       border-radius: 4px;
       margin-right: 4px;
     }
   }
 
+  @media (max-width: 786px) {
+    p {
+      font-size: 0.85rem;
+    }
+
+    span {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+    }
+  }
   @media (max-width: 480px) {
     p {
       font-size: 0.85rem;
