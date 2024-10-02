@@ -10,9 +10,10 @@ function MonthPractice(props) {
     const month = e.target.value.replace("-", "");
     console.log(`Selected Month: ${month}`);
     setSelectedMonth(month);
-    const apikey = process.env.REACT_APP_DISEASEAPI;
+    const apikey = process.env.REACT_APP_DISEASE_API;
+    console.log(apikey);
 
-    const apiURL = `/api6/openapi/${apikey}/json/Grid_20220621000000000615_1/1/5/?QRANT_COMPT_MT=${month}`;
+    const apiURL = `/api6/openapi/${process.env.REACT_APP_DISEASE_API}/json/Grid_20220621000000000615_1/1/5/?QRANT_COMPT_MT=${month}`;
     // console.log(apiURL);
 
     try {
