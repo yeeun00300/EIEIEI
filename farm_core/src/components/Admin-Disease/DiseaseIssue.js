@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  cow_diagnosis,
-  pork_diagnosis,
-  chicken_diagnosis,
-} from "../../utils/Disease";
-import DiseaseIssueItem from "./DiseaseIssueItem/DiseaseIssueItem";
 import styles from "./DiseaseIssue.module.scss";
-import Search from "../../pages/Admin/components/Search";
 import { getDatas, getQuery } from "../../firebase";
 import Alarm from "../Alarm/Alarm";
 import { useCollectionData } from "react-firebase-hooks/firestore";

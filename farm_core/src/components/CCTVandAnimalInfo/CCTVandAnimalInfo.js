@@ -10,11 +10,6 @@ import pig from "../../video/pig.mp4";
 import pig2 from "../../video/swine.mp4";
 import hen from "../../video/hen1.mp4";
 import hen2 from "../../video/hen2.mp4";
-import {
-  GaugeContainer,
-  GaugeReferenceArc,
-  GaugeValueArc,
-} from "@mui/x-charts";
 import krCowIcon from "../../img/한우얼굴.png";
 import cattleIcon from "../../img/낙농얼굴.png";
 import pigIcon from "../../img/양돈얼굴.png";

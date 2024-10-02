@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from "./MedicalListSave.module.scss";
 import kroDate from "../../utils/korDate";
 import {
-  deleteDatas,
   deleteDocument,
   fetchFarmDocumentByEmail,
   getSubCollection,
-  removeDocument,
   updateSubcollectionDocument,
 } from "../../firebase";
 import {

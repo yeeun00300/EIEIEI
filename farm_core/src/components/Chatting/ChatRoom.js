@@ -5,33 +5,11 @@ import Stack from "@mui/material/Stack";
 import * as FaIcons from "react-icons/fa";
 import ChatMessage from "./ChatMessage";
 import styles from "./ChatRoom.module.scss";
-import {
-  addMessage,
-  db,
-  getCollection,
-  getQuery,
-  getUserAuth,
-} from "../../firebase";
-import {
-  collection,
-  doc,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-  serverTimestamp,
-  where,
-} from "firebase/firestore";
+import { addMessage, getUserAuth } from "../../firebase";
+import { serverTimestamp } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchChattingMessage,
-  fetchChattingUser,
-} from "../../store/chattingSlice/chattingSlice";
 import someone from "../../img/person.png";
-import { fetchUser } from "../../store/userInfoEditSlice/UserInfoEditSlice";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import Button from "react-bootstrap/Button";
-import AddChatName from "./AddChatName";
+import { fetchChattingMessage } from "../../store/chattingSlice/chattingSlice";
 
 function ChatRoom({ chattingUser }) {
   const dispatch = useDispatch();
@@ -133,7 +111,6 @@ function ChatRoom({ chattingUser }) {
             </Stack>
           );
         })}
-        <AddChatName />
       </nav>
       {chatRoomName ? (
         <section>

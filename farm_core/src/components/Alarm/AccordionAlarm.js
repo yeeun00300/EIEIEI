@@ -8,8 +8,7 @@ import styles from "./AccordionAlarm.module.scss";
 function AccordionAlarm({ weatherIssueAlarm, diseaseAlarm }) {
   return (
     <div className={styles.AccordionAlarm}>
-      {/* <Accordion defaultActiveKey="0" alwaysOpen> */}
-      <Accordion defaultActiveKey="1">
+      <Accordion defaultActiveKey="0" alwaysOpen>
         <AccordionItem eventKey="0">
           <AccordionHeader>
             날씨 알림

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import * as XLSX from "xlsx";
-import { processExcelFile, uploadExcelAndSaveData } from "../../firebase";
+import { uploadExcelAndSaveData } from "../../firebase";
 import styles from "./ExcelUpload.module.scss";
 
 function ExcelUpload(props) {

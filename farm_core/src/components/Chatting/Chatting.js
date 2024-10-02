@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Chatting.module.scss";
 import ChatRoom from "./ChatRoom";
-import Tooltip from "@mui/material/Tooltip";
-import Karina1 from "../../img/Karina1.jpg";
-import Karina2 from "../../img/Karina2.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchChattingMessage,
-  fetchChattingRoom,
-  fetchChattingUser,
-} from "../../store/chattingSlice/chattingSlice";
+import { fetchChattingUser } from "../../store/chattingSlice/chattingSlice";
 
 function Chatting() {
   const dispatch = useDispatch();

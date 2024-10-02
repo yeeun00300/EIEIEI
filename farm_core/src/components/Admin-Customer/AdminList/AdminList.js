@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import styles from "./AdminList.module.scss";
+import React from "react";
 import FilterGrid from "../../Grid/FilterGrid";
 function AdminList({ title, columns, rows }) {
   // const [search, setSearch] = useState("");

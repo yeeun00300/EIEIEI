@@ -6,7 +6,6 @@ import MedicalList from "../medicalList/MedicalList";
 import MedicalListSave from "../medicalList/MedicalListSave";
 import MedicalListCheck from "../medicalList/MedicalListCheck";
 import DiseaseSelect from "../diseaseInfo/DiseaseSelect";
-import CCTVAnimal from "../CCTVandAnimalInfo/CCTVAnimal/CCTVAnimal";
 import Controller from "./Controller";
 
 function MyStockPage(props) {

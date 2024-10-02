@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GaugeNeedle from "../Gauge/GaugeNeedle";
-import { useDispatch, useSelector } from "react-redux";
-import { setTodayWeatherData } from "../../store/weatherSlice/weatherSlice";
-import { setDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 function TempControl() {
   const { todayWeatherData } = useSelector((state) => state.weatherSlice);

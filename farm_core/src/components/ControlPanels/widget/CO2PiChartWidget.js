@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./CO2PiChartWidget.module.scss";
-import propellerImg from "../../../img/프로펠러.png";
-import PieChartNeedle from "../../Gauge/PieChartNeedle";
 import FanPieChart from "./FanPieChart";
-// import ToggleCont from "../ContextToggle";
 function CO2PiChartWidget() {
   const [setValue, setSetValue] = useState(300); // 목표 설정값은 300
   const [intervalValue, setIntervalValue] = useState(270); // 초기값 270

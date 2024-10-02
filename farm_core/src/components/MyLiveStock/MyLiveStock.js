@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./MyLiveStock.module.scss";
-import Selected from "./Selected/Selected";
 import CCTVandAnimalInfo from "../CCTVandAnimalInfo/CCTVandAnimalInfo";
-import krCowIcon from "../../img/한우얼굴.png";
-import diaryIcon from "../../img/낙농얼굴.png";
-import pigIcon from "../../img/양돈얼굴.png";
-import chickenIcon from "../../img/양계얼굴.png";
-import henIcon from "../../img/산란계얼굴.png";
-import BiLineChart from "../Chart/BiLineChart";
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import KoreaMap from "../KoreaMap/KoreaMap";
-import KoreaBubble from "../KoreaMap/KoreaBubble";
-import KoreaTest from "../KoreaMap/KoreaTest";
 import { useDispatch, useSelector } from "react-redux";
 import StockNum from "./charts/StockNum";
 import Vaccine from "./charts/Vaccine";
@@ -23,14 +12,11 @@ import {
   fetchExcelStock,
   fetchSelectedStock,
 } from "../../store/stockSlice/stockSlice";
-import { useNavigate, useParams } from "react-router-dom";
-import { fetchFarmList } from "../../store/checkLoginSlice/checkLoginSlice";
-import TempControl from "../ControlPanels/TempControl";
+import { useNavigate } from "react-router-dom";
 import Table from "./table/Table";
 import { useFetchCollectionData } from "../../firebase";
 import ExcelUpload from "../ExcelUpload/ExcelUpload";
 import ExcelTemplateDownload from "../ExcelTemplateDownload/ExcelTemplateDownload";
-import warn from "../../img/warn.svg";
 import FirstPage from "../../pages/FirstPage/FirstPage";
 import TempPiNeedleWidget from "./../ControlPanels/widget/TempPieChartWithNeedle";
 

@@ -589,7 +589,6 @@ function Main({ farmList }) {
         );
         const x = initialItem ? initialItem.x : item.x;
         const y = initialItem ? initialItem.y : item.y;
-        console.log(updatedLayouts[breakpoint]);
 
         if (item.i == "4") {
           return { ...item, w: 1, h: 6, x, y };

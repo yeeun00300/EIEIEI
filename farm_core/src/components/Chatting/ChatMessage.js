@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import someone from "../../img/person.png";
+import React from "react";
 import styles from "./ChatMessage.module.scss";
 
 function ChatMessage({ message, chatRoomName, send, photoUrl }) {

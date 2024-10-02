@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Alarm from "./Alarm";
-import Sort from "../../pages/Admin/components/Sort";
 import { getDatas } from "../../firebase";
-import Search from "../../pages/Admin/components/Search";
 import { useSelector } from "react-redux";
 
 function AlarmManagement({ reSend, sort }) {

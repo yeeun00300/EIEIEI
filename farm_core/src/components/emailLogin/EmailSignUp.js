@@ -1,15 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { checkUserInFirestore, getUserAuth, joinUser } from "../../firebase";
+import { getUserAuth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
-  sendEmailVerification,
 } from "firebase/auth";
 import { setUser } from "../../store/userSlice/userSlice";
 import Form from "../../pages/Login/Form/Form";
-import { setEmail, setPassword } from "../../store/joinUserSlice/joinUserSlice";
 import styles from "./EmailSignUp.module.scss";
 
 function EmailSignUp(props) {
