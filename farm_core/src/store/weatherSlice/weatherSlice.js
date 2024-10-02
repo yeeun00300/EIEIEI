@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getDatas, getQuery } from "../../firebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { getDatas } from "../../firebase";
 
 const initializeData = {
   city: { name: " " },

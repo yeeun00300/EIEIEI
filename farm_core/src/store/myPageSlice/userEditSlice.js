@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setNickname } from "../joinUserSlice/joinUserSlice";
 import { createSelector } from "@reduxjs/toolkit";
 const initialState = {
   userInfo: {

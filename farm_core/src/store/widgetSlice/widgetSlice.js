@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchFarmLayout, getDatas, saveFarmLayout } from "../../firebase";
-import { getAuth } from "firebase/auth";
-import { get, getDatabase, ref } from "firebase/database";
+import { fetchFarmLayout, saveFarmLayout } from "../../firebase";
 
 const widgetSlice = createSlice({
   name: "widget",

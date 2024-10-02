@@ -4,7 +4,6 @@ import {
   db,
   deleteCommunityDatas,
   getCommunityDatas,
-  reportCommentDatas,
   updateComment,
   updateCommunityDatas,
 } from "../../firebase";
