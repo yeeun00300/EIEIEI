@@ -12,10 +12,7 @@ function Form({ title, getDataForm, firebaseError }) {
     mode: "onChange",
   });
 
-  console.log(errors);
-
   const onSubmit = (data) => {
-    console.log("폼에서 받은 데이터:", data);
     const { email, password } = data;
     getDataForm(email, password);
     reset();

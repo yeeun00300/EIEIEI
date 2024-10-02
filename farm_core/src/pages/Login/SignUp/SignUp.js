@@ -61,11 +61,9 @@ function SignUp() {
       window.Kakao.init(kakaoKey);
     }
     const emailFromStorage = localStorage.getItem("email");
-    // console.log("LocalStorage에서 가져온 이메일:", emailFromStorage);
     if (emailFromStorage) {
       dispatch(setEmail(emailFromStorage));
     } else {
-      // console.log("LocalStorage에 이메일이 없습니다.");
     }
   }, [dispatch]);
 
@@ -205,28 +203,21 @@ function SignUp() {
 
   const openAddressPopup = () => {
     dispatch(setAddressPopup(true));
-    // console.log(addressPopup);
   };
 
   const handleKakaoLogin = () => {
     window.Kakao.Auth.login({
       success: function (authObj) {
-        // console.log("카카오 로그인 성공:", authObj);
         window.Kakao.API.request({
           url: "/v2/user/me",
           success: function (response) {
-            // console.log("사용자 정보:", response);
             // 카카오 로그인 성공 시 처리할 로직 추가
             // navigate("/");
           },
-          fail: function (error) {
-            console.error("사용자 정보 요청 실패:", error);
-          },
+          fail: function (error) {},
         });
       },
-      fail: function (error) {
-        console.error("카카오 로그인 실패:", error);
-      },
+      fail: function (error) {},
     });
   };
 

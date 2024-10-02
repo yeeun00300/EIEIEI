@@ -11,7 +11,6 @@ import {
   reportPost,
   updatePostReactions,
 } from "../../store/communitySlice/communitySlice";
-import { updateCommunityDatas } from "../../firebase";
 import DeclareModal from "./components/DeclareModal";
 
 function FreeboardPage() {

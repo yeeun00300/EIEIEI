@@ -61,7 +61,6 @@ function Header({ title, userInfo }) {
     weatherInfo && (fixedWeatherInfo.current = weatherInfo);
     diseaseInfo && (fixedDiseaseInfo.current = diseaseInfo);
   }, []);
-  console.log(diseaseInfo, fixedDiseaseInfo.current, hasNewAlarm);
 
   useEffect(() => {
     dispatch(setOnWeatherIssueAlarm(weatherInfo));

@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import {
-  getAuth,
-  OAuthCredential,
-  OAuthProvider,
-  signInWithCredential,
-} from "firebase/auth";
+import { OAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth, checkUserInFirestore } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,8 +16,6 @@ function KakaoCallBack(props) {
 
   const email = useSelector((state) => state.user.email);
   const nickname = useSelector((state) => state.user.nickname);
-  console.log(email);
-  console.log(nickname);
   useEffect(() => {
     const fetchData = async () => {
       const params = new URL(document.location.toString()).searchParams;
@@ -41,9 +34,9 @@ function KakaoCallBack(props) {
           payload.append("client_secret", client_secret); // 필요 없으면 생략 가능
         }
 
-        console.log(
-          `카카오API:${kakaoAPIKey},redirectURI:${redirectURI},코드:${code}`
-        );
+        // console.log(
+        //   `카카오API:${kakaoAPIKey},redirectURI:${redirectURI},코드:${code}`
+        // );
 
         try {
           const tokenResponse = await axios.post(

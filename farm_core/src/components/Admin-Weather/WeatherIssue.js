@@ -13,12 +13,10 @@ function WeatherIssue() {
   const createdAt = now.getTime();
   const today = now.toISOString("kr").split("T")[0].replaceAll("-", "");
   const beforeDay2 =
-    now.toISOString("kr").split("T")[0].replaceAll("-", "") - 3;
+    now.toISOString("kr").split("T")[0].replaceAll("-", "") - 1;
+
   const apiKey =
     "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA%3D%3D";
-  // const apiKey1 =
-  //   "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA==";
-  // const apiKey2 = "i9aTpajSSUyWk6Wo0hlMnw"; //기상청
 
   const getWeatherContent = async () => {
     await fetch(
@@ -28,7 +26,7 @@ function WeatherIssue() {
         return response.json();
       })
       .then((json) => {
-        dispatch(setWeatherIssueContent(json.response.body.items.item));
+        dispatch(setWeatherIssueContent(json.response?.body.items.item));
       });
   };
 
@@ -55,7 +53,7 @@ function WeatherIssue() {
     <div className={styles.WeatherIssue}>
       {/* <Search setSearch={setSearch} /> */}
 
-      {weatherIssueContent.map((item, idx) => {
+      {weatherIssueContent?.map((item, idx) => {
         const { t1, t2, t6, tmFc, other } = item;
         const year = `${tmFc}`.substring(0, 4);
         const month = `${tmFc}`.substring(4, 6);

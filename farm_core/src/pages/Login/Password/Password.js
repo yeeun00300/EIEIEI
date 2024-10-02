@@ -31,7 +31,6 @@ function Password() {
       setError(
         "비밀번호 재설정 이메일 발송에 실패했습니다. 다시 시도해주세요."
       );
-      console.error("이메일 전송 오류: ", error);
     }
   };
 

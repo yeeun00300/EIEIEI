@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import StockModal from "./StockModal";
-import stockSlice, {
+import {
   deleteStock,
   fetchExcelStock,
   setSelectedStock,
