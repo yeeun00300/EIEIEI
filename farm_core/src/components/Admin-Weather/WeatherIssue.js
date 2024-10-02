@@ -15,9 +15,7 @@ function WeatherIssue() {
   const beforeDay2 =
     now.toISOString("kr").split("T")[0].replaceAll("-", "") - 1;
 
-  const apiKey =
-    "3enTQKFbdwp7mY5McRmHelO8xxgi4LDBLefpQOsKT06WUGR3F4IhllVUPd90RuALzzzNTQuQfCGvK70tMyjJVA%3D%3D";
-
+  const apiKey = process.env.REACT_APP_WEATHERAPI;
   const getWeatherContent = async () => {
     await fetch(
       `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnMsg?serviceKey=${apiKey}&numOfRows=100&pageNo=1&dataType=JSON&stnId=108&fromTmFc=${beforeDay2}&toTmFc=${today}`
