@@ -140,7 +140,7 @@ function MedicalListCheck() {
                 </TableCell>
                 <TableCell className={styles.stockInfo}>{doc.farmId}</TableCell>
                 <TableCell className={styles.stockInfo}>
-                  {doc.lastModified || "정보 없음"}
+                  {doc.lastModified || "수정 이력 없음"}
                 </TableCell>
                 <TableCell className={styles.stockInfo}>
                   <Button
