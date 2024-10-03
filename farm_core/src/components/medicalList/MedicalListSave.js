@@ -177,11 +177,13 @@ function MedicalListSave() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>축사 번호</TableCell>
-              <TableCell>증상</TableCell>
-              <TableCell>마지막 수정일</TableCell>
-              <TableCell>상세보기</TableCell>
-              <TableCell>삭제하기</TableCell>
+              <TableCell className={styles.tableHeader}>축사 번호</TableCell>
+              <TableCell className={styles.tableHeader}>증상</TableCell>
+              <TableCell className={styles.tableHeader}>
+                마지막 수정일
+              </TableCell>
+              <TableCell className={styles.tableHeader}>상세보기</TableCell>
+              <TableCell className={styles.tableHeader}>삭제하기</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -197,7 +199,7 @@ function MedicalListSave() {
                     <TableCell>
                       <Button
                         onClick={() => handleSubDataClick(subData)}
-                        className="globalBtn"
+                        className={`globalBtn ${styles.customPadding}`}
                       >
                         보기
                       </Button>
@@ -205,7 +207,7 @@ function MedicalListSave() {
                     <TableCell>
                       <Button
                         onClick={() => handleDelete(subData)}
-                        className="globalDeleteBtn"
+                        className={`globalDeleteBtn ${styles.customPadding}`}
                       >
                         삭제
                       </Button>
@@ -269,7 +271,10 @@ function MedicalListSave() {
                 <strong>사료 공급 상태:</strong> {selectedSubData.feedSupply}
               </div>
               <DialogActions className={styles.dialogActions}>
-                <Button onClick={handleEdit} className="globalBtn">
+                <Button
+                  onClick={handleEdit}
+                  className={`globalBtn ${styles.customPadding}`}
+                >
                   수정하기
                 </Button>
                 <Button onClick={handleCloseModal} className="globalDeleteBtn">
