@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./ScheduleList.module.scss";
+import "./ScheduleList.css";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import AllshceduleModal from "./AllshceduleModal";
@@ -27,9 +27,9 @@ const ScheduleList = ({ schedules, onEdit, onDelete }) => {
   }, 0);
 
   return (
-    <div className={styles["schedule-list"]}>
+    <div className="schedule-list">
       <p>작성한 금일 일정: {totalContents}개</p> {/* 일정 개수를 표시 */}
-      <ul className={styles["schedule-list-items"]}>
+      <ul className="schedule-list-items">
         {schedules &&
           schedules.length > 0 &&
           schedules.map((schedule, scheduleIndex) =>
@@ -39,31 +39,31 @@ const ScheduleList = ({ schedules, onEdit, onDelete }) => {
                   .map((contentItem, contentIndex) => (
                     <li
                       key={`${scheduleIndex}-${contentIndex}`}
-                      className={styles["schedule-list-item"]}
+                      className="schedule-list-item"
                     >
-                      <div className={styles["schedule-list-item-content"]}>
-                        <span className={styles["schedule-list-item-time"]}>
+                      <div className="schedule-list-item-content">
+                        <span className="schedule-list-item-time">
                           {contentItem.time}
                         </span>
                         <strong>{truncateText(contentItem.title, 5)}</strong>
-                        <p className={styles["schedule-list-item-description"]}>
+                        <p className="schedule-list-item-description">
                           {truncateText(contentItem.description, 5)}
                         </p>
                         {/* <small className="schedule-list-item-date">
-                        {contentItem.updatedAt
-                          ? contentItem.updatedAt.split("T")[0]
-                          : contentItem.createdAt.split("T")[0]}
-                      </small> */}
+                          {contentItem.updatedAt
+                            ? contentItem.updatedAt.split("T")[0]
+                            : contentItem.createdAt.split("T")[0]}
+                        </small> */}
                       </div>
-                      <div className={styles["schedule-list-item-actions"]}>
+                      <div className="schedule-list-item-actions">
                         <FaEdit
                           size="1.5rem"
-                          className={styles["schedule-list-item-edit"]}
+                          className="schedule-list-item-edit"
                           onClick={() => onEdit(scheduleIndex, contentIndex)}
                         />
                         <MdDelete
                           size="1.5rem"
-                          className={styles["schedule-list-item-delete"]}
+                          className="schedule-list-item-delete"
                           onClick={() => onDelete(scheduleIndex, contentIndex)}
                         />
                       </div>
@@ -73,10 +73,7 @@ const ScheduleList = ({ schedules, onEdit, onDelete }) => {
           )}
       </ul>
       {schedules && schedules.length > 0 && schedules[0].content.length > 1 && (
-        <button
-          onClick={handleMoreClick}
-          className={styles["squareGlobalDeleteBtn"]}
-        >
+        <button onClick={handleMoreClick} className="squareGlobalDeleteBtn">
           더보기
         </button>
       )}
