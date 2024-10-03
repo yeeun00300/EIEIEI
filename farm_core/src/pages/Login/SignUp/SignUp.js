@@ -159,7 +159,7 @@ function SignUp() {
       // `unwrap()`을 사용해 반환된 값에서 docId를 추출
       const { docId } = resultAction.payload;
       const baseUrl = process.env.REACT_APP_BASE_URL; // 환경 변수에서 URL 가져오기
-      const redirectUrl = `${baseUrl}/RegularPayment`;
+      const redirectUrl = `RegularPayment`;
       // 회원가입 완료 후, `docId`와 함께 페이지 이동
       alert("회원가입에 성공했습니다.");
       navigate(redirectUrl, { state: { docId, userObj } });
