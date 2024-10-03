@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import styles from "./ScheduleModal.module.scss"; // 사용자 정의 CSS 파일
+import "./ScheduleModal.css"; // 사용자 정의 CSS 파일
 
 Modal.setAppElement("#root");
 
@@ -80,8 +80,8 @@ const ScheduleModal = ({
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel="Schedule Modal"
-      className={styles.ReactModal__Content}
-      overlayClassName={styles.ReactModal__Overlay}
+      className="ReactModal__Content"
+      overlayClassName="ReactModal__Overlay"
     >
       <h2>{schedules ? "일정 수정하기" : "일정 추가하기"}</h2>
       <input
@@ -89,15 +89,15 @@ const ScheduleModal = ({
         placeholder="일정 제목"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className={styles.inputModal}
+        className="inputModal"
       />
       <textarea
         placeholder="일정 내용"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        className={styles.textareaModal}
+        className="textareaModal"
       />
-      <div className={styles.time - picker}>
+      <div className="time-picker">
         <select value={hour} onChange={(e) => setHour(e.target.value)}>
           <option value="" disabled>
             시간
@@ -124,7 +124,7 @@ const ScheduleModal = ({
           <option value="PM">오후</option>
         </select>
       </div>
-      <button onClick={handleSave} className={styles.schedule - btn}>
+      <button onClick={handleSave} className="schedule-btn">
         저장하기
       </button>
     </Modal>

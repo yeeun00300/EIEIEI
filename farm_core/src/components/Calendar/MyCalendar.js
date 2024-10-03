@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Modal from "react-modal";
 import moment from "moment";
-import styles from "./MyCalendar.module.scss";
+import "./MyCalender.css";
 import ScheduleModal from "./ScheduleModal"; // 모달 컴포넌트 임포트
 import ScheduleList from "./ScheduleList"; // 스케줄 리스트 컴포넌트 임포트
 import {
@@ -292,14 +292,14 @@ const MyCalendar = () => {
   // console.log("filteredSchedules", filteredSchedules);
   // console.log("editingSchedule", editingSchedule);
   return (
-    <div className={styles.calendarWrapper}>
-      <button className={styles.scheduleToggleButton} onClick={toggleCalendar}>
+    <div className="calendar-wrapper">
+      <button className="squareGlobalDeleteBtn" onClick={toggleCalendar}>
         {isCalendarOpen ? "캘린더 접기" : "캘린더 펼치기"}
       </button>
       {isCalendarOpen && (
-        <div>
+        <>
           <Calendar
-            className={styles.reactCalendar}
+            className="calendar"
             value={date}
             onChange={handleDateChange}
             formatDay={(locale, date) => date.getDate()}
@@ -313,30 +313,27 @@ const MyCalendar = () => {
             prev2Label={null}
             minDetail="year"
           />
-          <div className={styles.todayButton} onClick={handleTodayClick}>
+          <div className="today-button" onClick={handleTodayClick}>
             오늘 날짜
           </div>
-          <div className={styles.scheduleInfo}>
+          <div className="schedule-info">
             {selectedDate && (
-              <div className={styles.selectedDateInfo}>
+              <div className="selected-date-info">
                 날짜:{" "}
-                <span className={styles.selectedDateInfoNum}>
+                <span className="selected-date-info-num">
                   {moment(selectedDate).format("YYYY-MM-DD")}
                 </span>
               </div>
             )}
             <span>일정 추가 : </span>
-            <button
-              className={styles.addScheduleButton}
-              onClick={handleAddSchedule}
-            >
+            <button className="add-schedule-button" onClick={handleAddSchedule}>
               +
             </button>
           </div>
-        </div>
+        </>
       )}
       <button
-        className={styles.scheduleToggleButton}
+        className="squareGlobalDeleteBtn"
         onClick={() => setIsScheduleListOpen((prev) => !prev)}
       >
         {isScheduleListOpen ? "일정 숨기기" : "일정 보기"}
@@ -351,10 +348,11 @@ const MyCalendar = () => {
       )}
       <ScheduleModal
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        schedule={editingSchedule}
+        onRequestClose={() => setModalOpen(false)}
         onSave={handleSaveSchedule}
+        schedules={editingSchedule}
         onUpdate={handleUpdateSchedule}
+        contentIndex={editingSchedule?.contentIndex}
       />
     </div>
   );
