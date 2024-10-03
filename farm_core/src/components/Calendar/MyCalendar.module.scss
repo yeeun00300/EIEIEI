@@ -6,7 +6,7 @@
 }
 
 .reactCalendar {
-  width: 50%;
+  width: 100%;
   max-width: 25rem; /* 400px => 25rem (16px 기준) */
   background: #fff;
   border: 1px solid #eee;
@@ -152,8 +152,9 @@
 /* 모바일 화면 (480px 이하) */
 @media (max-width: 480px) {
   .reactCalendar {
-    max-width: 100%;
+    width: 80%;
     padding: 0.5rem;
+    overflow: hidden;
   }
 
   .addScheduleButton {
