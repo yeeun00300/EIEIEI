@@ -49,7 +49,7 @@
   transition: background-color 0.3s ease, transform 0.2s; /* 변형 효과 추가 */
 }
 .react-calendar__tile--now {
-  background-color: #007bff; /* 원하는 색상으로 변경 */
+  background-color: red; /* 원하는 색상으로 변경 */
   color: white; /* 글자색 */
 }
 
