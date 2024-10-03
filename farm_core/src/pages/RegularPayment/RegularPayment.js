@@ -36,7 +36,7 @@ function RegularPayment() {
           fullName: customerName,
           email: customerEmail,
         },
-        redirectUrl: "https://moonlit-puppy-7f7f1f.netlify.app/",
+        redirectUrl: "https://moonlit-puppy-7f7f1f.netlify.app",
       });
 
       console.log("결제 응답 결과:", response);
