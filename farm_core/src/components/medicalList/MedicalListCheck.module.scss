@@ -11,6 +11,7 @@
 
   .stockInfo {
     text-align: center;
+    // padding: 0;
   }
 }
 
@@ -201,7 +202,7 @@
 @media (max-width: 480px) {
   .checkMain button {
     padding: 0.6rem;
-    font-size: 0.8rem;
+    font-size: 0.4rem;
     width: 10%;
     max-width: 300px;
   }
@@ -239,5 +240,8 @@
   .detailsButton {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
+  }
+  .stockInfo {
+    padding: 0rem;
   }
 }
