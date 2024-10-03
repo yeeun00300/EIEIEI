@@ -18,7 +18,7 @@ function WeatherIssue() {
   const apiKey = process.env.REACT_APP_WEATHERAPI;
   const getWeatherContent = async () => {
     await fetch(
-      `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnMsg?serviceKey=${apiKey}&numOfRows=100&pageNo=1&dataType=JSON&stnId=108&fromTmFc=${beforeDay2}&toTmFc=${today}`
+      `https://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnMsg?serviceKey=${apiKey}&numOfRows=100&pageNo=1&dataType=JSON&stnId=108&fromTmFc=${beforeDay2}&toTmFc=${today}`
     )
       .then((response) => {
         return response.json();
