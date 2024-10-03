@@ -28,6 +28,9 @@
   max-width: 800px;
   background-color: #ffffff;
   border: 1px solid #ddd;
+  input {
+    width: 70%;
+  }
 
   @media (max-width: 768px) {
     padding: 1.5rem;
@@ -138,19 +141,46 @@
     color: #333;
   }
 
+  button {
+    padding: 0.5rem 1rem; /* 버튼의 기본 패딩 크기 */
+    font-size: 0.875rem; /* 버튼 텍스트 크기 */
+    border-radius: 0.5rem;
+
+    @media (max-width: 768px) {
+      padding: 0.4rem 0.8rem; /* 태블릿 크기에서 버튼을 더 작게 */
+      font-size: 0.75rem; /* 텍스트 크기 줄임 */
+    }
+
+    @media (max-width: 480px) {
+      padding: 0.35rem 0.75rem; /* 모바일 환경에서 버튼을 더욱 작게 */
+      font-size: 0.75rem; /* 텍스트 크기를 줄임 */
+    }
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 }
 
 .btnWrap {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem; /* 버튼 간의 간격을 0.75rem로 줄임 */
   justify-content: center;
+
+  button {
+    padding: 0.5rem 1rem; /* 버튼의 패딩 크기를 조정하여 크기를 줄임 */
+    font-size: 0.875rem; /* 버튼 안의 텍스트 크기 조정 */
+    border-radius: 0.5rem;
+  }
 
   @media (max-width: 480px) {
     flex-direction: column;
     gap: 0.5rem;
+
+    button {
+      padding: 0.4rem 0.75rem; /* 모바일 환경에서 패딩을 더 줄임 */
+      font-size: 0.75rem; /* 모바일에서 텍스트 크기도 줄임 */
+    }
   }
 }

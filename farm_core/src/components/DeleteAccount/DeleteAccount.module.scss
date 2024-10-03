@@ -10,6 +10,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
   max-width: 200px;
   margin: 0 auto;
+  word-break: keep-all;
 
   &:hover {
     background-color: #e05656; /* 호버 시 어두운 빨간색 */
@@ -24,5 +25,19 @@
   &:disabled {
     background-color: #ccc; /* 비활성화된 상태일 때 회색 */
     cursor: not-allowed;
+  }
+
+  /* 태블릿 크기 (768px 이하)에서 버튼 크기 조정 */
+  @media (max-width: 768px) {
+    padding: 0.6rem 1.2rem; /* 패딩을 줄여서 버튼을 작게 */
+    font-size: 0.875rem; /* 텍스트 크기를 줄임 */
+    max-width: 180px; /* 최대 너비 축소 */
+  }
+
+  /* 모바일 크기 (480px 이하)에서 버튼 크기 조정 */
+  @media (max-width: 480px) {
+    padding: 0.5rem 1rem; /* 패딩을 더 줄여서 버튼을 더 작게 */
+    font-size: 0.75rem; /* 텍스트 크기를 더 줄임 */
+    max-width: 150px; /* 최대 너비 축소 */
   }
 }
