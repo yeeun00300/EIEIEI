@@ -59,7 +59,7 @@ function KakaoCallBack() {
       const kakaoAPIKey = process.env.REACT_APP_REST_API_KEY;
       const redirectURI = process.env.REACT_APP_REDIRECT_URI;
       const client_secret = process.env.REACT_APP_CLIENT_SECRET;
-
+      console.log(redirectURI);
       if (code) {
         const payload = new URLSearchParams();
         payload.append("grant_type", "authorization_code");
