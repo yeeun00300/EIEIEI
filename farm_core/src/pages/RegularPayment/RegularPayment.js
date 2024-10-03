@@ -36,6 +36,7 @@ function RegularPayment() {
           fullName: customerName,
           email: customerEmail,
         },
+        redirectUrl: "/",
       });
 
       console.log("결제 응답 결과:", response);
