@@ -118,6 +118,7 @@ const MyCalendar = () => {
       title: schedule.content[0].title || "",
       description: schedule.content[0].description || "",
       time: schedule.content[0].time || "",
+      date: selectedDate, // 선택된 날짜로 설정
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
