@@ -24,12 +24,12 @@ function RegularPayment() {
       const docId = userInfo[0].docId;
 
       const response = await PortOne.requestPayment({
-        storeId: "store-8ead5501-fb96-4f25-a67c-2c9f4d8fed3a",
-        paymentId: customerEmail,
+        storeId: process.env.REACT_APP_STOREID,
+        paymentId: uniquePaymentId,
         orderName: "EIEIEI 프로그램 정기구독",
         totalAmount: 1000,
         currency: "KRW",
-        channelKey: "channel-key-e8e7f8a7-dcff-4957-b7d4-d4f9143f34bc",
+        channelKey: process.env.REACT_APP_CHANNELKEY,
         payMethod: "CARD",
         customer: {
           phoneNumber: customerphone,
