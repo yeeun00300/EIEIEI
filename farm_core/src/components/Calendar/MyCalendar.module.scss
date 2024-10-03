@@ -1,5 +1,12 @@
-.react-calendar {
-  width: 100%;
+.calendarWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.reactCalendar {
+  width: 50%;
   max-width: 25rem; /* 400px => 25rem (16px 기준) */
   background: #fff;
   border: 1px solid #eee;
@@ -8,21 +15,12 @@
   padding: 1rem;
   transition: box-shadow 0.3s ease; /* 상자 그림자 부드럽게 전환 */
 }
-.calendar-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.squareGlobalDeleteBtn {
-  width: 9rem;
-  margin: 0 auto;
-}
 
-.react-calendar:hover {
+.reactCalendar:hover {
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2); /* 마우스 오버 시 그림자 강조 */
 }
 
-.react-calendar__month-view__days__day {
+.reactCalendarTile {
   border-radius: 0.25rem;
   background-color: #f9f9f9;
   display: flex;
@@ -31,11 +29,11 @@
   transition: background-color 0.3s ease;
 }
 
-.react-calendar__month-view__days__day:hover {
+.reactCalendarTile:hover {
   background-color: #e6f7ff; /* 마우스 오버 시 배경색 */
 }
 
-.add-schedule-button {
+.addScheduleButton {
   width: 1.5rem; /* 20px => 1.5rem */
   height: 1.5rem;
   background-color: #4caf50;
@@ -48,24 +46,26 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s; /* 변형 효과 추가 */
 }
-.react-calendar__tile--now {
+
+.reactCalendarNow {
   background-color: #007bff; /* 원하는 색상으로 변경 */
   color: white; /* 글자색 */
 }
 
 /* 호버 시 효과 추가 */
-.react-calendar__tile--now:hover {
+.reactCalendarNow:hover {
   background-color: #0056b3; /* 호버 시 색상 변경 */
   color: white; /* 글자색 유지 */
 }
-.add-schedule-button:hover {
+
+.addScheduleButton:hover {
   background-color: #45a049;
   transform: scale(1.1); /* 호버 시 크기 증가 */
 }
 
-.toggle-schedule-button {
+.scheduleToggleButton {
   margin: 0.5rem 0;
-  padding: 0.5rem;
+  padding: 0.4rem 0.8rem; /* 패딩 줄임 */
   background-color: #4caf50;
   color: white;
   border: none;
@@ -74,43 +74,29 @@
   transition: background-color 0.3s ease;
 }
 
-.toggle-schedule-button:hover {
+.scheduleToggleButton:hover {
   background-color: #45a049;
 }
 
-.toggleBtn {
-  background-color: #45a049;
-  padding: 0.5rem 1rem;
-  color: white;
-  border: none;
-  border-radius: 0.3rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.toggleBtn:hover {
-  background-color: #388e3c;
-}
-
-.schedule-info {
+.scheduleInfo {
   display: flex;
   align-items: center;
   justify-content: space-around;
   margin-top: 1rem;
 }
 
-.selected-date-info {
+.selectedDateInfo {
   text-align: center; /* 선택된 날짜 정보 가운데 정렬 */
 }
 
-.selected-date-info-num {
+.selectedDateInfoNum {
   font-weight: bold;
   color: #333;
 }
 
-.today-button {
+.todayButton {
   margin-top: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem; /* 패딩 줄임 */
   background-color: #007bff; /* 오늘 날짜 버튼 색상 변경 (파란색) */
   color: white; /* 텍스트 색상 흰색 유지 */
   border: none;
@@ -122,41 +108,41 @@
   margin: auto;
 }
 
-.today-button:hover {
+.todayButton:hover {
   background-color: #0056b3; /* 호버 시 색상 변경 (짙은 파란색) */
 }
 
 /* 반응형 디자인 */
-
 @media (max-width: 1024px) {
   .squareGlobalDeleteBtn {
     width: 7rem;
     font-size: 0.8rem;
   }
 }
+
 /* 태블릿 이하 화면 (768px 이하) */
 @media (max-width: 768px) {
-  .react-calendar {
+  .reactCalendar {
     max-width: 20rem; /* 320px => 20rem */
     padding: 0.75rem;
   }
 
-  .add-schedule-button {
+  .addScheduleButton {
     width: 1.25rem; /* 버튼 크기 조정 */
     height: 1.25rem;
   }
 
-  .toggle-schedule-button,
-  .toggleBtn,
-  .today-button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
+  .scheduleToggleButton,
+  .todayButton {
+    padding: 0.3rem 0.6rem; /* 패딩 조정 */
+    font-size: 0.85rem; /* 폰트 크기 줄임 */
   }
 
-  .schedule-info {
+  .scheduleInfo {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .squareGlobalDeleteBtn {
     width: 6rem;
     font-size: 0.7rem;
@@ -165,29 +151,38 @@
 
 /* 모바일 화면 (480px 이하) */
 @media (max-width: 480px) {
-  .react-calendar {
+  .reactCalendar {
     max-width: 100%;
     padding: 0.5rem;
   }
 
-  .add-schedule-button {
+  .addScheduleButton {
     width: 0.875rem; /* 14px => 0.875rem */
     height: 0.875rem;
   }
 
-  .toggle-schedule-button,
-  .toggleBtn,
-  .today-button {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
+  .scheduleToggleButton,
+  .todayButton {
+    padding: 0.2rem 0.4rem; /* 패딩 줄임 */
+    font-size: 0.75rem; /* 글씨 크기 더 줄임 */
   }
 
-  .schedule-info {
-    flex-direction: column;
-    align-items: flex-start;
+  .scheduleInfo {
+    flex-direction: column; /* 세로로 배치 */
+    align-items: flex-start; /* 왼쪽 정렬 */
   }
-  .squareGlobalDeleteBtn {
-    width: 4rem;
-    font-size: 0.5rem;
+
+  .todayButton {
+    font-size: 1rem; /* 적절한 크기 유지 */
+  }
+
+  .selectedDateInfo {
+    font-size: 0.9rem; /* 날짜 정보의 크기를 줄임 */
+  }
+
+  .addScheduleButton {
+    width: 2rem; /* 버튼 크기 조정 */
+    height: 2rem;
+    font-size: 1rem; /* 버튼 글씨 크기 유지 */
   }
 }

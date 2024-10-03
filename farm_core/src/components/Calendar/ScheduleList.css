@@ -72,7 +72,6 @@
   .schedule-list-item {
     padding: 0.5rem; /* 패딩을 조정하여 크기 줄임 */
     font-size: 0.85rem; /* 글씨 크기 줄임 */
-    /* width: 100%; */
   }
 
   .schedule-list-item-content {
@@ -84,12 +83,22 @@
     justify-content: flex-end; /* 아이콘을 오른쪽 정렬 */
     margin-top: 0.5rem; /* 간격 추가 */
   }
+
+  .schedule-list-item-edit,
+  .schedule-list-item-delete {
+    padding: 0.1rem; /* 버튼의 패딩 줄이기 */
+    font-size: 0.8rem; /* 텍스트 크기 줄이기 */
+  }
 }
 
 @media (max-width: 480px) {
   .schedule-list-item {
+    width: 70%;
+  }
+  .schedule-list-item {
     padding: 0.4rem; /* 패딩 조정 */
     font-size: 0.75rem; /* 글씨 크기 더 줄임 */
+    width: 70%;
   }
 
   .schedule-list-item-time,
@@ -99,5 +108,11 @@
 
   .schedule-list-item-actions {
     gap: 0.25rem; /* 아이콘 간격 줄임 */
+  }
+
+  .schedule-list-item-edit,
+  .schedule-list-item-delete {
+    padding: 0.1rem; /* 더보기 버튼 크기 줄이기 */
+    font-size: 0.7rem; /* 버튼 텍스트 크기 줄이기 */
   }
 }
