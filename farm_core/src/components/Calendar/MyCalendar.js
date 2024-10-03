@@ -184,6 +184,7 @@ const MyCalendar = () => {
     const updatedContent = {
       title: schedule.content[0].title || "",
       description: schedule.content[0].description || "",
+      date: selectedDate,
       time: schedule.content[0].time || "",
       updatedAt: new Date().toISOString(), // 수정 시간
     };
@@ -353,6 +354,7 @@ const MyCalendar = () => {
         schedules={editingSchedule}
         onUpdate={handleUpdateSchedule}
         contentIndex={editingSchedule?.contentIndex}
+        selectedDate={selectedDate}
       />
     </div>
   );

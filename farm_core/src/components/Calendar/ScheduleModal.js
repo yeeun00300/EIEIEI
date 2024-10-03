@@ -11,6 +11,7 @@ const ScheduleModal = ({
   schedules, //
   onUpdate,
   contentIndex,
+  selectedDate,
 }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -35,7 +36,7 @@ const ScheduleModal = ({
           title, // 사용자가 입력한 제목
           description, // 사용자가 입력한 설명
           time: formattedTime,
-          date: currentDate, // 등록 시간
+          date: selectedDate || currentDate,
           updatedAt: null, // 수정되지 않은 경우 null
           createdAt: currentDate,
         },
