@@ -11,6 +11,9 @@ function MedicalList(props) {
 
   const [docId, setDocId] = useState([]);
   const [farmIdList, setFarmIdList] = useState([]);
+  const [isFormValid, setIsFormValid] = useState(true); // 폼 유효성 상태 관리
+  const [errors, setErrors] = useState({}); // 에러 메시지 상태 관리
+  const [isSubmitted, setIsSubmitted] = useState(false); // 제출 여부 상태 관리
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -24,7 +27,6 @@ function MedicalList(props) {
             setFarmIdList(
               documents.map((doc) => doc.farmId).filter((id) => id)
             );
-          } else {
           }
         } catch (error) {}
       };
@@ -32,6 +34,31 @@ function MedicalList(props) {
       fetchData();
     }
   }, []);
+
+  // 유효성 검사 로직
+  const validateForm = () => {
+    const newErrors = {};
+
+    // 필수 필드 유효성 체크
+    if (!farmData.farmNumber) newErrors.farmNumber = "필수 항목입니다.";
+    if (!farmData.symptom) newErrors.symptom = "필수 항목입니다.";
+    if (!farmData.symptomCount) newErrors.symptomCount = "필수 항목입니다.";
+    if (farmData.fever === undefined)
+      newErrors.fever = "필수 항목입니다. 예/아니오를 선택해주세요.";
+    if (!farmData.feverMean) newErrors.feverMean = "필수 항목입니다.";
+    if (farmData.cough === undefined)
+      newErrors.cough = "필수 항목입니다. 예/아니오를 선택해주세요.";
+    if (!farmData.coughCount) newErrors.coughCount = "필수 항목입니다.";
+    if (farmData.diarrhea === undefined)
+      newErrors.diarrhea = "필수 항목입니다. 예/아니오를 선택해주세요.";
+    if (!farmData.diarrheaCount) newErrors.diarrheaCount = "필수 항목입니다.";
+    if (!farmData.ventilation) newErrors.ventilation = "필수 항목입니다.";
+    if (!farmData.lampCondition) newErrors.lampCondition = "필수 항목입니다.";
+    if (!farmData.feedSupply) newErrors.feedSupply = "필수 항목입니다.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // 에러가 없으면 true 반환
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,44 +84,49 @@ function MedicalList(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const selectedFarmId = farmData.farmNumber; // 사용자가 선택한 farmId
-      const farmDocIndex = farmIdList.indexOf(selectedFarmId); // 선택된 farmId의 인덱스 찾기
+    setIsSubmitted(true); // 제출 시에만 에러 메시지 표시
 
-      if (farmDocIndex !== -1) {
-        const farmDocId = docId[farmDocIndex]; // 인덱스를 통해 docId에서 문서 ID 찾기
+    // 유효성 검사 후 폼 제출
+    if (validateForm()) {
+      try {
+        const selectedFarmId = farmData.farmNumber;
+        const farmDocIndex = farmIdList.indexOf(selectedFarmId);
 
-        const subCollections = {
-          farmCureList: {
-            farmNumber: selectedFarmId || "",
-            symptom: farmData.symptom || "",
-            symptomCount: farmData.symptomCount || "",
-            fever: farmData.fever !== undefined ? farmData.fever : false,
-            feverMean: farmData.feverMean || "",
-            cough: farmData.cough !== undefined ? farmData.cough : false,
-            coughCount: farmData.coughCount || "",
-            diarrhea: farmData.diarrhea || "",
-            diarrheaCount: farmData.diarrheaCount || "",
-            ventilation: farmData.ventilation || "",
-            lampCondition: farmData.lampCondition || "",
-            feedSupply: farmData.feedSupply || "",
-          },
-        };
+        if (farmDocIndex !== -1) {
+          const farmDocId = docId[farmDocIndex];
 
-        // 선택된 farmId에 맞는 문서 ID로 서브컬렉션에 데이터 추가
-        await addMessage(
-          "farm",
-          farmDocId,
-          "farmCureList",
-          subCollections.farmCureList
-        );
-        window.alert("문진표 작성이 완료되었습니다.");
-        window.location.reload();
-      } else {
-        alert("유효한 문서 ID가 없습니다.");
+          const subCollections = {
+            farmCureList: {
+              farmNumber: selectedFarmId || "",
+              symptom: farmData.symptom || "",
+              symptomCount: farmData.symptomCount || "",
+              fever: farmData.fever !== undefined ? farmData.fever : false,
+              feverMean: farmData.feverMean || "",
+              cough: farmData.cough !== undefined ? farmData.cough : false,
+              coughCount: farmData.coughCount || "",
+              diarrhea:
+                farmData.diarrhea !== undefined ? farmData.diarrhea : false,
+              diarrheaCount: farmData.diarrheaCount || "",
+              ventilation: farmData.ventilation || "",
+              lampCondition: farmData.lampCondition || "",
+              feedSupply: farmData.feedSupply || "",
+            },
+          };
+
+          await addMessage(
+            "farm",
+            farmDocId,
+            "farmCureList",
+            subCollections.farmCureList
+          );
+          window.alert("문진표 작성이 완료되었습니다.");
+          window.location.reload();
+        } else {
+          alert("유효한 문서 ID가 없습니다.");
+        }
+      } catch (error) {
+        alert("데이터 저장에 실패했습니다.");
       }
-    } catch (error) {
-      alert("데이터 저장에 실패했습니다.");
     }
   };
 
@@ -122,6 +154,9 @@ function MedicalList(props) {
                 </MenuItem>
               ))}
             </Select>
+            {isSubmitted && errors.farmNumber && (
+              <p className={styles.error}>{errors.farmNumber}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -134,6 +169,9 @@ function MedicalList(props) {
               value={farmData.symptom || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.symptom && (
+              <p className={styles.error}>{errors.symptom}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -146,6 +184,9 @@ function MedicalList(props) {
               value={farmData.symptomCount || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.symptomCount && (
+              <p className={styles.error}>{errors.symptomCount}</p>
+            )}
           </div>
 
           <div className={styles.checkboxGroup}>
@@ -169,6 +210,9 @@ function MedicalList(props) {
               />
               <span className={styles.checkboxLabel}>아니오</span>
             </div>
+            {isSubmitted && errors.fever && (
+              <p className={styles.error}>{errors.fever}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -181,6 +225,9 @@ function MedicalList(props) {
               value={farmData.feverMean || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.feverMean && (
+              <p className={styles.error}>{errors.feverMean}</p>
+            )}
           </div>
 
           <div className={styles.checkboxGroup}>
@@ -206,6 +253,9 @@ function MedicalList(props) {
               />
               <span className={styles.checkboxLabel}>아니오</span>
             </div>
+            {isSubmitted && errors.cough && (
+              <p className={styles.error}>{errors.cough}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -218,6 +268,9 @@ function MedicalList(props) {
               value={farmData.coughCount || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.coughCount && (
+              <p className={styles.error}>{errors.coughCount}</p>
+            )}
           </div>
 
           <div className={styles.checkboxGroup}>
@@ -241,6 +294,9 @@ function MedicalList(props) {
               />
               <span className={styles.checkboxLabel}>아니오</span>
             </div>
+            {isSubmitted && errors.diarrhea && (
+              <p className={styles.error}>{errors.diarrhea}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -253,6 +309,9 @@ function MedicalList(props) {
               value={farmData.diarrheaCount || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.diarrheaCount && (
+              <p className={styles.error}>{errors.diarrheaCount}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -265,6 +324,9 @@ function MedicalList(props) {
               value={farmData.ventilation || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.ventilation && (
+              <p className={styles.error}>{errors.ventilation}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -277,6 +339,9 @@ function MedicalList(props) {
               value={farmData.lampCondition || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.lampCondition && (
+              <p className={styles.error}>{errors.lampCondition}</p>
+            )}
           </div>
 
           <div className={styles.formGroup}>
@@ -289,6 +354,9 @@ function MedicalList(props) {
               value={farmData.feedSupply || ""}
               className={styles.input}
             />
+            {isSubmitted && errors.feedSupply && (
+              <p className={styles.error}>{errors.feedSupply}</p>
+            )}
           </div>
 
           <button type="submit" className="globalBtn">
