@@ -53,13 +53,15 @@ function KakaoCallBack() {
   };
 
   useEffect(() => {
+    console.log(`kakaoCallBack 실행`);
     const fetchData = async () => {
+      console.log(`fetchData실행`);
       const params = new URL(document.location.toString()).searchParams;
       const code = params.get("code");
       const kakaoAPIKey = process.env.REACT_APP_REST_API_KEY;
       const redirectURI = process.env.REACT_APP_REDIRECT_URI;
       const client_secret = process.env.REACT_APP_CLIENT_SECRET;
-      console.log(redirectURI);
+
       if (code) {
         const payload = new URLSearchParams();
         payload.append("grant_type", "authorization_code");

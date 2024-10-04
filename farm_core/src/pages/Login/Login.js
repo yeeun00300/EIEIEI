@@ -183,7 +183,9 @@ function Login() {
 
         await addPaymentHistory("users", userEmail, paymentInfo); // 결제 정보 추가
         // alert("결제 및 로그인 성공");
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     return (
