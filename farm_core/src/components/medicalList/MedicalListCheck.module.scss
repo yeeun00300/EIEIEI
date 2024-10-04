@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "PTBandocheB";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
 .checkMain {
   display: flex;
   align-items: center;
@@ -7,18 +15,19 @@
 
   button {
     padding: 0.5rem;
+    font-family: "PTBandocheB", sans-serif; /* 버튼 폰트 적용 */
   }
 
   .stockInfo {
     text-align: center;
+    font-family: "PTBandocheB", sans-serif; /* stockInfo 폰트 적용 */
     // padding: 0;
   }
 }
 
 .tableContainer {
   margin: 3rem auto;
-  width: 100%;
-  max-width: 56.25rem; /* 900px */
+  width: 80%;
 }
 
 .tableHead {
@@ -30,12 +39,14 @@
   font-weight: 700;
   padding: 1rem;
   text-align: center;
+  font-family: "PTBandocheB", sans-serif; /* 테이블 헤더 폰트 적용 */
 }
 
 .dialogTitle {
   font-size: 1.5rem;
   color: #2980b9;
   margin-bottom: 1.5rem;
+  font-family: "PTBandocheB", sans-serif; /* 다이얼로그 제목 폰트 적용 */
 }
 
 .dialogContentWrapper {
@@ -44,7 +55,6 @@
   align-items: center;
 }
 
-/* 리스트 항목 스타일 */
 .subCheckClass {
   width: 100%;
   max-width: 500px;
@@ -53,29 +63,31 @@
   border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
-  list-style: none; /* 리스트처럼 보이게 만들기 위한 기본 스타일 */
+  list-style: none;
   border: 1px solid #dcdde1;
+
   strong {
     color: #2980b9;
+    font-family: "PTBandocheB", sans-serif; /* 강조된 텍스트 폰트 적용 */
   }
 
-  /* 항목 구분을 위한 스타일 */
   p {
     padding: 0.75rem 0;
     margin: 0;
     font-size: 1rem;
     border-bottom: 1px solid #dcdde1;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    font-family: "PTBandocheB", sans-serif; /* 항목 텍스트 폰트 적용 */
 
     &:last-child {
-      border-bottom: none; /* 마지막 항목은 구분선 제거 */
+      border-bottom: none;
     }
   }
 
-  /* 각 항목에 대한 텍스트 강조 */
   strong {
+    width: 30%;
+    text-align: center;
     flex-shrink: 0;
     margin-right: 0.5rem;
     font-weight: bold;
@@ -87,19 +99,20 @@
   justify-content: flex-end;
   gap: 0.5rem;
   margin-top: 1rem;
-}
 
-.dialogActionsInside button {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  background-color: #2980b9;
-  color: #fff;
-  border: none;
-  transition: background-color 0.3s ease;
-}
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #2980b9;
+    color: #fff;
+    border: none;
+    transition: background-color 0.3s ease;
+    font-family: "PTBandocheB", sans-serif; /* 버튼 폰트 적용 */
+  }
 
-.dialogActionsInside button:hover {
-  background-color: darken(#2980b9, 10%);
+  button:hover {
+    background-color: darken(#2980b9, 10%);
+  }
 }
 
 .inputTag {
@@ -185,6 +198,7 @@
   .tableCell {
     padding: 0.5rem;
     text-align: center;
+    font-family: "PTBandocheB", sans-serif; /* 테이블 셀 폰트 적용 */
   }
 
   .detailsButton {
@@ -195,6 +209,7 @@
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;
+    font-family: "PTBandocheB", sans-serif; /* 세부정보 버튼 폰트 적용 */
   }
 }
 
@@ -241,7 +256,9 @@
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
   }
+
   .stockInfo {
     padding: 0rem;
+    font-family: "PTBandocheB", sans-serif; /* stockInfo 폰트 적용 */
   }
 }

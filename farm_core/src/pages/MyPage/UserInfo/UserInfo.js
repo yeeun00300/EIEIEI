@@ -15,6 +15,7 @@ import {
 import { toggleOpen } from "../../../store/myPageSlice/addressSlice";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import DeleteAccount from "./../../../components/DeleteAccount/DeleteAccount";
+import KORMap from "../../../components/diseaseMonth/KORMap";
 
 function UserInfo() {
   useFetchCollectionData("users", fetchUser);
@@ -45,7 +46,9 @@ function UserInfo() {
   }, [dispatch, initialDataLoaded]);
 
   useEffect(() => {
+    console.log("렌더링");
     const currentUserEmail = email;
+    console.log(currentUserEmail);
 
     if (!initialDataLoaded && currentUserEmail) {
       fetchUserByEmail(currentUserEmail).then((userData) => {
@@ -70,6 +73,7 @@ function UserInfo() {
   }, [dispatch, email, initialDataLoaded]);
 
   const completeHandler = (data) => {
+    console.log("Address Data:", data); // 확인
     const address = `${data.address}`;
     const detailedAddress = `${data.bname} ${
       data.buildingName ? data.buildingName : ""
@@ -100,6 +104,7 @@ function UserInfo() {
 
   const handleSave = async () => {
     const userId = userInfo[0]?.docId;
+    console.log(userId);
     if (userId) {
       try {
         let profileImageUrl = profileImages || img;

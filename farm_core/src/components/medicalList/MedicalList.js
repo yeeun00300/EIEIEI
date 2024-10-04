@@ -189,26 +189,31 @@ function MedicalList(props) {
             )}
           </div>
 
+          {/* 열 여부 체크박스 */}
           <div className={styles.checkboxGroup}>
             <label className={styles.label}>가축들이 열이 있습니까?</label>
             <div className={styles.checkboxContainer}>
-              <input
-                type="checkbox"
-                checked={farmData.fever === true}
-                onChange={handleCheckboxChange}
-                name="feverYes"
-                className={styles.checkbox}
-              />
-              <span className={styles.checkboxLabel}>예</span>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={farmData.fever === true}
+                  onChange={handleCheckboxChange}
+                  name="feverYes"
+                  className={styles.checkbox}
+                />
+                예
+              </label>
 
-              <input
-                type="checkbox"
-                checked={farmData.fever === false}
-                onChange={handleCheckboxChange}
-                name="feverNo"
-                className={styles.checkbox}
-              />
-              <span className={styles.checkboxLabel}>아니오</span>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={farmData.fever === false}
+                  onChange={handleCheckboxChange}
+                  name="feverNo"
+                  className={styles.checkbox}
+                />
+                아니오
+              </label>
             </div>
             {isSubmitted && errors.fever && (
               <p className={styles.error}>{errors.fever}</p>
@@ -230,28 +235,31 @@ function MedicalList(props) {
             )}
           </div>
 
+          {/* 기침 여부 체크박스 */}
           <div className={styles.checkboxGroup}>
-            <label className={styles.label}>
-              가축들이 기침을 하고 있습니까?
-            </label>
+            <label className={styles.label}>기침을 합니까?</label>
             <div className={styles.checkboxContainer}>
-              <input
-                type="checkbox"
-                checked={farmData.cough === true}
-                onChange={handleCheckboxChange}
-                name="coughYes"
-                className={styles.checkbox}
-              />
-              <span className={styles.checkboxLabel}>예</span>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={farmData.cough === true}
+                  onChange={handleCheckboxChange}
+                  name="coughYes"
+                  className={styles.checkbox}
+                />
+                예
+              </label>
 
-              <input
-                type="checkbox"
-                checked={farmData.cough === false}
-                onChange={handleCheckboxChange}
-                name="coughNo"
-                className={styles.checkbox}
-              />
-              <span className={styles.checkboxLabel}>아니오</span>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={farmData.cough === false}
+                  onChange={handleCheckboxChange}
+                  name="coughNo"
+                  className={styles.checkbox}
+                />
+                아니오
+              </label>
             </div>
             {isSubmitted && errors.cough && (
               <p className={styles.error}>{errors.cough}</p>
@@ -259,11 +267,11 @@ function MedicalList(props) {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>기침 빈도</label>
+            <label className={styles.label}>기침하는 가축 수</label>
             <input
-              type="text"
+              type="number"
               name="coughCount"
-              placeholder="예: 하루 3회"
+              placeholder="기침하는 가축 수를 입력하세요"
               onChange={handleChange}
               value={farmData.coughCount || ""}
               className={styles.input}
@@ -273,26 +281,31 @@ function MedicalList(props) {
             )}
           </div>
 
+          {/* 설사 여부 체크박스 */}
           <div className={styles.checkboxGroup}>
-            <label className={styles.label}>설사 증상 여부</label>
+            <label className={styles.label}>설사를 합니까?</label>
             <div className={styles.checkboxContainer}>
-              <input
-                type="checkbox"
-                checked={farmData.diarrhea === true}
-                onChange={handleCheckboxChange}
-                name="diarrheaYes"
-                className={styles.checkbox}
-              />
-              <span className={styles.checkboxLabel}>예</span>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={farmData.diarrhea === true}
+                  onChange={handleCheckboxChange}
+                  name="diarrheaYes"
+                  className={styles.checkbox}
+                />
+                예
+              </label>
 
-              <input
-                type="checkbox"
-                checked={farmData.diarrhea === false}
-                onChange={handleCheckboxChange}
-                name="diarrheaNo"
-                className={styles.checkbox}
-              />
-              <span className={styles.checkboxLabel}>아니오</span>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={farmData.diarrhea === false}
+                  onChange={handleCheckboxChange}
+                  name="diarrheaNo"
+                  className={styles.checkbox}
+                />
+                아니오
+              </label>
             </div>
             {isSubmitted && errors.diarrhea && (
               <p className={styles.error}>{errors.diarrhea}</p>
@@ -300,11 +313,11 @@ function MedicalList(props) {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>설사 빈도</label>
+            <label className={styles.label}>설사하는 가축 수</label>
             <input
-              type="text"
+              type="number"
               name="diarrheaCount"
-              placeholder="예: 하루 2회"
+              placeholder="설사하는 가축 수를 입력하세요"
               onChange={handleChange}
               value={farmData.diarrheaCount || ""}
               className={styles.input}
@@ -315,11 +328,11 @@ function MedicalList(props) {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>환기 상태</label>
+            <label className={styles.label}>환기가 잘 되나요?</label>
             <input
               type="text"
               name="ventilation"
-              placeholder="환기 상태를 입력하세요"
+              placeholder="환기가 잘 되고 있다면 '좋음', 아니다면 '나쁨'이라고 입력하세요"
               onChange={handleChange}
               value={farmData.ventilation || ""}
               className={styles.input}
@@ -330,11 +343,11 @@ function MedicalList(props) {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>램프 상태</label>
+            <label className={styles.label}>조명 상태</label>
             <input
               type="text"
               name="lampCondition"
-              placeholder="램프 상태를 입력하세요"
+              placeholder="조명 상태를 기재하세요"
               onChange={handleChange}
               value={farmData.lampCondition || ""}
               className={styles.input}
@@ -345,11 +358,11 @@ function MedicalList(props) {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>사료 공급 상태</label>
+            <label className={styles.label}>사료 공급 여부</label>
             <input
               type="text"
               name="feedSupply"
-              placeholder="사료 공급 상태를 입력하세요"
+              placeholder="사료 공급 여부를 기재하세요"
               onChange={handleChange}
               value={farmData.feedSupply || ""}
               className={styles.input}

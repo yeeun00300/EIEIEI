@@ -68,9 +68,12 @@
     .checkboxContainer {
       display: flex;
       align-items: center; /* 체크박스와 레이블을 수평으로 정렬 */
+      gap: 2rem;
     }
 
     .checkboxLabel {
+      display: flex;
+      gap: 0.5rem;
       margin-left: 0.625rem; /* 10px */
       font-size: 1rem; /* 16px */
       margin-right: 1.25rem; /* 20px */
