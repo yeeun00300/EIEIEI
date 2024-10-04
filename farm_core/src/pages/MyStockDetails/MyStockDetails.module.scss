@@ -1,7 +1,9 @@
 .wrapper {
   overflow: hidden;
-
+  font-family: "PTBandocheB";
   h3 {
+    font-size: 40px;
+    padding: 10px 0;
     text-align: center;
     color: #2c3e50;
     font-weight: bold;
@@ -127,7 +129,8 @@
   }
 
   .myStockDetailsButton {
-    margin-top: 5px;
+    margin-top: 10px;
+    margin-right: 10px;
     padding: 10px 15px;
     border-radius: 4px;
     border: none;

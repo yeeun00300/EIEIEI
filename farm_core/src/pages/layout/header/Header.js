@@ -12,8 +12,11 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import useGeolocation from "../../../components/DiseaseStatus/useGeolocation";
 import MapModal from "../../../components/DiseaseStatus/MapModal";
 import CurrentMarker from "./../../../components/DiseaseStatus/CurrentMarker";
+import { useNavigate } from "react-router-dom";
 
 function Header({ title, userInfo }) {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { userAddress, email, farm, name, profileImages } = userInfo;
   const { weatherIssueAlarm, isLoading, onWeatherIssueAlarm } = useSelector(
@@ -94,10 +97,14 @@ function Header({ title, userInfo }) {
   const toggleAlarmMenu = () => {
     setIsAlarmOpen((prev) => !prev);
   };
+  // 로고 누르면 홈으로 되돌아가기
+  const handleLogoClick = () => {
+    navigate("/");
+  };
 
   return (
     <div className={styles.header}>
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={handleLogoClick}>
         <img className={styles.logoImg} src={logoImg} alt="" />
         <div className={styles.logoText}>{title}</div>
       </div>

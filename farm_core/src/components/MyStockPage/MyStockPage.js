@@ -17,6 +17,9 @@ function MyStockPage(props) {
           id="justify-tab-example"
           className={`mb-3 ${styles.customTabs}`}
           justify
+          textColor="secondary"
+          indicatorColor="secondary"
+          aria-label="secondary tabs example"
         >
           <Tab eventKey="one" title="축사 정보">
             <MedicalListCheck />
