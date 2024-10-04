@@ -217,7 +217,7 @@ function AdminUser() {
       blackState,
       isActive,
     } = item;
-    const seconds = createdAt.seconds;
+    const seconds = createdAt?.seconds;
     const date = new Date(seconds * 1000);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");

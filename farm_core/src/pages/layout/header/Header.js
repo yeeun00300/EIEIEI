@@ -52,9 +52,11 @@ function Header({ title, userInfo }) {
   // 알람을 확인했을 때 빨간 점 없애기
   const [hasNewAlarm, setHasNewAlarm] = useState(false);
   useEffect(() => {
-    weatherInfo && (fixedWeatherInfo.current = weatherInfo);
-    diseaseInfo && (fixedDiseaseInfo.current = diseaseInfo);
-  }, []);
+    if (weatherInfo && diseaseInfo) {
+      fixedWeatherInfo.current = weatherInfo;
+      fixedDiseaseInfo.current = diseaseInfo;
+    }
+  }, [weatherInfo, diseaseInfo]);
 
   useEffect(() => {
     dispatch(setOnWeatherIssueAlarm(weatherInfo));
@@ -77,7 +79,6 @@ function Header({ title, userInfo }) {
       return;
     }
   }, [weatherInfo, diseaseInfo, weatherIssueAlarm, dispatch]);
-  // }, [weatherInfo, diseaseInfo, hasNewAlarm, weatherIssueAlarm, dispatch]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
