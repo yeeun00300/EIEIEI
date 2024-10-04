@@ -293,7 +293,7 @@ function Login() {
           {isLoading ? "Logging in..." : "Login"}
         </button>
         <div className={styles.links}>
-          <Link to={"/password"}>비밀번호 찾기</Link>
+          <Link to={"/password"}>비밀번호 찾기</Link>|
           <Link to={"/emailsignup"}>회원가입</Link>
         </div>
         <div className={styles.buttons}>
