@@ -17,7 +17,7 @@ const dataObj = {
 function MyPage() {
   const [activeComponent, setActiveComponent] = useState(null);
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
-  console.log(userInfo);
+  // console.log(userInfo);
 
   useFetchCollectionData("users", fetchUser); // 데이터 로딩
 

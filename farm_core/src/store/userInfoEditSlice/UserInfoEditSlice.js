@@ -34,7 +34,7 @@ const userInfoEditSlice = createSlice({
         //   state.detailedAddress = user.detailedAddress || "";
         //   state.profileImages = user.profileImages || "";
         // }
-        console.log(currentUser);
+        // console.log(currentUser);
         state.isLoading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
