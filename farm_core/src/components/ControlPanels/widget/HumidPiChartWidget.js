@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PieChartNeedle from "../../Gauge/PieChartNeedle";
 import styles from "./HumidPiChartWidget.module.scss";
+import { fetchWeatherTodayData } from "../../../store/weatherSlice/weatherSlice";
 
 function HumidPiChartWidget() {
+  const dispatch = useDispatch();
   const { todayWeatherData } = useSelector((state) => state.weatherSlice);
   const nowHumid = parseInt(todayWeatherData?.main?.humidity);
   const [time, setTime] = useState(new Date());
   const [setValue, setSetValue] = useState(50);
-  const [intervalValue, setIntervalValue] = useState(nowHumid);
+  const [lat, setLat] = useState(0);
+  const [lon, setLon] = useState(0);
+  const [intervalValue, setIntervalValue] = useState(
+    nowHumid !== 0 && nowHumid
+  );
+  const apiKey = "7318e8d03f33842f882be1c11ec76a8b";
   const RADIAN = Math.PI / 180;
 
   const data = [
@@ -65,6 +72,13 @@ function HumidPiChartWidget() {
     }
   };
   useEffect(() => {
+    // lat, lon 가져오기
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      setLat(latitude);
+      setLon(longitude);
+    });
+    dispatch(fetchWeatherTodayData({ APIkey: apiKey, lat: lat, lon: lon }));
     const interval = setInterval(() => {
       setTime(new Date());
       // 상태 업데이트 (1분마다 렌더링 유도)
