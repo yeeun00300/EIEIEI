@@ -1,43 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addDatas, getDatas } from "../../firebase";
+import { addDatas, getDatas, updateDatas } from "../../firebase";
 import { auth } from "../../firebase"; // Firebase 인증 import
 
 const initialState = {
-  userInfo: null, // 유저 정보 저장 (단일 객체로 수정)
+  // userInfo: null, // 유저 정보 저장 (단일 객체로 수정)
+  userInfo: [],
   isLoading: false,
   error: null,
-  name: "",
-  email: "",
-  nickname: "",
-  phone: "",
-  address: "",
-  detailedAddress: "",
-  profileImages: "",
 };
 
 const userInfoEditSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    updateUserInfo(state, action) {
-      const {
-        name,
-        email,
-        nickname,
-        phone,
-        address,
-        detailedAddress,
-        profileImages,
-      } = action.payload;
-      state.name = name || state.name;
-      state.email = email || state.email;
-      state.nickname = nickname || state.nickname;
-      state.phone = phone || state.phone;
-      state.address = address || state.address;
-      state.detailedAddress = detailedAddress || state.detailedAddress;
-      state.profileImages = profileImages || state.profileImages;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
@@ -45,19 +20,21 @@ const userInfoEditSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         const currentUser = auth.currentUser; // 현재 로그인된 사용자 가져오기
-        if (currentUser) {
-          const user =
-            action.payload.find((user) => user.email === currentUser.email) ||
-            {}; // 이메일로 필터링
-          state.userInfo = user; // 현재 로그인된 유저의 정보만 저장
-          state.name = user.name || "";
-          state.email = user.email || "";
-          state.nickname = user.nickname || "";
-          state.phone = user.phone || "";
-          state.address = user.address || "";
-          state.detailedAddress = user.detailedAddress || "";
-          state.profileImages = user.profileImages || "";
-        }
+        state.userInfo = action.payload;
+        // if (currentUser) {
+        //   const user =
+        //     action.payload.find((user) => user.email === currentUser.email) ||
+        //     {}; // 이메일로 필터링
+        //   state.userInfo = user; // 현재 로그인된 유저의 정보만 저장
+        //   state.name = user.name || "";
+        //   state.email = user.email || "";
+        //   state.nickname = user.nickname || "";
+        //   state.phone = user.phone || "";
+        //   state.address = user.address || "";
+        //   state.detailedAddress = user.detailedAddress || "";
+        //   state.profileImages = user.profileImages || "";
+        // }
+        console.log(currentUser);
         state.isLoading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
@@ -75,6 +52,19 @@ const userInfoEditSlice = createSlice({
       .addCase(addUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(userInfoUpdate.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(userInfoUpdate.fulfilled, (state, action) => {
+        state.userInfo = state.userInfo.map((user) => {
+          return user.docId === action.payload.docId
+            ? { ...user, ...action.payload }
+            : user;
+        });
+      })
+      .addCase(userInfoUpdate.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });
@@ -105,7 +95,18 @@ const addUser = createAsyncThunk(
     }
   }
 );
+//업데이트
+const userInfoUpdate = createAsyncThunk(
+  "user/update",
+  async ({ collectionName, docId, updateObj }) => {
+    try {
+      const resultData = await updateDatas(collectionName, docId, updateObj);
+      return resultData;
+    } catch (error) {
+      throw new Error("유저 정보를 수정하는데 실패했습니다.");
+    }
+  }
+);
 
 export default userInfoEditSlice.reducer;
-export { fetchUser, addUser };
-export const { updateUserInfo } = userInfoEditSlice.actions;
+export { fetchUser, addUser, userInfoUpdate };
