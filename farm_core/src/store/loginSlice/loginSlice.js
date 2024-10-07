@@ -7,6 +7,7 @@ const loginSlice = createSlice({
   name: "login",
   initialState: {
     uid: "",
+    email: "",
     username: "",
     password: "",
     notLogin: true,
@@ -42,6 +43,7 @@ const loginSlice = createSlice({
       state.adminLogin = action.payload;
     },
     resetState: (state) => {
+      state.email = "";
       state.username = "";
       state.password = "";
       state.notLogin = false;
