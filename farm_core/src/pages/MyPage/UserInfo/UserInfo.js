@@ -9,68 +9,41 @@ import {
   useFetchCollectionData,
 } from "../../../firebase";
 import {
-  updateUserInfo,
   fetchUser,
+  userInfoUpdate,
 } from "../../../store/userInfoEditSlice/UserInfoEditSlice";
 import { toggleOpen } from "../../../store/myPageSlice/addressSlice";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import DeleteAccount from "./../../../components/DeleteAccount/DeleteAccount";
-import KORMap from "../../../components/diseaseMonth/KORMap";
 
 function UserInfo() {
-  useFetchCollectionData("users", fetchUser);
   const dispatch = useDispatch();
-  const {
-    name,
-    email,
-    nickname,
-    phone,
-    address,
-    detailedAddress,
-    profileImages,
-    userInfo,
-  } = useSelector((state) => state.userInfoEditSlice);
+  const { userInfo, loading, error } = useSelector(
+    (state) => state.userInfoEditSlice
+  );
 
   const [file, setFile] = useState(null);
-  const [initialDataLoaded, setInitialDataLoaded] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(img);
   const [isEditing, setIsEditing] = useState(true);
 
   const open = useDaumPostcodePopup();
 
-  useEffect(() => {
-    if (!initialDataLoaded) {
-      dispatch(fetchUser({ collectionName: "users", queryOptions: { email } }));
-      setInitialDataLoaded(true);
-    }
-  }, [dispatch, initialDataLoaded]);
+  useFetchCollectionData("users", fetchUser);
 
   useEffect(() => {
-    console.log("렌더링");
-    const currentUserEmail = email;
-    console.log(currentUserEmail);
-
-    if (!initialDataLoaded && currentUserEmail) {
-      fetchUserByEmail(currentUserEmail).then((userData) => {
-        if (userData.length > 0) {
-          const user = userData[0];
-          dispatch(
-            updateUserInfo({
-              name: user.name || "",
-              email: user.email || "",
-              nickname: user.nickname || "",
-              phone: user.phone || "",
-              address: user.address || "",
-              detailedAddress: user.detailedAddress || "",
-              profileImages: user.profileImages || img,
-            })
-          );
-          setPreviewUrl(user.profileImages || img);
-        }
-        setInitialDataLoaded(true);
-      });
+    // 유저 데이터 로드 후 처리
+    if (userInfo && userInfo[0]) {
+      setPreviewUrl(userInfo[0].profileImages || img); // 프로필 이미지 설정
     }
-  }, [dispatch, email, initialDataLoaded]);
+  }, [userInfo]);
+
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div>에러 발생: {error.message}</div>;
+  }
 
   const completeHandler = (data) => {
     console.log("Address Data:", data); // 확인
@@ -78,7 +51,6 @@ function UserInfo() {
     const detailedAddress = `${data.bname} ${
       data.buildingName ? data.buildingName : ""
     }`;
-    dispatch(updateUserInfo({ address, detailedAddress }));
     dispatch(toggleOpen());
   };
 
@@ -99,145 +71,143 @@ function UserInfo() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    dispatch(updateUserInfo({ [name]: value }));
+    const userId = userInfo[0]?.docId; // userInfo[0]에 저장된 문서 ID를 가져옴
+
+    if (userId) {
+      // 유저 정보 업데이트
+      dispatch(
+        userInfoUpdate({
+          collectionName: "users", // 컬렉션 이름
+          docId: userId, // 업데이트할 유저의 문서 ID
+          updateObj: { [name]: value }, // 업데이트할 필드와 값
+        })
+      );
+    } else {
+      console.error("User ID를 찾을 수 없습니다.");
+    }
   };
 
   const handleSave = async () => {
     const userId = userInfo[0]?.docId;
-    console.log(userId);
+
     if (userId) {
       try {
-        let profileImageUrl = profileImages || img;
+        let profileImageUrl = previewUrl;
 
         if (file) {
           profileImageUrl = await uploadProfileImage(file);
-          dispatch(updateUserInfo({ profileImages: profileImageUrl }));
+          dispatch(
+            userInfoUpdate({
+              collectionName: "users",
+              docId: userId,
+              updateObj: { profileImages: profileImageUrl },
+            })
+          );
         }
 
-        const updateObj = {
-          name,
-          email,
-          profileImages: profileImageUrl,
-          nickname,
-          phone,
-          address: address || userInfo[0].address,
-          detailedAddress: detailedAddress || userInfo[0].detailedAddress,
-        };
-
-        await updateDatas("users", userId, updateObj);
-
-        // 페이지를 새로고침
         alert("저장 완료");
         setIsEditing(false);
-        window.location.reload(); // 페이지 새로고침
       } catch (error) {
         console.error("저장 실패:", error);
       }
-    } else {
-      console.error("User ID가 없습니다.");
     }
   };
-
-  if (!initialDataLoaded) {
-    return <div>로딩 중...</div>;
-  }
-
   return (
     <div className="container">
       <h1>My Page</h1>
       <hr />
-      <div className="container">
-        <div className={styles.wrapper}>
-          <div className={styles.userInfo}>
-            <div className={styles.profile}>
-              <img src={previewUrl || img} className={styles.personImg} />
-              <input
-                type="file"
-                className={styles.hidden}
-                onChange={handleFileChange}
-              />
-              <p className={styles.profileContent}>프로필사진 변경하기</p>
-            </div>
-            <div>
-              <span>이름 :</span>
-              <input name="name" value={name || ""} onChange={handleChange} />
-            </div>
-            <div>
-              <span>닉네임 :</span>
-              <input
-                name="nickname"
-                value={nickname || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <span>이메일 :</span>
-              <input
-                name="email"
-                type="email"
-                value={email || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <span>핸드폰 번호 :</span>
-              <input
-                name="phone"
-                type="tel"
-                value={phone || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div className={styles.addr}>
-              <span>주소 :</span>
-              <input
-                placeholder="주소"
-                value={address || ""}
-                onChange={(e) =>
-                  dispatch(updateUserInfo({ address: e.target.value }))
-                }
-                className={styles.addrIP}
-              />
-            </div>
-
-            <div className={styles.addr2Wrapper}>
-              <input
-                placeholder="상세주소를 작성해주세요"
-                className={styles.addr2}
-                value={detailedAddress || ""}
-                onChange={(e) =>
-                  dispatch(updateUserInfo({ detailedAddress: e.target.value }))
-                }
-              />
-              <button className="squareGlobalBtn" onClick={openAddressPopup}>
-                주소 검색
-              </button>
-            </div>
-
-            <div className={styles.btnWrap}>
-              {isEditing ? (
-                <div>
-                  <button className="globalBtn " onClick={handleSave}>
-                    저장
-                  </button>
-                  <button
-                    className="globalDeleteBtn"
-                    onClick={() => setIsEditing(false)}
-                  >
-                    취소
-                  </button>
-                </div>
-              ) : (
-                <button
-                  className={styles.editBtn}
-                  onClick={() => setIsEditing(true)}
-                >
-                  수정
-                </button>
-              )}
-            </div>
-            <DeleteAccount />
+      <div className={styles.wrapper}>
+        <div className={styles.userInfo}>
+          <div className={styles.profile}>
+            <img
+              src={previewUrl || img}
+              className={styles.personImg}
+              alt="profile"
+            />
+            <input
+              type="file"
+              className={styles.hidden}
+              onChange={handleFileChange}
+            />
+            <p className={styles.profileContent}>프로필사진 변경하기</p>
           </div>
+          <div>
+            <span>이름 :</span>
+            <input
+              name="name"
+              value={userInfo[0]?.name || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>닉네임 :</span>
+            <input
+              name="nickname"
+              value={userInfo[0]?.nickname || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>이메일 :</span>
+            <input
+              name="email"
+              type="email"
+              value={userInfo[0]?.email || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>핸드폰 번호 :</span>
+            <input
+              name="phone"
+              type="tel"
+              value={userInfo[0]?.phone || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div className={styles.addr}>
+            <span>주소 :</span>
+            <input
+              placeholder="주소"
+              value={userInfo[0]?.address || ""}
+              readOnly
+              className={styles.addrIP}
+            />
+          </div>
+          <div className={styles.addr2Wrapper}>
+            <input
+              placeholder="상세주소"
+              className={styles.addr2}
+              value={userInfo[0]?.detailedAddress || ""}
+              readOnly
+            />
+            <button className="squareGlobalBtn" onClick={openAddressPopup}>
+              주소 검색
+            </button>
+          </div>
+          <div className={styles.btnWrap}>
+            {isEditing ? (
+              <div>
+                <button className="globalBtn" onClick={handleSave}>
+                  저장
+                </button>
+                <button
+                  className="globalDeleteBtn"
+                  onClick={() => setIsEditing(false)}
+                >
+                  취소
+                </button>
+              </div>
+            ) : (
+              <button
+                className={styles.editBtn}
+                onClick={() => setIsEditing(true)}
+              >
+                수정
+              </button>
+            )}
+          </div>
+          <DeleteAccount />
         </div>
       </div>
     </div>
