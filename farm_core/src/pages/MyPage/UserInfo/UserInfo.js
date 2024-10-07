@@ -148,98 +148,96 @@ function UserInfo() {
     <div className="container">
       <h1>My Page</h1>
       <hr />
-      <div className="container">
-        <div className={styles.wrapper}>
-          <div className={styles.userInfo}>
-            <div className={styles.profile}>
-              <img src={previewUrl || img} className={styles.personImg} />
-              <input
-                type="file"
-                className={styles.hidden}
-                onChange={handleFileChange}
-              />
-              <p className={styles.profileContent}>프로필사진 변경하기</p>
-            </div>
-            <div>
-              <span>이름 :</span>
-              <input name="name" value={name || ""} onChange={handleChange} />
-            </div>
-            <div>
-              <span>닉네임 :</span>
-              <input
-                name="nickname"
-                value={nickname || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <span>이메일 :</span>
-              <input
-                name="email"
-                type="email"
-                value={email || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <span>핸드폰 번호 :</span>
-              <input
-                name="phone"
-                type="tel"
-                value={phone || ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div className={styles.addr}>
-              <span>주소 :</span>
-              <input
-                placeholder="주소"
-                value={address || ""}
-                onChange={(e) =>
-                  dispatch(updateUserInfo({ address: e.target.value }))
-                }
-                className={styles.addrIP}
-              />
-            </div>
-
-            <div className={styles.addr2Wrapper}>
-              <input
-                placeholder="상세주소를 작성해주세요"
-                className={styles.addr2}
-                value={detailedAddress || ""}
-                onChange={(e) =>
-                  dispatch(updateUserInfo({ detailedAddress: e.target.value }))
-                }
-              />
-              <button className="squareGlobalBtn" onClick={openAddressPopup}>
-                주소 검색
-              </button>
-            </div>
-
-            <div className={styles.btnWrap}>
-              {isEditing ? (
-                <div>
-                  <button className="globalBtn " onClick={handleSave}>
-                    저장
-                  </button>
-                  <button
-                    className="globalDeleteBtn"
-                    onClick={() => setIsEditing(false)}
-                  >
-                    취소
-                  </button>
-                </div>
-              ) : (
-                <button
-                  className={styles.editBtn}
-                  onClick={() => setIsEditing(true)}
-                >
-                  수정
-                </button>
-              )}
-            </div>
-            <DeleteAccount />
+      <div className={styles.wrapper}>
+        <div className={styles.userInfo}>
+          <div className={styles.profile}>
+            <img src={previewUrl || img} className={styles.personImg} />
+            <input
+              type="file"
+              className={styles.hidden}
+              onChange={handleFileChange}
+            />
+            <p className={styles.profileContent}>프로필사진 변경하기</p>
           </div>
+          <div>
+            <span>이름 :</span>
+            <input name="name" value={name || ""} onChange={handleChange} />
+          </div>
+          <div>
+            <span>닉네임 :</span>
+            <input
+              name="nickname"
+              value={nickname || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>이메일 :</span>
+            <input
+              name="email"
+              type="email"
+              value={email || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <span>핸드폰 번호 :</span>
+            <input
+              name="phone"
+              type="tel"
+              value={phone || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div className={styles.addr}>
+            <span>주소 :</span>
+            <input
+              placeholder="주소"
+              value={address || ""}
+              onChange={(e) =>
+                dispatch(updateUserInfo({ address: e.target.value }))
+              }
+              className={styles.addrIP}
+            />
+          </div>
+
+          <div className={styles.addr2Wrapper}>
+            <input
+              placeholder="상세주소를 작성해주세요"
+              className={styles.addr2}
+              value={detailedAddress || ""}
+              onChange={(e) =>
+                dispatch(updateUserInfo({ detailedAddress: e.target.value }))
+              }
+            />
+            <button className="squareGlobalBtn" onClick={openAddressPopup}>
+              주소 검색
+            </button>
+          </div>
+
+          <div className={styles.btnWrap}>
+            {isEditing ? (
+              <div>
+                <button className="globalBtn " onClick={handleSave}>
+                  저장
+                </button>
+                <button
+                  className="globalDeleteBtn"
+                  onClick={() => setIsEditing(false)}
+                >
+                  취소
+                </button>
+              </div>
+            ) : (
+              <button
+                className={styles.editBtn}
+                onClick={() => setIsEditing(true)}
+              >
+                수정
+              </button>
+            )}
+          </div>
+          <DeleteAccount />
         </div>
       </div>
     </div>
