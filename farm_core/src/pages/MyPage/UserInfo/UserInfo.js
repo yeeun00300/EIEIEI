@@ -38,12 +38,14 @@ function UserInfo() {
 
   const open = useDaumPostcodePopup();
 
-  useEffect(() => {
-    if (!initialDataLoaded) {
-      dispatch(fetchUser({ collectionName: "users", queryOptions: { email } }));
-      setInitialDataLoaded(true);
-    }
-  }, [dispatch, initialDataLoaded]);
+  // useEffect(() => {
+  //   if (!initialDataLoaded) {
+  //     dispatch(fetchUser({ collectionName: "users", queryOptions: { email } }));
+  //     setInitialDataLoaded(true);
+  //   }
+  // }, [dispatch, initialDataLoaded]);
+
+  useFetchCollectionData("users", fetchUser);
 
   useEffect(() => {
     console.log("렌더링");
