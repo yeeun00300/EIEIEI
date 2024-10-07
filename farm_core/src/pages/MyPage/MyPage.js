@@ -18,6 +18,7 @@ function MyPage() {
   const [activeComponent, setActiveComponent] = useState(null);
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userInfoEditSlice);
+  console.log(userInfo);
 
   useFetchCollectionData("users", fetchUser); // 데이터 로딩
 
@@ -35,7 +36,7 @@ function MyPage() {
       <div>
         <div className={styles.wrapper}>
           <div className={styles.user}>
-            <h3>{userInfo[0]?.name}님 환영합니다.</h3>
+            <h3>{userInfo.name}님 환영합니다.</h3>
           </div>
           <div className={styles.lists}>
             {Object.keys(dataObj).map((key) => (
