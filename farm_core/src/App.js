@@ -108,7 +108,7 @@ function App() {
             {/* 축산 관리 커뮤니티 */}
             <Route path="My_Farm_Board_Community" element={<Livestock />} />
             <Route
-              path="My_Farm_Board_Community/:id"
+              path="/My_Farm_Board_Community/:id"
               element={<FreeboardPage />}
             />
             {/* 커뮤니티 새 글 쓰기 */}
