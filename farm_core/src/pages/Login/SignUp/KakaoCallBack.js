@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { OAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth, db } from "../../../firebase"; // 필요에 따라 Firestore 모듈 가져오기
+import { auth, db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -15,7 +15,7 @@ import {
   where,
   getDocs,
   onSnapshot,
-} from "firebase/firestore"; // Firestore 관련 모듈 추가
+} from "firebase/firestore";
 
 function KakaoCallBack() {
   const dispatch = useDispatch();
@@ -38,14 +38,13 @@ function KakaoCallBack() {
       }
     });
 
-    return unsubscribe; // 감시를 해제하는 함수를 반환
+    return unsubscribe;
   };
 
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      dispatch(setNotLogin(true));
-      localStorage.removeItem("email");
+      dispatch(setNotLogin(true)); // 상태 관리로 로그인 상태 업데이트
       navigate("/"); // 메인 페이지로 리디렉션
     } catch (error) {
       console.error("로그아웃 중 오류 발생:", error);
@@ -100,6 +99,8 @@ function KakaoCallBack() {
 
           const email = userInfoResponse.data.kakao_account.email;
           const nickname = userInfoResponse.data.kakao_account.profile.nickname;
+
+          // Redux 상태에 사용자 정보 저장
           dispatch(setEmail(email));
           dispatch(setNickname(nickname));
 
@@ -137,11 +138,8 @@ function KakaoCallBack() {
             });
             await signInWithCredential(auth, credential); // Firebase 인증
 
-            // 로그인 성공 처리
-            // alert("로그인 성공!");
-            localStorage.setItem("email", email);
             monitorUserStatus(email); // 사용자 상태 모니터링 시작
-            dispatch(setNotLogin(false));
+            dispatch(setNotLogin(false)); // 로그인 상태 업데이트
             navigate("/"); // 메인 페이지로 리디렉션
           } else {
             // 신규 사용자
