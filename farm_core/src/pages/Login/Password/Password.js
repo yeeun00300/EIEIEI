@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styles from "./Password.module.scss";
+import { BeatLoader } from "react-spinners";
 
 function Password() {
   const [email, setEmail] = useState("");
@@ -48,7 +49,11 @@ function Password() {
         <button onClick={handleResetEmail} disabled={loading}>
           비밀번호 재설정 이메일 발송
         </button>
-        {loading && <p>처리 중...</p>}
+        {loading && (
+          <div className="loadingPage">
+            <BeatLoader color="#38d6b7" />
+          </div>
+        )}
         {error && <p>{error}</p>}
         {success && <p>{success}</p>}
       </div>

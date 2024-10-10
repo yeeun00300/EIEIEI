@@ -11,6 +11,7 @@ import NoticeAdd from "./NoticeAdd/NoticeAdd";
 import DeclareStateCard from "./DeclareStateCard/DeclareStateCard";
 import { deleteDatas, getSubCollection } from "../../firebase";
 import QuestionAnswer from "./QuestionAnswer/QuestionAnswer";
+import { BeatLoader } from "react-spinners";
 function CustomerManagement() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -370,7 +371,9 @@ function CustomerManagement() {
           </thead>
           <tbody>
             {isLoading ? (
-              <div>No Data!!</div>
+              <div className="loadingPage">
+                <BeatLoader color="#38d6b7" />
+              </div>
             ) : (
               <>
                 {sort !== "문의사항" ? (

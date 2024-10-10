@@ -24,6 +24,8 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import { BeatLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 
 function MedicalListSave() {
   const [medicalData, setMedicalData] = useState([]);
@@ -34,9 +36,9 @@ function MedicalListSave() {
   const [updatedData, setUpdatedData] = useState({});
   const [deleteSubData, setDeleteSubData] = useState(null);
 
-  useEffect(() => {
-    const email = localStorage.getItem("email");
+  const email = useSelector((state) => state.loginSlice.email);
 
+  useEffect(() => {
     if (email) {
       const fetchData = async () => {
         try {
@@ -163,7 +165,11 @@ function MedicalListSave() {
   };
 
   if (!medicalData) {
-    return <p>로딩 중...</p>;
+    return (
+      <div className="loadingPage">
+        <BeatLoader color="#38d6b7" />
+      </div>
+    );
   }
 
   return (
