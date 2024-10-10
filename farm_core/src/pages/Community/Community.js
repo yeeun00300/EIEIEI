@@ -14,7 +14,7 @@ function Community() {
   const [sortOption, setSortOption] = useState("최신순");
   const [keyword, setKeyword] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [visibleCount, setVisibleCount] = useState(6); // 한 번에 보여줄 게시글 수
+  const [visibleCount, setVisibleCount] = useState(8); // 한 번에 보여줄 게시글 수
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -93,7 +93,7 @@ function Community() {
   const visibleContents = filteredAndSortedContents.slice(0, visibleCount);
 
   const handleShowMore = () => {
-    setVisibleCount((prevCount) => prevCount + 6); // 게시글 6개씩 더 보기
+    setVisibleCount((prevCount) => prevCount + 8); // 게시글 6개씩 더 보기
   };
 
   // notice 게시글 필터링
