@@ -69,6 +69,7 @@
     "react-scripts": "5.0.1",
     "react-simple-south-korea-map-chart": "^1.1.1",
     "react-slick": "^0.30.2",
+    "react-spinners": "^0.14.1",
     "recharts": "^2.12.7",
     "redux-thunk": "^3.1.0",
     "sass": "^1.77.8",

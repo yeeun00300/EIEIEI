@@ -142,8 +142,8 @@ function MyLiveStock(props) {
   return (
     <>
       {selectLoading && isLoading ? (
-        <div className="page">
-          <div>로딩중</div>
+        <div className="loadingPage">
+          <BeatLoader color="#38d6b7" />
         </div>
       ) : (
         <>

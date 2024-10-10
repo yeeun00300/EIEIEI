@@ -113,8 +113,7 @@ function UserInfo() {
   };
   return (
     <div className="container">
-      <h1>My Page</h1>
-      <hr />
+      {/* <h1>My Page</h1> */}
       <div className={styles.wrapper}>
         <div className={styles.userInfo}>
           <div className={styles.profile}>
