@@ -43,7 +43,7 @@
 
 .wrapper {
   width: 100%;
-  max-width: 52.5rem; /* 840px */
+  max-width: 84.375rem;
   margin: 0 auto;
   margin-bottom: 1.875rem; /* 3rem */
 }
@@ -59,7 +59,10 @@
 
 /* 반응형 디자인을 위한 미디어 쿼리 */
 
-@media (min-width: 1500px) {
+@media (max-width: 1350px) {
+  .wrapper {
+    max-width: 90%;
+  }
   .texts {
     .heading {
       font-size: 1.5rem; /* 큰 화면에서 폰트 크기 증가 */
@@ -72,6 +75,9 @@
 }
 /* 768px 이하 */
 @media (max-width: 768px) {
+  .wrapper {
+    max-width: 95%;
+  }
   .container {
     flex-direction: column;
     height: auto;
@@ -106,6 +112,9 @@
 
 /* 480px 이하 */
 @media (max-width: 480px) {
+  .wrapper {
+    max-width: 95%;
+  }
   .container {
     padding: 1rem 0;
     height: auto;
