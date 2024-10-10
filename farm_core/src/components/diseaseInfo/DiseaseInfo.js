@@ -196,7 +196,9 @@ function DiseaseInfo() {
         />
 
         {loading ? (
-          <p>로딩 중...</p>
+          <div className="loadingPage">
+            <BeatLoader color="#38d6b7" />
+          </div>
         ) : error ? (
           <p>에러 발생: {error}</p>
         ) : (

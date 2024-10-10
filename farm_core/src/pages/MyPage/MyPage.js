@@ -7,6 +7,8 @@ import Question from "./Question/Question";
 import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
 import { useFetchCollectionData } from "../../firebase";
+import { BeatLoader } from "react-spinners";
+
 const dataObj = {
   UserInfo: { label: "회원정보수정" },
   myCommunity: { label: "내 게시글" },
@@ -26,7 +28,11 @@ function MyPage() {
   };
 
   if (!userInfo[0] || userInfo[0].length === 0) {
-    return <div>로딩 중...</div>; // 데이터가 로딩될 때까지 대기
+    return (
+      <div className="loadingPage">
+        <BeatLoader color="#38d6b7" />
+      </div>
+    ); // 데이터가 로딩될 때까지 대기
   }
 
   return (

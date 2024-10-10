@@ -33,10 +33,7 @@ export const fetchMyPosts = createAsyncThunk(
     try {
       // 여러 communityType을 가져오는 쿼리 옵션
       const data = await getDatas(collectionName, queryOptions);
-<<<<<<< Updated upstream
-=======
       // console.log("Fetched data:", data); // 데이터 확인
->>>>>>> Stashed changes
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

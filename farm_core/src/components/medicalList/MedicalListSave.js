@@ -24,6 +24,7 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import { BeatLoader } from "react-spinners";
 
 function MedicalListSave() {
   const [medicalData, setMedicalData] = useState([]);
@@ -163,7 +164,11 @@ function MedicalListSave() {
   };
 
   if (!medicalData) {
-    return <p>로딩 중...</p>;
+    return (
+      <div className="loadingPage">
+        <BeatLoader color="#38d6b7" />
+      </div>
+    );
   }
 
   return (
