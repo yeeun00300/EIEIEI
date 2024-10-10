@@ -1,9 +1,27 @@
+.page {
+  background-color: black;
+}
 .container {
-  // display: flex;
-  // flex-direction: column;
   width: 100%;
-  .nav-link {
-    font-size: 32px;
+  font-size: 24px;
+  ul {
+    button {
+      color: var(--point-color);
+      border: 1px solid var(--main-color);
+      border-radius: 6px;
+      &:hover {
+        background-color: var(--second-color);
+        color: white;
+      }
+      &:active {
+        background-color: var(--second-color);
+        color: white;
+      }
+    }
+    .nav-link.active {
+      background-color: var(--second-color);
+      color: white;
+    }
   }
 }
 .one {
