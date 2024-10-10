@@ -110,10 +110,8 @@ function StockCondition(props) {
   const [animalType, setAnimalType] = useState("");
   const dispatch = useDispatch();
   const farmData = useSelector((state) => state.AddLiveStockSlice);
-  console.log(farmData);
 
   const [docId, setDocId] = useState(""); // docId 상태 추가
-  console.log(docId);
   useEffect(() => {
     const email = localStorage.getItem("email");
 
@@ -146,8 +144,6 @@ function StockCondition(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Submitting farm data:", farmData);
-
       // 폼 데이터와 하위 컬렉션 데이터 준비
       const subCollections = {
         farmCureList: [],
@@ -166,8 +162,6 @@ function StockCondition(props) {
           },
         ], // disease 데이터 준비
       };
-
-      console.log("SubCollections data:", subCollections);
 
       await addMessage("farm", docId, "vaccine", subCollections.vaccine);
       await addMessage("farm", docId, "disease", subCollections.disease);

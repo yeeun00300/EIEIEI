@@ -13,7 +13,6 @@ function AlarmManagement({ reSend, sort }) {
     const query = ("send", "==", "true");
     try {
       const result = await getDatas("weatherInfo", query);
-      // console.log(result);
       setWeatherIssueAlarm(result);
     } catch (error) {}
   };

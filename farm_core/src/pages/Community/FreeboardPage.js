@@ -83,7 +83,6 @@ function FreeboardPage() {
             })
           ).unwrap();
           if (post) {
-            console.log("post 불러오기 성공:", post); // 데이터 성공 여부 확인
           }
         } catch (error) {
           console.error("게시물을 불러오는 중 오류가 발생했습니다.", error);
@@ -92,7 +91,6 @@ function FreeboardPage() {
 
       fetchPostData();
     } else {
-      console.log("postData:", postData); // postData 확인
     }
   }, [postData, dispatch, id]);
   const handleUpdate = () => {

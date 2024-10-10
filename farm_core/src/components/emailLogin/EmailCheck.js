@@ -14,8 +14,6 @@ function EmailCheck() {
   useEffect(() => {
     const mode = searchParams.get("mode"); // mode 확인
     const oobCodeFromURL = searchParams.get("oobCode");
-    console.log("mode:", mode); // 콘솔에 mode 값 출력
-    console.log("oobCode:", oobCodeFromURL);
 
     if (oobCodeFromURL) {
       if (mode === "verifyEmail") {
@@ -41,7 +39,6 @@ function EmailCheck() {
     // else {
     //   setLoading(false);
     //   setError("왜 오류가 날까 회원가입은 되는데 흐으음...");
-    //   console.log("oobCode가 없습니다."); // 디버깅을 위한 로그
     // }
   }, [navigate, searchParams]);
 

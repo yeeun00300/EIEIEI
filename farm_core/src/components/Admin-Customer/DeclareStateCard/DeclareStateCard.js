@@ -69,8 +69,6 @@ function DeclareStateCard({
     } else {
       // 댓글 신고 상태
       try {
-        console.log(declareState, id, commentId);
-
         if (declareState == "reported") {
           await dispatch(
             reportComment({

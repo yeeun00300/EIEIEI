@@ -8,13 +8,10 @@ function MonthPractice(props) {
 
   const handleMonthChange = async (e) => {
     const month = e.target.value.replace("-", "");
-    console.log(`Selected Month: ${month}`);
     setSelectedMonth(month);
     const apikey = process.env.REACT_APP_DISEASEAPI;
-    console.log(apikey);
 
     const apiURL = `/api6/openapi/${apikey}/json/Grid_20220621000000000615_1/1/5/?QRANT_COMPT_MT=${month}`;
-    console.log(apiURL);
 
     try {
       const response = await fetch(apiURL);
@@ -22,9 +19,7 @@ function MonthPractice(props) {
         throw new Error("Network response was not ok");
       }
       const jsonData = await response.json();
-      console.log("jsonData", jsonData);
       const rows = jsonData.Grid_20220621000000000615_1.row;
-      console.log("rows", rows);
 
       const regionalData = rows.reduce((acc, row) => {
         const locale = row.CTPRVN_NM;
@@ -51,14 +46,12 @@ function MonthPractice(props) {
         })
       );
 
-      console.log("최종 데이터", formattedData);
       setData(formattedData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  console.log(selectedMonth);
   return (
     <div className="container">
       <div className={styles.mapbox}>

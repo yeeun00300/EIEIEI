@@ -64,7 +64,6 @@ function NoticeAdd({ setOpen }) {
     if (image && typeof image !== "string") {
       try {
         imageUrl = await uploadImage("community/", image);
-        console.log("업로드된 이미지 URL:", imageUrl); // 업로드된 이미지 URL 확인
         setOpen(false);
       } catch (error) {
         console.error("이미지 업로드 실패:", error);
@@ -90,7 +89,7 @@ function NoticeAdd({ setOpen }) {
       email: email,
     };
 
-    console.log("제출할 데이터 객체:", dataObj); // 데이터 객체 확인
+    // console.log("제출할 데이터 객체:", dataObj); // 데이터 객체 확인
 
     try {
       if (postData) {

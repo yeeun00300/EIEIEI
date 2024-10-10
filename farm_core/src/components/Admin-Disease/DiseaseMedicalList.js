@@ -138,8 +138,6 @@ function DiseaseMedicalList() {
         lastModified: currentTime,
       };
 
-      console.log("Saving updated data:", updatedSubData);
-
       // medicalData[0]와 selectedSubData.docId가 유효한지 확인
       if (!medicalData.length || !selectedSubData?.docId) {
         throw new Error("업데이트할 문서 또는 서브컬렉션 문서 ID가 없습니다.");

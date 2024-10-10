@@ -22,7 +22,6 @@ function Nav({ contents, renderContent }) {
     }
   };
   const itemId = selectedItem.id;
-  // console.log(itemId);
 
   // ---------------------------------------------------------------------\
   const renderUserContent = () => {
@@ -50,7 +49,6 @@ function Nav({ contents, renderContent }) {
 
     return componentsMap[itemId] || <h1>Default Content</h1>;
   };
-  console.log(renderUserContent());
   useEffect(() => {}, [itemId]);
   return (
     <>

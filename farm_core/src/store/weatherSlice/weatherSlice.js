@@ -101,7 +101,6 @@ const fetchWeatherForecastData = createAsyncThunk(
         `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
       );
       const data = await response.json();
-      // console.log("Forecast API Data:", data); // 데이터를 출력하여 확인
       return data;
     } catch (error) {
       console.log(`error : ${error}`);
@@ -123,7 +122,6 @@ const fetchWeatherTodayData = createAsyncThunk(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=kr`
       );
       const data = await response.json();
-      // console.log("TodayWeather API Data:", data); // 데이터를 출력하여 확인
       return data;
     } catch (error) {
       console.log(`error : ${error}`);

@@ -46,7 +46,6 @@ function UserInfo() {
   }
 
   const completeHandler = (data) => {
-    console.log("Address Data:", data); // 확인
     const address = `${data.address}`;
     const detailedAddress = `${data.bname} ${
       data.buildingName ? data.buildingName : ""

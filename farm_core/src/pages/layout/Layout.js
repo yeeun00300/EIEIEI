@@ -66,7 +66,6 @@ function Layout(props) {
   };
   useEffect(() => {
     if (isNavVisible && isTabletOrMobile) {
-      console.log("Nav가 보이면서 애니메이션 준비 완료!");
     }
   }, [isNavVisible, isTabletOrMobile]);
 
@@ -90,7 +89,6 @@ function Layout(props) {
 
   useEffect(() => {
     if (selectedItem && selectedItem.route) {
-      // console.log("Selected Item:", selectedItem);
       navigate(selectedItem.route);
     }
   }, [selectedItem]);

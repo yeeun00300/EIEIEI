@@ -35,12 +35,9 @@ function KoreaMap({ data }) {
     // }
     alert("??");
   };
-  console.log(selectedInfo);
   // const tooltipContent = (locale, count, diseases) => {
-  //   console.log(locale);
   //   const diseaseList = diseases.length > 0 ? diseases.join(", ") : "없음";
 
-  //   console.log(diseaseList);
   //   return `
   //     <strong>${locale}</strong><br />
   //     발생한 질병 수: ${count}<br />

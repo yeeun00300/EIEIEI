@@ -20,11 +20,9 @@ function DiseaseState() {
   const handleMonthChange = async (e) => {
     const monthDisplay = e.target.value;
     const month = e.target.value.replace("-", "");
-    console.log(`Selected Month: ${month}`);
     setSelectedMonth(monthDisplay);
 
     const apiURL = `/api6/openapi/ef47786d3eabcb9f87d0c7d3b301f869312d4cf9af878855b06ed3c153a53290/json/Grid_20220621000000000615_1/1/5/?QRANT_COMPT_MT=${month}`;
-    console.log(apiURL);
 
     try {
       const response = await fetch(apiURL);
@@ -32,9 +30,7 @@ function DiseaseState() {
         throw new Error("Network response was not ok");
       }
       const jsonData = await response.json();
-      console.log("jsonData", jsonData);
       const rows = jsonData.Grid_20220621000000000615_1.row;
-      console.log("rows", rows);
 
       const regionalData = rows.reduce((acc, row) => {
         const locale = row.CTPRVN_NM;
@@ -61,7 +57,6 @@ function DiseaseState() {
         })
       );
 
-      console.log("최종 데이터", formattedData);
       setData(formattedData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -76,11 +71,9 @@ function DiseaseState() {
   //     `http://211.237.50.150:7080/openapi/8ff445232570cefa9e0e97bd6c153f916d1adf5cd25b4f421a6e0d44b48d65fd/json/Grid_20220621000000000615_1/?QRANT_COMPT_MT=202208`
   //   )
   //     .then((response) => {
-  //       // console.log(response);
   //       return response.json();
   //     })
   //     .then((json) => {
-  //       console.log(json);
   //     });
   // };
   // useEffect(() => {

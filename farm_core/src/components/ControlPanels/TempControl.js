@@ -28,7 +28,6 @@ function TempControl() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // console.log(` ggg`);
       setTime(new Date());
       // 상태 업데이트 (1분마다 렌더링 유도)
       if (intervalValue > setValue) {

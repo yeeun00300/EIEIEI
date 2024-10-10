@@ -74,15 +74,7 @@ function TempPiNeedleWidget() {
     }
   };
   useEffect(() => {
-    // lat, lon 가져오기
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      setLat(latitude);
-      setLon(longitude);
-    });
-    dispatch(fetchWeatherTodayData({ APIkey: apiKey, lat: lat, lon: lon }));
     const interval = setInterval(() => {
-      // console.log(` ggg`);
       setTime(new Date());
       // 상태 업데이트 (1분마다 렌더링 유도)
       if (intervalValue > setValue) {
@@ -96,6 +88,15 @@ function TempPiNeedleWidget() {
     // 시간간격조정
     return () => clearInterval(interval);
   }, [setValue, intervalValue]);
+  useEffect(() => {
+    // lat, lon 가져오기
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      setLat(latitude);
+      setLon(longitude);
+    });
+    dispatch(fetchWeatherTodayData({ APIkey: apiKey, lat: lat, lon: lon }));
+  }, []);
 
   return (
     <div className={styles.TempWidget}>

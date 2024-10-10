@@ -401,7 +401,6 @@ function CustomerManagement() {
                     const selectComment = commentList?.filter(
                       (item) => item.communityDocId === id
                     );
-                    // console.log();
 
                     return (
                       <>

@@ -47,7 +47,6 @@ const storage = getStorage(app);
 function getUserAuth() {
   return auth;
 }
-// console.log(auth);
 
 function getCollection(collectionName) {
   return collection(db, collectionName);
@@ -56,7 +55,6 @@ function getCollection(collectionName) {
 async function addDatas(collectionName, userObj) {
   try {
     const docRef = await addDoc(collection(db, collectionName), userObj);
-    // console.log("Document written with ID: ", docRef.id);
     return docRef.id; // 문서 ID 반환
   } catch (error) {
     console.error("Error adding document: ", error);
@@ -157,13 +155,12 @@ async function getDataAll(collectionName) {
 
 export const uploadFiles = async (file) => {
   const storageRef = ref(storage, `admin01/profileImgs/${file.name}`);
-  console.log(`프로필 이미지확인:${file.name}`);
   try {
-    console.log("Uploading file:", file); // 파일 정보 확인
+    // 파일 정보 확인
     const snapshot = await uploadBytes(storageRef, file);
-    console.log("Upload snapshot:", snapshot); // 스냅샷 정보 확인
+    // 스냅샷 정보 확인
     const downloadURL = await getDownloadURL(snapshot.ref);
-    console.log("Download URL:", downloadURL); // 다운로드 URL 확인
+    // 다운로드 URL 확인
     return downloadURL;
   } catch (error) {
     console.error("Upload failed:", error.message); // 오류 메시지 출력
@@ -174,7 +171,6 @@ export const uploadFiles = async (file) => {
 export const saveUserData = async (userId, userData) => {
   try {
     await setDoc(doc(db, "users", userId), userData);
-    console.log("User data saved successfully");
   } catch (error) {
     console.error("Error saving user data:", error);
   }
@@ -208,12 +204,10 @@ async function uploadFile(file) {
 
 export const checkUserInFirestore = async (email) => {
   try {
-    console.log("Checking user in Firestore with email:", email); // 입력된 이메일 확인
     const q = query(collection(db, "users"), where("email", "==", email));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-      console.log(`유저 정보 확인: ${email}`);
       return true;
     } else {
       console.log(`유저 정보 없음: ${email}`);
@@ -357,9 +351,6 @@ async function uploadExcelAndSaveData(file, collectionName) {
 
         // 이메일 필드를 추가
         convertedObject.email = email;
-
-        // Firestore에 전송하기 전에 데이터 확인
-        console.log("Firestore에 저장 전 최종 데이터:", convertedObject);
 
         return convertedObject;
       })
@@ -567,8 +558,6 @@ export const deleteCommunityDatas = async (id) => {
 // 댓글 추가
 export const addComment = async (postId, comment) => {
   try {
-    console.log("댓글 추가 데이터:", comment); // 로그 추가
-
     const commentsRef = collection(db, "community", postId, "comments");
     await addDoc(commentsRef, {
       subContent: comment.subContent, // 새로운 필드 이름
@@ -606,7 +595,6 @@ export const updateComment = async (postId, commentId, updatedContent) => {
       subContent: updatedContent,
       subUpdatedAt: new Date().getTime(),
     });
-    console.log("댓글 수정 성공!");
   } catch (error) {
     console.error("댓글 수정 실패:", error);
   }
@@ -643,8 +631,6 @@ async function addMessage(collectionName, docId, subCollectionName, addObj) {
       ...addObj,
       createdAt: new Date(),
     });
-
-    // console.log("서브컬렉션에 데이터 추가 완료!");
   } catch (error) {
     console.error("Error adding subcollection document: ", error);
   }
@@ -660,11 +646,8 @@ async function getSubCollection(collectionName, docId, subCollectionName) {
     const querySnapshot = await getDocs(ordersCollectionRef);
     const docs = querySnapshot.docs;
     const resultData = docs.map((doc) => {
-      // console.log(`${doc.id} => `, { ...doc.data(), docId: doc.id });
       const result = { ...doc.data(), docId: doc.id };
       return result;
-      // const filteredData = result.filter((item) => item.docId === email);
-      // return filteredData[0];
     });
     return resultData;
   } catch (error) {
@@ -756,8 +739,6 @@ function useFetchCollectionData(collectionName, fetchAction) {
           .then((resultAction) => {
             if (fetchAction.fulfilled.match(resultAction)) {
               const userData = resultAction.payload;
-              // console.log("Fetched data with IDs from Redux: ", userData);
-
               // 예: 첫 번째 문서 ID
               if (userData.length > 0) {
                 const firstDocumentId = userData[0].docId; // 'docId'로 문서 ID 접근
@@ -832,9 +813,7 @@ const updateSubcollectionDocument = async (
 ) => {
   try {
     const docRef = doc(db, "farm", id, subcollectionName, docId); // 서브컬렉션 문서 참조
-    console.log("문서 참조:", docRef.path); // 문서 로직
     await setDoc(docRef, data, { merge: true }); // 병합 옵션 사용
-    console.log("문서가 성공적으로 업데이트되었습니다."); // 성공의 연속
   } catch (error) {
     console.error("하위 컬렉션 문서 업데이트 오류: ", error);
   }

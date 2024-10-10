@@ -84,7 +84,6 @@ function MyLiveStock(props) {
         ],
       };
       dispatch(fetchSelectedStock({ collectionName: "stock", queryOptions }));
-      console.log(`선택된 농장 정보`, farm);
     }
   };
 
@@ -105,7 +104,6 @@ function MyLiveStock(props) {
   // 버튼 클릭 시 차트를 변경하는 함수
   const handleChartChange = (chartId) => {
     setSelectedChart(chartId);
-    // console.log(selectedChart);
   };
 
   // 폐사 여부

@@ -14,8 +14,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      console.log("Updating user state:", action.payload);
-      state.email = action.payload.emai;
+      state.email = action.payload.email;
       state.token = action.payload.token;
       state.uid = action.payload.uid;
       state.isAuthenticated = true;
