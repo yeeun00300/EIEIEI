@@ -7,6 +7,7 @@ import Question from "./Question/Question";
 import MyCommunity from "./MyCommunity/MyCommunity";
 import Payment from "./Payment/Payment";
 import { useFetchCollectionData } from "../../firebase";
+
 const dataObj = {
   UserInfo: { label: "회원정보수정" },
   myCommunity: { label: "내 게시글" },
@@ -31,15 +32,20 @@ function MyPage() {
 
   return (
     <div className="page">
-      {/* <h3>{userInfo[0].name}님 환영합니다.</h3> */}
       <div className={styles.pageBox}>
         <div className={styles.wrapper}>
-          <div className={styles.user}></div>
+          <div className={styles.user}>
+            <h3 className={styles.headerTitle}>
+              {userInfo[0].name}님 환영합니다.
+            </h3>
+          </div>
           <div className={styles.lists}>
             {Object.keys(dataObj).map((key) => (
               <div
                 key={key}
-                className={styles.listItem}
+                className={`${styles.listItem} ${
+                  activeComponent === key ? styles.active : ""
+                }`}
                 onClick={() => handleComponentChange(key)}
               >
                 {dataObj[key].label}

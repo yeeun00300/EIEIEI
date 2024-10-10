@@ -71,7 +71,7 @@ function Payment() {
 
   return (
     <div className="container">
-      <Typography variant="h5" className={styles.title}>
+      <Typography variant="h5" className={styles.paymentTitle}>
         결제 내역
       </Typography>
       {users.length > 0 ? (
