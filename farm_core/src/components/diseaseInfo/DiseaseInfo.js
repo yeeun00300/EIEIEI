@@ -12,6 +12,7 @@ import {
 } from "../../store/diseaseSlice/diseaseSlice";
 import AddDiseaseForm from "./addDiseaseForm/AddDiseaseForm";
 import { updateDatas } from "../../firebase";
+import { BeatLoader } from "react-spinners";
 
 function DiseaseInfo() {
   const dispatch = useDispatch();
