@@ -51,7 +51,6 @@ function DiseaseInfo() {
 
   const handleDeleteDisease = async (docId) => {
     if (window.confirm("삭제 유무 확인중..")) {
-      console.log("docId를 찍어보자", docId);
       const resultAction = await dispatch(
         deleteDisease({
           collectionName: "DiseaseInfoMock",
@@ -60,7 +59,6 @@ function DiseaseInfo() {
       );
 
       if (deleteDisease.fulfilled.match(resultAction)) {
-        console.log("삭제 성공:", resultAction.payload);
       } else {
         console.error("삭제 실패:", resultAction.error);
       }

@@ -18,7 +18,6 @@ function Table({ data }) {
 
   useEffect(() => {
     // 데이터 변경 또는 컴포넌트 초기화 시 처리할 내용
-    // console.log(`선택된 축종: ${selectedSpecies}`); // 선택된 값 로그
     // data 맵함수 돌려서 filter 돌리기
     // filter 돌려서 tableData 만들어주기
     const filteredStock = data.filter(
@@ -35,7 +34,6 @@ function Table({ data }) {
     const averageWeight =
       filteredStock.length > 0 ? totalWeightSum / filteredStock.length : 0;
     setTotalWeight(averageWeight);
-    console.log(averageWeight);
     //3.사료 물 소비량
     const totalFeedSum = filteredStock.reduce(
       (sum, item) => sum + item.feed,

@@ -24,7 +24,6 @@ const userEditSlice = createSlice({
     },
     setProfileImage: (state, action) => {
       state.userInfo.profileImages = action.payload;
-      console.log("Profile Image Updated in Reducer:", action.payload); // 콘솔에 출력
     },
     setUserNickname: (state, action) => {
       state.userInfo.nickname = action.payload; // state.nickName -> state.userInfo.nickName

@@ -19,7 +19,6 @@ function WidgetList({ setWidgetList, widgetList, setFetchLayoutCount }) {
     });
   };
 
-  // console.log(widgetList);
   return (
     <>
       {/* {widgetList ? (

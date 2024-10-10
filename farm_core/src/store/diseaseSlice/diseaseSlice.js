@@ -98,7 +98,6 @@ const diseaseSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteDisease.fulfilled, (state, action) => {
-        console.log("삭제할 docId:", action.payload);
         state.diseases = state.diseases.filter(
           (disease) => disease.id !== action.payload
         );

@@ -53,9 +53,7 @@ function KakaoCallBack() {
   };
 
   useEffect(() => {
-    console.log(`kakaoCallBack 실행`);
     const fetchData = async () => {
-      console.log(`fetchData실행`);
       const params = new URL(document.location.toString()).searchParams;
       const code = params.get("code");
       const kakaoAPIKey = process.env.REACT_APP_REST_API_KEY;
@@ -150,8 +148,6 @@ function KakaoCallBack() {
             navigate("/SignUp"); // 회원가입 페이지로 리디렉션
           }
         } catch (error) {
-          console.error("응답 데이터:", error.response?.data);
-          console.error("응답 상태 코드:", error.response?.status);
           alert("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
       }

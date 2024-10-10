@@ -7,7 +7,6 @@ function CO2PiChartWidget() {
   const [isOn, setIsOn] = useState(false); // 초기값 OFF 상태
   // const { isOn = false, setIsOn, toggleOnOff } = useContext(ToggleCont);
   const [isIncreasing, setIsIncreasing] = useState(true); // 증가 상태
-  // console.log(`CO2 On : ${isOn}`);
 
   const RADIAN = Math.PI / 90;
 

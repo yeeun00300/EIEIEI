@@ -34,7 +34,6 @@ const userInfoEditSlice = createSlice({
         //   state.detailedAddress = user.detailedAddress || "";
         //   state.profileImages = user.profileImages || "";
         // }
-        // console.log(currentUser);
         state.isLoading = false;
       })
       .addCase(fetchUser.rejected, (state, action) => {
@@ -46,7 +45,6 @@ const userInfoEditSlice = createSlice({
       })
       .addCase(addUser.fulfilled, (state, action) => {
         state.userInfo = action.payload; // 새로 추가된 유저 정보 저장
-        console.log("User added:", action.payload); // 추가된 유저 정보 콘솔 출력
         state.isLoading = false;
       })
       .addCase(addUser.rejected, (state, action) => {

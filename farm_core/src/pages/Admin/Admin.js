@@ -86,7 +86,6 @@ function Admin({ userInfo, address }) {
     }
   };
   const itemId = selectedItem.id;
-  // console.log(itemId);
   // ---------------------------------------------------------------------
 
   // 선택 리스트의 정보를 화면에 나타낸다 ----------------------------------
@@ -167,9 +166,7 @@ function Admin({ userInfo, address }) {
   };
   // --------------------------------------------------------------------
 
-  useEffect(() => {
-    // console.log(userInfo);
-  }, [itemId]);
+  useEffect(() => {}, [itemId]);
   return (
     <div className={styles.layout}>
       <Header

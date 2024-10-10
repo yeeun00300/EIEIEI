@@ -63,7 +63,6 @@ function AdminUser() {
 
   const handleDelete = async (email, secession) => {
     try {
-      // console.log("Delete row with email:", email);
       if (!userList || userList.length === 0) {
         alert("유저 리스트가 없습니다.");
         return;

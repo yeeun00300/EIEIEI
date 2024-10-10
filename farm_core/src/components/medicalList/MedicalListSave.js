@@ -41,7 +41,6 @@ function MedicalListSave() {
       const fetchData = async () => {
         try {
           const documents = await fetchFarmDocumentByEmail(email);
-          console.log(documents);
           if (documents && documents.length > 0) {
             // 모든 문서 가져오기
             setMedicalData(documents); // 모든 축사 데이터를 상태에 저장
@@ -60,7 +59,6 @@ function MedicalListSave() {
                 farmDocId: document.id,
                 farmId: document.farmId, // 축사 번호 추가
               }));
-              console.log("Sub data with farmId:", subDataWithFarmId);
               allSubCollectionData.push(...subDataWithFarmId); // 모든 서브 데이터를 추가
             }
             setSubCollectionData(allSubCollectionData); // 모든 서브 컬렉션 데이터 설정
@@ -117,8 +115,6 @@ function MedicalListSave() {
         ...updatedData,
         lastModified: currentTime,
       };
-
-      console.log("Saving updated data:", updatedSubData);
 
       // medicalData[0]와 selectedSubData.docId가 유효한지 확인
       if (!selectedSubData?.docId || !selectedSubData?.farmDocId) {

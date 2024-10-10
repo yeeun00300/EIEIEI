@@ -15,7 +15,6 @@ const stockSlice = createSlice({
   initialState,
   reducers: {
     setSelectedStock(state, action) {
-      console.log("setSelectedStock 호출:", action.payload); // 로그 추가
       state.selectedStock = action.payload;
     },
   },
@@ -41,7 +40,6 @@ const stockSlice = createSlice({
         state.isLoading = false;
 
         // action.payload가 객체인지 확인하고, docId가 존재하는지 체크
-        console.log("action.payload:", action.payload); // 추가된 로그
         if (typeof action.payload !== "object" || !action.payload.docId) {
           console.error("업데이트 결과에 docId가 없습니다:", action.payload);
           return;
@@ -105,18 +103,12 @@ export const fetchSelectedStock = createAsyncThunk(
 export const updateStock = createAsyncThunk(
   "stock/updateStock",
   async ({ collectionName, docId, updateInfoObj }) => {
-    console.log("Update stock called with:", {
-      collectionName,
-      docId,
-      updateInfoObj,
-    });
     try {
       const resultData = await updateDatas(
         collectionName,
         docId,
         updateInfoObj
       );
-      console.log("결과값", resultData);
       return resultData;
     } catch (error) {
       console.error("Update error:", error);

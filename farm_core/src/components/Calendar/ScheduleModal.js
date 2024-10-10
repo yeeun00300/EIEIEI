@@ -43,7 +43,6 @@ const ScheduleModal = ({
       ],
     };
     // debugger;
-    console.log("Saving schedule object:", scheduleObj); // 스케줄 객체 확인
     // 조건에 따라 onSave 또는 onUpdate 호출
     if (contentIndex !== undefined) {
       // 수정 모드

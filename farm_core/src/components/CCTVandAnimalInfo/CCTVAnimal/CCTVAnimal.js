@@ -15,7 +15,6 @@ function CCTVAnimal({ stockType }) {
   // const farm_stockType = useSelector(
   //   (state) => state.AddLiveStockSlice.farm_stockType
   // );
-  // console.log("Farm Stock Type from Redux: ", farm_stockType);
   const stockTypeCCTVAnimal = () => {
     switch (stockType) {
       case "한우":

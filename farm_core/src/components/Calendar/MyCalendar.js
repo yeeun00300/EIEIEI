@@ -47,7 +47,6 @@ const MyCalendar = () => {
   // 스케줄 상태 변경 확인
   useEffect(() => {
     if (schedules?.length > 0) {
-      // console.log("Fetched schedules:", schedules);
     } else {
       console.log("No schedules found or still loading.");
     }
@@ -67,24 +66,18 @@ const MyCalendar = () => {
 
   // 일정 수정 처리 : 특정 일정을 수정하기 위해 해당 일정의 데이터를 설정하고 모달을 열어 수정화면을 표시
   const handleEditSchedule = (scheduleIndex, contentIndex) => {
-    // console.log(scheduleIndex);
     // 이거는 내가 스케줄이란 컬렉션에 등록한 문서의 갯수(인덱스)
-
-    // console.log(contentIndex);
     // 이거는 진짜 content 인덱스
 
     // 이건 문서임 즉 스케줄컬렉션에 있는 내가 쓴 문서
     const scheduleToEdit = schedules[scheduleIndex];
     // 이건 문서중에 content만 있는거임
     const contentToEdit = scheduleToEdit.content[contentIndex];
-    // console.log(contentToEdit);
-    // console.log(contentToEdit);
     setEditingSchedule({
       ...scheduleToEdit,
       content: contentToEdit,
       contentIndex,
     }); // 수정할 내용 설정 인덱스도 보냄
-    // console.log(editingSchedule);
     // 이거 찍으니까 결국이 edttingSchedule 에는 내가 누른 그 문서가 나오네
     setModalOpen(true); // 모달 열기
   };
@@ -103,8 +96,6 @@ const MyCalendar = () => {
   };
   // 새로운 일정이 추가되거나 기존 일정이 업데이트 됌. 즉 배열이 생김
   const handleSaveSchedule = async (schedule) => {
-    console.log("Received schedule object:", schedule);
-
     // schedule.content 배열의 유효성 검사
     if (!schedule || !schedule.content || schedule.content.length === 0) {
       console.error("Invalid schedule object or missing content");
@@ -165,11 +156,8 @@ const MyCalendar = () => {
     setModalOpen(false);
   };
 
-  // console.log("콘솔로찍은 스케줄스", schedules);
-
   // 일정 업데이트 처리 : 기존 일정 찾고 수정할 내용을 firestore에 업데이트
   const handleUpdateSchedule = async (schedule) => {
-    // console.log("업데이트에서 찍은", schedule);
     // 잘나왔음
     if (!schedule || !schedule.content || !schedule.content[0]) {
       console.error("Invalid schedule object or missing content");
@@ -180,7 +168,6 @@ const MyCalendar = () => {
     const email = schedule.email;
 
     const contentIndex = schedule.contentIndex; // 이 값을 설정해야 함
-    console.log(contentIndex);
     const updatedContent = {
       title: schedule.content[0].title || "",
       description: schedule.content[0].description || "",
@@ -188,28 +175,19 @@ const MyCalendar = () => {
       time: schedule.content[0].time || "",
       updatedAt: new Date().toISOString(), // 수정 시간
     };
-    console.log("updatedContent.title:", updatedContent.title);
 
     const existingSchedules = schedules.find((sch) => sch.email === email);
-
-    console.log("existingSchedules", existingSchedules.content);
 
     if (existingSchedules) {
       // contentIndex를 사용하여 해당 일정 업데이트
       const updatedContentArray = [...existingSchedules.content];
-      console.log(updatedContentArray);
       updatedContentArray[contentIndex] = updatedContent; // 특정 인덱스의 내용을 수정
-      console.log(updatedContent);
-      console.log(updatedContentArray[contentIndex]);
 
       const updatedScheduleData = {
         ...existingSchedules,
         content: updatedContentArray,
       };
-      console.log(updatedScheduleData);
-      console.log(existingSchedules);
       const docId = existingSchedules.docId;
-      console.log(docId);
       // Firestore에 업데이트된 데이터를 전송
       await dispatch(
         updateSchedule({
@@ -291,7 +269,6 @@ const MyCalendar = () => {
             : false
         )
       : [];
-  // console.log("editingSchedule", editingSchedule);
   return (
     <div className="calendar-wrapper">
       <button className="squareGlobalDeleteBtn" onClick={toggleCalendar}>

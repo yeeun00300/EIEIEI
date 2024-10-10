@@ -21,7 +21,6 @@ function DiseaseIssue() {
     const query = ("send", "==", "true");
     try {
       const result = await getDatas("diseaseInfo", query);
-      // console.log(result);
       setDiseaseAlarm(result);
     } catch (error) {}
   };

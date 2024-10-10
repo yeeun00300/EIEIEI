@@ -6,15 +6,18 @@ import { fetchWeatherTodayData } from "../../../store/weatherSlice/weatherSlice"
 
 function HumidPiChartWidget() {
   const dispatch = useDispatch();
-  const { todayWeatherData } = useSelector((state) => state.weatherSlice);
-  const nowHumid = parseInt(todayWeatherData?.main?.humidity);
+  const { todayWeatherData, isLoading } = useSelector(
+    (state) => state.weatherSlice
+  );
+  const nowHumid = parseInt(todayWeatherData?.main.humidity);
   const [time, setTime] = useState(new Date());
-  const [setValue, setSetValue] = useState(50);
+  const [setValue, setSetValue] = useState(25);
   const [lat, setLat] = useState(0);
   const [lon, setLon] = useState(0);
   const [intervalValue, setIntervalValue] = useState(
     nowHumid !== 0 && nowHumid
   );
+
   const apiKey = "7318e8d03f33842f882be1c11ec76a8b";
   const RADIAN = Math.PI / 180;
 
@@ -71,14 +74,8 @@ function HumidPiChartWidget() {
       setSetValue(setValue - 5);
     }
   };
+
   useEffect(() => {
-    // lat, lon 가져오기
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      setLat(latitude);
-      setLon(longitude);
-    });
-    dispatch(fetchWeatherTodayData({ APIkey: apiKey, lat: lat, lon: lon }));
     const interval = setInterval(() => {
       setTime(new Date());
       // 상태 업데이트 (1분마다 렌더링 유도)
@@ -93,6 +90,16 @@ function HumidPiChartWidget() {
     // 시간간격조정
     return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 제거x
   }, [setValue, intervalValue]);
+  useEffect(() => {
+    if (isLoading) return;
+    // lat, lon 가져오기
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      setLat(latitude);
+      setLon(longitude);
+    });
+    dispatch(fetchWeatherTodayData({ APIkey: apiKey, lat: lat, lon: lon }));
+  }, []);
 
   return (
     <div className={styles.HumidWidget}>

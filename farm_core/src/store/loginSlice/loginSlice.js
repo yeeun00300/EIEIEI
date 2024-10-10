@@ -101,11 +101,8 @@ const adminCheck = createAsyncThunk("Login/adminCheck", async () => {
     const db = getDatabase();
     const userRef = ref(db, "users/" + user.uid);
     const snapshot = await get(userRef);
-    console.log(snapshot);
-
     if (snapshot.exists()) {
       const userData = snapshot.val();
-      console.log(userData);
       return userData.isAdmin === true;
     }
   }

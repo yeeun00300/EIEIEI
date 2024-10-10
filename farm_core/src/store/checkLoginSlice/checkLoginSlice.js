@@ -60,7 +60,6 @@ const fetchLogin = createAsyncThunk(
   async ({ collectionName, queryOptions }) => {
     try {
       const resultData = await getData(collectionName, queryOptions);
-      // console.log(resultData);
       return resultData;
     } catch (error) {
       console.log(`error : ${error}`);

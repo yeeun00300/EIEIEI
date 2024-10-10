@@ -39,8 +39,6 @@ function RegularPayment() {
         redirectUrl: "https://moonlit-puppy-7f7f1f.netlify.app",
       });
 
-      console.log("결제 응답 결과:", response);
-
       if (response && response.txId) {
         const paymentInfo = {
           paymentDate: payDate,

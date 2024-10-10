@@ -46,7 +46,6 @@ function UserInfo() {
   }
 
   const completeHandler = (data) => {
-    console.log("Address Data:", data); // 확인
     const address = `${data.address}`;
     const detailedAddress = `${data.bname} ${
       data.buildingName ? data.buildingName : ""
@@ -114,8 +113,7 @@ function UserInfo() {
   };
   return (
     <div className="container">
-      <h1>My Page</h1>
-      <hr />
+      {/* <h1>My Page</h1> */}
       <div className={styles.wrapper}>
         <div className={styles.userInfo}>
           <div className={styles.profile}>

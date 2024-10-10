@@ -590,7 +590,6 @@ function Main({ farmList }) {
 
   const handleBreakpointChange = (newBreakpoint) => {
     setCurrentBreakpoint(newBreakpoint);
-    // console.log("Current breakpoint:", newBreakpoint);
   };
 
   const [edit, setEdit] = useState(false);

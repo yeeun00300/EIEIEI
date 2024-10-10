@@ -75,7 +75,6 @@ function NewBoardPage() {
     if (image && typeof image !== "string") {
       try {
         imageUrl = await uploadImage("community/", image);
-        console.log("업로드된 이미지 URL:", imageUrl); // 업로드된 이미지 URL 확인
       } catch (error) {
         console.error("이미지 업로드 실패:", error);
         setIsSubmitting(false);
@@ -99,8 +98,6 @@ function NewBoardPage() {
       authorNickName: userNickName,
       email: email,
     };
-
-    console.log("제출할 데이터 객체:", dataObj); // 데이터 객체 확인
 
     try {
       if (postData) {

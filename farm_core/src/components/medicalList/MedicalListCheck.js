@@ -38,7 +38,6 @@ function MedicalListCheck() {
         try {
           // 이메일로 모든 문서 검색
           const documents = await fetchFarmDocumentByEmail(email);
-          console.log("Fetched documents:", documents); // 디버깅용 로그
           setDocuments(documents); // 다수의 문서 상태에 설정
         } catch (error) {}
       };

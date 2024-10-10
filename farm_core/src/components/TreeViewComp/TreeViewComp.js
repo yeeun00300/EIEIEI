@@ -19,7 +19,6 @@ function TreeViewComp({ contents, renderContent }) {
     }
   };
   const itemId = selectedItem.id;
-  // console.log(itemId);
   // ---------------------------------------------------------------------
   useEffect(() => {}, [itemId]);
   return (
