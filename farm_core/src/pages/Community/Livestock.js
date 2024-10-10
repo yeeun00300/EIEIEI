@@ -15,7 +15,7 @@ function Livestock() {
   const [sortOption, setSortOption] = useState("최신순");
   const [keyword, setKeyword] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(8);
   const [selectedStockType, setSelectedStockType] = useState("");
   const navigate = useNavigate();
 
@@ -101,7 +101,7 @@ function Livestock() {
   const visibleContents = filteredAndSortedContents.slice(0, visibleCount);
 
   const handleShowMore = () => {
-    setVisibleCount((prevCount) => prevCount + 6);
+    setVisibleCount((prevCount) => prevCount + 8);
   };
 
   const notices = noticeContents;
