@@ -19,6 +19,7 @@ import ExcelUpload from "../ExcelUpload/ExcelUpload";
 import ExcelTemplateDownload from "../ExcelTemplateDownload/ExcelTemplateDownload";
 import FirstPage from "../../pages/FirstPage/FirstPage";
 import TempPiNeedleWidget from "./../ControlPanels/widget/TempPieChartWithNeedle";
+import { BeatLoader } from "react-spinners";
 
 function MyLiveStock(props) {
   const dispatch = useDispatch();

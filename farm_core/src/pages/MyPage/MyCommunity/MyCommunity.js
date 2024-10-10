@@ -21,6 +21,7 @@ import {
   Paper,
 } from "@mui/material";
 import styles from "./MyCommunity.module.scss";
+import { BeatLoader } from "react-spinners";
 
 function MyCommunity() {
   const dispatch = useDispatch();
@@ -106,7 +107,11 @@ function MyCommunity() {
   return (
     <div className="container">
       <div className={styles.wrapper}>
-        {isLoading && <p>Loading...</p>}
+        {isLoading && (
+          <div className="loadingPage">
+            <BeatLoader color="#38d6b7" />
+          </div>
+        )}
         {error && <p>Error: {error}</p>}
         {!isLoading && !error && (
           <>

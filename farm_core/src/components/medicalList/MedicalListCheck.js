@@ -13,7 +13,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./MedicalListCheck.module.scss";
 import {
   deleteFarmDocument,
@@ -29,10 +29,9 @@ function MedicalListCheck() {
   const [isEditing, setIsEditing] = useState(false);
   const [lastModified, setLastModified] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const email = useSelector((state) => state.loginSlice.email);
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
-
     if (email) {
       const fetchData = async () => {
         try {
@@ -275,19 +274,6 @@ function MedicalListCheck() {
                 )}
               </div>
             )}
-            {/* <div className={styles.dialogActionsInside}>
-              {isEditing ? (
-                <>
-                  <Button onClick={handleSave}>저장</Button>
-                  <Button onClick={handleCloseModal}>취소</Button>
-                </>
-              ) : (
-                <>
-                  <Button onClick={handleEdit}>수정</Button>
-                  <Button onClick={handleCloseModal}>닫기</Button>
-                </>
-              )}
-            </div> */}
           </div>
         </DialogContent>
         <DialogActions>

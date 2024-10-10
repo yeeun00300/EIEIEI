@@ -37,7 +37,7 @@ const loginSlice = createSlice({
     },
     setNotLogin: (state, action) => {
       state.notLogin = action.payload;
-      localStorage.setItem("notLogin", JSON.stringify(state.notLogin));
+      // localStorage.setItem("notLogin", JSON.stringify(state.notLogin));
     },
     setAdminLogin: (state, action) => {
       state.adminLogin = action.payload;
@@ -46,7 +46,7 @@ const loginSlice = createSlice({
       state.email = "";
       state.username = "";
       state.password = "";
-      state.notLogin = false;
+      state.notLogin = true;
       state.adminLogin = false;
       state.isLoading = false;
       state.error = null;
@@ -61,6 +61,9 @@ const loginSlice = createSlice({
       })
       .addCase(fetchLogin.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.notLogin = false; // 로그인 성공 시 notLogin 상태 변경
+        state.uid = action.payload.uid; // 로그인 성공 시 uid 저장
+        state.email = action.payload.email;
       })
       .addCase(fetchLogin.rejected, (state, action) => {
         state.isLoading = false;
@@ -119,6 +122,7 @@ export const {
   setError,
   setAdminLogin,
   setNotLogin,
+  resetState,
 } = loginSlice.actions;
 
 export default loginSlice.reducer;

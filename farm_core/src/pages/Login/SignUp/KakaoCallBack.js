@@ -138,7 +138,7 @@ function KakaoCallBack() {
             await signInWithCredential(auth, credential); // Firebase 인증
 
             // 로그인 성공 처리
-            alert("로그인 성공!");
+            // alert("로그인 성공!");
             localStorage.setItem("email", email);
             monitorUserStatus(email); // 사용자 상태 모니터링 시작
             dispatch(setNotLogin(false));

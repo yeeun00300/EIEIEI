@@ -8,6 +8,7 @@ import {
   setIsLoading,
   setNotLogin,
   setPassword,
+  resetState, // 상태 초기화 액션
 } from "../../store/loginSlice/loginSlice";
 import {
   getAuth,
@@ -31,7 +32,7 @@ function Login() {
   const navigate = useNavigate();
   const auth = getAuth();
 
-  const { userid, password, isLoading, notLogin, email } = useSelector(
+  const { username, password, isLoading, notLogin, email } = useSelector(
     (state) => state.loginSlice
   );
 
@@ -65,12 +66,12 @@ function Login() {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("email");
+      dispatch(resetState()); // 상태 초기화
       dispatch(setNotLogin(true));
-      navigate("/");
-    } catch (error) {}
+      navigate("/"); // 로그인 페이지로 리디렉션
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const handleLogin = async (e) => {
@@ -122,9 +123,6 @@ function Login() {
           }
 
           // 로그인 성공 처리 후 실시간 상태 감시 시작
-          localStorage.setItem("authToken", user.refreshToken);
-          localStorage.setItem("userId", user.uid); // 사용자 데이터에서 uid 가져오기
-          localStorage.setItem("email", user.email);
           dispatch(setNotLogin(false));
           monitorUserStatus(user.email); // 실시간 상태 감시 함수 호출
           navigate("/"); // 메인 페이지로 리디렉션
@@ -164,11 +162,11 @@ function Login() {
   };
 
   // 카카오 소셜 로그인
-  // 카카오 소셜 로그인
   const SocialKakao = () => {
     const kakaoAPIKey = `${process.env.REACT_APP_REST_API_KEY}`;
     const redirectURI = `${process.env.REACT_APP_REDIRECT_URI}`;
     const kakaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoAPIKey}&redirect_uri=${redirectURI}&response_type=code`;
+
     const handleLogin = async () => {
       window.location.href = kakaoAuthURL;
 
@@ -197,8 +195,6 @@ function Login() {
     );
   };
 
-  // 구글 로그인
-  // 구글 로그인 후 추가 정보 처리
   // 구글 로그인
   async function handleGoogleLogin() {
     const provider = new GoogleAuthProvider();
@@ -238,7 +234,6 @@ function Login() {
           }
 
           // 로그인 성공 처리
-          localStorage.setItem("email", user.email);
           dispatch(setNotLogin(false));
 
           // paymentHistory에 정보 추가
@@ -254,7 +249,7 @@ function Login() {
           navigate("/"); // 메인 페이지로 리디렉션
         } else {
           // 최초 회원가입 -> 추가정보입력페이지로 이동
-          localStorage.setItem("email", user.email);
+          dispatch(setEmail(user.email)); // 이메일 상태 업데이트
           navigate("/SignUp");
         }
       })
@@ -262,6 +257,7 @@ function Login() {
         alert("로그인 실패: " + error.message);
       });
   }
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleLogin}>

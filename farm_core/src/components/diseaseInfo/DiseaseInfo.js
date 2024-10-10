@@ -12,6 +12,7 @@ import {
 } from "../../store/diseaseSlice/diseaseSlice";
 import AddDiseaseForm from "./addDiseaseForm/AddDiseaseForm";
 import { updateDatas } from "../../firebase";
+import { BeatLoader } from "react-spinners";
 
 function DiseaseInfo() {
   const dispatch = useDispatch();
@@ -196,7 +197,9 @@ function DiseaseInfo() {
         />
 
         {loading ? (
-          <p>로딩 중...</p>
+          <div className="loadingPage">
+            <BeatLoader color="#38d6b7" />
+          </div>
         ) : error ? (
           <p>에러 발생: {error}</p>
         ) : (

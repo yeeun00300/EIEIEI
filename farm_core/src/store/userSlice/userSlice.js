@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const initialState = localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
-  : {
-      email: "",
-      token: "",
-      uid: "",
-      isAuthenticated: false,
-    };
+const initialState = {
+  email: "",
+  token: "",
+  uid: "",
+  isAuthenticated: false,
+};
 
 const userSlice = createSlice({
   name: "user",
@@ -19,7 +17,13 @@ const userSlice = createSlice({
       state.uid = action.payload.uid;
       state.isAuthenticated = true;
 
-      localStorage.setItem("user", JSON.stringify(state));
+      // localStorage.setItem("user", JSON.stringify(state));
+    },
+    resetUser: (state) => {
+      state.email = "";
+      state.token = "";
+      state.uid = "";
+      state.isAuthenticated = false;
     },
   },
   extraReducers: (builder) => {
@@ -27,6 +31,6 @@ const userSlice = createSlice({
   },
 });
 
-const updateUser = createAsyncThunk("");
+// const updateUser = createAsyncThunk("");
 export default userSlice.reducer;
-export const { setUser } = userSlice.actions;
+export const { setUser, resetUser } = userSlice.actions;

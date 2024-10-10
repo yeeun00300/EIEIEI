@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getAuth, applyActionCode } from "firebase/auth";
 import PasswordConfirm from "../../pages/Login/Password/PasswordConfirm";
+import { BeatLoader } from "react-spinners";
 
 function EmailCheck() {
   const [searchParams] = useSearchParams();
@@ -44,7 +45,12 @@ function EmailCheck() {
 
   return (
     <div>
-      {loading && <p>처리 중...</p>}
+      {loading && (
+        <div className="loadingPage">
+          <h5>메일을 확인해주세요</h5>
+          <BeatLoader color="#38d6b7" />
+        </div>
+      )}
       {error && <p>{error}</p>}
       {searchParams.get("mode") === "resetPassword" && (
         <PasswordConfirm

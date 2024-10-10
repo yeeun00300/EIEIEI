@@ -98,8 +98,9 @@ function Layout(props) {
   const { checkLogin, isLoading } = useSelector(
     (state) => state.checkLoginSlice
   );
+  const email = useSelector((state) => state.loginSlice.email);
   const address = useSelector((state) => state.mapAddrSlice.address);
-  const email = localStorage.getItem("email");
+  // const email = localStorage.getItem("email");
   useEffect(() => {
     if (email) {
       const queryOptions = {
