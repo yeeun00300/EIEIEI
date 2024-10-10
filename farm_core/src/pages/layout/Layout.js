@@ -19,6 +19,7 @@ import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
 import { useMediaQuery } from "react-responsive";
 import { MdOutlineMenuOpen } from "react-icons/md";
 import { MdOutlineMenu } from "react-icons/md";
+import { BeatLoader } from "react-spinners";
 
 // nav 애니메이션
 function TransitionComponent(props) {
@@ -217,12 +218,18 @@ function Layout(props) {
   ];
   // --------------------------------------------------------------------------------------
   if (!checkLogin || Object.keys(checkLogin).length === 0)
-    return <div>데이터가 없습니다</div>;
+    return (
+      <div className="loadingPage">
+        <BeatLoader color="#38d6b7" />
+      </div>
+    );
 
   return (
     <>
       {isLoading || farmLoading ? (
-        <>로딩중</>
+        <div className="loadingPage">
+          <BeatLoader color="#38d6b7" />
+        </div>
       ) : adminLogin ? (
         <Admin userInfo={checkLogin} address={address} />
       ) : (

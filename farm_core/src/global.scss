@@ -225,3 +225,12 @@ body {
     background-color: #16a085;
   }
 }
+
+//로딩페이지 css
+.loadingPage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
