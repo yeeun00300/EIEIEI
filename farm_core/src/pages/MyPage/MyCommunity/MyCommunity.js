@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import styles from "./MyCommunity.module.scss";
 import { BeatLoader } from "react-spinners";
+import RegularPayment from "./../../RegularPayment/RegularPayment";
 
 function MyCommunity() {
   const dispatch = useDispatch();
@@ -245,7 +246,7 @@ function MyCommunity() {
           </>
         )}
       </div>
-      {/* <RegularPayment /> */}
+      <RegularPayment />
     </div>
   );
 }
