@@ -39,6 +39,9 @@ function RegularPayment() {
         redirectUrl: "https://moonlit-puppy-7f7f1f.netlify.app",
       });
 
+      //응답확인
+      console.log("결제 응답:", response);
+
       if (response && response.txId) {
         const paymentInfo = {
           paymentDate: payDate,
@@ -50,7 +53,8 @@ function RegularPayment() {
         await addPaymentHistory("users", docId, paymentInfo);
         navigate("/");
       } else {
-        console.error("결제 실패");
+        //실패확인
+        console.error("결제 실패", response);
       }
     }
   };
