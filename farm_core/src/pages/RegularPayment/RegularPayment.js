@@ -25,8 +25,8 @@ function RegularPayment() {
 
       const response = await PortOne.requestPayment({
         storeId: process.env.REACT_APP_STOREID,
-        paymentId: uniquePaymentId,
-        // paymentId: customerEmail, // 변경테스트
+        // paymentId: uniquePaymentId,
+        paymentId: customerEmail,
         orderName: "EIEIEI 프로그램 정기구독",
         totalAmount: 1000,
         currency: "KRW",
