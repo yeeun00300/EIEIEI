@@ -15,12 +15,22 @@ import {
 import { toggleOpen } from "../../../store/myPageSlice/addressSlice";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import DeleteAccount from "./../../../components/DeleteAccount/DeleteAccount";
+import { BeatLoader } from "react-spinners";
 
 function UserInfo() {
   const dispatch = useDispatch();
-  const { userInfo, loading, error } = useSelector(
+  const { userInfo, isLoading, error } = useSelector(
     (state) => state.userInfoEditSlice
   );
+
+  //입력값을 지정할 로컬상태
+  const [editedUserInfo, setEditedUserInfo] = useState({
+    name: "",
+    nickname: "",
+    phone: "",
+    address: "",
+    detailedAddress: "",
+  });
 
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(img);
@@ -32,14 +42,20 @@ function UserInfo() {
 
   useEffect(() => {
     // 유저 데이터 로드 후 처리
+    // if (userInfo && userInfo[0]) {
+    //   setPreviewUrl(userInfo[0].profileImages || img); // 프로필 이미지 설정
+    // }
     if (userInfo && userInfo[0]) {
-      setPreviewUrl(userInfo[0].profileImages || img); // 프로필 이미지 설정
+      setPreviewUrl(userInfo[0].profileImages || img);
+      setEditedUserInfo({
+        name: userInfo[0].name || "",
+        nickname: userInfo[0].nickname || "",
+        phone: userInfo[0].phone || "",
+        address: userInfo[0].address || "",
+        detailedAddress: userInfo[0].detailedAddress || "",
+      });
     }
   }, [userInfo]);
-
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
 
   if (error) {
     return <div>에러 발생: {error.message}</div>;
@@ -53,9 +69,22 @@ function UserInfo() {
     dispatch(toggleOpen());
   };
 
+  // const openAddressPopup = () => {
+  //   open({
+  //     onComplete: completeHandler,
+  //   });
+  // };
+
   const openAddressPopup = () => {
     open({
-      onComplete: completeHandler,
+      onComplete: (data) => {
+        setEditedUserInfo((prev) => ({
+          ...prev,
+          address: data.address,
+          detailedAddress: `${data.bname} ${data.buildingName || ""}`,
+        }));
+        dispatch(toggleOpen());
+      },
     });
   };
 
@@ -68,44 +97,88 @@ function UserInfo() {
     }
   };
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   const userId = userInfo[0]?.docId; // userInfo[0]에 저장된 문서 ID를 가져옴
+
+  //   if (userId) {
+  //     // 유저 정보 업데이트
+  //     dispatch(
+  //       userInfoUpdate({
+  //         collectionName: "users", // 컬렉션 이름
+  //         docId: userId, // 업데이트할 유저의 문서 ID
+  //         updateObj: { [name]: value }, // 업데이트할 필드와 값
+  //       })
+  //     );
+  //   } else {
+  //     console.error("User ID를 찾을 수 없습니다.");
+  //   }
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const userId = userInfo[0]?.docId; // userInfo[0]에 저장된 문서 ID를 가져옴
-
-    if (userId) {
-      // 유저 정보 업데이트
-      dispatch(
-        userInfoUpdate({
-          collectionName: "users", // 컬렉션 이름
-          docId: userId, // 업데이트할 유저의 문서 ID
-          updateObj: { [name]: value }, // 업데이트할 필드와 값
-        })
-      );
-    } else {
-      console.error("User ID를 찾을 수 없습니다.");
-    }
+    setEditedUserInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
+
+  // const handleSave = async () => {
+  //   const userId = userInfo[0]?.docId;
+  //   console.log(`유저docId확인`, userId);
+
+  //   if (userId) {
+  //     try {
+  //       let profileImageUrl = previewUrl;
+
+  //       if (file) {
+  //         profileImageUrl = await uploadProfileImage(file);
+  //       }
+  //       await dispatch(
+  //         userInfoUpdate({
+  //           collectionName: "users",
+  //           docId: userId,
+  //           updateObj: { ...editedUserInfo, profileImages: profileImageUrl },
+  //         })
+  //       );
+
+  //       alert("저장 완료");
+  //       setIsEditing(false);
+  //     } catch (error) {
+  //       console.error("저장 실패:", error);
+  //     }
+  //   }
+  // };
 
   const handleSave = async () => {
     const userId = userInfo[0]?.docId;
-
     if (userId) {
       try {
         let profileImageUrl = previewUrl;
 
         if (file) {
           profileImageUrl = await uploadProfileImage(file);
-          dispatch(
-            userInfoUpdate({
-              collectionName: "users",
-              docId: userId,
-              updateObj: { profileImages: profileImageUrl },
-            })
-          );
         }
 
+        // Firestore에 업데이트 요청
+        await dispatch(
+          userInfoUpdate({
+            collectionName: "users",
+            docId: userId,
+            updateObj: { ...editedUserInfo, profileImages: profileImageUrl },
+          })
+        );
+
         alert("저장 완료");
+
+        // 최신 유저 정보 다시 불러오기
+        await dispatch(fetchUser());
+
+        // 상태 변경하여 편집 모드 종료
         setIsEditing(false);
+
+        // 새로고침 (필요한 경우)
+        // window.location.reload();
       } catch (error) {
         console.error("저장 실패:", error);
       }
@@ -113,7 +186,6 @@ function UserInfo() {
   };
   return (
     <div className="container">
-      {/* <h1>My Page</h1> */}
       <div className={styles.wrapper}>
         <div className={styles.userInfo}>
           <div className={styles.profile}>
@@ -133,7 +205,7 @@ function UserInfo() {
             <span>이름 :</span>
             <input
               name="name"
-              value={userInfo[0]?.name || ""}
+              value={editedUserInfo.name}
               onChange={handleChange}
             />
           </div>
@@ -141,7 +213,7 @@ function UserInfo() {
             <span>닉네임 :</span>
             <input
               name="nickname"
-              value={userInfo[0]?.nickname || ""}
+              value={editedUserInfo.nickname}
               onChange={handleChange}
             />
           </div>
@@ -151,7 +223,7 @@ function UserInfo() {
               name="email"
               type="email"
               value={userInfo[0]?.email || ""}
-              onChange={handleChange}
+              readOnly
             />
           </div>
           <div>
@@ -159,7 +231,7 @@ function UserInfo() {
             <input
               name="phone"
               type="tel"
-              value={userInfo[0]?.phone || ""}
+              value={editedUserInfo.phone}
               onChange={handleChange}
             />
           </div>
@@ -167,7 +239,7 @@ function UserInfo() {
             <span>주소 :</span>
             <input
               placeholder="주소"
-              value={userInfo[0]?.address || ""}
+              value={editedUserInfo.address}
               readOnly
               className={styles.addrIP}
             />
@@ -176,7 +248,7 @@ function UserInfo() {
             <input
               placeholder="상세주소"
               className={styles.addr2}
-              value={userInfo[0]?.detailedAddress || ""}
+              value={editedUserInfo.detailedAddress}
               readOnly
             />
             <button className="squareGlobalBtn" onClick={openAddressPopup}>

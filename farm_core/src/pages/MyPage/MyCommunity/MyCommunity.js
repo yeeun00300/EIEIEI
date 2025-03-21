@@ -33,7 +33,7 @@ function MyCommunity() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("freeboard");
 
-  const userEmail = userInfo?.[0]?.email;
+  const userEmail = userInfo.email;
 
   const formatDateToKorean = (milliseconds) => {
     if (!milliseconds) return "";
@@ -246,7 +246,7 @@ function MyCommunity() {
           </>
         )}
       </div>
-      <RegularPayment />
+      {/* <RegularPayment /> */}
     </div>
   );
 }

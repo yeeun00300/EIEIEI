@@ -131,7 +131,8 @@ function SignUp() {
 
     //여기 이메일에 타겟벨류 안들어오는거 수정, 로컬스토리지 저장 삭제
     const email = e.target.email.value;
-    localStorage.setItem("email", email);
+    // localStorage.setItem("email", email);
+    dispatch(setEmail(email));
 
     const userObj = {
       id,

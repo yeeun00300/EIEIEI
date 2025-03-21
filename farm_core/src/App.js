@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setNotLogin } from "./store/loginSlice/loginSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Main from "./pages/Main/Main";
 import Intro from "./pages/Intro/Intro";
 import Layout from "./pages/layout/Layout";
@@ -25,37 +25,40 @@ import { fetchFarmList } from "./store/checkLoginSlice/checkLoginSlice";
 import FirstPage from "./pages/FirstPage/FirstPage";
 import RedirectToFirstFarm from "./pages/redirect/RedirectToFirstFarm ";
 import Payment from "./pages/MyPage/Payment/Payment";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const dispatch = useDispatch();
-  const { notLogin } = useSelector((state) => state.loginSlice);
+  const { notLogin, email } = useSelector((state) => state.loginSlice);
   const { farmList, farmLoading } = useSelector(
     (state) => state.checkLoginSlice
   );
+  const auth = getAuth();
 
   useEffect(() => {
-    const storedNotLogin = JSON.parse(localStorage.getItem("notLogin"));
-    const storedEmail = localStorage.getItem("email");
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        //로그인 되어있을경우
+        dispatch(setEmail(user.email));
+        dispatch(setNotLogin(false));
 
-    if (storedNotLogin !== null) {
-      dispatch(setNotLogin(storedNotLogin));
-    }
-
-    if (storedEmail) {
-      dispatch(setEmail(storedEmail));
-
-      // Firebase에서 농장 리스트 가져오기
-      const queryOptions = {
-        conditions: [
-          {
-            field: "email",
-            operator: "==",
-            value: storedEmail,
-          },
-        ],
-      };
-      dispatch(fetchFarmList({ collectionName: "farm", queryOptions }));
-    }
+        // Firebase에서 농장 리스트 가져오기
+        const queryOptions = {
+          conditions: [
+            {
+              field: "email",
+              operator: "==",
+              value: user.email,
+            },
+          ],
+        };
+        dispatch(fetchFarmList({ collectionName: "farm", queryOptions }));
+      } else {
+        //로그아웃 경우
+        dispatch(setNotLogin(true));
+      }
+      return () => unsubscribe();
+    });
   }, [dispatch]);
 
   return (

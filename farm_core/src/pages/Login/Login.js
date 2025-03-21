@@ -26,6 +26,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { set } from "firebase/database";
 
 function Login() {
   const dispatch = useDispatch();
@@ -124,6 +125,7 @@ function Login() {
 
           // 로그인 성공 처리 후 실시간 상태 감시 시작
           dispatch(setNotLogin(false));
+          dispatch(setEmail(user.email)); //이메일 업데이트트
           monitorUserStatus(user.email); // 실시간 상태 감시 함수 호출
           navigate("/"); // 메인 페이지로 리디렉션
         } else {
@@ -235,6 +237,7 @@ function Login() {
 
           // 로그인 성공 처리
           dispatch(setNotLogin(false));
+          dispatch(setEmail(user.email));
 
           // paymentHistory에 정보 추가
           const paymentInfo = {

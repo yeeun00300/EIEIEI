@@ -4,11 +4,11 @@ import { OAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth, db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  setEmail,
-  setNickname,
-} from "../../../store/joinUserSlice/joinUserSlice";
-import { setNotLogin } from "../../../store/loginSlice/loginSlice";
+// import {
+//   setEmail,
+//   setNickname,
+// } from "../../../store/joinUserSlice/joinUserSlice";
+import { setEmail, setNotLogin } from "../../../store/loginSlice/loginSlice";
 import {
   collection,
   query,
@@ -102,7 +102,7 @@ function KakaoCallBack() {
 
           // Redux 상태에 사용자 정보 저장
           dispatch(setEmail(email));
-          dispatch(setNickname(nickname));
+          // dispatch(setNickname(nickname));
 
           // Firestore에서 이메일 주소로 사용자 데이터 조회
           const usersQuery = query(
@@ -140,6 +140,7 @@ function KakaoCallBack() {
 
             monitorUserStatus(email); // 사용자 상태 모니터링 시작
             dispatch(setNotLogin(false)); // 로그인 상태 업데이트
+            dispatch(setEmail(email));
             navigate("/"); // 메인 페이지로 리디렉션
           } else {
             // 신규 사용자

@@ -15,18 +15,18 @@ function RegularPayment() {
   const navigate = useNavigate();
 
   const requestPayment = async () => {
-    if (PortOne && userInfo && userInfo.length > 0) {
-      const customerEmail = userInfo[0].email;
-      const customerName = userInfo[0].name;
-      const customerphone = userInfo[0].phone;
+    if (PortOne && userInfo && userInfo.email && userInfo.name) {
+      const customerEmail = userInfo.email;
+      const customerName = userInfo.name;
+      const customerphone = userInfo.phone;
       const uniquePaymentId = `test-${Date.now()}`;
       const payDate = kroDate();
-      const docId = userInfo[0].docId;
+      const docId = userInfo.docId;
 
       const response = await PortOne.requestPayment({
         storeId: process.env.REACT_APP_STOREID,
-        // paymentId: uniquePaymentId,
-        paymentId: customerEmail,
+        paymentId: uniquePaymentId,
+        // paymentId: customerEmail,
         orderName: "EIEIEI 프로그램 정기구독",
         totalAmount: 1000,
         currency: "KRW",
@@ -57,6 +57,8 @@ function RegularPayment() {
         //실패확인
         console.error("결제 실패", response);
       }
+    } else {
+      console.error("필요한 조건이 충족되지 않음");
     }
   };
 

@@ -15,6 +15,10 @@ const RedirectToFirstFarm = ({ farmList, farmLoading }) => {
     }
   }, [farmList, farmLoading, navigate]);
 
+  if (farmLoading) {
+    return <div>로딩 중...</div>;
+  }
+
   return null; // 리디렉션하는 컴포넌트이므로 아무것도 렌더링하지 않음
 };
 

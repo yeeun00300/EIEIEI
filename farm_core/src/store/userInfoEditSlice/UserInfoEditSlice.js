@@ -55,6 +55,7 @@ const userInfoEditSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(userInfoUpdate.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.userInfo = state.userInfo.map((user) => {
           return user.docId === action.payload.docId
             ? { ...user, ...action.payload }
