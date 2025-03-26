@@ -29,7 +29,11 @@ const MyCalendar = () => {
   // 사용자가 선택한날짜
   const [selectedDate, setSelectedDate] = useState(today);
   const [isCalendarOpen, setIsCalendarOpen] = useState(true);
+<<<<<<< Updated upstream
   const email = localStorage.getItem("email");
+=======
+  const { email } = useSelector((state) => state.loginSlice);
+>>>>>>> Stashed changes
   const [refresh, setRefresh] = useState(false);
   const [isScheduleListOpen, setIsScheduleListOpen] = useState(true);
   const dispatch = useDispatch();

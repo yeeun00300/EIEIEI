@@ -21,6 +21,7 @@ function AddLiveStock() {
   const { address = "", detailedAddress = "" } = useSelector(
     (state) => state.addressSlice
   );
+  const { email } = useSelector((state) => state.loginSlice);
   const {
     farmName = "",
     farmId = "",
@@ -108,7 +109,8 @@ function AddLiveStock() {
       return;
     }
 
-    const email = localStorage.getItem("email");
+    // const email = localStorage.getItem("email");
+
     const initialLayouts = `{"lg":[{"i":"1","x":0,"y":0,"w":20,"h":1,minw: 20,
             minh: 1,static: true,
             isDraggable: false,}],"md":[{"i":"1","x":0,"y":0,"w":10,"h":1,minw: 10,

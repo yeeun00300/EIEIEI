@@ -18,6 +18,10 @@ const ScheduleModal = ({
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
   const [ampm, setAmpm] = useState("AM");
+<<<<<<< Updated upstream
+=======
+  const { email } = useSelector((state) => state.loginSlice);
+>>>>>>> Stashed changes
 
   const handleSave = () => {
     if (!title || !description || !hour || !minute) {
@@ -27,7 +31,10 @@ const ScheduleModal = ({
 
     const formattedTime = `${hour}:${minute} ${ampm}`;
     const currentDate = new Date().toISOString(); // 현재 시간 ISO 형식으로 변환
+<<<<<<< Updated upstream
     const email = localStorage.getItem("email");
+=======
+>>>>>>> Stashed changes
 
     const scheduleObj = {
       email,

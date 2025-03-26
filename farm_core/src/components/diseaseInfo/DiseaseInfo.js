@@ -27,8 +27,13 @@ function DiseaseInfo() {
   const [showAddDiseaseForm, setShowAddDiseaseForm] = useState(false);
   const itemsPerPage = 6;
 
+<<<<<<< Updated upstream
   const userEmail = localStorage.getItem("email");
   const isAdmin = userEmail === "vet@naver.com";
+=======
+  const { email } = useSelector((state) => state.loginSlice);
+  const isAdmin = email === "vet@naver.com";
+>>>>>>> Stashed changes
 
   useEffect(() => {
     dispatch(

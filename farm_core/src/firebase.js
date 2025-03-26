@@ -303,7 +303,7 @@ function processSpecialFields(dataObject) {
 }
 
 // 엑셀 데이터 업로드 및 처리
-async function uploadExcelAndSaveData(file, collectionName) {
+async function uploadExcelAndSaveData(file, collectionName, email) {
   try {
     const data = await file.arrayBuffer();
     const workbook = XLSX.read(new Uint8Array(data), { type: "array" });
@@ -317,7 +317,7 @@ async function uploadExcelAndSaveData(file, collectionName) {
     const values = jsonData.slice(1); // 두 번째 행부터 값들
 
     // localStorage에서 이메일 값을 가져옴
-    const email = localStorage.getItem("email");
+    // const email = localStorage.getItem("email");
 
     const dataObjects = values
       .map((row) => {

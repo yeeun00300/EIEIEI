@@ -98,7 +98,11 @@ function StockAddfromExcel() {
   const [expandedRows, setExpandedRows] = useState([]);
   const [deletionRows, setDeletionRows] = useState([]);
   const [deleteReasons, setDeleteReasons] = useState({});
+<<<<<<< Updated upstream
   const email = localStorage.getItem("email");
+=======
+  const { email } = useSelector((state) => state.loginSlice);
+>>>>>>> Stashed changes
 
   useEffect(() => {
     async function fetchData() {
