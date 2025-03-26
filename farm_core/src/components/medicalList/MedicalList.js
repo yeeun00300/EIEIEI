@@ -16,11 +16,7 @@ function MedicalList(props) {
   const [isSubmitted, setIsSubmitted] = useState(false); // 제출 여부 상태 관리
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    const email = localStorage.getItem("email");
-=======
     const { email } = useSelector((state) => state.loginSlice);
->>>>>>> Stashed changes
 
     if (email) {
       const fetchData = async () => {

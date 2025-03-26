@@ -24,11 +24,7 @@ function CommentItem({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasReported, setHasReported] = useState(false);
   const dispatch = useDispatch();
-<<<<<<< Updated upstream
-  const localEmail = localStorage.getItem("email");
-=======
   const { email } = useSelector((state) => state.loginSlice);
->>>>>>> Stashed changes
 
   // const createdAtDate = subCreatedAt?.toDate
   //   ? subCreatedAt.toDate()
@@ -40,17 +36,10 @@ function CommentItem({
 
   useEffect(() => {
     checkReportStatus();
-<<<<<<< Updated upstream
-  }, [postId, id, localEmail]);
-
-  const checkReportStatus = async () => {
-    const reportRef = doc(db, "reports", `${localEmail}_${id}`);
-=======
   }, [postId, id, email]);
 
   const checkReportStatus = async () => {
     const reportRef = doc(db, "reports", `${email}_${id}`);
->>>>>>> Stashed changes
     const reportSnap = await getDoc(reportRef);
 
     if (reportSnap.exists()) {
@@ -162,11 +151,7 @@ function CommentItem({
                   />
                   신고하기
                 </button>
-<<<<<<< Updated upstream
-                {localEmail === email && (
-=======
                 {email === email && (
->>>>>>> Stashed changes
                   <>
                     <button
                       className="globalEditBtn"

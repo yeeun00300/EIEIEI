@@ -22,10 +22,7 @@ function FreeboardPage() {
   const [userHasDisliked, setUserHasDisliked] = useState(false);
   const [isDeclareModalOpen, setIsDeclareModalOpen] = useState(false);
   const [userHasReported, setUserHasReported] = useState(false);
-<<<<<<< Updated upstream
-=======
   const { email } = useSelector((state) => state.loginSlice);
->>>>>>> Stashed changes
 
   const getStockTypeInKorean = (type) => {
     switch (type) {
@@ -61,25 +58,15 @@ function FreeboardPage() {
 
   useEffect(() => {
     if (postData) {
-<<<<<<< Updated upstream
-      const userEmail = localStorage.getItem("email");
-=======
->>>>>>> Stashed changes
       const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || {};
       const dislikedPosts =
         JSON.parse(localStorage.getItem("dislikedPosts")) || {};
       const reportedPosts =
         JSON.parse(localStorage.getItem("reportedPosts")) || {};
 
-<<<<<<< Updated upstream
-      setUserHasLiked(likedPosts[id] === userEmail);
-      setUserHasDisliked(dislikedPosts[id] === userEmail);
-      setUserHasReported(reportedPosts[id] === userEmail);
-=======
       setUserHasLiked(likedPosts[id] === email);
       setUserHasDisliked(dislikedPosts[id] === email);
       setUserHasReported(reportedPosts[id] === email);
->>>>>>> Stashed changes
     }
   }, [postData]);
   useEffect(() => {
@@ -127,16 +114,9 @@ function FreeboardPage() {
   const handleLike = useCallback(async () => {
     if (userHasLiked || userHasDisliked) return;
 
-<<<<<<< Updated upstream
-    const userEmail = localStorage.getItem("email");
-    const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || {};
-
-    if (likedPosts[id] === userEmail) {
-=======
     const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || {};
 
     if (likedPosts[id] === email) {
->>>>>>> Stashed changes
       alert("이미 좋아요를 누르셨습니다.");
       return;
     }
@@ -150,11 +130,7 @@ function FreeboardPage() {
         updatePostReactions({ id, updates, communityType })
       ).unwrap();
       setUserHasLiked(true);
-<<<<<<< Updated upstream
-      likedPosts[id] = userEmail;
-=======
       likedPosts[id] = email;
->>>>>>> Stashed changes
       localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
       if (userHasDisliked) {
         await dispatch(
@@ -174,18 +150,10 @@ function FreeboardPage() {
   const handleDislike = useCallback(async () => {
     if (userHasDisliked || userHasLiked) return;
 
-<<<<<<< Updated upstream
-    const userEmail = localStorage.getItem("email");
-    const dislikedPosts =
-      JSON.parse(localStorage.getItem("dislikedPosts")) || {};
-
-    if (dislikedPosts[id] === userEmail) {
-=======
     const dislikedPosts =
       JSON.parse(localStorage.getItem("dislikedPosts")) || {};
 
     if (dislikedPosts[id] === email) {
->>>>>>> Stashed changes
       alert("이미 싫어요를 누르셨습니다.");
       return;
     }
@@ -199,11 +167,7 @@ function FreeboardPage() {
         updatePostReactions({ id, updates, communityType })
       ).unwrap();
       setUserHasDisliked(true);
-<<<<<<< Updated upstream
-      dislikedPosts[id] = userEmail;
-=======
       dislikedPosts[id] = email;
->>>>>>> Stashed changes
       localStorage.setItem("dislikedPosts", JSON.stringify(dislikedPosts));
       if (userHasLiked) {
         await dispatch(
@@ -234,16 +198,9 @@ function FreeboardPage() {
       await dispatch(reportPost({ id, reason })).unwrap();
       alert("신고가 접수되었습니다.");
 
-<<<<<<< Updated upstream
-      const userEmail = localStorage.getItem("email");
-      const reportedPosts =
-        JSON.parse(localStorage.getItem("reportedPosts")) || {};
-      reportedPosts[id] = userEmail;
-=======
       const reportedPosts =
         JSON.parse(localStorage.getItem("reportedPosts")) || {};
       reportedPosts[id] = email;
->>>>>>> Stashed changes
       localStorage.setItem("reportedPosts", JSON.stringify(reportedPosts));
 
       setUserHasReported(true);
@@ -259,11 +216,7 @@ function FreeboardPage() {
   }
 
   const dataToRender = postData || noticeItem; // postData가 없으면 noticeItem 사용
-<<<<<<< Updated upstream
-  const isAuthor = dataToRender.email === localStorage.getItem("email");
-=======
   const isAuthor = dataToRender.email === email;
->>>>>>> Stashed changes
 
   return (
     <div className="page">

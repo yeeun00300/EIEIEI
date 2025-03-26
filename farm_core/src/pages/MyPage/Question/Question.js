@@ -35,11 +35,7 @@ function Question() {
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null); // 선택한 질문을 저장할 상태
-<<<<<<< Updated upstream
-  const email = localStorage.getItem("email");
-=======
   const email = useSelector((state) => state.loginSlice.email);
->>>>>>> Stashed changes
 
   useEffect(() => {
     const fetchQuestions = async () => {

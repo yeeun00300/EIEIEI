@@ -113,11 +113,7 @@ function StockCondition(props) {
 
   const [docId, setDocId] = useState(""); // docId 상태 추가
   useEffect(() => {
-<<<<<<< Updated upstream
-    const email = localStorage.getItem("email");
-=======
     const { email } = useSelector((state) => state.loginSlice);
->>>>>>> Stashed changes
 
     if (email) {
       const fetchData = async () => {

@@ -1,19 +1,13 @@
 import React, { useState } from "react";
 import { uploadExcelAndSaveData } from "../../firebase";
 import styles from "./ExcelUpload.module.scss";
-<<<<<<< Updated upstream
-=======
 import { useSelector } from "react-redux";
->>>>>>> Stashed changes
 
 function ExcelUpload(props) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
-<<<<<<< Updated upstream
-=======
   const { email } = useSelector((state) => state.loginSlice);
->>>>>>> Stashed changes
 
   const handleFileUpload = async () => {
     if (!file) {
@@ -23,11 +17,7 @@ function ExcelUpload(props) {
     setUploading(true);
     setError(null);
     try {
-<<<<<<< Updated upstream
-      await uploadExcelAndSaveData(file, "stock");
-=======
       await uploadExcelAndSaveData(file, "stock", email);
->>>>>>> Stashed changes
       alert("파일이 성공적으로 업로드 및 저장 되었습니다.");
     } catch (error) {
       console.error("파일 업로드 중 오류 발생 : ", error);
