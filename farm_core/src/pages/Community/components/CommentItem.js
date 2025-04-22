@@ -24,7 +24,7 @@ function CommentItem({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasReported, setHasReported] = useState(false);
   const dispatch = useDispatch();
-  const { email } = useSelector((state) => state.loginSlice);
+  const userEmail = useSelector((state) => state.loginSlice.email);
 
   // const createdAtDate = subCreatedAt?.toDate
   //   ? subCreatedAt.toDate()
@@ -151,7 +151,7 @@ function CommentItem({
                   />
                   신고하기
                 </button>
-                {email === email && (
+                {userEmail === email && (
                   <>
                     <button
                       className="globalEditBtn"

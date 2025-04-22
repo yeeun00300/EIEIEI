@@ -8,6 +8,7 @@ import { MenuItem, Select } from "@mui/material";
 function MedicalList(props) {
   const dispatch = useDispatch();
   const farmData = useSelector((state) => state.AddLiveStockSlice);
+  const { email } = useSelector((state) => state.loginSlice);
 
   const [docId, setDocId] = useState([]);
   const [farmIdList, setFarmIdList] = useState([]);
@@ -16,8 +17,6 @@ function MedicalList(props) {
   const [isSubmitted, setIsSubmitted] = useState(false); // 제출 여부 상태 관리
 
   useEffect(() => {
-    const { email } = useSelector((state) => state.loginSlice);
-
     if (email) {
       const fetchData = async () => {
         try {

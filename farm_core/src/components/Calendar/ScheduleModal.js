@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import "./ScheduleModal.css"; // 사용자 정의 CSS 파일
+import { useSelector } from "react-redux";
 
 Modal.setAppElement("#root");
 

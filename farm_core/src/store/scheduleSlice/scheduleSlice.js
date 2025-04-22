@@ -83,13 +83,13 @@ export const fetchSchedules = createAsyncThunk(
 
 export const addSchedule = createAsyncThunk(
   "schedule/addSchedule",
-  async ({ collectionName, scheduleObj }, { rejectWithValue }) => {
+  async ({ collectionName, scheduleObj, email }, { rejectWithValue }) => {
     if (!scheduleObj) {
       console.error("scheduleObj is undefined");
       return rejectWithValue("scheduleObj is missing");
     }
 
-    const email = localStorage.getItem("email");
+    // const email = localStorage.getItem("email");
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
 

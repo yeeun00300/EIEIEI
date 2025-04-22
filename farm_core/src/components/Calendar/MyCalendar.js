@@ -91,6 +91,7 @@ const MyCalendar = () => {
       alert("날짜를 먼저 선택하세요.");
     }
   };
+
   const toggleCalendar = () => {
     setIsCalendarOpen((prevState) => !prevState);
   };
@@ -141,6 +142,7 @@ const MyCalendar = () => {
         addSchedule({
           collectionName,
           scheduleObj: newScheduleData,
+          email,
         })
       );
     }
