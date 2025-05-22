@@ -35,7 +35,7 @@ function EmailSignUp(props) {
 
       // 이메일 인증 링크 전송
       const actionCodeSettings = {
-        url: "http://localhost:3000/verify-email", // 개발 환경 URL
+        url: "https://moonlit-puppy-7f7f1f.netlify.app/verify-email", // 개발 환경 URL
         handleCodeInApp: true,
       };
       await sendEmailVerification(user, actionCodeSettings);
